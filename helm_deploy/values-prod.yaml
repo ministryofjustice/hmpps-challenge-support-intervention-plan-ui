@@ -3,7 +3,7 @@
 
 generic-service:
   ingress:
-    host: hmpps-challenge-support-intervention-plan-ui.hmpps.service.justice.gov.uk
+    host: csip.hmpps.service.justice.gov.uk
 
   env:
     INGRESS_URL: "https://hmpps-challenge-support-intervention-plan-ui.hmpps.service.justice.gov.uk"
