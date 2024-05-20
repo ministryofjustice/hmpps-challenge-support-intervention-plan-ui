@@ -12,7 +12,7 @@ see https://github.com/ministryofjustice/hmpps-project-bootstrap. You are able t
 This bootstrap is community managed by the mojdt `#typescript` slack channel. 
 Please raise any questions or queries there. Contributions welcome!
 
-Our security policy is located [here](https://github.com/ministryofjustice/hmpps-challenge-support-intervention-plan-ui/security/policy). 
+Our security policy is located [here](https://github.com/ministryofjustice/hmpps-template-typescript/security/policy). 
 
 More information about the template project including features can be found [here](https://dsdmoj.atlassian.net/wiki/spaces/NDSS/pages/3488677932/Typescript+template+project).
 
@@ -20,7 +20,7 @@ More information about the template project including features can be found [her
 
 When deploying to a new namespace, you may wish to use this template typescript project namespace as the basis for your new namespace:
 
-<https://github.com/ministryofjustice/cloud-platform-environments/tree/main/namespaces/live.cloud-platform.service.justice.gov.uk/hmpps-challenge-support-intervention-plan-ui>
+<https://github.com/ministryofjustice/cloud-platform-environments/tree/main/namespaces/live.cloud-platform.service.justice.gov.uk/hmpps-template-typescript>
 
 This template namespace includes an AWS elasticache setup - which is required by this template project.
 
