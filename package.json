@@ -42,6 +42,8 @@
         }
       ]
     },
+    "collectCoverage": true,
+    "coverageReporters": ["text", "cobertura"],
     "collectCoverageFrom": [
       "server/**/*.{ts,js,jsx,mjs}"
     ],
