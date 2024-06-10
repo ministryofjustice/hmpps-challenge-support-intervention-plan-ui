@@ -43,7 +43,10 @@
       ]
     },
     "collectCoverage": true,
-    "coverageReporters": ["text", "cobertura"],
+    "coverageReporters": [
+      "text",
+      "cobertura"
+    ],
     "collectCoverageFrom": [
       "server/**/*.{ts,js,jsx,mjs}"
     ],
@@ -97,6 +100,7 @@
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.592.0",
     "@ministryofjustice/frontend": "^2.1.3",
+    "@opentelemetry/api": "~1.0.1",
     "agentkeepalive": "^4.5.0",
     "applicationinsights": "^3.1.0",
     "body-parser": "^1.20.2",
