@@ -1,8 +1,9 @@
 const production = process.env.NODE_ENV === 'production'
 
 function get<T>(name: string, fallback: T, options = { requireInProduction: false }): T | string {
-  if (process.env[name]) {
-    return process.env[name]
+  const envVar = process.env[name]
+  if (envVar) {
+    return envVar
   }
   if (fallback !== undefined && (!production || !options.requireInProduction)) {
     return fallback
@@ -38,12 +39,10 @@ const auditConfig = () => {
   const auditEnabled = get('AUDIT_ENABLED', 'false') === 'true'
   return {
     enabled: auditEnabled,
-    queueUrl: get(
-      'AUDIT_SQS_QUEUE_URL',
-      'http://localhost:4566/000000000000/mainQueue',
-      auditEnabled && requiredInProduction,
-    ),
-    serviceName: get('AUDIT_SERVICE_NAME', 'UNASSIGNED', auditEnabled && requiredInProduction),
+    queueUrl: get('AUDIT_SQS_QUEUE_URL', 'http://localhost:4566/000000000000/mainQueue', {
+      requireInProduction: auditEnabled,
+    }),
+    serviceName: get('AUDIT_SERVICE_NAME', 'UNASSIGNED', { requireInProduction: auditEnabled }),
     region: get('AUDIT_SQS_REGION', 'eu-west-2'),
   }
 }

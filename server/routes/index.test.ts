@@ -2,10 +2,19 @@ import type { Express } from 'express'
 import request from 'supertest'
 import { appWithAllRoutes, user } from './testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
+import HmppsAuditClient from '../data/hmppsAuditClient'
 
 jest.mock('../services/auditService')
+jest.mock('../data/hmppsAuditClient')
 
-const auditService = new AuditService(null) as jest.Mocked<AuditService>
+const auditService = new AuditService(
+  new HmppsAuditClient({
+    enabled: false,
+    queueUrl: '',
+    region: '',
+    serviceName: '',
+  }),
+) as jest.Mocked<AuditService>
 
 let app: Express
 
@@ -24,7 +33,7 @@ afterEach(() => {
 
 describe('GET /', () => {
   it('should render index page', () => {
-    auditService.logPageView.mockResolvedValue(null)
+    auditService.logPageView.mockResolvedValue(undefined)
 
     return request(app)
       .get('/')

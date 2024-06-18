@@ -4,7 +4,7 @@ import logger from '../../logger'
 import { convertToTitleCase } from '../utils/utils'
 
 export default function populateCurrentUser(): RequestHandler {
-  return async (req, res, next) => {
+  return async (_req, res, next) => {
     try {
       const {
         name,
@@ -16,6 +16,10 @@ export default function populateCurrentUser(): RequestHandler {
         authorities?: string[]
       }
 
+      if (!name || !userId) {
+        throw new Error(`name: ${name} or user_id: ${userId} were not populated in the jwt`)
+      }
+
       res.locals.user = {
         ...res.locals.user,
         userId,
@@ -25,7 +29,7 @@ export default function populateCurrentUser(): RequestHandler {
       }
 
       if (res.locals.user.authSource === 'nomis') {
-        res.locals.user.staffId = parseInt(userId, 10) || undefined
+        res.locals.user.staffId = parseInt(userId, 10)
       }
 
       next()

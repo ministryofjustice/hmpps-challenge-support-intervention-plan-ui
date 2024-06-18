@@ -10,8 +10,10 @@ import type { Services } from '../../services'
 import type { ApplicationInfo } from '../../applicationInfo'
 import AuditService from '../../services/auditService'
 import { HmppsUser } from '../../interfaces/hmppsUser'
+import HmppsAuditClient from '../../data/hmppsAuditClient'
 
 jest.mock('../../services/auditService')
+jest.mock('../../data/hmppsAuditClient')
 
 const testAppInfo: ApplicationInfo = {
   applicationName: 'test',
@@ -48,14 +50,14 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
     }
     next()
   })
-  app.use((req, res, next) => {
+  app.use((req, _res, next) => {
     req.id = uuidv4()
     next()
   })
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
   app.use(routes(services))
-  app.use((req, res, next) => next(new NotFound()))
+  app.use((_req, _res, next) => next(new NotFound()))
   app.use(errorHandler(production))
 
   return app
@@ -64,7 +66,14 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
 export function appWithAllRoutes({
   production = false,
   services = {
-    auditService: new AuditService(null) as jest.Mocked<AuditService>,
+    auditService: new AuditService(
+      new HmppsAuditClient({
+        enabled: false,
+        queueUrl: '',
+        region: '',
+        serviceName: '',
+      }),
+    ) as jest.Mocked<AuditService>,
   },
   userSupplier = () => user,
 }: {
@@ -72,6 +81,6 @@ export function appWithAllRoutes({
   services?: Partial<Services>
   userSupplier?: () => HmppsUser
 }): Express {
-  auth.default.authenticationMiddleware = () => (req, res, next) => next()
+  auth.default.authenticationMiddleware = () => (_req, _res, next) => next()
   return appSetup(services as Services, production, userSupplier)
 }

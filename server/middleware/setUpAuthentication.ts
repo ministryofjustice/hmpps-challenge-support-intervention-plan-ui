@@ -15,7 +15,7 @@ export default function setUpAuth(): Router {
   router.use(passport.session())
   router.use(flash())
 
-  router.get('/autherror', (req, res) => {
+  router.get('/autherror', (_req, res) => {
     res.status(401)
     return res.render('autherror')
   })
@@ -42,7 +42,7 @@ export default function setUpAuth(): Router {
     } else res.redirect(authSignOutUrl)
   })
 
-  router.use('/account-details', (req, res) => {
+  router.use('/account-details', (_req, res) => {
     res.redirect(`${authUrl}/account-details?${authParameters}`)
   })
 
