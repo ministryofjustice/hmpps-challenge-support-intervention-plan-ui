@@ -16,10 +16,6 @@ export default function populateCurrentUser(): RequestHandler {
         authorities?: string[]
       }
 
-      if (!name || !userId) {
-        throw new Error(`name: ${name} or user_id: ${userId} were not populated in the jwt`)
-      }
-
       res.locals.user = {
         ...res.locals.user,
         userId,
@@ -29,7 +25,7 @@ export default function populateCurrentUser(): RequestHandler {
       }
 
       if (res.locals.user.authSource === 'nomis') {
-        res.locals.user.staffId = parseInt(userId, 10)
+        res.locals.user.staffId = (userId && parseInt(userId, 10)) || undefined
       }
 
       next()
