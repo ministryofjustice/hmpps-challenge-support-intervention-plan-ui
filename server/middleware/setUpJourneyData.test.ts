@@ -46,19 +46,19 @@ describe('setUpJourneyData', () => {
     })
 
     it('should not create a new journey data map when there is a map', async () => {
-      req.session.journeyDataMap = new Map<string, JourneyData>()
+      const existingMap = {
+        id: { instanceUnixEpoch: Date.now() },
+      }
+      req.session.journeyDataMap = existingMap
 
       middleware(req, res, next)
 
-      expect(req.session.journeyDataMap).not.toBeUndefined()
-      expect(req.session.journeyDataMap).not.toBeNull()
+      expect(req.session.journeyDataMap).toBe(existingMap)
     })
   })
 
   describe('get journey data', () => {
     it('should create a new journey data when map does not contain data for the journey id', async () => {
-      req.session.journeyDataMap = new Map<string, JourneyData>()
-
       middleware(req, res, next)
 
       expect(req.journeyData).not.toBeUndefined()
@@ -66,69 +66,37 @@ describe('setUpJourneyData', () => {
     })
 
     it('should return existing journey data when journey data is found for the journey id', async () => {
-      req.session.journeyDataMap = new Map<string, JourneyData>()
+      req.session.journeyDataMap = {}
       const existingData: JourneyData = {
         instanceUnixEpoch: Date.now(),
         logNumber: 'log_number',
       }
-      req.session.journeyDataMap.set(journeyId, existingData)
+      req.session.journeyDataMap[journeyId] = existingData
 
       middleware(req, res, next)
 
       expect(req.journeyData).toBe(existingData)
     })
-  })
-
-  describe('set journey data', () => {
-    it('should set journey data to map using journey id and with unix timestamp', async () => {
-      middleware(req, res, next)
-
-      const journeyData = {
-        instanceUnixEpoch: 0,
-        logNumber: 'new_log',
-      }
-      req.journeyData = journeyData
-
-      expect(req.session.journeyDataMap.get(journeyId).logNumber).toBe(journeyData.logNumber)
-      expect(req.journeyData.logNumber).toBe(journeyData.logNumber)
-      expect(req.journeyData.instanceUnixEpoch).toBeGreaterThan(journeyData.instanceUnixEpoch)
-    })
-
-    it('should unset journey data', async () => {
-      req.session.journeyDataMap = new Map<string, JourneyData>()
-      const existingData: JourneyData = {
-        instanceUnixEpoch: Date.now(),
-        logNumber: 'log_number',
-      }
-      req.session.journeyDataMap.set(journeyId, existingData)
-
-      middleware(req, res, next)
-
-      req.journeyData = null
-
-      expect(req.session.journeyDataMap.get(journeyId)).toBeUndefined()
-    })
 
     it('should clean up oldest journey data when max number is exceeded', async () => {
       const epoch = Date.now() - 100000 // Reduced by 100 seconds to avoid clash of epoch
 
-      req.session.journeyDataMap = new Map<string, JourneyData>()
+      req.session.journeyDataMap = {}
 
       Array.from(Array(100).keys()).forEach(idx => {
-        req.session.journeyDataMap.set(uuidV4(), { instanceUnixEpoch: epoch + idx })
+        req.session.journeyDataMap[uuidV4()] = { instanceUnixEpoch: epoch + idx }
       })
 
       middleware(req, res, next)
 
-      expect(req.session.journeyDataMap.get(journeyId)).toBeUndefined()
+      expect(Object.keys(req.session.journeyDataMap).length).toEqual(100)
+      expect(Object.values(req.session.journeyDataMap).find(j => j.instanceUnixEpoch === epoch)).not.toBeNull()
 
-      req.journeyData = {
-        instanceUnixEpoch: 0,
-        logNumber: 'new_log',
-      }
+      // create new Journey Data into map by calling the getter
+      expect(req.journeyData).not.toBeNull()
 
-      expect(req.session.journeyDataMap.size).toEqual(100)
-      expect(Array.from(req.session.journeyDataMap.values()).find(j => j.instanceUnixEpoch === epoch)).toBeUndefined()
+      expect(Object.keys(req.session.journeyDataMap).length).toEqual(100)
+      expect(Object.values(req.session.journeyDataMap).find(j => j.instanceUnixEpoch === epoch)).toBeUndefined()
     })
   })
 })

@@ -5,8 +5,12 @@ export declare module 'express-session' {
   interface SessionData {
     returnTo: string
     nowInMinutes: number
-    journeyDataMap: Map<string, JourneyData>
+    journeyDataMap: JourneyDataMap
   }
+}
+
+type JourneyDataMap = {
+  [key: string]: JourneyData
 }
 
 export type JourneyData = {
@@ -20,14 +24,10 @@ export type JourneyData = {
 }
 
 export type PrisonerSummary = {
-  prisonNumber: string
+  prisonerNumber: string
   firstName: string
   lastName: string
-  dateOfBirth: string
-  prisonCode: string
-  prisonName: string
   cellLocation: string
-  status: string
 }
 
 type ReferralData = {
