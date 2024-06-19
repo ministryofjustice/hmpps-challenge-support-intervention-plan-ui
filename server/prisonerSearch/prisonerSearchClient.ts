@@ -14,10 +14,6 @@ export default class PrisonerSearchRestClient implements PrisonerSearchClient {
   }
 
   async getPrisonerDetails(prisonerNumber: string): Promise<Prisoner> {
-    const prisonerData = await this.restClient.get<Prisoner>({ path: `/prisoner/${prisonerNumber}` })
-    return {
-      ...prisonerData,
-      bookingId: prisonerData.bookingId ? prisonerData.bookingId : undefined,
-    }
+    return this.restClient.get<Prisoner>({ path: `/prisoner/${prisonerNumber}` })
   }
 }
