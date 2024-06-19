@@ -3,12 +3,12 @@ import { RequestHandler } from 'express'
 const MAX_CONCURRENT_JOURNEYS = 100
 
 export default function setUpJourneyData(): RequestHandler {
-  return async (req, res, next) => {
-    req.session.journeyDataMap ??= {}
-
+  return async (req, _, next) => {
     Object.defineProperty(req, 'journeyData', {
       get() {
-        const journeyId = req.params.journeyId ?? 'default'
+        req.session.journeyDataMap ??= {}
+
+        const journeyId = req.params['journeyId'] ?? 'default'
         if (!req.session.journeyDataMap[journeyId]) {
           req.session.journeyDataMap[journeyId] = { instanceUnixEpoch: Date.now() }
 

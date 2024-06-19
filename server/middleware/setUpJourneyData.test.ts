@@ -28,18 +28,22 @@ beforeEach(() => {
 describe('setUpJourneyData', () => {
   describe('create journey data map', () => {
     it('should create a new journey data map when map is undefined', async () => {
+      // @ts-expect-error setting non-nullable property to undefined
       req.session.journeyDataMap = undefined
 
       middleware(req, res, next)
+      expect(req.journeyData).not.toBeNull()
 
       expect(req.session.journeyDataMap).not.toBeUndefined()
       expect(req.session.journeyDataMap).not.toBeNull()
     })
 
     it('should create a new journey data map when map is null', async () => {
+      // @ts-expect-error setting non-nullable property to null
       req.session.journeyDataMap = null
 
       middleware(req, res, next)
+      expect(req.journeyData).not.toBeNull()
 
       expect(req.session.journeyDataMap).not.toBeUndefined()
       expect(req.session.journeyDataMap).not.toBeNull()
@@ -84,6 +88,7 @@ describe('setUpJourneyData', () => {
       req.session.journeyDataMap = {}
 
       Array.from(Array(100).keys()).forEach(idx => {
+        req.session.journeyDataMap ??= {}
         req.session.journeyDataMap[uuidV4()] = { instanceUnixEpoch: epoch + idx }
       })
 
