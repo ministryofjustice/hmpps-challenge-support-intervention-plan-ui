@@ -54,6 +54,7 @@ export declare global {
       journeyData?: Omit<JourneyData, 'prisoner'>
 
       logout(done: (err: unknown) => void): void
+      systemClientToken: string
     }
 
     interface Locals {
