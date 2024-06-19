@@ -13,7 +13,7 @@ export default function setUpCsrf(): Router {
 
   router.use((req, res, next) => {
     if (typeof req.csrfToken === 'function') {
-      res.locals.csrfToken = req.csrfToken()
+      res.locals['csrfToken'] = req.csrfToken()
     }
     next()
   })
