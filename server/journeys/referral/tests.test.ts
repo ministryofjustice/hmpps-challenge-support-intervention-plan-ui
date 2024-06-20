@@ -3,9 +3,6 @@ import request from 'supertest'
 import { getByRole } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../routes/testutils/appSetup'
 
-// adds special assertions like toHaveTextContent
-import '@testing-library/jest-dom'
-
 let app: Express
 beforeEach(() => {
   app = appWithAllRoutes({
