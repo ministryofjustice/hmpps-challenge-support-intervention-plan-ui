@@ -32,7 +32,8 @@
     "dist",
     "cypress.config.ts",
     "coverage",
-    "codecov_reports"
+    "codecov_reports",
+    "esbuild"
   ],
   "include": ["**/*.js", "**/*.ts"]
 }

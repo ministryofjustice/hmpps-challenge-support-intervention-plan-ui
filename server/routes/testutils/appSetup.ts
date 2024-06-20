@@ -10,6 +10,7 @@ import type { Services } from '../../services'
 import type { ApplicationInfo } from '../../applicationInfo'
 import AuditService from '../../services/auditService'
 import { HmppsUser } from '../../interfaces/hmppsUser'
+import setUpWebSession from '../../middleware/setUpWebSession'
 import HmppsAuditClient from '../../data/hmppsAuditClient'
 
 jest.mock('../../services/auditService')
@@ -42,6 +43,7 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
   app.set('view engine', 'njk')
 
   nunjucksSetup(app, testAppInfo)
+  app.use(setUpWebSession())
   app.use((req, res, next) => {
     req.user = userSupplier() as Express.User
     req.flash = flashProvider
