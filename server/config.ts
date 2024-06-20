@@ -98,6 +98,9 @@ export default {
       agent: new AgentConfig(Number(get('PRISONER_SEARCH_API_TIMEOUT_DEADLINE', 20000))),
     },
   },
+  serviceUrls: {
+    digitalPrison: get('DPS_HOME_PAGE_URL', 'http://localhost:3001', requiredInProduction),
+  },
   sqs: {
     audit: auditConfig(),
   },

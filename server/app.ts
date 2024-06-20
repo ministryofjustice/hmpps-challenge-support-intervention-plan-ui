@@ -1,6 +1,7 @@
 import express from 'express'
 
 import createError from 'http-errors'
+import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
 
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
@@ -20,6 +21,8 @@ import setUpWebSession from './middleware/setUpWebSession'
 import routes from './routes'
 import type { Services } from './services'
 import setUpJourneyData from './middleware/setUpJourneyData'
+import config from './config'
+import logger from '../logger'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -41,6 +44,15 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
   app.use(setUpJourneyData())
+
+  app.get(
+    '*',
+    dpsComponents.getPageComponents({
+      logger,
+      includeMeta: true,
+      dpsUrl: config.serviceUrls.digitalPrison,
+    }),
+  )
 
   app.use(routes(services))
 
