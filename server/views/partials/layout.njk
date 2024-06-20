@@ -2,6 +2,7 @@
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "hmpps/components/mini-profile/macro.njk" import miniProfile %}
 
 {% block head %}
   <link href="/assets/stylesheets/application.css?{{ version }}" rel="stylesheet"/>
@@ -46,6 +47,9 @@
     </div>
   {% endif %}
 
+  {% if prisoner %}
+    {{ miniProfile(prisoner, prisoner.image, prisoner.url) }}
+  {% endif %}
 {% endblock %}
 
 {% block bodyStart %}
