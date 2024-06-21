@@ -23,6 +23,7 @@ import type { Services } from './services'
 import setUpJourneyData from './middleware/setUpJourneyData'
 import config from './config'
 import logger from '../logger'
+import populateClientToken from './middleware/populateSystemClientToken'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -43,6 +44,7 @@ export default function createApp(services: Services): express.Application {
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
+  app.use(populateClientToken())
   app.use(setUpJourneyData())
 
   app.get(

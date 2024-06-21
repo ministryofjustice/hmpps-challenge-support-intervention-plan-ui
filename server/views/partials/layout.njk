@@ -30,7 +30,7 @@
     html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
   }) }}
 
-  {% if backUrl %}
+  {% if backUrl and (not breadCrumbs) %}
     {{ govukBackLink({
       text: "Back",
       href: backUrl
@@ -48,7 +48,7 @@
   {% endif %}
 
   {% if prisoner %}
-    {{ miniProfile(prisoner, prisoner.image, prisoner.url) }}
+    {{ miniProfile(prisoner, '/prisoner-image/' + prisoner.prisonerNumber, digitalPrisonServicesUrl + '/prisoner/' + prisoner.prisonerNumber) }}
   {% endif %}
 {% endblock %}
 

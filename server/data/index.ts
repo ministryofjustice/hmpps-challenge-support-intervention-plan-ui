@@ -17,6 +17,7 @@ import InMemoryTokenStore from './tokenStore/inMemoryTokenStore'
 import config from '../config'
 import HmppsAuditClient from './hmppsAuditClient'
 import PrisonerSearchRestClient from '../prisonerSearch/prisonerSearchClient'
+import PrisonerImageRestClient from '../prisonerImage/prisonerImageClient'
 
 type RestClientBuilder<T> = (token: string) => T
 
@@ -27,6 +28,7 @@ export const dataAccess = () => ({
   ),
   hmppsAuditClient: new HmppsAuditClient(config.sqs.audit),
   prisonerSearchApiClient: (token: string) => new PrisonerSearchRestClient(token),
+  prisonerImageClient: (token: string) => new PrisonerImageRestClient(token),
 })
 
 export type DataAccess = ReturnType<typeof dataAccess>
