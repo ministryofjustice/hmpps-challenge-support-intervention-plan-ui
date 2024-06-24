@@ -12,6 +12,9 @@ context('Make a Referral Journey', () => {
     cy.signIn()
     cy.visit('/prisoners/A1111AA/referral/start')
     const onBehalfOfPage = Page.verifyOnPage(OnBehalfOfPage)
-    onBehalfOfPage.miniProfileDob().should('contain.text', '02/02/1932')
+    onBehalfOfPage
+      .miniProfileHyperlink('Neil')
+      .should('have.attr', 'href')
+      .should('equal', 'http://localhost:9091/dpshomepage/prisoner/A1111AA')
   })
 })
