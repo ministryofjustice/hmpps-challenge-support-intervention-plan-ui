@@ -3,11 +3,7 @@ import PrisonerSearchService from '../../prisonerSearch/prisonerSearchService'
 import { PrisonerSummary } from '../../@types/express'
 
 export class StartJourneyController {
-  private prisonerSearchService: PrisonerSearchService
-
-  constructor(prisonerSearchService: PrisonerSearchService) {
-    this.prisonerSearchService = prisonerSearchService
-  }
+  constructor(private readonly prisonerSearchService: PrisonerSearchService) {}
 
   redirectWithPrisonerData =
     (url: string) =>

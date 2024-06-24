@@ -52,6 +52,10 @@ export default function createApp(services: Services): express.Application {
       logger,
       includeMeta: true,
       dpsUrl: config.serviceUrls.digitalPrison,
+      timeoutOptions: {
+        response: config.apis.componentApi.timeout.response,
+        deadline: config.apis.componentApi.timeout.deadline,
+      },
     }),
   )
   app.use(routes(services))
