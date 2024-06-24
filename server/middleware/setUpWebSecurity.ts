@@ -16,7 +16,7 @@ export default function setUpWebSecurity(): Router {
   })
   router.use(
     helmet({
-      referrerPolicy: { policy: 'origin' },
+      referrerPolicy: { policy: 'same-origin' },
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
