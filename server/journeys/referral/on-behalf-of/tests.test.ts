@@ -16,7 +16,7 @@ afterEach(() => {
 })
 
 describe('tests', () => {
-  it('should work', () => {
+  it('render on behalf of on get', () => {
     return request(app)
       .get(`/${uuidv4()}/referral/on-behalf-of`)
       .expect(200)
@@ -28,6 +28,16 @@ describe('tests', () => {
         const heading = getByRole(document.documentElement, 'heading')
         expect(heading).toBeVisible()
         expect(heading).toHaveTextContent(/on behalf of/i)
+      })
+  })
+
+  it('should post correctly to on behalf of', () => {
+    return request(app)
+      .post('/referral/on-behalf-of')
+      .send({})
+      .expect(302)
+      .expect(res => {
+        console.log(`res.text: ${res.text}`)
       })
   })
 })
