@@ -1,4 +1,5 @@
 import type { Express } from 'express'
+import { v4 as uuidv4 } from 'uuid'
 import request from 'supertest'
 import { appWithAllRoutes } from './routes/testutils/appSetup'
 
@@ -15,7 +16,7 @@ afterEach(() => {
 describe('GET 404', () => {
   it('should render content with stack in dev mode', () => {
     return request(app)
-      .get('/unknown')
+      .get(`/${uuidv4()}/unknown`)
       .expect(404)
       .expect('Content-Type', /html/)
       .expect(res => {
@@ -26,7 +27,7 @@ describe('GET 404', () => {
 
   it('should render content without stack in production mode', () => {
     return request(appWithAllRoutes({ production: true }))
-      .get('/unknown')
+      .get(`/${uuidv4()}/unknown`)
       .expect(404)
       .expect('Content-Type', /html/)
       .expect(res => {

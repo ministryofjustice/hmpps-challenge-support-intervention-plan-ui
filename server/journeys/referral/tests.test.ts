@@ -1,4 +1,5 @@
 import { Express } from 'express'
+import { v4 as uuidv4 } from 'uuid'
 import request from 'supertest'
 import { getByRole } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../routes/testutils/appSetup'
@@ -17,7 +18,7 @@ afterEach(() => {
 describe('tests', () => {
   it('should work', () => {
     return request(app)
-      .get('/referral')
+      .get(`/${uuidv4()}/referral`)
       .expect(200)
       .expect('Content-Type', /html/)
       .expect(res => {
