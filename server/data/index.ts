@@ -16,8 +16,9 @@ import RedisTokenStore from './tokenStore/redisTokenStore'
 import InMemoryTokenStore from './tokenStore/inMemoryTokenStore'
 import config from '../config'
 import HmppsAuditClient from './hmppsAuditClient'
-import PrisonerSearchRestClient from '../prisonerSearch/prisonerSearchClient'
-import PrisonerImageRestClient from '../prisonerImage/prisonerImageClient'
+import PrisonerSearchRestClient from '../services/prisonerSearch/prisonerSearchClient'
+import PrisonerImageRestClient from '../services/prisonerImage/prisonerImageClient'
+import CsipApiClient from '../services/csipApi/csipApiClient'
 
 type RestClientBuilder<T> = (token: string) => T
 
@@ -27,6 +28,7 @@ export const dataAccess = () => ({
     config.redis.enabled ? new RedisTokenStore(createRedisClient()) : new InMemoryTokenStore(),
   ),
   hmppsAuditClient: new HmppsAuditClient(config.sqs.audit),
+  csipApiClient: (token: string) => new CsipApiClient(token),
   prisonerSearchApiClient: (token: string) => new PrisonerSearchRestClient(token),
   prisonerImageClient: (token: string) => new PrisonerImageRestClient(token),
 })

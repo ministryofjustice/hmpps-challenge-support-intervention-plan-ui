@@ -33,6 +33,7 @@ export type PrisonerSummary = {
 
 type ReferralData = {
   isOnBehalfOfReferral?: boolean
+  areaOfWorkCode?: string
 }
 
 type SaferCustodyScreening = object

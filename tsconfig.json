@@ -33,7 +33,8 @@
     "cypress.config.ts",
     "coverage",
     "codecov_reports",
-    "esbuild"
+    "esbuild",
+    "server/@types/csip/index.d.ts"
   ],
   "include": ["**/*.js", "**/*.ts"]
 }

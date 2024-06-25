@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import PrisonerSearchService from '../../prisonerSearch/prisonerSearchService'
+import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
 import { PrisonerSummary } from '../../@types/express'
 
 export class StartJourneyController {

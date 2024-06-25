@@ -1,5 +1,5 @@
 import { Request } from 'express'
-import { RestClientBuilder } from '../data'
+import { RestClientBuilder } from '../../data'
 import { PrisonerSearchClient } from './prisonerSearchClient'
 import Prisoner from './prisoner'
 

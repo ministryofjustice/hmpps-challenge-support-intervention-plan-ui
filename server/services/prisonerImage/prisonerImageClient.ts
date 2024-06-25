@@ -1,6 +1,6 @@
 import { Readable } from 'stream'
-import RestClient from '../data/restClient'
-import config from '../config'
+import RestClient from '../../data/restClient'
+import config from '../../config'
 
 export interface PrisonerImageClient {
   getImage(prisonerNumber: string): Promise<Readable>
