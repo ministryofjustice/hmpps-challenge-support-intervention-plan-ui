@@ -6,7 +6,6 @@ export class ReferralOnBehalfOfController {
   }
 
   POST = async (_req: Request, res: Response): Promise<void> => {
-    console.log('shouldnt come here on bad validation')
     res.redirect('/referral/on-behalf-of')
   }
 }

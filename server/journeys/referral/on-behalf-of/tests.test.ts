@@ -31,7 +31,7 @@ describe('tests', () => {
       })
   })
 
-  it('should post correctly to on behalf of', done => {
+  it('should display validation errors correctly', done => {
     const app2 = appWithAllRoutes({
       services: {},
       validationErrors: {
@@ -39,7 +39,7 @@ describe('tests', () => {
       },
     })
     request(app2)
-      .get('/referral/on-behalf-of')
+      .get(`/${uuidv4()}/referral/on-behalf-of`)
       .end(async (err2, res2) => {
         if (err2) {
           done(err2)
