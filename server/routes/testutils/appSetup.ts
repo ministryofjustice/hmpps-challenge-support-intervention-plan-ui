@@ -1,4 +1,4 @@
-import express, { Express } from 'express'
+import express, { Express, Locals } from 'express'
 import { NotFound } from 'http-errors'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -41,7 +41,12 @@ export const user: HmppsUser = {
 
 export const flashProvider = jest.fn()
 
-function appSetup(services: Services, production: boolean, userSupplier: () => HmppsUser): Express {
+function appSetup(
+  services: Services,
+  production: boolean,
+  userSupplier: () => HmppsUser,
+  validationErrors?: Locals['validationErrors'],
+): Express {
   const app = express()
 
   app.set('view engine', 'njk')
@@ -56,6 +61,12 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
     }
     next()
   })
+  if (validationErrors) {
+    app.use((_req, res, next) => {
+      res.locals['validationErrors'] = validationErrors
+      next()
+    })
+  }
   app.use((req, _res, next) => {
     req.id = uuidv4()
     next()
@@ -92,11 +103,13 @@ export function appWithAllRoutes({
     ) as jest.Mocked<AuditService>,
   },
   userSupplier = () => user,
+  validationErrors,
 }: {
   production?: boolean
   services?: Partial<Services>
   userSupplier?: () => HmppsUser
+  validationErrors?: Locals['validationErrors']
 }): Express {
   auth.default.authenticationMiddleware = () => (_req, _res, next) => next()
-  return appSetup(services as Services, production, userSupplier)
+  return appSetup(services as Services, production, userSupplier, validationErrors)
 }

@@ -48,7 +48,7 @@
   {% endif %}
 
   {% include './beforeContent.njk' %}
-  
+
   {% if prisoner %}
     {{ miniProfile(prisoner, '/prisoner-image/' + prisoner.prisonerNumber, digitalPrisonServicesUrl + '/prisoner/' + prisoner.prisonerNumber) }}
   {% endif %}

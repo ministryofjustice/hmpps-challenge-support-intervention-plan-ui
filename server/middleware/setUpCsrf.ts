@@ -8,7 +8,7 @@ export default function setUpCsrf(): Router {
 
   // CSRF protection
   if (!testMode) {
-    // router.use(csurf())
+    router.use(csurf())
   }
 
   router.use((req, res, next) => {

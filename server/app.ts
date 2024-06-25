@@ -24,6 +24,7 @@ import config from './config'
 import logger from '../logger'
 import populateClientToken from './middleware/populateSystemClientToken'
 import PrisonerImageRoutes from './routes/prisonerImageRoutes'
+import populateValidationErrors from './middleware/populateValidationErrors'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -42,6 +43,7 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpAuthentication())
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
+  app.use(populateValidationErrors())
   app.use(setUpCurrentUser())
   app.use(populateClientToken())
   app.get('/prisoner-image/:prisonerNumber', new PrisonerImageRoutes(services.prisonerImageService).GET)
