@@ -1,5 +1,5 @@
 export default interface Prisoner {
-  prisonNumber: string
+  prisonerNumber: string
   firstName: string
   lastName: string
   cellLocation: string

@@ -51,7 +51,7 @@ export declare global {
     interface Request {
       verified?: boolean
       id: string
-      journeyData?: Omit<JourneyData, 'prisoner'>
+      journeyData: JourneyData
 
       logout(done: (err: unknown) => void): void
       systemClientToken: string

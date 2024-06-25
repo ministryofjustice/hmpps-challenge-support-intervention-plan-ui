@@ -23,6 +23,7 @@ import setUpJourneyData from './middleware/setUpJourneyData'
 import config from './config'
 import logger from '../logger'
 import populateClientToken from './middleware/populateSystemClientToken'
+import PrisonerImageRoutes from './routes/prisonerImageRoutes'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -43,19 +44,21 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
   app.use(populateClientToken())
+  app.get('/prisoner-image/:prisonerNumber', new PrisonerImageRoutes(services.prisonerImageService).GET)
   app.use(setUpJourneyData())
-
   app.get(
     '*',
     dpsComponents.getPageComponents({
       logger,
       includeMeta: true,
       dpsUrl: config.serviceUrls.digitalPrison,
+      timeoutOptions: {
+        response: config.apis.componentApi.timeout.response,
+        deadline: config.apis.componentApi.timeout.deadline,
+      },
     }),
   )
-
   app.use(routes(services))
-
   app.use((_req, _res, next) => next(createError(404, 'Not found')))
   app.use(errorHandler(process.env.NODE_ENV === 'production'))
 
