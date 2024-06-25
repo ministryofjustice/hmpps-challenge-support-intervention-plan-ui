@@ -1,4 +1,4 @@
-import express, { Express } from 'express'
+import express, { Express, Locals } from 'express'
 import { NotFound } from 'http-errors'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -16,6 +16,8 @@ import HmppsAuditClient from '../../data/hmppsAuditClient'
 import setUpJourneyData from '../../middleware/setUpJourneyData'
 import logger from '../../../logger'
 import config from '../../config'
+import populateValidationErrors from '../../middleware/populateValidationErrors'
+import setUpAuth from '../../middleware/setUpAuthentication'
 
 jest.mock('../../services/auditService')
 jest.mock('../../data/hmppsAuditClient')
@@ -41,21 +43,32 @@ export const user: HmppsUser = {
 
 export const flashProvider = jest.fn()
 
-function appSetup(services: Services, production: boolean, userSupplier: () => HmppsUser): Express {
+function appSetup(
+  services: Services,
+  production: boolean,
+  userSupplier: () => HmppsUser,
+  validationErrors?: Locals['validationErrors'],
+): Express {
   const app = express()
 
   app.set('view engine', 'njk')
 
   nunjucksSetup(app, testAppInfo)
   app.use(setUpWebSession())
+  app.use(setUpAuth())
   app.use((req, res, next) => {
     req.user = userSupplier() as Express.User
-    req.flash = flashProvider
     res.locals = {
       user: { ...req.user } as HmppsUser,
     }
     next()
   })
+  if (validationErrors) {
+    app.use((req, _res, next) => {
+      req.flash('validationErrors', JSON.stringify(validationErrors))
+      next()
+    })
+  }
   app.use((req, _res, next) => {
     req.id = uuidv4()
     next()
@@ -63,6 +76,7 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
   app.use(setUpJourneyData())
+  app.use(populateValidationErrors())
   app.get(
     '*',
     dpsComponents.getPageComponents({
@@ -92,11 +106,13 @@ export function appWithAllRoutes({
     ) as jest.Mocked<AuditService>,
   },
   userSupplier = () => user,
+  validationErrors,
 }: {
   production?: boolean
   services?: Partial<Services>
   userSupplier?: () => HmppsUser
+  validationErrors?: Locals['validationErrors']
 }): Express {
   auth.default.authenticationMiddleware = () => (_req, _res, next) => next()
-  return appSetup(services as Services, production, userSupplier)
+  return appSetup(services as Services, production, userSupplier, validationErrors)
 }

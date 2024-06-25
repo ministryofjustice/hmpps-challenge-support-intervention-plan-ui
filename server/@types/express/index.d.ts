@@ -1,4 +1,5 @@
 import { HmppsUser } from '../../interfaces/hmppsUser'
+import { fieldErrors } from '../../middleware/validationMiddleware'
 
 export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
@@ -59,6 +60,7 @@ export declare global {
 
     interface Locals {
       user: HmppsUser
+      validationErrors?: fieldErrors
     }
   }
 }
