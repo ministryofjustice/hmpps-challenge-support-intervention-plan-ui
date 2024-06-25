@@ -43,10 +43,10 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpAuthentication())
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
-  app.use(populateValidationErrors())
   app.use(setUpCurrentUser())
   app.use(populateClientToken())
   app.get('/prisoner-image/:prisonerNumber', new PrisonerImageRoutes(services.prisonerImageService).GET)
+  app.use(populateValidationErrors())
   app.use(setUpJourneyData())
   app.get(
     '*',
