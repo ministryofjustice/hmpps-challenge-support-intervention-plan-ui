@@ -16,6 +16,8 @@ import HmppsAuditClient from '../../data/hmppsAuditClient'
 import setUpJourneyData from '../../middleware/setUpJourneyData'
 import logger from '../../../logger'
 import config from '../../config'
+import populateValidationErrors from '../../middleware/populateValidationErrors'
+import setUpAuth from '../../middleware/setUpAuthentication'
 
 jest.mock('../../services/auditService')
 jest.mock('../../data/hmppsAuditClient')
@@ -53,17 +55,17 @@ function appSetup(
 
   nunjucksSetup(app, testAppInfo)
   app.use(setUpWebSession())
+  app.use(setUpAuth())
   app.use((req, res, next) => {
     req.user = userSupplier() as Express.User
-    req.flash = flashProvider
     res.locals = {
       user: { ...req.user } as HmppsUser,
     }
     next()
   })
   if (validationErrors) {
-    app.use((_req, res, next) => {
-      res.locals['validationErrors'] = validationErrors
+    app.use((req, _res, next) => {
+      req.flash('validationErrors', JSON.stringify(validationErrors))
       next()
     })
   }
@@ -74,6 +76,7 @@ function appSetup(
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
   app.use(setUpJourneyData())
+  app.use(populateValidationErrors())
   app.get(
     '*',
     dpsComponents.getPageComponents({
