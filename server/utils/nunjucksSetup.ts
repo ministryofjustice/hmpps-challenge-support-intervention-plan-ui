@@ -6,7 +6,7 @@ import { personDateOfBirth, personProfileName } from 'hmpps-court-cases-release-
 import { initialiseName } from './utils'
 import { ApplicationInfo } from '../applicationInfo'
 import config from '../config'
-import { buildErrorSummaryList } from '../middleware/validationMiddleware'
+import { buildErrorSummaryList, findError } from '../middleware/validationMiddleware'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -51,4 +51,5 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   njkEnv.addFilter('personDateOfBirth', personDateOfBirth)
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('buildErrorSummaryList', buildErrorSummaryList)
+  njkEnv.addFilter('findError', findError)
 }

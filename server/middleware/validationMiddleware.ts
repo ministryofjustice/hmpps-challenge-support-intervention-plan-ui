@@ -12,6 +12,13 @@ export const buildErrorSummaryList = (array: fieldErrors) => {
   }))
 }
 
+export const findError = (errors: fieldErrors, fieldName: string) => {
+  if (!errors) {
+    return null
+  }
+  return errors[fieldName]?.[0]
+}
+
 export type SchemaFactory = (request: Request) => Promise<z.ZodTypeAny>
 
 export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler => {

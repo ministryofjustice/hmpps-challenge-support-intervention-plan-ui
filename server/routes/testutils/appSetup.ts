@@ -1,7 +1,5 @@
 import express, { Express, Locals, Request } from 'express'
 import { NotFound } from 'http-errors'
-import { v4 as uuidv4 } from 'uuid'
-
 import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
 import routes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
@@ -18,6 +16,8 @@ import logger from '../../../logger'
 import config from '../../config'
 import populateValidationErrors from '../../middleware/populateValidationErrors'
 import setUpAuth from '../../middleware/setUpAuthentication'
+import { JourneyData } from '../../@types/express'
+import breadcrumbs from '../../middleware/breadcrumbs'
 
 jest.mock('../../services/auditService')
 jest.mock('../../data/hmppsAuditClient')
@@ -47,8 +47,10 @@ function appSetup(
   services: Services,
   production: boolean,
   userSupplier: () => HmppsUser,
+  uuid: string,
   requestCaptor?: (req: Request) => void,
   validationErrors?: Locals['validationErrors'],
+  journeyData?: Omit<JourneyData, 'instanceUnixEpoch'>,
 ): Express {
   const app = express()
 
@@ -60,6 +62,7 @@ function appSetup(
   app.use((req, res, next) => {
     req.user = userSupplier() as Express.User
     res.locals = {
+      ...res.locals,
       user: { ...req.user } as HmppsUser,
     }
     next()
@@ -71,7 +74,7 @@ function appSetup(
     })
   }
   app.use((req, _res, next) => {
-    req.id = uuidv4()
+    req.id = uuid
     next()
   })
   app.use(express.json())
@@ -93,6 +96,15 @@ function appSetup(
       timeoutOptions: { response: 50, deadline: 50 },
     }),
   )
+  app.use((req, _res, next) => {
+    req.session.journeyDataMap ??= {}
+    req.session.journeyDataMap[uuid] = {
+      instanceUnixEpoch: Date.now(),
+      ...journeyData,
+    }
+    next()
+  })
+  app.use(breadcrumbs())
   app.use(routes(services))
   app.use((_req, _res, next) => next(new NotFound()))
   app.use(errorHandler(production))
@@ -113,15 +125,19 @@ export function appWithAllRoutes({
     ) as jest.Mocked<AuditService>,
   },
   userSupplier = () => user,
+  uuid,
   requestCaptor = undefined,
   validationErrors,
+  journeyData,
 }: {
   production?: boolean
   services?: Partial<Services>
   userSupplier?: () => HmppsUser
+  uuid: string
   requestCaptor?: (req: Request) => void
   validationErrors?: Locals['validationErrors']
+  journeyData?: Omit<JourneyData, 'instanceUnixEpoch'>
 }): Express {
   auth.default.authenticationMiddleware = () => (_req, _res, next) => next()
-  return appSetup(services as Services, production, userSupplier, requestCaptor, validationErrors)
+  return appSetup(services as Services, production, userSupplier, uuid, requestCaptor, validationErrors, journeyData)
 }
