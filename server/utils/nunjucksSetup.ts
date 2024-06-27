@@ -35,12 +35,12 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
     [
       path.join(__dirname, '../../server/views'),
       path.join(__dirname, '../../server/journeys'),
-      path.join(__dirname, '../../node_modules/govuk-frontend/dist/'),
-      path.join(__dirname, '../../node_modules/@ministryofjustice/frontend/'),
-      path.join(__dirname, '../../node_modules/@ministryofjustice/frontend/moj/components/'),
-      path.join(__dirname, '../../node_modules/@ministryofjustice/hmpps-connect-dps-components/dist/assets/'),
-      path.join(__dirname, '../../node_modules/hmpps-court-cases-release-dates-design/'),
-      path.join(__dirname, '../../node_modules/hmpps-court-cases-release-dates-design/hmpps/components/'),
+      'node_modules/govuk-frontend/dist/',
+      'node_modules/@ministryofjustice/frontend/',
+      'node_modules/@ministryofjustice/frontend/moj/components/',
+      'node_modules/@ministryofjustice/hmpps-connect-dps-components/dist/assets/',
+      'node_modules/hmpps-court-cases-release-dates-design/',
+      'node_modules/hmpps-court-cases-release-dates-design/hmpps/components/',
     ],
     {
       autoescape: true,
