@@ -1,4 +1,4 @@
-import express, { Express, Locals } from 'express'
+import express, { Express, Locals, Request } from 'express'
 import { NotFound } from 'http-errors'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -47,6 +47,7 @@ function appSetup(
   services: Services,
   production: boolean,
   userSupplier: () => HmppsUser,
+  requestCaptor?: (req: Request) => void,
   validationErrors?: Locals['validationErrors'],
 ): Express {
   const app = express()
@@ -76,6 +77,12 @@ function appSetup(
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
   app.use(setUpJourneyData())
+  if (requestCaptor) {
+    app.use((req, _res, next) => {
+      requestCaptor(req)
+      next()
+    })
+  }
   app.use(populateValidationErrors())
   app.get(
     '*',
@@ -106,13 +113,15 @@ export function appWithAllRoutes({
     ) as jest.Mocked<AuditService>,
   },
   userSupplier = () => user,
+  requestCaptor = undefined,
   validationErrors,
 }: {
   production?: boolean
   services?: Partial<Services>
   userSupplier?: () => HmppsUser
+  requestCaptor?: (req: Request) => void
   validationErrors?: Locals['validationErrors']
 }): Express {
   auth.default.authenticationMiddleware = () => (_req, _res, next) => next()
-  return appSetup(services as Services, production, userSupplier, validationErrors)
+  return appSetup(services as Services, production, userSupplier, requestCaptor, validationErrors)
 }

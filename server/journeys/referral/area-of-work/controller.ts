@@ -20,11 +20,17 @@ export class ReferralAreaOfWorkController {
   }
 
   POST = async (req: Request, res: Response): Promise<void> => {
-    req.journeyData.referral ??= {}
-    req.journeyData.referral.refererArea = (await this.csipApiService.getReferenceData(req, 'area-of-work')).find(
+    const refererArea = (await this.csipApiService.getReferenceData(req, 'area-of-work')).find(
       refData => refData.code === req.body['areaOfWork'],
-    )!
-    req.journeyData.referral.referredBy = res.locals.user.displayName.substring(0, 240)
-    res.redirect('/referral/proactive-or-reactive')
+    )
+
+    if (refererArea) {
+      req.journeyData.referral ??= {}
+      req.journeyData.referral.refererArea = refererArea
+      req.journeyData.referral.referredBy = res.locals.user.displayName.substring(0, 240)
+      res.redirect('/referral/proactive-or-reactive')
+    } else {
+      res.redirect('back')
+    }
   }
 }
