@@ -29,6 +29,19 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
+describe('GET /referral/area-of-work', () => {
+  it('render page', done => {
+    request(app)
+      .get(`/${uuid}/referral/area-of-work`)
+      .expect(200)
+      .expect('Content-Type', /html/)
+      .end((err, res) => {
+        expect(res.text).toContain('Which area do you work in?')
+        done(err)
+      })
+  })
+})
+
 describe('POST /referral/area-of-work', () => {
   it('redirect to /referral/proactive-or-reactive on valid request', done => {
     request(app)
@@ -36,7 +49,7 @@ describe('POST /referral/area-of-work', () => {
       .type('form')
       .send({ areaOfWork: 'A' })
       .expect(302)
-      .expect('Location', `/referral/proactive-or-reactive`)
+      .expect('Location', `/${uuid}/referral/proactive-or-reactive`)
       .end(err => {
         expect(journeyData.referral?.refererArea).toEqual({ code: 'A', description: 'TEXT' })
         expect(journeyData.referral?.referredBy).toEqual('First Last')
