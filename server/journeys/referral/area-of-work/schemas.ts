@@ -14,7 +14,7 @@ export const schemaFactory =
         .string({ message: 'Select your area of work' })
         .min(1, 'Select your area of work')
         .max(12, 'Select your area of work')
-        .refine(val => areaRefDataMap.has(val), 'Selected area of work does not exist or is inactive')
+        .refine(val => areaRefDataMap.has(val), 'Select your area of work')
         .transform(val => areaRefDataMap.get(val)),
     })
   }

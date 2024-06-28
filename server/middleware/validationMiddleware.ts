@@ -25,7 +25,10 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
       return next()
     }
     req.flash('formResponses', JSON.stringify(req.body))
-    req.flash('validationErrors', JSON.stringify(result.error.flatten().fieldErrors))
+    const deduplicatedFieldErrors = Object.fromEntries(
+      Object.entries(result.error.flatten().fieldErrors).map(([key, value]) => [key, [...new Set(value || [])]]),
+    )
+    req.flash('validationErrors', JSON.stringify(deduplicatedFieldErrors))
     return res.redirect('back')
   }
 }
