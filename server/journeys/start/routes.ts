@@ -1,7 +1,7 @@
 import { RequestHandler, Router } from 'express'
 import asyncMiddleware from '../../middleware/asyncMiddleware'
 import { StartJourneyController } from './controller'
-import PrisonerSearchService from '../../prisonerSearch/prisonerSearchService'
+import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
 
 export default function StartJourneyRoutes(prisonerSearchService: PrisonerSearchService): Router {
   const router = Router({ mergeParams: true })

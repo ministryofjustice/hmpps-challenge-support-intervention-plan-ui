@@ -1,0 +1,23 @@
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "../../../views/partials/layout.njk" %}
+
+{% set pageTitle = "Area of work - Make a CSIP referral - Digital Prison Services" %}
+
+{% block content %}
+    <span class="govuk-caption-xl">Make a CSIP referrall</span>
+    <h1 class="govuk-heading-xl">Which area do you work in?</h1>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukSelect({
+            id: "areaOfWork",
+            name: "areaOfWork",
+            items: areaOfWorkOptions
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}

@@ -1,6 +1,6 @@
-import RestClient from '../data/restClient'
+import RestClient from '../../data/restClient'
 import Prisoner from './prisoner'
-import config from '../config'
+import config from '../../config'
 
 export interface PrisonerSearchClient {
   getPrisonerDetails(prisonerNumber: string): Promise<Prisoner>

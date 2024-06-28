@@ -1,5 +1,6 @@
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import { fieldErrors } from '../../middleware/validationMiddleware'
+import { ReferenceData } from '../csip/csipApiTypes'
 
 export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
@@ -33,6 +34,8 @@ export type PrisonerSummary = {
 
 type ReferralData = {
   isOnBehalfOfReferral?: boolean
+  referredBy?: string
+  refererArea?: ReferenceData
 }
 
 type SaferCustodyScreening = object

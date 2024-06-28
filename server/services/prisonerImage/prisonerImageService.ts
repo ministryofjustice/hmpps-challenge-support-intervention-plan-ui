@@ -1,6 +1,6 @@
 import { Request } from 'express'
 import { Readable } from 'stream'
-import { RestClientBuilder } from '../data'
+import { RestClientBuilder } from '../../data'
 import { PrisonerImageClient } from './prisonerImageClient'
 
 export default class PrisonerImageService {
