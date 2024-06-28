@@ -1,6 +1,6 @@
 import { Express } from 'express'
 import { v4 as uuidv4 } from 'uuid'
-import request from 'supertest'
+import { agent as request } from 'supertest'
 import { getByRole, getByText } from '@testing-library/dom'
 import { appWithAllRoutes, user } from '../../../routes/testutils/appSetup'
 import CsipApiService from '../../../services/csipApi/csipApiService'
@@ -63,7 +63,7 @@ describe('GET /referral/area-of-work', () => {
     const appWithError = appWithAllRoutes({
       services: { csipApiService },
       requestCaptor,
-      validationErrors: { areaOfWork: ['Select your area of work'] },
+      validationErrors: { propertyName: ['Error message'] },
     })
 
     const result = await request(appWithError)
@@ -74,7 +74,9 @@ describe('GET /referral/area-of-work', () => {
     const html = createTestHtmlElement(result.text)
     expect(getByText(html, 'Which area do you work in?')).toBeVisible()
     expect(getByText(html, 'There is a problem')).toBeVisible()
-    expect(getByText(html, 'Select your area of work')).toBeVisible()
+    const error = getByRole(html, 'link', { name: 'Error message' }) as HTMLLinkElement
+    expect(error).toBeVisible()
+    expect(error.href).toMatch(/#propertyName$/)
   })
 })
 
@@ -113,28 +115,6 @@ describe('POST /referral/area-of-work', () => {
       .post(`/${uuid}/referral/area-of-work`)
       .type('form')
       .send({ areaOfWork: undefined })
-      .expect(302)
-      .expect('Location', '/')
-
-    expect(reqCaptured.validationErrors()).toEqual({ areaOfWork: ['Select your area of work'] })
-  })
-
-  it('redirect to go back and set validation errors if submitted area code is shorter than 1 character', async () => {
-    await request(app)
-      .post(`/${uuid}/referral/area-of-work`)
-      .type('form')
-      .send({ areaOfWork: '' })
-      .expect(302)
-      .expect('Location', '/')
-
-    expect(reqCaptured.validationErrors()).toEqual({ areaOfWork: ['Select your area of work'] })
-  })
-
-  it('redirect to go back and set validation errors if submitted area code is longer than 12 character', async () => {
-    await request(app)
-      .post(`/${uuid}/referral/area-of-work`)
-      .type('form')
-      .send({ areaOfWork: 'n'.repeat(13) })
       .expect(302)
       .expect('Location', '/')
 

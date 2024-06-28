@@ -3,5 +3,5 @@ export default function createTestHtmlElement(text: string) {
   div.innerHTML = text
   document.body.innerHTML = ''
   document.body.appendChild(div)
-  return div
+  return document.documentElement
 }

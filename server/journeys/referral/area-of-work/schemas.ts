@@ -2,6 +2,8 @@ import z from 'zod'
 import { Request } from 'express'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 
+const ERROR_MESSAGE = 'Select your area of work'
+
 export const schemaFactory =
   (csipApiService: CsipApiService) =>
   async (req: Request): Promise<z.ZodTypeAny> => {
@@ -11,10 +13,8 @@ export const schemaFactory =
 
     return z.object({
       areaOfWork: z
-        .string({ message: 'Select your area of work' })
-        .min(1, 'Select your area of work')
-        .max(12, 'Select your area of work')
-        .refine(val => areaRefDataMap.has(val), 'Select your area of work')
+        .string({ message: ERROR_MESSAGE })
+        .refine(val => areaRefDataMap.has(val), ERROR_MESSAGE)
         .transform(val => areaRefDataMap.get(val)),
     })
   }
