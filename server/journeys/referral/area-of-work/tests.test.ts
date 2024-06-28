@@ -1,10 +1,13 @@
 import { Express } from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import request from 'supertest'
+import { getByRole, getByText } from '@testing-library/dom'
 import { appWithAllRoutes, user } from '../../../routes/testutils/appSetup'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
 import { HmppsUser } from '../../../interfaces/hmppsUser'
+import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
+import { JourneyData } from '../../../@types/express'
 
 const uuid = uuidv4()
 let app: Express
@@ -30,7 +33,48 @@ afterEach(() => {
 describe('GET /referral/area-of-work', () => {
   it('render page', async () => {
     const result = await request(app).get(`/${uuid}/referral/area-of-work`).expect(200).expect('Content-Type', /html/)
-    expect(result.text).toContain('Which area do you work in?')
+    const html = createTestHtmlElement(result.text)
+    expect(getByText(html, 'Which area do you work in?')).toBeVisible()
+    expect((getByRole(html, 'option', { name: 'Select area' }) as HTMLOptionElement).defaultSelected).toBeTruthy()
+    expect((getByRole(html, 'option', { name: 'TEXT' }) as HTMLOptionElement).defaultSelected).toBeFalsy()
+    expect((getByRole(html, 'option', { name: 'TEXT2' }) as HTMLOptionElement).defaultSelected).toBeFalsy()
+  })
+
+  it('pre-fill form with values from journeyData', async () => {
+    const appWithJourneyDataInjected = appWithAllRoutes({
+      services: { csipApiService },
+      requestCaptor: testRequestCaptor(
+        { referral: { refererArea: { code: 'A', description: 'TEXT' } } } as JourneyData,
+        uuid,
+      )[1],
+    })
+
+    const result = await request(appWithJourneyDataInjected)
+      .get(`/${uuid}/referral/area-of-work`)
+      .expect(200)
+      .expect('Content-Type', /html/)
+    const html = createTestHtmlElement(result.text)
+    expect((getByRole(html, 'option', { name: 'Select area' }) as HTMLOptionElement).defaultSelected).toBeFalsy()
+    expect((getByRole(html, 'option', { name: 'TEXT' }) as HTMLOptionElement).defaultSelected).toBeTruthy()
+    expect((getByRole(html, 'option', { name: 'TEXT2' }) as HTMLOptionElement).defaultSelected).toBeFalsy()
+  })
+
+  it('render validation errors if any', async () => {
+    const appWithError = appWithAllRoutes({
+      services: { csipApiService },
+      requestCaptor,
+      validationErrors: { areaOfWork: ['Select your area of work'] },
+    })
+
+    const result = await request(appWithError)
+      .get(`/${uuid}/referral/area-of-work`)
+      .expect(200)
+      .expect('Content-Type', /html/)
+
+    const html = createTestHtmlElement(result.text)
+    expect(getByText(html, 'Which area do you work in?')).toBeVisible()
+    expect(getByText(html, 'There is a problem')).toBeVisible()
+    expect(getByText(html, 'Select your area of work')).toBeVisible()
   })
 })
 
