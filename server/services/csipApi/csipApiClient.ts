@@ -6,7 +6,7 @@ export default class CsipApiClient {
   private readonly restClient: RestClient
 
   constructor(token: string) {
-    this.restClient = new RestClient('Prison API', config.apis.csipApi, token)
+    this.restClient = new RestClient('CSIP API', config.apis.csipApi, token)
   }
 
   async getReferenceData(domain: ReferenceDataType): Promise<ReferenceData[]> {
