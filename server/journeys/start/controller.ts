@@ -19,6 +19,7 @@ export class StartJourneyController {
           const sanitisedError = error as SanitisedError
           if (sanitisedError.status === 404) {
             res.redirect(`${res.locals.digitalPrisonServicesUrl}/prisoner-search`)
+            return
           }
           throw error
         })
