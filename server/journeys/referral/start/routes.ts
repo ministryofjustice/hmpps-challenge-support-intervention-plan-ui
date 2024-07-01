@@ -1,7 +1,7 @@
 import { RequestHandler, Router } from 'express'
-import asyncMiddleware from '../../middleware/asyncMiddleware'
-import { StartJourneyController } from './controller'
-import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
+import asyncMiddleware from '../../../middleware/asyncMiddleware'
+import { StartJourneyController } from '../../start/controller'
+import PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
 
 export default function StartJourneyRoutes(prisonerSearchService: PrisonerSearchService): Router {
   const router = Router({ mergeParams: true })
@@ -10,7 +10,7 @@ export default function StartJourneyRoutes(prisonerSearchService: PrisonerSearch
 
   const controller = new StartJourneyController(prisonerSearchService)
 
-  get('/:prisonerNumber/referral/start', controller.redirectWithPrisonerData('/referral/on-behalf-of'))
+  get('/prisoners/:prisonerNumber/referral/start', controller.redirectWithPrisonerData('/referral/on-behalf-of'))
 
   return router
 }
