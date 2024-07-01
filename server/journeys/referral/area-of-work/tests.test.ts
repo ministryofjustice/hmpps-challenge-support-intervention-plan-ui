@@ -22,6 +22,7 @@ const [reqCaptured, requestCaptor] = testRequestCaptor()
 beforeEach(() => {
   app = appWithAllRoutes({
     services: { csipApiService },
+    uuid,
     requestCaptor,
   })
 })
@@ -43,6 +44,7 @@ describe('GET /referral/area-of-work', () => {
   it('pre-fill form with values from journeyData', async () => {
     const appWithJourneyDataInjected = appWithAllRoutes({
       services: { csipApiService },
+      uuid,
       requestCaptor: testRequestCaptor(
         { referral: { refererArea: { code: 'A', description: 'TEXT' } } } as JourneyData,
         uuid,
@@ -62,6 +64,7 @@ describe('GET /referral/area-of-work', () => {
   it('render validation errors if any', async () => {
     const appWithError = appWithAllRoutes({
       services: { csipApiService },
+      uuid,
       requestCaptor,
       validationErrors: { propertyName: ['Error message'] },
     })
@@ -102,6 +105,7 @@ describe('POST /referral/area-of-work', () => {
 
     const appWithLongUserName = appWithAllRoutes({
       services: { csipApiService },
+      uuid,
       requestCaptor,
       userSupplier,
     })

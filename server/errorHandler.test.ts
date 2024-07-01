@@ -4,9 +4,13 @@ import request from 'supertest'
 import { appWithAllRoutes } from './routes/testutils/appSetup'
 
 let app: Express
+let uuid: string
 
 beforeEach(() => {
-  app = appWithAllRoutes({})
+  uuid = uuidv4()
+  app = appWithAllRoutes({
+    uuid,
+  })
 })
 
 afterEach(() => {
@@ -16,7 +20,7 @@ afterEach(() => {
 describe('GET 404', () => {
   it('should render content with stack in dev mode', () => {
     return request(app)
-      .get(`/${uuidv4()}/unknown`)
+      .get(`/${uuid}/unknown`)
       .expect(404)
       .expect('Content-Type', /html/)
       .expect(res => {
@@ -26,8 +30,9 @@ describe('GET 404', () => {
   })
 
   it('should render content without stack in production mode', () => {
-    return request(appWithAllRoutes({ production: true }))
-      .get(`/${uuidv4()}/unknown`)
+    const uuidLocal = uuidv4()
+    return request(appWithAllRoutes({ production: true, uuid: uuidLocal }))
+      .get(`/${uuidLocal}/unknown`)
       .expect(404)
       .expect('Content-Type', /html/)
       .expect(res => {

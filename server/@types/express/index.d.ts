@@ -1,4 +1,5 @@
 import { HmppsUser } from '../../interfaces/hmppsUser'
+import { Breadcrumbs } from '../../middleware/breadcrumbs'
 import { fieldErrors } from '../../middleware/validationMiddleware'
 import { ReferenceData } from '../csip/csipApiTypes'
 
@@ -64,6 +65,9 @@ export declare global {
     interface Locals {
       user: HmppsUser
       validationErrors?: fieldErrors
+      digitalPrisonServicesUrl: string
+      breadcrumbs: Breadcrumbs
+      prisoner?: PrisonerSummary
     }
   }
 }
