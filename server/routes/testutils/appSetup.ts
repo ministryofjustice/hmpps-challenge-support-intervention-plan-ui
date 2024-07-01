@@ -85,6 +85,15 @@ function appSetup(
       requestCaptor(req)
       next()
     })
+  } else {
+    app.use((req, _res, next) => {
+      req.session.journeyDataMap ??= {}
+      req.session.journeyDataMap[uuid] = {
+        instanceUnixEpoch: Date.now(),
+        ...journeyData,
+      }
+      next()
+    })
   }
   app.use(populateValidationErrors())
   app.get(
@@ -96,14 +105,6 @@ function appSetup(
       timeoutOptions: { response: 50, deadline: 50 },
     }),
   )
-  app.use((req, _res, next) => {
-    req.session.journeyDataMap ??= {}
-    req.session.journeyDataMap[uuid] = {
-      instanceUnixEpoch: Date.now(),
-      ...journeyData,
-    }
-    next()
-  })
   app.use(breadcrumbs())
   app.use(routes(services))
   app.use((_req, _res, next) => next(new NotFound()))
