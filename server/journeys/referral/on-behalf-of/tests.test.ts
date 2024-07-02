@@ -1,7 +1,7 @@
 import { Express } from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import request from 'supertest'
-import { findByText, getByRole, getByText, queryByAttribute } from '@testing-library/dom'
+import { findByText, getAllByRole, getByRole, getByText, queryByAttribute } from '@testing-library/dom'
 import { userEvent } from '@testing-library/user-event'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import { schema } from './schemas'
@@ -42,6 +42,10 @@ describe('tests', () => {
         document.body.appendChild(div)
         const topLevelElement = document.documentElement
         const user = userEvent.setup()
+        const radios = getAllByRole(topLevelElement, 'radio')
+        radios.forEach(radio => {
+          expect(radio).not.toBeChecked()
+        })
         expect(getByRole(topLevelElement, 'heading', { name: /make a csip referral/i })).toBeVisible()
         expect(getByText(topLevelElement, /help with csip referrals/i)).toBeVisible()
 
@@ -58,6 +62,54 @@ describe('tests', () => {
 
         done()
       })
+  })
+
+  it('should prepopulate with yes', async () => {
+    const response = await request(
+      appWithAllRoutes({
+        uuid,
+        journeyData: {
+          referral: {
+            isOnBehalfOfReferral: true,
+          },
+          prisoner: {
+            cellLocation: 'Foo prison',
+            firstName: 'David',
+            lastName: 'Jones',
+            prisonerNumber: 'ABCABC',
+          },
+        },
+      }),
+    ).get(`/${uuid}/referral/on-behalf-of`)
+    const div = document.createElement('div')
+    div.innerHTML = response.text
+    document.body.appendChild(div)
+    const topLevelElement = document.documentElement
+    expect(getByRole(topLevelElement, 'radio', { name: /yes/i })).toBeChecked()
+  })
+
+  it('should prepopulate with no', async () => {
+    const response = await request(
+      appWithAllRoutes({
+        uuid,
+        journeyData: {
+          referral: {
+            isOnBehalfOfReferral: false,
+          },
+          prisoner: {
+            cellLocation: 'Foo prison',
+            firstName: 'David',
+            lastName: 'Jones',
+            prisonerNumber: 'ABCABC',
+          },
+        },
+      }),
+    ).get(`/${uuid}/referral/on-behalf-of`)
+    const div = document.createElement('div')
+    div.innerHTML = response.text
+    document.body.appendChild(div)
+    const topLevelElement = document.documentElement
+    expect(getByRole(topLevelElement, 'radio', { name: /no/i })).toBeChecked()
   })
 
   it('should redirect on posting bad data', done => {

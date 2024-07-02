@@ -2,9 +2,10 @@ import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
 
 export class ReferralOnBehalfOfController {
-  GET = async (_req: Request, res: Response): Promise<void> => {
+  GET = async (req: Request, res: Response): Promise<void> => {
     res.render('referral/on-behalf-of/view', {
       backUrl: true,
+      isOnBehalfOfReferral: req.journeyData?.referral?.isOnBehalfOfReferral,
     })
   }
 

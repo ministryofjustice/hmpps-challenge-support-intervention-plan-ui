@@ -31,11 +31,13 @@
         items: [
           {
             value: true,
-            text: "Yes"
+            text: "Yes",
+            checked: isOnBehalfOfReferral === true
           },
           {
             value: false,
-            text: "No"
+            text: "No",
+            checked: isOnBehalfOfReferral === false
           }
         ],
         errorMessage: validationErrors | findError('isOnBehalfOfReferral')

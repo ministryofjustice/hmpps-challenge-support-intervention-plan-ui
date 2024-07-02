@@ -1,11 +1,13 @@
 import { Express } from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import request from 'supertest'
+import { getByRole } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import type PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
 import type Prisoner from '../../../services/prisonerSearch/prisoner'
 import { SanitisedError } from '../../../sanitisedError'
 import type CsipApiService from '../../../services/csipApi/csipApiService'
+import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
 
 let app: Express
 const uuid = uuidv4()
@@ -26,13 +28,6 @@ const prisonerSearchService = {
   },
 } as unknown as PrisonerSearchService
 
-const prisonerSearchService404 = {
-  getPrisonerDetails: async () => {
-    const err = new Error('404') as SanitisedError
-    err.status = 404
-    throw err
-  },
-} as unknown as PrisonerSearchService
 beforeEach(() => {
   app = appWithAllRoutes({
     services: {
@@ -48,27 +43,26 @@ afterEach(() => {
 })
 
 describe('tests', () => {
-  it('should redirect to first stage of referral journey when going to start uri', done => {
-    request(app)
+  it('should redirect to first stage of referral journey when going to start uri', async () => {
+    await request(app)
       .get(`/prisoners/ABC123/referral/start`)
       .expect(302)
       .redirects(1)
       .expect('Location', /referral\/on-behalf-of/)
-      .end(err => {
-        if (err) {
-          done(err)
-          return
-        }
-        done()
-      })
   })
 
-  it('should redirect to dps prisoner search page if prisoner not found', done => {
-    request(
+  it('should redirect to dps prisoner search page if prisoner not found', async () => {
+    await request(
       appWithAllRoutes({
         services: {
           csipApiService,
-          prisonerSearchService: prisonerSearchService404,
+          prisonerSearchService: {
+            getPrisonerDetails: async () => {
+              const err = new Error('404') as SanitisedError
+              err.status = 404
+              throw err
+            },
+          } as unknown as PrisonerSearchService,
         },
         uuid,
       }),
@@ -77,12 +71,28 @@ describe('tests', () => {
       .expect(302)
       .redirects(1)
       .expect('Location', /localhost:3001/)
-      .end(err => {
-        if (err) {
-          done(err)
-          return
-        }
-        done()
-      })
+  })
+
+  it('should redirect to error page if 500', async () => {
+    const result = await request(
+      appWithAllRoutes({
+        services: {
+          csipApiService,
+          prisonerSearchService: {
+            getPrisonerDetails: async () => {
+              const err = new Error('500') as SanitisedError
+              err.status = 500
+              err.message = '500 error happened'
+              return Promise.reject(err)
+            },
+          } as unknown as PrisonerSearchService,
+        },
+        uuid,
+      }),
+    )
+      .get(`/${uuid}/prisoners/ABC123/referral/start`)
+      .expect(500)
+    const html = createTestHtmlElement(result.text)
+    expect(getByRole(html, 'heading', { name: /500 error happened/i })).toBeVisible()
   })
 })
