@@ -6,6 +6,7 @@ import CsipApiService from '../../services/csipApi/csipApiService'
 import { ReferralAreaOfWorkRoutes } from './area-of-work/routes'
 import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
 import StartJourneyRoutes from './start/routes'
+import { ReferralReferrerRoutes } from './referrer/routes'
 
 function Routes(csipApiService: CsipApiService): Router {
   const router = Router({ mergeParams: true })
@@ -18,6 +19,7 @@ function Routes(csipApiService: CsipApiService): Router {
 
   router.use('/on-behalf-of', OnBehalfOfRoutes())
   router.use('/area-of-work', ReferralAreaOfWorkRoutes(csipApiService))
+  router.use('/referrer', ReferralReferrerRoutes(csipApiService))
 
   return router
 }

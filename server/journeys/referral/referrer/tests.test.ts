@@ -23,6 +23,7 @@ beforeEach(() => {
   app = appWithAllRoutes({
     services: { csipApiService },
     requestCaptor,
+    uuid,
   })
 })
 
@@ -47,6 +48,7 @@ describe('GET /referral/referrer', () => {
         { referral: { refererArea: { code: 'A', description: 'TEXT' }, referredBy: 'test user' } } as JourneyData,
         uuid,
       )[1],
+      uuid,
     })
 
     const result = await request(appWithJourneyDataInjected)
@@ -65,6 +67,7 @@ describe('GET /referral/referrer', () => {
       services: { csipApiService },
       requestCaptor,
       validationErrors: { propertyName: ['Error message'] },
+      uuid,
     })
 
     const result = await request(appWithError)
@@ -105,6 +108,7 @@ describe('POST /referral/referrer', () => {
       services: { csipApiService },
       requestCaptor,
       userSupplier,
+      uuid,
     })
     await request(appWithLongUserName).post(`/${uuid}/referral/area-of-work`).type('form').send({ areaOfWork: 'A' })
 
