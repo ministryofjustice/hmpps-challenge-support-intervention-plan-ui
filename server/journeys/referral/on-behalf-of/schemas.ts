@@ -14,7 +14,7 @@ export const schema = z
         }
         return val === 'true'
       }),
-    _csrf: z.string(),
+    _csrf: z.string().optional(),
   })
   .strict()
 export type SchemaType = z.infer<typeof schema>

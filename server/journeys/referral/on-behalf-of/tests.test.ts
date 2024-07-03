@@ -120,65 +120,26 @@ describe('tests', () => {
     expect(getByRole(topLevelElement, 'radio', { name: /no/i })).toBeChecked()
   })
 
-  it('should redirect on posting bad data', done => {
-    request(app)
-      .post(`/${uuidv4()}/referral/on-behalf-of`)
-      .send({})
-      .redirects(1)
-      .end(async err => {
-        if (err) {
-          done(err)
-        }
-        done()
-      })
+  it('should redirect on posting bad data', async () => {
+    await request(app).post(`/${uuidv4()}/referral/on-behalf-of`).send({}).redirects(1)
   })
 
-  it('should return a 200 on posting good data and redirect to referrer', done => {
+  it('should return a 200 on posting good data with quoted boolean and redirect to referrer', async () => {
     const generatedUuid = uuidv4()
-    request(app)
-      .post(`/${generatedUuid}/referral/on-behalf-of`)
-      .send({ isOnBehalfOfReferral: true })
-      .redirects(1)
-      .expect('Location', /\/referral\/referrer/)
-      .end(() => {
-        done()
-      })
-  })
-
-  it('should return a 200 on posting good data with quoted boolean and redirect to referrer', done => {
-    const generatedUuid = uuidv4()
-    request(app)
+    await request(app)
       .post(`/${generatedUuid}/referral/on-behalf-of`)
       .send({ isOnBehalfOfReferral: 'true' })
       .redirects(1)
       .expect('Location', /\/referral\/referrer/)
-      .end(() => {
-        done()
-      })
   })
 
-  it('should return a 200 on posting good data and redirect to area-of-work', done => {
+  it('should return a 200 on posting good data with quoted boolean and redirect to area-of-work', async () => {
     const generatedUuid = uuidv4()
-    request(app)
-      .post(`/${generatedUuid}/referral/on-behalf-of`)
-      .send({ isOnBehalfOfReferral: false })
-      .redirects(1)
-      .expect('Location', /\/referral\/area-of-work/)
-      .end(() => {
-        done()
-      })
-  })
-
-  it('should return a 200 on posting good data with quoted boolean and redirect to area-of-work', done => {
-    const generatedUuid = uuidv4()
-    request(app)
+    await request(app)
       .post(`/${generatedUuid}/referral/on-behalf-of`)
       .send({ isOnBehalfOfReferral: 'false' })
       .redirects(1)
       .expect('Location', /\/referral\/area-of-work/)
-      .end(() => {
-        done()
-      })
   })
 
   it('should display validation errors correctly', done => {
