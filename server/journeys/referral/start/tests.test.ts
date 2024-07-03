@@ -21,8 +21,8 @@ const prisonerSearchService = {
   getPrisonerDetails: async () => {
     return {
       cellLocation: '',
-      firstName: 'Bob',
-      lastName: 'Marley',
+      firstName: 'Test',
+      lastName: 'Person',
       prisonerNumber: 'ABC123',
     } as Prisoner
   },
