@@ -1,20 +1,28 @@
 import z from 'zod'
 
-export const schema = z
-  .object({
-    isOnBehalfOfReferral: z
-      .string({ message: `Select if you're making this referral on someone else's behalf or not` })
-      .transform<boolean>((val, ctx) => {
-        if (!['false', 'true'].includes(val)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: `Select if you're making this referral on someone else's behalf or not`,
-          })
-          return z.NEVER
-        }
-        return val === 'true'
-      }),
-    _csrf: z.string().optional(),
-  })
+const csrfSchema = z.object({
+  _csrf: z.string().optional(),
+})
+
+const isOnBehalfOfReferralErrorMsg = `Select if you're making this referral on someone else's behalf or not`
+export const schema = csrfSchema
+  .merge(
+    z.object({
+      isOnBehalfOfReferral: z
+        .string({
+          message: isOnBehalfOfReferralErrorMsg,
+        })
+        .transform<boolean>((val, ctx) => {
+          if (!['false', 'true'].includes(val)) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: isOnBehalfOfReferralErrorMsg,
+            })
+            return z.NEVER
+          }
+          return val === 'true'
+        }),
+    }),
+  )
   .strict()
 export type SchemaType = z.infer<typeof schema>
