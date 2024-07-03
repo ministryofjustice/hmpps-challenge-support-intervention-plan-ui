@@ -8,6 +8,7 @@ let app: Express
 beforeEach(() => {
   app = appWithAllRoutes({
     services: {},
+    uuid: uuidv4(),
   })
 })
 

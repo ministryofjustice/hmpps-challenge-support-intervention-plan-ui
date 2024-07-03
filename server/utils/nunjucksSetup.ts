@@ -3,10 +3,10 @@ import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
 import { personDateOfBirth, personProfileName } from 'hmpps-court-cases-release-dates-design/hmpps/utils/utils'
-import { initialiseName } from './utils'
+import { convertToTitleCase, initialiseName } from './utils'
 import { ApplicationInfo } from '../applicationInfo'
 import config from '../config'
-import { buildErrorSummaryList } from '../middleware/validationMiddleware'
+import { buildErrorSummaryList, findError } from '../middleware/validationMiddleware'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -17,16 +17,17 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   app.locals['applicationName'] = 'Hmpps Challenge Support Intervention Plan Ui'
   app.locals['environmentName'] = config.environmentName
   app.locals['environmentNameColour'] = config.environmentName === 'PRE-PRODUCTION' ? 'govuk-tag--green' : ''
-  app.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
 
   // Cachebusting version string
   if (production) {
     // Version only changes with new commits
     app.locals['version'] = applicationInfo.gitShortHash
+    app.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
   } else {
     // Version changes every request
     app.use((_req, res, next) => {
       res.locals['version'] = Date.now().toString()
+      res.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
       return next()
     })
   }
@@ -51,4 +52,6 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   njkEnv.addFilter('personDateOfBirth', personDateOfBirth)
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('buildErrorSummaryList', buildErrorSummaryList)
+  njkEnv.addFilter('findError', findError)
+  njkEnv.addFilter('convertToTitleCase', convertToTitleCase)
 }

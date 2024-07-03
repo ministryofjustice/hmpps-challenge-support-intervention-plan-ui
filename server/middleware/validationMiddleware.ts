@@ -12,6 +12,15 @@ export const buildErrorSummaryList = (array: fieldErrors) => {
   }))
 }
 
+export const findError = (errors: fieldErrors, fieldName: string) => {
+  if (!errors) {
+    return null
+  }
+  return {
+    text: errors[fieldName]?.[0],
+  }
+}
+
 export type SchemaFactory = (request: Request) => Promise<z.ZodTypeAny>
 
 export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler => {
@@ -28,7 +37,12 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
     const deduplicatedFieldErrors = Object.fromEntries(
       Object.entries(result.error.flatten().fieldErrors).map(([key, value]) => [key, [...new Set(value || [])]]),
     )
-    req.flash('validationErrors', JSON.stringify(deduplicatedFieldErrors))
+    const errors = JSON.stringify(deduplicatedFieldErrors)
+    if (process.env.NODE_ENV === 'test') {
+      // eslint-disable-next-line no-console
+      console.error(`There were validation errors: ${JSON.stringify(deduplicatedFieldErrors)}`)
+    }
+    req.flash('validationErrors', errors)
     return res.redirect('back')
   }
 }
