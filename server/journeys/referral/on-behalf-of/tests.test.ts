@@ -1,7 +1,15 @@
 import { Express } from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import request from 'supertest'
-import { findByText, getAllByRole, getByRole, getByText, queryByAttribute } from '@testing-library/dom'
+import {
+  findByText,
+  getAllByRole,
+  getAllByText,
+  getByRole,
+  getByText,
+  queryByAttribute,
+  queryByRole,
+} from '@testing-library/dom'
 import { userEvent } from '@testing-library/user-event'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import { schema } from './schemas'
@@ -58,7 +66,7 @@ describe('tests', () => {
         expect(getByRole(topLevelElement, 'radio', { name: /no/i })).toBeVisible()
         expect(getByRole(topLevelElement, 'button', { name: /continue/i })).toBeVisible()
         expect(queryByAttribute('class', topLevelElement, 'govuk-breadcrumbs')).toBeNull()
-        expect(getByRole(topLevelElement, 'link', { name: 'Back' })).toBeVisible()
+        expect(queryByRole(topLevelElement, 'link', { name: 'Back' })).toBeNull()
 
         done()
       })
@@ -125,7 +133,7 @@ describe('tests', () => {
       })
   })
 
-  it('should return a 200 on posting good data', done => {
+  it('should return a 200 on posting good data and redirect to referrer', done => {
     const generatedUuid = uuidv4()
     request(app)
       .post(`/${generatedUuid}/referral/on-behalf-of`)
@@ -137,31 +145,46 @@ describe('tests', () => {
       })
   })
 
-  it('should return a 200 on posting good data', done => {
+  it('should return a 200 on posting good data with quoted boolean and redirect to referrer', done => {
+    const generatedUuid = uuidv4()
+    request(app)
+      .post(`/${generatedUuid}/referral/on-behalf-of`)
+      .send({ isOnBehalfOfReferral: 'true' })
+      .redirects(1)
+      .expect('Location', /\/referral\/referrer/)
+      .end(() => {
+        done()
+      })
+  })
+
+  it('should return a 200 on posting good data and redirect to area-of-work', done => {
     const generatedUuid = uuidv4()
     request(app)
       .post(`/${generatedUuid}/referral/on-behalf-of`)
       .send({ isOnBehalfOfReferral: false })
       .redirects(1)
-      .expect('Location', /referral\/area-of-work/)
-      .end(async err => {
-        if (err) {
-          done(err)
-          return
-        }
+      .expect('Location', /\/referral\/area-of-work/)
+      .end(() => {
+        done()
+      })
+  })
+
+  it('should return a 200 on posting good data with quoted boolean and redirect to area-of-work', done => {
+    const generatedUuid = uuidv4()
+    request(app)
+      .post(`/${generatedUuid}/referral/on-behalf-of`)
+      .send({ isOnBehalfOfReferral: 'false' })
+      .redirects(1)
+      .expect('Location', /\/referral\/area-of-work/)
+      .end(() => {
         done()
       })
   })
 
   it('should display validation errors correctly', done => {
-    const errors = schema.safeParse({ isOnBehalfOfReferral: '' }).error?.flatten()?.fieldErrors
+    const errors = schema.safeParse({ isOnBehalfOfReferral: '', _csrf: '' }).error?.flatten()?.fieldErrors
     const onBehalfOfError = errors?.['isOnBehalfOfReferral']?.[0]
-    if (!onBehalfOfError) {
-      done(
-        `Should have raised an error when parsing empty object for on behalf of schema for value ${JSON.stringify({ isOnBehalfOfReferral: '' })}`,
-      )
-      return
-    }
+    expect(onBehalfOfError).toBeTruthy()
     const localUuid = uuidv4()
     const app2 = appWithAllRoutes({
       services: {},
@@ -179,8 +202,11 @@ describe('tests', () => {
         div.innerHTML = res.text
         document.body.appendChild(div)
         const topLevelElement = document.documentElement
-        const error = getByRole(topLevelElement, 'link', { name: onBehalfOfError })
-        expect(error).toBeVisible()
+        expect(getByRole(topLevelElement, 'link', { name: onBehalfOfError as string })).toBeVisible()
+        const errorTextByRadios = getAllByText(topLevelElement, onBehalfOfError as string).filter(
+          el => el.nodeName.toLowerCase() === 'p',
+        )[0]
+        expect(errorTextByRadios).not.toBeNull()
         done()
       })
   })

@@ -16,7 +16,9 @@ export const findError = (errors: fieldErrors, fieldName: string) => {
   if (!errors) {
     return null
   }
-  return errors[fieldName]?.[0]
+  return {
+    text: errors[fieldName]?.[0],
+  }
 }
 
 export type SchemaFactory = (request: Request) => Promise<z.ZodTypeAny>
