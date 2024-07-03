@@ -81,12 +81,6 @@ beforeEach(async () => {
     const obj: 'document' | 'window' = _obj as 'document' | 'window'
     const { refs } = sideEffects[obj].addEventListener
 
-    // Listeners
-    // while (refs.length) {
-    //   const { type, listener, options } = refs.pop()
-    //   global[obj].removeEventListener(type, listener, options)
-    // }
-
     refs.forEach(ref => {
       const { type, listener, options } = ref
       global[obj].removeEventListener(type, listener, options)
@@ -94,7 +88,7 @@ beforeEach(async () => {
 
     // need a semicolon to start here because we have semis turned off and ASI won't work and eslint tries to blend the two together
     ;(Object.keys(global[obj]) as unknown as (keyof (typeof global)[typeof obj])[])
-      .filter(key => !sideEffects[obj].keys.includes(key))
+      .filter(key => !sideEffects[obj].keys.includes(key) && !key.includes('coverage'))
       .forEach(key => {
         delete global[obj][key]
       })
