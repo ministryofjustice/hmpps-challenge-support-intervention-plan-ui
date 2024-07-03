@@ -61,7 +61,7 @@ describe('tests', () => {
         expect(await findByText(topLevelElement, /check your local guidance/i)).toBeVisible()
 
         expect(getByText(topLevelElement, /help with csip referrals/i)).toBeVisible()
-        expect(getByText(topLevelElement, /you can use this service to refer david jones/i)).toBeVisible()
+        expect(getByText(topLevelElement, /You can use this service to refer David Jones/)).toBeVisible()
         expect(getByRole(topLevelElement, 'radio', { name: /yes/i })).toBeVisible()
         expect(getByRole(topLevelElement, 'radio', { name: /no/i })).toBeVisible()
         expect(getByRole(topLevelElement, 'button', { name: /continue/i })).toBeVisible()

@@ -3,7 +3,7 @@ import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
 import { personDateOfBirth, personProfileName } from 'hmpps-court-cases-release-dates-design/hmpps/utils/utils'
-import { initialiseName } from './utils'
+import { convertToTitleCase, initialiseName } from './utils'
 import { ApplicationInfo } from '../applicationInfo'
 import config from '../config'
 import { buildErrorSummaryList, findError } from '../middleware/validationMiddleware'
@@ -53,4 +53,5 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('buildErrorSummaryList', buildErrorSummaryList)
   njkEnv.addFilter('findError', findError)
+  njkEnv.addFilter('convertToTitleCase', convertToTitleCase)
 }

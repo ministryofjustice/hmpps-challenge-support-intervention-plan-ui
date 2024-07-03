@@ -8,7 +8,7 @@
 <div class="govuk-grid-column-two-thirds">
   <h1 class="govuk-heading-l">Make a CSIP referral</h1>
 
-  <p>You can use this service to refer {{ prisoner.firstName }} {{ prisoner.lastName }} for a Challenge, Support and Intervention Plan (CSIP)</p>
+  <p>You can use this service to refer {{ (prisoner.firstName + ' ' + prisoner.lastName) | convertToTitleCase }} for a Challenge, Support and Intervention Plan (CSIP).</p>
 
   {{ govukDetails({
       summaryText: "Help with CSIP referrals",
