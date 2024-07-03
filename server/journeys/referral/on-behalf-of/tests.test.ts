@@ -129,8 +129,8 @@ describe('tests', () => {
     await request(app)
       .post(`/${generatedUuid}/referral/on-behalf-of`)
       .send({ isOnBehalfOfReferral: 'true' })
-      .redirects(1)
-      .expect('Location', /\/referral\/referrer/)
+      .expect(302)
+      .expect('Location', 'referrer')
   })
 
   it('should return a 200 on posting good data with quoted boolean and redirect to area-of-work', async () => {
@@ -138,8 +138,8 @@ describe('tests', () => {
     await request(app)
       .post(`/${generatedUuid}/referral/on-behalf-of`)
       .send({ isOnBehalfOfReferral: 'false' })
-      .redirects(1)
-      .expect('Location', /\/referral\/area-of-work/)
+      .expect(302)
+      .expect('Location', 'area-of-work')
   })
 
   it('should display validation errors correctly', done => {

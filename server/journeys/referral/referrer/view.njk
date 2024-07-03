@@ -23,7 +23,8 @@
             classes: "govuk-input--width-30 single-row-textarea",
             id: "referredBy",
             name: "referredBy",
-            value: referredBy
+            value: referredBy,
+            errorMessage: validationErrors | findError('referredBy')
         }) }}
         {{ govukSelect({
             label: {
@@ -36,7 +37,8 @@
             },
             id: "areaOfWork",
             name: "areaOfWork",
-            items: areaOfWorkOptions
+            items: areaOfWorkOptions,
+            errorMessage: validationErrors | findError('areaOfWork')
         }) }}
         {{ govukButton({
             text: "Continue",

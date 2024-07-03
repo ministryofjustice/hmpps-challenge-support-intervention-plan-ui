@@ -13,7 +13,7 @@ context('Make a Referral Journey', () => {
     cy.visit('/prisoners/A1111AA/referral/start')
     const onBehalfOfPage = Page.verifyOnPage(OnBehalfOfPage)
     onBehalfOfPage
-      .miniProfileHyperlink('Neil')
+      .miniProfileHyperlink('TestName')
       .should('have.attr', 'href')
       .should('equal', 'http://localhost:9091/dpshomepage/prisoner/A1111AA')
   })

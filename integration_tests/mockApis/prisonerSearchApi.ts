@@ -12,8 +12,8 @@ const stubGetPrisoner = () => {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       jsonBody: {
-        firstName: 'Neil',
-        lastName: 'Rudge',
+        firstName: 'TestName',
+        lastName: 'User',
         prisonerNumber: 'A1111AA',
         dateOfBirth: '1932-02-02',
         status: 'On remand',

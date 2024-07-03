@@ -35,6 +35,7 @@ describe('GET /referral/referrer', () => {
   it('render page', async () => {
     const result = await request(app).get(`/${uuid}/referral/referrer`).expect(200).expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
+    expect(getByText(html, 'What’s their name?')).toBeVisible()
     expect(getByText(html, 'Which area do they work in?')).toBeVisible()
     expect((getByRole(html, 'option', { name: 'Select area' }) as HTMLOptionElement).defaultSelected).toBeTruthy()
     expect((getByRole(html, 'option', { name: 'TEXT' }) as HTMLOptionElement).defaultSelected).toBeFalsy()

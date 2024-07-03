@@ -15,9 +15,9 @@ export class ReferralOnBehalfOfController {
     req.journeyData.referral.isOnBehalfOfReferral = req.body.isOnBehalfOfReferral
 
     if (req.journeyData.referral.isOnBehalfOfReferral) {
-      res.redirect('/referral/referrer')
+      res.redirect('referrer')
       return
     }
-    res.redirect('/referral/area-of-work')
+    res.redirect('area-of-work')
   }
 }
