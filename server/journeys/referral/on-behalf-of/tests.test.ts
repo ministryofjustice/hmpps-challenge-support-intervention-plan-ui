@@ -21,6 +21,7 @@ let app: Express
 const uuid = uuidv4()
 const journeyData = {
   prisoner: TEST_PRISONER,
+  referral: {},
 } as JourneyData
 const requestCaptor = testRequestCaptor(journeyData, uuid)[1]
 beforeEach(() => {

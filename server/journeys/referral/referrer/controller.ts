@@ -7,16 +7,15 @@ export class ReferralReferrerController extends BaseJourneyController {
       req,
       'area-of-work',
       'Select area',
-      req.journeyData.referral?.refererArea,
+      req.journeyData.referral!.refererArea,
     )
-    const referredBy = req.journeyData.referral?.referredBy
+    const { referredBy } = req.journeyData.referral!
     res.render('referral/referrer/view', { areaOfWorkOptions, referredBy, backUrl: 'on-behalf-of' })
   }
 
   POST = async (req: Request, res: Response): Promise<void> => {
-    req.journeyData.referral ??= {}
-    req.journeyData.referral.refererArea = req.body['areaOfWork']
-    req.journeyData.referral.referredBy = req.body['referredBy']
+    req.journeyData.referral!.refererArea = req.body['areaOfWork']
+    req.journeyData.referral!.referredBy = req.body['referredBy']
     res.redirect('proactive-or-reactive')
   }
 }

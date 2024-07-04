@@ -12,7 +12,6 @@ export const schemaFactory =
     const areaRefDataMap = new Map(
       (await csipApiService.getReferenceData(req, 'area-of-work')).map(itm => [itm.code, itm]),
     )
-
     return z.object({
       referredBy: z
         .string({ message: REFERRED_BY_ERROR_MESSAGE })

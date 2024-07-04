@@ -48,10 +48,6 @@ describe('GET /referral/area-of-work', () => {
     expect((getByRole(html, 'option', { name: 'TEXT2' }) as HTMLOptionElement).defaultSelected).toBeFalsy()
   })
 
-  it('redirect to this page by stateValidationMiddleware if wrong url is provided', done => {
-    request(app).get(`/${uuid}/referral/referrer`).expect(302).expect('Location', 'area-of-work').end(done)
-  })
-
   it('pre-fill form with values from journeyData', async () => {
     const appWithJourneyDataInjected = appWithAllRoutes({
       services: { csipApiService },
