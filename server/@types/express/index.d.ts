@@ -1,3 +1,4 @@
+import { objectInputType } from 'zod'
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import { Breadcrumbs } from '../../middleware/breadcrumbs'
 import { fieldErrors } from '../../middleware/validationMiddleware'
@@ -68,6 +69,7 @@ export declare global {
       digitalPrisonServicesUrl: string
       breadcrumbs: Breadcrumbs
       prisoner?: PrisonerSummary
+      formResponses?: { [key: string]: string | boolean }
     }
   }
 }

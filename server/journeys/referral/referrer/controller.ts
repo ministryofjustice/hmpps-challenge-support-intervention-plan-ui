@@ -3,12 +3,11 @@ import { BaseJourneyController } from '../../base/controller'
 
 export class ReferralReferrerController extends BaseJourneyController {
   GET = async (req: Request, res: Response): Promise<void> => {
-    console.log(res.locals['formResponses'])
     const areaOfWorkOptions = await this.getReferenceDataOptions(
       req,
       'area-of-work',
       'Select area',
-      res.locals['formResponses']?.['areaOfWork'] || req.journeyData.referral!.refererArea,
+      (res.locals.formResponses?.['areaOfWork'] as string) || req.journeyData.referral!.refererArea,
     )
     const { referredBy } = req.journeyData.referral!
     res.render('referral/referrer/view', { areaOfWorkOptions, referredBy, backUrl: 'on-behalf-of' })

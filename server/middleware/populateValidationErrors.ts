@@ -5,10 +5,10 @@ export default function populateValidationErrors(): RequestHandler {
     const validationErrors = req.flash('validationErrors')[0]
     const formResponses = req.flash('formResponses')[0]
     if (validationErrors) {
-      res.locals['validationErrors'] = JSON.parse(validationErrors)
+      res.locals.validationErrors = JSON.parse(validationErrors)
     }
     if (formResponses) {
-      res.locals['formResponses'] = JSON.parse(formResponses)
+      res.locals.formResponses = JSON.parse(formResponses)
     }
     next()
   }
