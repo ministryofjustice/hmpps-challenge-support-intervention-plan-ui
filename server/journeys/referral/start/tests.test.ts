@@ -4,10 +4,10 @@ import request from 'supertest'
 import { getByRole } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import type PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
-import type Prisoner from '../../../services/prisonerSearch/prisoner'
 import { SanitisedError } from '../../../sanitisedError'
 import type CsipApiService from '../../../services/csipApi/csipApiService'
 import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
+import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
 
 let app: Express
 const uuid = uuidv4()
@@ -18,14 +18,7 @@ const csipApiService = {
   ],
 } as unknown as CsipApiService
 const prisonerSearchService = {
-  getPrisonerDetails: async () => {
-    return {
-      cellLocation: '',
-      firstName: 'Test',
-      lastName: 'Person',
-      prisonerNumber: 'ABC123',
-    } as Prisoner
-  },
+  getPrisonerDetails: async () => TEST_PRISONER,
 } as unknown as PrisonerSearchService
 
 beforeEach(() => {

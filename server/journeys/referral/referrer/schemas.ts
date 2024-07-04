@@ -16,7 +16,6 @@ export const schemaFactory =
     return z.object({
       referredBy: z
         .string({ message: REFERRED_BY_ERROR_MESSAGE })
-        .min(1, REFERRED_BY_ERROR_MESSAGE)
         .max(240, REFERRED_BY_LENGTH_ERROR_MESSAGE)
         .refine(val => val.trim().length > 0, REFERRED_BY_ERROR_MESSAGE),
       areaOfWork: z

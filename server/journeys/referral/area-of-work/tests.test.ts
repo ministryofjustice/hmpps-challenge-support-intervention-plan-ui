@@ -8,6 +8,7 @@ import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
 import { HmppsUser } from '../../../interfaces/hmppsUser'
 import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
 import { JourneyData } from '../../../@types/express'
+import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
 
 const uuid = uuidv4()
 let app: Express
@@ -17,7 +18,13 @@ const csipApiService = {
     { code: 'B', description: 'TEXT2' },
   ],
 } as unknown as CsipApiService
-const [reqCaptured, requestCaptor] = testRequestCaptor()
+const journeyData = {
+  prisoner: TEST_PRISONER,
+  referral: {
+    isOnBehalfOfReferral: false,
+  },
+} as JourneyData
+const [reqCaptured, requestCaptor] = testRequestCaptor(journeyData, uuid)
 
 beforeEach(() => {
   app = appWithAllRoutes({
@@ -41,12 +48,19 @@ describe('GET /referral/area-of-work', () => {
     expect((getByRole(html, 'option', { name: 'TEXT2' }) as HTMLOptionElement).defaultSelected).toBeFalsy()
   })
 
+  it('redirect to this page by stateValidationMiddleware if wrong url is provided', done => {
+    request(app).get(`/${uuid}/referral/referrer`).expect(302).expect('Location', 'area-of-work').end(done)
+  })
+
   it('pre-fill form with values from journeyData', async () => {
     const appWithJourneyDataInjected = appWithAllRoutes({
       services: { csipApiService },
       uuid,
       requestCaptor: testRequestCaptor(
-        { referral: { refererArea: { code: 'A', description: 'TEXT' } } } as JourneyData,
+        {
+          ...journeyData,
+          referral: { ...journeyData.referral, refererArea: { code: 'A', description: 'TEXT' } },
+        } as JourneyData,
         uuid,
       )[1],
     })

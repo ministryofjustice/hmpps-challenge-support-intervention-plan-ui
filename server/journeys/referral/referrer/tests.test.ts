@@ -2,12 +2,12 @@ import { Express } from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import { agent as request } from 'supertest'
 import { getByRole, getByText } from '@testing-library/dom'
-import { appWithAllRoutes, user } from '../../../routes/testutils/appSetup'
+import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
-import { HmppsUser } from '../../../interfaces/hmppsUser'
 import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
 import { JourneyData } from '../../../@types/express'
+import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
 
 const uuid = uuidv4()
 let app: Express
@@ -17,7 +17,13 @@ const csipApiService = {
     { code: 'B', description: 'TEXT2' },
   ],
 } as unknown as CsipApiService
-const [reqCaptured, requestCaptor] = testRequestCaptor()
+const journeyData = {
+  prisoner: TEST_PRISONER,
+  referral: {
+    isOnBehalfOfReferral: true,
+  },
+} as JourneyData
+const [reqCaptured, requestCaptor] = testRequestCaptor(journeyData, uuid)
 
 beforeEach(() => {
   app = appWithAllRoutes({
@@ -42,11 +48,22 @@ describe('GET /referral/referrer', () => {
     expect((getByRole(html, 'option', { name: 'TEXT2' }) as HTMLOptionElement).defaultSelected).toBeFalsy()
   })
 
+  it('redirect to this page by stateValidationMiddleware if wrong url is provided', done => {
+    request(app).get(`/${uuid}/referral/area-of-work`).expect(302).expect('Location', 'referrer').end(done)
+  })
+
   it('pre-fill form with values from journeyData', async () => {
     const appWithJourneyDataInjected = appWithAllRoutes({
       services: { csipApiService },
       requestCaptor: testRequestCaptor(
-        { referral: { refererArea: { code: 'A', description: 'TEXT' }, referredBy: 'test user' } } as JourneyData,
+        {
+          ...journeyData,
+          referral: {
+            ...journeyData.referral,
+            refererArea: { code: 'A', description: 'TEXT' },
+            referredBy: 'test user',
+          },
+        } as JourneyData,
         uuid,
       )[1],
       uuid,
@@ -96,24 +113,6 @@ describe('POST /referral/referrer', () => {
 
     expect(reqCaptured.journeyData().referral?.refererArea).toEqual({ code: 'A', description: 'TEXT' })
     expect(reqCaptured.journeyData().referral?.referredBy).toEqual('test user')
-  })
-
-  it('truncate user name to 240 characters and save to journeyData on valid request', async () => {
-    const userSupplier = () =>
-      ({
-        ...user,
-        displayName: 'n'.repeat(241),
-      }) as HmppsUser
-
-    const appWithLongUserName = appWithAllRoutes({
-      services: { csipApiService },
-      requestCaptor,
-      userSupplier,
-      uuid,
-    })
-    await request(appWithLongUserName).post(`/${uuid}/referral/area-of-work`).type('form').send({ areaOfWork: 'A' })
-
-    expect(reqCaptured.journeyData().referral?.referredBy).toEqual('n'.repeat(240))
   })
 
   it('redirect to go back and set validation errors if submitted area code is missing', async () => {
