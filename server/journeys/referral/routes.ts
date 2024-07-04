@@ -5,6 +5,8 @@ import { ReferralAreaOfWorkRoutes } from './area-of-work/routes'
 import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
 import StartJourneyRoutes from './start/routes'
 import { ReferralReferrerRoutes } from './referrer/routes'
+import { validateJourneyState } from '../../middleware/stateValidationMiddleware'
+import { states } from './states'
 
 function Routes(csipApiService: CsipApiService): Router {
   const router = Router({ mergeParams: true })
@@ -20,7 +22,7 @@ export default function routes(csipApiService: CsipApiService, prisonerSearchSer
   const router = Router({ mergeParams: true })
 
   router.use('/', StartJourneyRoutes(prisonerSearchService))
-  router.use('/referral', Routes(csipApiService))
+  router.use('/referral', validateJourneyState(states), Routes(csipApiService))
 
   return router
 }
