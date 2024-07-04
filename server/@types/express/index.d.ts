@@ -37,6 +37,7 @@ type ReferralData = {
   isOnBehalfOfReferral?: boolean
   referredBy?: string
   refererArea?: ReferenceData
+  isProactiveReferral?: boolean
 }
 
 type SaferCustodyScreening = object
