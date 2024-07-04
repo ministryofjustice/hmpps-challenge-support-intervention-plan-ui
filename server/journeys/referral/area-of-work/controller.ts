@@ -7,7 +7,7 @@ export class ReferralAreaOfWorkController extends BaseJourneyController {
       req,
       'area-of-work',
       'Select area',
-      req.journeyData.referral!.refererArea,
+      (res.locals.formResponses?.['refererArea'] as string) || req.journeyData.referral!.refererArea,
     )
     res.render('referral/area-of-work/view', { areaOfWorkOptions, backUrl: 'on-behalf-of' })
   }

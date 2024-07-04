@@ -68,6 +68,7 @@ export declare global {
       digitalPrisonServicesUrl: string
       breadcrumbs: Breadcrumbs
       prisoner?: PrisonerSummary
+      formResponses?: { [key: string]: string | boolean }
     }
   }
 }

@@ -5,7 +5,12 @@ import { ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes
 export class BaseJourneyController {
   constructor(private readonly csipApiService: CsipApiService) {}
 
-  getReferenceDataOptions = async (req: Request, domain: ReferenceDataType, label: string, value?: ReferenceData) => [
+  getReferenceDataOptions = async (
+    req: Request,
+    domain: ReferenceDataType,
+    label: string,
+    value?: ReferenceData | string,
+  ) => [
     {
       value: '',
       text: label,
@@ -14,7 +19,7 @@ export class BaseJourneyController {
     ...(await this.csipApiService.getReferenceData(req, domain)).map(refData => ({
       value: refData.code,
       text: refData.description,
-      selected: refData.code === value?.code,
+      selected: typeof value === 'string' ? refData.code === value : refData.code === value?.code,
     })),
   ]
 }
