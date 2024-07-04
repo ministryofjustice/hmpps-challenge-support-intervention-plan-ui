@@ -48,6 +48,10 @@ describe('GET /referral/referrer', () => {
     expect((getByRole(html, 'option', { name: 'TEXT2' }) as HTMLOptionElement).defaultSelected).toBeFalsy()
   })
 
+  it('redirect here from wrong path', done => {
+    request(app).get(`/${uuid}/referral/area-of-work`).expect(302).expect('Location', 'referrer').end(done)
+  })
+
   it('pre-fill form with values from journeyData', async () => {
     const appWithJourneyDataInjected = appWithAllRoutes({
       services: { csipApiService },
