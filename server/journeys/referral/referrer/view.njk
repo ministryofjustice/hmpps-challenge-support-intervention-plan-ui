@@ -1,0 +1,48 @@
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+
+{% extends "../../../views/partials/layout.njk" %}
+
+{% set pageTitle = "Referrer - Make a CSIP referral - Digital Prison Services" %}
+
+{% block content %}
+    <span class="govuk-caption-l">Make a CSIP referral</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Referrer details</h1>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukCharacterCount({
+            label: {
+                text: "What’s their name?",
+                classes: "govuk-label--m",
+                isPageHeading: true
+            },
+            maxlength: 240,
+            rows: 1,
+            threshold: "75",
+            classes: "govuk-input--width-30 single-row-textarea",
+            id: "referredBy",
+            name: "referredBy",
+            value: referredBy,
+            errorMessage: validationErrors | findError('referredBy')
+        }) }}
+        {{ govukSelect({
+            label: {
+                text: "Which area do they work in?",
+                classes: "govuk-label--m",
+                isPageHeading: true
+            },
+            hint: {
+                text: "If the referrer is a prisoner, select ‘Other’."
+            },
+            id: "areaOfWork",
+            name: "areaOfWork",
+            items: areaOfWorkOptions,
+            errorMessage: validationErrors | findError('areaOfWork')
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}

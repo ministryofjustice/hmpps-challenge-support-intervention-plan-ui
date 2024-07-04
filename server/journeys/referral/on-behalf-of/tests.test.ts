@@ -13,20 +13,21 @@ import {
 import { userEvent } from '@testing-library/user-event'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import { schema } from './schemas'
+import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
+import { JourneyData } from '../../../@types/express'
+import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
 
 let app: Express
 const uuid = uuidv4()
+const journeyData = {
+  prisoner: TEST_PRISONER,
+  referral: {},
+} as JourneyData
+const requestCaptor = testRequestCaptor(journeyData, uuid)[1]
 beforeEach(() => {
   app = appWithAllRoutes({
     uuid,
-    journeyData: {
-      prisoner: {
-        cellLocation: 'Foo prison',
-        firstName: 'David',
-        lastName: 'Jones',
-        prisonerNumber: 'ABCABC',
-      },
-    },
+    requestCaptor,
   })
 })
 
@@ -61,7 +62,7 @@ describe('tests', () => {
         expect(await findByText(topLevelElement, /check your local guidance/i)).toBeVisible()
 
         expect(getByText(topLevelElement, /help with csip referrals/i)).toBeVisible()
-        expect(getByText(topLevelElement, /You can use this service to refer David Jones/)).toBeVisible()
+        expect(getByText(topLevelElement, /You can use this service to refer Test Person/)).toBeVisible()
         expect(getByRole(topLevelElement, 'radio', { name: /yes/i })).toBeVisible()
         expect(getByRole(topLevelElement, 'radio', { name: /no/i })).toBeVisible()
         expect(getByRole(topLevelElement, 'button', { name: /continue/i })).toBeVisible()
@@ -80,12 +81,7 @@ describe('tests', () => {
           referral: {
             isOnBehalfOfReferral: true,
           },
-          prisoner: {
-            cellLocation: 'Foo prison',
-            firstName: 'David',
-            lastName: 'Jones',
-            prisonerNumber: 'ABCABC',
-          },
+          prisoner: TEST_PRISONER,
         },
       }),
     ).get(`/${uuid}/referral/on-behalf-of`)
@@ -104,12 +100,7 @@ describe('tests', () => {
           referral: {
             isOnBehalfOfReferral: false,
           },
-          prisoner: {
-            cellLocation: 'Foo prison',
-            firstName: 'David',
-            lastName: 'Jones',
-            prisonerNumber: 'ABCABC',
-          },
+          prisoner: TEST_PRISONER,
         },
       }),
     ).get(`/${uuid}/referral/on-behalf-of`)
@@ -121,39 +112,37 @@ describe('tests', () => {
   })
 
   it('should redirect on posting bad data', async () => {
-    await request(app).post(`/${uuidv4()}/referral/on-behalf-of`).send({}).redirects(1)
+    await request(app).post(`/${uuid}/referral/on-behalf-of`).send({}).redirects(1)
   })
 
   it('should return a 200 on posting good data with quoted boolean and redirect to referrer', async () => {
-    const generatedUuid = uuidv4()
     await request(app)
-      .post(`/${generatedUuid}/referral/on-behalf-of`)
+      .post(`/${uuid}/referral/on-behalf-of`)
       .send({ isOnBehalfOfReferral: 'true' })
-      .redirects(1)
-      .expect('Location', /\/referral\/referrer/)
+      .expect(302)
+      .expect('Location', 'referrer')
   })
 
   it('should return a 200 on posting good data with quoted boolean and redirect to area-of-work', async () => {
-    const generatedUuid = uuidv4()
     await request(app)
-      .post(`/${generatedUuid}/referral/on-behalf-of`)
+      .post(`/${uuid}/referral/on-behalf-of`)
       .send({ isOnBehalfOfReferral: 'false' })
-      .redirects(1)
-      .expect('Location', /\/referral\/area-of-work/)
+      .expect(302)
+      .expect('Location', 'area-of-work')
   })
 
   it('should display validation errors correctly', done => {
     const errors = schema.safeParse({ isOnBehalfOfReferral: '', _csrf: '' }).error?.flatten()?.fieldErrors
     const onBehalfOfError = errors?.['isOnBehalfOfReferral']?.[0]
     expect(onBehalfOfError).toBeTruthy()
-    const localUuid = uuidv4()
     const app2 = appWithAllRoutes({
       services: {},
-      uuid: localUuid,
+      uuid,
       validationErrors: errors,
+      requestCaptor,
     })
     request(app2)
-      .get(`/${localUuid}/referral/on-behalf-of`)
+      .get(`/${uuid}/referral/on-behalf-of`)
       .end(async (err, res) => {
         if (err) {
           done(err)

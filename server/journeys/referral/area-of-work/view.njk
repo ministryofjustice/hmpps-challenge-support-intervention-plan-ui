@@ -6,14 +6,15 @@
 {% set pageTitle = "Area of work - Make a CSIP referral - Digital Prison Services" %}
 
 {% block content %}
-    <span class="govuk-caption-xl">Make a CSIP referral</span>
-    <h1 class="govuk-heading-xl">Which area do you work in?</h1>
+    <span class="govuk-caption-l">Make a CSIP referral</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Which area do you work in?</h1>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {{ govukSelect({
             id: "areaOfWork",
             name: "areaOfWork",
-            items: areaOfWorkOptions
+            items: areaOfWorkOptions,
+            errorMessage: validationErrors | findError('areaOfWork')
         }) }}
         {{ govukButton({
             text: "Continue",
