@@ -1,0 +1,41 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "../../../views/partials/layout.njk" %}
+
+{% set pageTitle = "Proactive or reactive - Make a CSIP referral - Digital Prison Services" %}
+
+{% block content %}
+    <span class="govuk-caption-l">Make a CSIP referral</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Is this referral proactive or reactive?</h1>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukRadios({
+            id: 'isProactiveReferral',
+            name: 'isProactiveReferral',
+            items: [
+                {
+                    value: 'proactive',
+                    text: "Proactive",
+                    hint: {
+                        text: "This referral is preventative and based on a raised risk of an incident occurring."
+                    },
+                    checked: isProactiveReferral === true
+                },
+                {
+                    value: 'reactive',
+                    text: "Reactive",
+                    hint: {
+                        text: "This referral is being made in response to an incident."
+                    },
+                    checked: isProactiveReferral === false
+                }
+            ],
+            errorMessage: validationErrors | findError('isProactiveReferral')
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}
