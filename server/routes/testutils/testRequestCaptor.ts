@@ -1,7 +1,7 @@
 import { Request } from 'express'
 import { JourneyData } from '../../@types/express'
 
-class TestRequestCaptured {
+export class TestRequestCaptured {
   private req = {} as Request
 
   setRequest(req: Request) {
