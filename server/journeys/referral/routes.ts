@@ -6,6 +6,7 @@ import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchS
 import StartJourneyRoutes from './start/routes'
 import { ReferralReferrerRoutes } from './referrer/routes'
 import { ReferralProactiveOrReactiveRoutes } from './proactive-or-reactive/routes'
+import { ReferralDetailsRoutes } from './details/routes'
 
 function Routes(csipApiService: CsipApiService): Router {
   const router = Router({ mergeParams: true })
@@ -14,6 +15,7 @@ function Routes(csipApiService: CsipApiService): Router {
   router.use('/area-of-work', ReferralAreaOfWorkRoutes(csipApiService))
   router.use('/referrer', ReferralReferrerRoutes(csipApiService))
   router.use('/proactive-or-reactive', ReferralProactiveOrReactiveRoutes())
+  router.use('/details', ReferralDetailsRoutes(csipApiService))
 
   return router
 }

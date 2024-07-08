@@ -64,4 +64,7 @@
 
 {% block bodyEnd %}
   <script type="module" src="/assets/js/app.js"></script>
+  {# Javascript block for individual pages #}
+  {% block additionalScripts %}
+  {% endblock %}
 {% endblock %}

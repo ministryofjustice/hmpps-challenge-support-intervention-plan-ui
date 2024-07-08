@@ -38,6 +38,10 @@ type ReferralData = {
   referredBy?: string
   refererArea?: ReferenceData
   isProactiveReferral?: boolean
+  incidentLocation?: ReferenceData
+  incidentType?: ReferenceData
+  incidentDate?: string
+  incidentTime?: string
 }
 
 type SaferCustodyScreening = object
