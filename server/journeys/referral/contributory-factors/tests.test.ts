@@ -29,6 +29,7 @@ const journeyDataMock = {
     incidentType: { code: 'A', description: 'TEXT' },
     incidentDate: '2024-12-25',
     incidentTime: '23:59',
+    descriptionOfConcern: 'Sample Concern Text',
   },
 } as JourneyData
 
