@@ -42,6 +42,7 @@ type ReferralData = {
   incidentType?: ReferenceData
   incidentDate?: string
   incidentTime?: string
+  descriptionOfConcern?: string
 }
 
 type SaferCustodyScreening = object
