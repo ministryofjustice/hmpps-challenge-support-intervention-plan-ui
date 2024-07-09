@@ -1,0 +1,44 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Description - Make a CSIP referral - DPS" %}
+
+{% block content %}
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">Make a CSIP referral</span>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Describe the incident and concerns</h1>
+        <form method="post">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+            {{ govukDetails({
+                summaryText: "What type of information to include",
+                html: '
+            <p>The description could include: </p>
+            <p>
+                <ul>
+                  <li>a summary of the incident</li>
+                  <li>information about the incident report (if one has been made)</li>
+                  <li>the concerns relating to the incident</li>
+                  <li>observations of behaviour in custody</li>
+                </ul>
+            </p>
+            '
+            }) }}
+            {{ govukCharacterCount({
+                maxlength: 4000,
+                rows: 5,
+                threshold: "75",
+                id: "descriptionOfConcern",
+                name: "descriptionOfConcern",
+                value: descriptionOfConcern,
+                errorMessage: validationErrors | findError('descriptionOfConcern')
+            }) }}
+            {{ govukButton({
+                text: "Continue",
+                preventDoubleClick: true
+            }) }}
+        </form>
+    </div>
+{% endblock %}
