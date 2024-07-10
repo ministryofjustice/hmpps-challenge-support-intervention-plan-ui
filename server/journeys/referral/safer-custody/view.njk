@@ -1,0 +1,45 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Safer Custody - Make a CSIP referral - DPS" %}
+
+{% block content %}
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">Make a CSIP referral</span>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Is the Safer Custody team already aware of this referral?</h1>
+        <form method="post">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+            {{ govukRadios({
+                items: [
+                    {
+                        value: "yes",
+                        text: "Yes",
+                        checked: isSaferCustodyTeamInformed === 'yes'
+                    },
+                    {
+                        value: "no",
+                        text: "No",
+                        checked: isSaferCustodyTeamInformed === 'no'
+                    },
+                    {
+                        divider: "or"
+                    },
+                    {
+                        value: "do_not_know",
+                        text: "I don’t know",
+                        checked: isSaferCustodyTeamInformed === 'do_not_know'
+                    }
+                ],
+                name: "isSaferCustodyTeamInformed",
+                id: "isSaferCustodyTeamInformed",
+                errorMessage: validationErrors | findError('isSaferCustodyTeamInformed')
+            }) }}
+            {{ govukButton({
+                text: "Continue",
+                preventDoubleClick: true
+            }) }}
+        </form>
+    </div>
+{% endblock %}
