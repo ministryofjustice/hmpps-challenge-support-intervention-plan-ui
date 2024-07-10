@@ -1,0 +1,32 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Description - Make a CSIP referral - DPS" %}
+
+{% block content %}
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">Make a CSIP referral</span>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Add additional information (optional)</h1>
+        <form method="post">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+            {{ govukCharacterCount({
+                maxlength: 4000,
+                rows: 5,
+                threshold: "75",
+                id: "otherInformation",
+                name: "otherInformation",
+                value: otherInformation,
+                hint: {
+                    text: 'Any other information relating to this referral, such as action already taken based on these concerns.'
+                },
+                errorMessage: validationErrors | findError('otherInformation')
+            }) }}
+            {{ govukButton({
+                text: "Continue",
+                preventDoubleClick: true
+            }) }}
+        </form>
+    </div>
+{% endblock %}
