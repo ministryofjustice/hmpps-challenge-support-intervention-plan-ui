@@ -9,6 +9,7 @@ import { ReferralProactiveOrReactiveRoutes } from './proactive-or-reactive/route
 import { ReferralDetailsRoutes } from './details/routes'
 import { ReferralDescriptionRoutes } from './description/routes'
 import { ReferralReasonsRoutes } from './reasons/routes'
+import { ReferralContributoryFactorsRoutes } from './contributory-factors/routes'
 
 function Routes(csipApiService: CsipApiService): Router {
   const router = Router({ mergeParams: true })
@@ -20,6 +21,7 @@ function Routes(csipApiService: CsipApiService): Router {
   router.use('/details', ReferralDetailsRoutes(csipApiService))
   router.use('/description', ReferralDescriptionRoutes())
   router.use('/reasons', ReferralReasonsRoutes())
+  router.use('/contributory-factors', ReferralContributoryFactorsRoutes(csipApiService))
 
   return router
 }
