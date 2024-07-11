@@ -15,7 +15,7 @@ export class ReferralReasonsController {
     )
   }
 
-  POST = async (req: Request<unknown, SchemaType>, res: Response): Promise<void> => {
+  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response): Promise<void> => {
     req.journeyData.referral!.knownReasons = req.body.knownReasons
     res.redirect('contributory-factors')
   }
