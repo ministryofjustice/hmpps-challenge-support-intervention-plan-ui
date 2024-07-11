@@ -16,7 +16,7 @@ export class ReferralDescriptionController {
     )
   }
 
-  POST = async (req: Request<unknown, SchemaType>, res: Response): Promise<void> => {
+  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response): Promise<void> => {
     req.journeyData.referral!.descriptionOfConcern = req.body.descriptionOfConcern
     res.redirect('reasons')
   }

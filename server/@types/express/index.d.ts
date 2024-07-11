@@ -45,6 +45,7 @@ type ReferralData = {
   descriptionOfConcern?: string
   knownReasons?: string
   contributoryFactors?: ContributoryFactor[]
+  otherInformation?: string | null
 }
 
 type ContributoryFactor = {
