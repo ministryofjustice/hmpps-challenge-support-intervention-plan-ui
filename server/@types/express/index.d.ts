@@ -1,7 +1,7 @@
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import { Breadcrumbs } from '../../middleware/breadcrumbs'
 import { fieldErrors } from '../../middleware/validationMiddleware'
-import { ReferenceData } from '../csip/csipApiTypes'
+import { ReferenceData, YesNoAnswer } from '../csip/csipApiTypes'
 
 export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
@@ -45,6 +45,7 @@ type ReferralData = {
   descriptionOfConcern?: string
   knownReasons?: string
   contributoryFactors?: ContributoryFactor[]
+  isSaferCustodyTeamInformed?: YesNoAnswer
   otherInformation?: string | null
 }
 

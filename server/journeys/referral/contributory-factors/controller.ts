@@ -13,7 +13,7 @@ export class ReferralContributoryFactorsController extends BaseJourneyController
     res.render('referral/contributory-factors/view', { contributoryFactorCheckboxes, backUrl: 'reasons' })
   }
 
-  POST = async (req: Request<unknown, SchemaType>, res: Response): Promise<void> => {
+  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response): Promise<void> => {
     req.journeyData.referral!.contributoryFactors = req.body.contributoryFactors
     res.redirect('contributory-factors-comments')
   }

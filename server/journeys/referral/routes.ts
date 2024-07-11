@@ -10,6 +10,7 @@ import { ReferralDetailsRoutes } from './details/routes'
 import { ReferralDescriptionRoutes } from './description/routes'
 import { ReferralReasonsRoutes } from './reasons/routes'
 import { ReferralContributoryFactorsRoutes } from './contributory-factors/routes'
+import { ReferralSaferCustodyRoutes } from './safer-custody/routes'
 import { ReferralAdditionalInformationRoutes } from './additional-information/routes'
 
 function Routes(csipApiService: CsipApiService): Router {
@@ -23,6 +24,7 @@ function Routes(csipApiService: CsipApiService): Router {
   router.use('/description', ReferralDescriptionRoutes())
   router.use('/reasons', ReferralReasonsRoutes())
   router.use('/contributory-factors', ReferralContributoryFactorsRoutes(csipApiService))
+  router.use('/safer-custody', ReferralSaferCustodyRoutes())
   router.use('/additional-information', ReferralAdditionalInformationRoutes())
 
   return router
