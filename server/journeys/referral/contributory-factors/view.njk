@@ -1,0 +1,27 @@
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "../../../views/partials/layout.njk" %}
+
+{% set pageTitle = "Contributory factors - Make a CSIP referral - DPS" %}
+
+{% block content %}
+    <span class="govuk-caption-l">Make a CSIP referral</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">What are the contributory factors? </h1>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukCheckboxes({
+            id: "contributoryFactors",
+            name: "contributoryFactors",
+            items: contributoryFactorCheckboxes,
+            hint: {
+                text: "Select all that apply"
+            },
+            errorMessage: validationErrors | findError('contributoryFactors')
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}

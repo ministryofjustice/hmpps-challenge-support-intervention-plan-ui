@@ -43,7 +43,15 @@ type ReferralData = {
   incidentDate?: string
   incidentTime?: string
   descriptionOfConcern?: string
+  knownReasons?: string
+  contributoryFactors?: ContributoryFactor[]
   isSaferCustodyTeamInformed?: YesNoAnswer
+  otherInformation?: string | null
+}
+
+type ContributoryFactor = {
+  factorType: ReferenceData
+  comment?: string
 }
 
 type SaferCustodyScreening = object

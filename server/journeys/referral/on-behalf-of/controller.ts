@@ -8,7 +8,7 @@ export class ReferralOnBehalfOfController {
     })
   }
 
-  POST = async (req: Request<unknown, SchemaType>, res: Response): Promise<void> => {
+  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response): Promise<void> => {
     req.journeyData.referral!.isOnBehalfOfReferral = req.body.isOnBehalfOfReferral
 
     if (req.journeyData.referral!.isOnBehalfOfReferral) {
