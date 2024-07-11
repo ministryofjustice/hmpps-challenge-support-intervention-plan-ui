@@ -52,7 +52,14 @@
   {% if prisoner %}
     {{ miniProfile(prisoner, '/prisoner-image/' + prisoner.prisonerNumber, digitalPrisonServicesUrl + '/prisoner/' + prisoner.prisonerNumber) }}
   {% endif %}
+{% endblock %}
 
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="{% if fullWidth %}govuk-grid-column-full{% else %}govuk-grid-column-two-thirds{% endif %}">
+      {% block innerContent %}{% endblock %}
+    </div>
+  </div>
 {% endblock %}
 
 {% block bodyStart %}

@@ -1,11 +1,11 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% extends "../../../views/partials/layout.njk" %}
+{% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Area of work - Make a CSIP referral - Digital Prison Services" %}
+{% set pageTitle = "Area of work - Make a CSIP referral - DPS" %}
 
-{% block content %}
+{% block innerContent %}
     <span class="govuk-caption-l">Make a CSIP referral</span>
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Which area do you work in?</h1>
     <form method="post">
