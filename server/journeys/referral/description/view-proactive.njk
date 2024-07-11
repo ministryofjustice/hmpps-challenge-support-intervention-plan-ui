@@ -6,15 +6,14 @@
 
 {% set pageTitle = "Description - Make a CSIP referral - DPS" %}
 
-{% block content %}
-    <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-l">Make a CSIP referral</span>
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Describe the behaviour and concerns</h1>
-        <form method="post">
-            <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-            {{ govukDetails({
-                summaryText: "What type of information to include",
-                html: '
+{% block innerContent %}
+    <span class="govuk-caption-l">Make a CSIP referral</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Describe the behaviour and concerns</h1>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukDetails({
+            summaryText: "What type of information to include",
+            html: '
             <p>The description could include: </p>
             <p>
                 <ul>
@@ -24,20 +23,19 @@
                 </ul>
             </p>
             '
-            }) }}
-            {{ govukCharacterCount({
-                maxlength: 4000,
-                rows: 5,
-                threshold: "75",
-                id: "descriptionOfConcern",
-                name: "descriptionOfConcern",
-                value: descriptionOfConcern,
-                errorMessage: validationErrors | findError('descriptionOfConcern')
-            }) }}
-            {{ govukButton({
-                text: "Continue",
-                preventDoubleClick: true
-            }) }}
-        </form>
-    </div>
+        }) }}
+        {{ govukCharacterCount({
+            maxlength: 4000,
+            rows: 5,
+            threshold: "75",
+            id: "descriptionOfConcern",
+            name: "descriptionOfConcern",
+            value: descriptionOfConcern,
+            errorMessage: validationErrors | findError('descriptionOfConcern')
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
 {% endblock %}

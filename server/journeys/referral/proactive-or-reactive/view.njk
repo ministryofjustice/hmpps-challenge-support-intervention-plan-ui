@@ -1,11 +1,11 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% extends "../../../views/partials/layout.njk" %}
+{% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Proactive or reactive - Make a CSIP referral - Digital Prison Services" %}
+{% set pageTitle = "Proactive or reactive - Make a CSIP referral - DPS" %}
 
-{% block content %}
+{% block innerContent %}
     <span class="govuk-caption-l">Make a CSIP referral</span>
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Is this referral proactive or reactive?</h1>
     <form method="post">

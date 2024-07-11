@@ -1,11 +1,10 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% set pageTitle = "Make a CSIP referral - Digital Prison Services" %}
-{% extends "../../../views/pages/index.njk" %}
+{% set pageTitle = "Make a CSIP referral - DPS" %}
+{% extends "partials/layout.njk" %}
 
-{% block content %}
-<div class="govuk-grid-column-two-thirds">
+{% block innerContent %}
   <h1 class="govuk-heading-l">Make a CSIP referral</h1>
 
   <p>You can use this service to refer {{ (prisoner.firstName + ' ' + prisoner.lastName) | convertToTitleCase }} for a Challenge, Support and Intervention Plan (CSIP).</p>
@@ -46,5 +45,4 @@
         text: "Continue"
     }) }}
   </form>
-</div>
 {% endblock %}
