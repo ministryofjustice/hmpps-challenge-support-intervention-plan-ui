@@ -1,0 +1,42 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Reasons - Make a CSIP referral - DPS" %}
+
+{% block content %}
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">Make a CSIP referral</span>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">What reasons have been given for the behaviour?</h1>
+        <form method="post">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+            {{ govukDetails({
+                summaryText: "What type of information to include",
+                html: '
+            <p>Include any reasons given: </p>
+            <p>
+                <ul>
+                  <li>by the prisoner during conversations with staff members</li>
+                  <li>in information received from other people</li>
+                </ul>
+            </p>
+            '
+            }) }}
+            {{ govukCharacterCount({
+                maxlength: 4000,
+                rows: 5,
+                threshold: "75",
+                id: "knownReasons",
+                name: "knownReasons",
+                value: knownReasons,
+                errorMessage: validationErrors | findError('knownReasons')
+            }) }}
+            {{ govukButton({
+                text: "Continue",
+                preventDoubleClick: true
+            }) }}
+        </form>
+    </div>
+{% endblock %}
