@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
 import { SchemaType } from './schemas'
+import { ContributoryFactor } from '../../../@types/express'
 
 export class ReferralContributoryFactorsController extends BaseJourneyController {
   GET = async (req: Request, res: Response): Promise<void> => {
@@ -14,7 +15,12 @@ export class ReferralContributoryFactorsController extends BaseJourneyController
   }
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response): Promise<void> => {
-    req.journeyData.referral!.contributoryFactors = req.body.contributoryFactors
+    req.journeyData.referral!.contributoryFactors = (req.body.contributoryFactors as ContributoryFactor[]).map(
+      factor =>
+        (req.journeyData.referral!.contributoryFactors as ContributoryFactor[])?.find(
+          itm => itm.factorType.code === factor.factorType.code,
+        ) || factor,
+    )
     res.redirect('contributory-factors-comments')
   }
 }

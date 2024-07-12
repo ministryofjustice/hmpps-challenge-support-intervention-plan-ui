@@ -49,7 +49,7 @@ type ReferralData = {
   otherInformation?: string | null
 }
 
-type ContributoryFactor = {
+export type ContributoryFactor = {
   factorType: ReferenceData
   comment?: string
 }
