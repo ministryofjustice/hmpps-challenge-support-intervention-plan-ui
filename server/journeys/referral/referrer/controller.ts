@@ -3,7 +3,7 @@ import { BaseJourneyController } from '../../base/controller'
 
 export class ReferralReferrerController extends BaseJourneyController {
   GET = async (req: Request, res: Response): Promise<void> => {
-    const areaOfWorkOptions = await this.getReferenceDataOptions(
+    const areaOfWorkOptions = await this.getReferenceDataOptionsForSelect(
       req,
       'area-of-work',
       'Select area',

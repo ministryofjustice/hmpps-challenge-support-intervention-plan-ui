@@ -1,0 +1,71 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% set pageTitle = "Involvement - Make a CSIP referral - Digital Prison Services" %}
+
+{% extends "pages/index.njk" %}
+
+{% block content %}
+
+    <span class="govuk-caption-l">Make a CSIP referral</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Incident involvement</h1>
+
+    <form method="POST">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+      {% set involvementTypeLegend -%}
+        How has {{ (prisoner.firstName + ' ' + prisoner.lastName) | convertToTitleCase }} been involved in the incident?
+      {%- endset %}
+      {{ govukRadios({
+          name: "involvementType",
+          fieldset: {
+              legend: {
+                  text: involvementTypeLegend,
+                  classes: "govuk-fieldset__legend--m"
+              }
+          },
+          items: involvementTypeItems,
+          errorMessage: validationErrors | findError('involvementType')
+      }) }}
+      {% set staffMemberAssaultedHtml %}
+        {{ govukInput({
+          id: "assaultedStaffName",
+          name: "assaultedStaffName",
+          type: "text",
+          spellcheck: false,
+          classes: "govuk-!-width-one-half",
+          label: {
+            text: "Names of staff assaulted"
+          },
+          errorMessage: validationErrors | findError('assaultedStaffName')
+        }) }}
+      {% endset -%}
+      {{ govukRadios({
+          name: "staffAssaulted",
+          fieldset: {
+              legend: {
+                  text: "Were any staff assaulted during the incident?",
+                  classes: "govuk-fieldset__legend--m"
+              }
+          },
+          items: [
+            {
+              value: true,
+              text: "Yes",
+              checked: staffAssaulted === true,
+              conditional: {
+                html: staffMemberAssaultedHtml
+              }
+            },
+            {
+              value: false,
+              text: "No",
+              checked: staffAssaulted === false
+            }
+          ],
+          errorMessage: validationErrors | findError('staffAssaulted')
+      }) }}
+      {{ govukButton({
+          text: "Continue"
+      }) }}
+    </form>
+{% endblock %}

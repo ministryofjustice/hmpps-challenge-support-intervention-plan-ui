@@ -13,7 +13,7 @@ export const buildErrorSummaryList = (array: fieldErrors) => {
 }
 
 export const findError = (errors: fieldErrors, fieldName: string) => {
-  if (!errors?.[fieldName]) {
+  if (!errors) {
     return null
   }
   return {
@@ -28,21 +28,24 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
     if (!schema) {
       return next()
     }
-    const result = (typeof schema === 'function' ? await schema(req) : schema).safeParse(req.body)
+    const resolvedSchema = typeof schema === 'function' ? await schema(req) : schema
+    const result = resolvedSchema.safeParse(req.body)
     if (result.success) {
       req.body = result.data
       return next()
     }
     req.flash('formResponses', JSON.stringify(req.body))
+
     const deduplicatedFieldErrors = Object.fromEntries(
       Object.entries(result.error.flatten().fieldErrors).map(([key, value]) => [key, [...new Set(value || [])]]),
     )
-    const errors = JSON.stringify(deduplicatedFieldErrors)
     if (process.env.NODE_ENV === 'test') {
       // eslint-disable-next-line no-console
-      console.error(`There were validation errors: ${JSON.stringify(deduplicatedFieldErrors)}`)
+      console.error(
+        `There were validation errors: ${JSON.stringify(result.error.format())} || body was: ${JSON.stringify(req.body)}`,
+      )
     }
-    req.flash('validationErrors', errors)
+    req.flash('validationErrors', JSON.stringify(deduplicatedFieldErrors))
     return res.redirect('back')
   }
 }

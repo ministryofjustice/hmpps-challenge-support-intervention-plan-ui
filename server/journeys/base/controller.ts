@@ -5,7 +5,19 @@ import { ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes
 export class BaseJourneyController {
   constructor(private readonly csipApiService: CsipApiService) {}
 
-  getReferenceDataOptions = async (
+  getReferenceDataOptionsForRadios = async (
+    req: Request,
+    domain: ReferenceDataType,
+    value?: ReferenceData | string,
+  ) => [
+    ...(await this.csipApiService.getReferenceData(req, domain)).map(refData => ({
+      value: refData.code,
+      text: refData.description,
+      checked: typeof value === 'string' ? refData.code === value : refData.code === value?.code,
+    })),
+  ]
+
+  getReferenceDataOptionsForSelect = async (
     req: Request,
     domain: ReferenceDataType,
     label: string,

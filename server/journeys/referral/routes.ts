@@ -12,6 +12,7 @@ import { ReferralReasonsRoutes } from './reasons/routes'
 import { ReferralContributoryFactorsRoutes } from './contributory-factors/routes'
 import { ReferralSaferCustodyRoutes } from './safer-custody/routes'
 import { ReferralAdditionalInformationRoutes } from './additional-information/routes'
+import { InvolvementRoutes } from './involvement/routes'
 
 function Routes(csipApiService: CsipApiService): Router {
   const router = Router({ mergeParams: true })
@@ -26,6 +27,7 @@ function Routes(csipApiService: CsipApiService): Router {
   router.use('/contributory-factors', ReferralContributoryFactorsRoutes(csipApiService))
   router.use('/safer-custody', ReferralSaferCustodyRoutes())
   router.use('/additional-information', ReferralAdditionalInformationRoutes())
+  router.use('/involvement', InvolvementRoutes(csipApiService))
 
   return router
 }
