@@ -1,0 +1,82 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% set pageTitle = "Involvement - Make a CSIP referral - Digital Prison Services" %}
+
+{% extends "pages/index.njk" %}
+
+{% block content %}
+
+    <span class="govuk-caption-l">Make a CSIP referral</span>
+
+    {% set pageHeading -%}
+        {{ "Behaviour involvement" if isProactiveReferral else "Incident involvement" }}?
+      {%- endset %}
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ pageHeading }}</h1>
+
+    <form method="POST">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+      {% set involvementTypeLabel -%}
+        How has {{ (prisoner.firstName + ' ' + prisoner.lastName) | convertToTitleCase }} been involved in the {{ "behaviour" if isProactiveReferral else "incident" }}?
+      {%- endset %}
+
+      {% set staffAssaultedLabel -%}
+        {{ "Have any staff been assaulted as a result of this behaviour?" if isProactiveReferral else "Were any staff assaulted during the incident?" }}?
+      {%- endset %}
+
+      {{ govukRadios({
+          name: "involvementType",
+          fieldset: {
+              legend: {
+                  text: involvementTypeLabel,
+                  classes: "govuk-fieldset__legend--m"
+              }
+          },
+          items: involvementTypeItems,
+          errorMessage: validationErrors | findError('involvementType')
+      }) }}
+      {% set staffMemberAssaultedHtml %}
+        {{ govukInput({
+          id: "assaultedStaffName",
+          name: "assaultedStaffName",
+          type: "text",
+          spellcheck: false,
+          classes: "govuk-!-width-one-half",
+          label: {
+            text: "Names of staff assaulted"
+          },
+          value: assaultedStaffName,
+          errorMessage: validationErrors | findError('assaultedStaffName')
+        }) }}
+      {% endset -%}
+      {{ govukRadios({
+          name: "staffAssaulted",
+          fieldset: {
+              legend: {
+                  text: staffAssaultedLabel,
+                  classes: "govuk-fieldset__legend--m"
+              }
+          },
+          items: [
+            {
+              value: true,
+              text: "Yes",
+              checked: staffAssaulted === true,
+              conditional: {
+                html: staffMemberAssaultedHtml
+              }
+            },
+            {
+              value: false,
+              text: "No",
+              checked: staffAssaulted === false
+            }
+          ],
+          errorMessage: validationErrors | findError('staffAssaulted')
+      }) }}
+      {{ govukButton({
+          text: "Continue"
+      }) }}
+    </form>
+{% endblock %}

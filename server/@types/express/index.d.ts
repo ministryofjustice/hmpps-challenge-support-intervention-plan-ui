@@ -47,6 +47,9 @@ type ReferralData = {
   contributoryFactors?: ContributoryFactor[]
   isSaferCustodyTeamInformed?: YesNoAnswer
   otherInformation?: string | null
+  incidentInvolvement?: ReferenceData
+  staffAssaulted?: boolean
+  assaultedStaffName?: string | null
 }
 
 type ContributoryFactor = {
