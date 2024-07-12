@@ -5,6 +5,19 @@
 
 {% set pageTitle = "Comments on contributory factors - Make a CSIP referral - DPS" %}
 
+{% set contributoryFactorRows = [] %}
+{% for factor in contributoryFactors %}
+    {% set contributoryFactorRows = (contributoryFactorRows.push([
+        {
+            text: factor.factorType.description
+        },
+        {
+            classes: 'govuk-link',
+            html: '<a href="' + (factor.factorType.code | lower | escape)  + '-comment">' + ('Edit comment' if factor.comment else 'Add comment') + '<span class="govuk-visually-hidden"> for ' + (factor.factorType.description | escape) + ' factor</span></a>'
+        }
+    ]), prisonersList) %}
+{% endfor %}
+
 {% block innerContent %}
     <span class="govuk-caption-l">Make a CSIP referral</span>
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Add comments about the contributory factors (optional)</h1>

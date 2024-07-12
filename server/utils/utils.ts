@@ -28,17 +28,3 @@ export const initialiseName = (fullName: string | undefined | null): string | nu
   }
   return `${firstName[0]}. ${array.reverse()[0]}`
 }
-
-export const escapeHTML = (str: string | undefined): string | undefined =>
-  str &&
-  str.replace(
-    /[&<>'"]/g,
-    (tag: string): string =>
-      ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        "'": '&#39;',
-        '"': '&quot;',
-      })[tag]!,
-  )
