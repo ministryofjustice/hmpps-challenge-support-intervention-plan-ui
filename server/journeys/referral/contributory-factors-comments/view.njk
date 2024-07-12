@@ -1,0 +1,45 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Comments on contributory factors - Make a CSIP referral - DPS" %}
+
+{% set contributoryFactorRows = [] %}
+{% for factor in contributoryFactors %}
+    {% set contributoryFactorRows = (contributoryFactorRows.push([
+        {
+            text: factor.factorType.description
+        },
+        {
+            classes: 'govuk-link',
+            html: '<a href="' + (factor.factorType.code | lower | escape)  + '-comment">' + ('Edit comment' if factor.comment else 'Add comment') + '<span class="govuk-visually-hidden"> for ' + (factor.factorType.description | escape) + ' factor</span></a>'
+        }
+    ]), prisonersList) %}
+{% endfor %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Make a CSIP referral</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Add comments about the contributory factors (optional)</h1>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukTable({
+            id: "contributoryFactorsComments",
+            name: "contributoryFactorsComments",
+            firstCellIsHeader: false,
+            head: [
+                {
+                    text: "Contributory factor"
+                },
+                {
+                    text: ""
+                }
+            ],
+            rows: contributoryFactorRows
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}
