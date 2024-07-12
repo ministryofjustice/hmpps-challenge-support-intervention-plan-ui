@@ -26,9 +26,7 @@ export class InvolvementController extends BaseJourneyController {
   }
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response): Promise<void> => {
-    if (req.body.involvementType) {
-      req.journeyData.referral!.incidentInvolvement = req.body.involvementType
-    }
+    req.journeyData.referral!.incidentInvolvement = req.body.involvementType
     req.journeyData.referral!.staffAssaulted = req.body.staffAssaulted
     req.journeyData.referral!.assaultedStaffName = req.body.assaultedStaffName
 

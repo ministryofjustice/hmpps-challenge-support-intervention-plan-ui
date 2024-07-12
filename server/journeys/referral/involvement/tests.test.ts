@@ -288,6 +288,15 @@ describe('tests', () => {
     [{ _csrf: '', assaultedStaffName: '', involvementType: 'VIC' }, ['staffAssaulted']],
     [{ _csrf: '', assaultedStaffName: '', staffAssaulted: 'false' }, ['involvementType']],
     [{ _csrf: '', assaultedStaffName: '', staffAssaulted: 'true', involvementType: 'VIC' }, ['assaultedStaffName']],
+    [
+      {
+        _csrf: '',
+        staffAssaulted: 'true',
+        involvementType: 'VIC',
+        assaultedStaffName: 'n'.repeat(241),
+      },
+      ['assaultedStaffName'],
+    ],
     [{ _csrf: '', assaultedStaffName: 'Test Name', staffAssaulted: 'true', involvementType: 'VIC' }, []],
   ] as [Record<string, unknown>, ('involvementType' | 'staffAssaulted' | 'assaultedStaffName' | '_csrf')[]][])(
     'should prepopulate %j',
