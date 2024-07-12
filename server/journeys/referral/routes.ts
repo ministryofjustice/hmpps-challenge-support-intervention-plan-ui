@@ -11,6 +11,7 @@ import { ReferralDescriptionRoutes } from './description/routes'
 import { ReferralReasonsRoutes } from './reasons/routes'
 import { ReferralContributoryFactorsRoutes } from './contributory-factors/routes'
 import { ReferralContributoryFactorsCommentsRoutes } from './contributory-factors-comments/routes'
+import { ReferralContributoryFactorCommentRoutes } from './contributory-factor-comment/routes'
 import { ReferralSaferCustodyRoutes } from './safer-custody/routes'
 import { ReferralAdditionalInformationRoutes } from './additional-information/routes'
 import { InvolvementRoutes } from './involvement/routes'
@@ -27,6 +28,7 @@ function Routes(csipApiService: CsipApiService): Router {
   router.use('/reasons', ReferralReasonsRoutes())
   router.use('/contributory-factors', ReferralContributoryFactorsRoutes(csipApiService))
   router.use('/contributory-factors-comments', ReferralContributoryFactorsCommentsRoutes())
+  router.use('/:factorTypeCode-comment', ReferralContributoryFactorCommentRoutes())
   router.use('/safer-custody', ReferralSaferCustodyRoutes())
   router.use('/additional-information', ReferralAdditionalInformationRoutes())
   router.use('/involvement', InvolvementRoutes(csipApiService))
