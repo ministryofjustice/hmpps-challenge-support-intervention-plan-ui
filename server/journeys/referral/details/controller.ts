@@ -4,13 +4,13 @@ import { formatInputDate, formatInputTime } from '../../../utils/datetimeUtils'
 
 export class ReferralDetailsController extends BaseJourneyController {
   GET = async (req: Request, res: Response): Promise<void> => {
-    const incidentLocationOptions = await this.getReferenceDataOptions(
+    const incidentLocationOptions = await this.getReferenceDataOptionsForSelect(
       req,
       'incident-location',
       'Select location',
       res.locals.formResponses?.['incidentLocation'] || req.journeyData.referral!.incidentLocation,
     )
-    const incidentTypeOptions = await this.getReferenceDataOptions(
+    const incidentTypeOptions = await this.getReferenceDataOptionsForSelect(
       req,
       'incident-type',
       req.journeyData.referral!.isProactiveReferral ? 'Select main concern' : 'Select incident type',

@@ -8,18 +8,15 @@
 {% block content %}
 
     <span class="govuk-caption-l">Make a CSIP referral</span>
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Incident involvement</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ pageHeading }}</h1>
 
     <form method="POST">
       <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-      {% set involvementTypeLegend -%}
-        How has {{ (prisoner.firstName + ' ' + prisoner.lastName) | convertToTitleCase }} been involved in the incident?
-      {%- endset %}
       {{ govukRadios({
           name: "involvementType",
           fieldset: {
               legend: {
-                  text: involvementTypeLegend,
+                  text: involvementTypeLabel,
                   classes: "govuk-fieldset__legend--m"
               }
           },
@@ -36,6 +33,7 @@
           label: {
             text: "Names of staff assaulted"
           },
+          value: assaultedStaffName,
           errorMessage: validationErrors | findError('assaultedStaffName')
         }) }}
       {% endset -%}
@@ -43,7 +41,7 @@
           name: "staffAssaulted",
           fieldset: {
               legend: {
-                  text: "Were any staff assaulted during the incident?",
+                  text: staffAssaultedLabel,
                   classes: "govuk-fieldset__legend--m"
               }
           },

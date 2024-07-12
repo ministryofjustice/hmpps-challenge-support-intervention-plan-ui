@@ -36,7 +36,9 @@ const csipApiService = {
 } as unknown as CsipApiService
 const journeyData = {
   prisoner: TEST_PRISONER,
-  referral: {},
+  referral: {
+    isProactiveReferral: true,
+  },
 } as JourneyData
 beforeEach(() => {
   app = appWithAllRoutes({
@@ -54,7 +56,7 @@ afterEach(() => {
 })
 
 describe('tests', () => {
-  it('render on behalf of on get', async () => {
+  it('renders behaviour involvement on get', async () => {
     const res = await request(app).get(`/${uuid}/referral/involvement`).expect(200).expect('Content-Type', /html/)
 
     const div = document.createElement('div')
@@ -69,8 +71,51 @@ describe('tests', () => {
     })
     expect(getByRole(topLevelElement, 'heading', { name: /behaviour involvement/i })).toBeVisible()
     expect(getByText(topLevelElement, /make a csip referral/i)).toBeVisible()
-    expect(getByText(topLevelElement, /How has Test Person been involved/)).toBeVisible()
+    expect(getByText(topLevelElement, /How has Test Person been involved in the behaviour?/)).toBeVisible()
     expect(getByText(topLevelElement, /have any staff been assaulted/i)).toBeVisible()
+    expect(queryByRole(topLevelElement, 'textbox', { name: 'assaultedStaffName' })).toBeNull()
+    expect(getByRole(topLevelElement, 'button', { name: /continue/i })).toBeVisible()
+    expect(queryByAttribute('class', topLevelElement, 'govuk-breadcrumbs')).toBeNull()
+    expect(getByRole(topLevelElement, 'link', { name: 'Back' })).toBeVisible()
+
+    await user.click(getByRole(topLevelElement, 'radio', { name: /yes/i }))
+    expect(await findByRole(topLevelElement, 'textbox', { name: /names of staff assaulted/i })).toBeVisible()
+  })
+
+  it('renders incident involvement on get', async () => {
+    const res = await request(
+      appWithAllRoutes({
+        services: {
+          csipApiService,
+          auditService,
+        },
+        uuid,
+        journeyData: {
+          ...journeyData,
+          referral: {
+            isProactiveReferral: false,
+          },
+        },
+      }),
+    )
+      .get(`/${uuid}/referral/involvement`)
+      .expect(200)
+      .expect('Content-Type', /html/)
+
+    const div = document.createElement('div')
+    div.innerHTML = res.text
+    document.body.appendChild(div)
+    const topLevelElement = document.documentElement
+    const user = userEvent.setup()
+    const radios = getAllByRole(topLevelElement, 'radio')
+    radios.forEach(radio => {
+      expect(radio).not.toBeChecked()
+      expect(radio).toBeVisible()
+    })
+    expect(getByRole(topLevelElement, 'heading', { name: /incident involvement/i })).toBeVisible()
+    expect(getByText(topLevelElement, /make a csip referral/i)).toBeVisible()
+    expect(getByText(topLevelElement, /How has Test Person been involved in the incident?/)).toBeVisible()
+    expect(getByText(topLevelElement, /were any staff assaulted/i)).toBeVisible()
     expect(queryByRole(topLevelElement, 'textbox', { name: 'assaultedStaffName' })).toBeNull()
     expect(getByRole(topLevelElement, 'button', { name: /continue/i })).toBeVisible()
     expect(queryByAttribute('class', topLevelElement, 'govuk-breadcrumbs')).toBeNull()
