@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
 import { BaseJourneyController } from '../../base/controller'
-import { convertToTitleCase } from '../../../utils/utils'
 
 export class InvolvementController extends BaseJourneyController {
   GET = async (req: Request, res: Response): Promise<void> => {
@@ -16,17 +15,9 @@ export class InvolvementController extends BaseJourneyController {
         ? undefined
         : res.locals.formResponses?.['staffAssaulted'] === 'true'
 
-    const prisonerFullName = `${res.locals.prisoner!.firstName} ${res.locals.prisoner!.lastName}`
-    const involvementTypeLabel = `How has ${convertToTitleCase(prisonerFullName)} been involved in the ${req.journeyData.referral!.isProactiveReferral ? 'behaviour' : 'incident'}?`
-    const staffAssaultedLabel = req.journeyData.referral!.isProactiveReferral
-      ? 'Have any staff been assaulted as a result of this behaviour?'
-      : 'Were any staff assaulted during the incident?'
-    const pageHeading = req.journeyData.referral!.isProactiveReferral ? 'Behaviour involvement' : 'Incident involvement'
     res.render('referral/involvement/view', {
       involvementTypeItems: items,
-      involvementTypeLabel,
-      staffAssaultedLabel,
-      pageHeading,
+      isProactiveReferral: Boolean(req.journeyData.referral!.isProactiveReferral),
       staffAssaulted: formResponsesStaffAssaulted || req.journeyData.referral!.staffAssaulted,
       assaultedStaffName:
         res.locals.formResponses?.['assaultedStaffName'] || req.journeyData.referral!.assaultedStaffName,

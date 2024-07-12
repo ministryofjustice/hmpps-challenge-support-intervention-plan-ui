@@ -8,10 +8,23 @@
 {% block content %}
 
     <span class="govuk-caption-l">Make a CSIP referral</span>
+
+    {% set pageHeading -%}
+        {{ "Behaviour involvement" if isProactiveReferral else "Incident involvement" }}?
+      {%- endset %}
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ pageHeading }}</h1>
 
     <form method="POST">
       <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+      {% set involvementTypeLabel -%}
+        How has {{ (prisoner.firstName + ' ' + prisoner.lastName) | convertToTitleCase }} been involved in the {{ "behaviour" if isProactiveReferral else "incident" }}?
+      {%- endset %}
+
+      {% set staffAssaultedLabel -%}
+        {{ "Have any staff been assaulted as a result of this behaviour?" if isProactiveReferral else "Were any staff assaulted during the incident?" }}?
+      {%- endset %}
+
       {{ govukRadios({
           name: "involvementType",
           fieldset: {
