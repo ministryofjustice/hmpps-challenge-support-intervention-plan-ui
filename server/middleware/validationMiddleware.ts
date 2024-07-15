@@ -13,7 +13,7 @@ export const buildErrorSummaryList = (array: fieldErrors) => {
 }
 
 export const findError = (errors: fieldErrors, fieldName: string) => {
-  if (!errors) {
+  if (!errors?.[fieldName]) {
     return null
   }
   return {
