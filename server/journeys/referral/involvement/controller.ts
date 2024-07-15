@@ -18,10 +18,10 @@ export class InvolvementController extends BaseJourneyController {
     res.render('referral/involvement/view', {
       involvementTypeItems: items,
       isProactiveReferral: Boolean(req.journeyData.referral!.isProactiveReferral),
-      staffAssaulted: formResponsesStaffAssaulted || req.journeyData.referral!.staffAssaulted,
+      staffAssaulted: formResponsesStaffAssaulted ?? req.journeyData.referral!.staffAssaulted,
       assaultedStaffName:
         res.locals.formResponses?.['assaultedStaffName'] || req.journeyData.referral!.assaultedStaffName,
-      backUrl: true,
+      backUrl: 'details',
     })
   }
 

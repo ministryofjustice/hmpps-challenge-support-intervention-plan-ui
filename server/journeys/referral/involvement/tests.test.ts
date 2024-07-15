@@ -287,6 +287,7 @@ describe('tests', () => {
     [{ _csrf: '', assaultedStaffName: '', involvementType: 'FOOBAR' }, ['staffAssaulted', 'involvementType']],
     [{ _csrf: '', assaultedStaffName: '', involvementType: 'VIC' }, ['staffAssaulted']],
     [{ _csrf: '', assaultedStaffName: '', staffAssaulted: 'false' }, ['involvementType']],
+    [{ _csrf: '', assaultedStaffName: '', staffAssaulted: 'true' }, ['involvementType', 'assaultedStaffName']],
     [{ _csrf: '', assaultedStaffName: '', staffAssaulted: 'true', involvementType: 'VIC' }, ['assaultedStaffName']],
     [
       {
