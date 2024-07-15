@@ -25,7 +25,8 @@
             },
             value: incidentDate,
             errorMessage: validationErrors | findError('incidentDate'),
-            classes: 'hmpps-datepicker--fixed-width'
+            classes: 'hmpps-datepicker--fixed-width',
+            maxDate: todayStringGBFormat()
         }) }}
         {{ govukDateInput({
             id: "incidentTime",

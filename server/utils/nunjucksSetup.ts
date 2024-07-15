@@ -7,6 +7,7 @@ import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
 import { ApplicationInfo } from '../applicationInfo'
 import config from '../config'
 import { buildErrorSummaryList, findError } from '../middleware/validationMiddleware'
+import { todayStringGBFormat } from './datetimeUtils'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -55,4 +56,5 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   njkEnv.addFilter('findError', findError)
   njkEnv.addFilter('convertToTitleCase', convertToTitleCase)
   njkEnv.addFilter('sentenceCase', sentenceCase)
+  njkEnv.addGlobal('todayStringGBFormat', todayStringGBFormat)
 }
