@@ -10,7 +10,7 @@
     <span class="govuk-caption-l">Make a CSIP referral</span>
 
     {% set pageHeading -%}
-        {{ "Behaviour involvement" if isProactiveReferral else "Incident involvement" }}?
+        {{ "Behaviour involvement" if isProactiveReferral else "Incident involvement" }}
       {%- endset %}
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ pageHeading }}</h1>
 
@@ -22,7 +22,7 @@
       {%- endset %}
 
       {% set staffAssaultedLabel -%}
-        {{ "Have any staff been assaulted as a result of this behaviour?" if isProactiveReferral else "Were any staff assaulted during the incident?" }}?
+        {{ "Have any staff been assaulted as a result of this behaviour?" if isProactiveReferral else "Were any staff assaulted during the incident?" }}
       {%- endset %}
 
       {{ govukRadios({
