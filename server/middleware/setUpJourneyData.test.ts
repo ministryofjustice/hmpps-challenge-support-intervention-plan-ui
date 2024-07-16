@@ -73,7 +73,7 @@ describe('setUpJourneyData', () => {
       req.session.journeyDataMap = {}
       const existingData: JourneyData = {
         instanceUnixEpoch: Date.now(),
-        logNumber: 'log_number',
+        logCode: 'log_number',
       }
       req.session.journeyDataMap[journeyId] = existingData
 

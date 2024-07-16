@@ -18,8 +18,9 @@ type JourneyDataMap = {
 
 export type JourneyData = {
   instanceUnixEpoch: number
+  checkAnswers?: boolean
   prisoner?: PrisonerSummary
-  logNumber?: string
+  logCode?: string
   referral?: ReferralData
   saferCustodyScreening?: SaferCustodyScreening
   investigation?: Investigation
