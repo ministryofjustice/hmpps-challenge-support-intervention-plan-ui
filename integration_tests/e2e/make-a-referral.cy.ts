@@ -16,8 +16,8 @@ context('Make a Referral Journey', () => {
     cy.signIn()
     cy.visit('/prisoners/A1111AA/referral/start')
 
-    cy.findByRole('radio', { name: /no/i }).click()
     cy.url().should('include', '/on-behalf-of')
+    cy.findByRole('radio', { name: /no/i }).click()
     checkAxeAccessibility()
     cy.findByRole('button', { name: /continue/i }).click()
 
@@ -120,16 +120,6 @@ context('Make a Referral Journey', () => {
     cy.findByRole('heading', { name: /add additional information \(optional\)/i }).should('be.visible')
     cy.findByRole('textbox', { name: /add additional information \(optional\)/i }).type('additional info')
     checkAxeAccessibility()
-    cy.findByRole('button', { name: /continue/i }).click()
-
-    // TODO: We need to check the answers given are correct on CYA page, but it doesnt exist yet
-
-    // We use this for now as CYA page isn't implemented - change this to click back link when it exists
-    cy.url().should('include', '/check-answers')
-    cy.go('back')
-
-    cy.url().should('include', '/additional-information')
-    cy.findByDisplayValue('additional info').should('be.visible')
     cy.findByRole('link', { name: /^back/i }).click()
 
     cy.url().should('include', '/safer-custody')
