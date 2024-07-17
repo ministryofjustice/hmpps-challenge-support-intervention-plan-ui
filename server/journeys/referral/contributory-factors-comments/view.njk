@@ -15,7 +15,7 @@
             classes: 'govuk-link',
             html: '<a href="' + (factor.factorType.code | lower | escape)  + '-comment">' + ('Edit comment' if factor.comment else 'Add comment') + '<span class="govuk-visually-hidden"> for ' + (factor.factorType.description | escape) + ' factor</span></a>'
         }
-    ]), prisonersList) %}
+    ]), contributoryFactorRows) %}
 {% endfor %}
 
 {% block innerContent %}

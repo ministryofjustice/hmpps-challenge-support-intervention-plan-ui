@@ -1,27 +1,20 @@
 import { Locals, Request } from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import { agent as request } from 'supertest'
-import { getByRole, getByText } from '@testing-library/dom'
+import { getByRole, queryByText } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
-import CsipApiService from '../../../services/csipApi/csipApiService'
-import testRequestCaptor, { TestRequestCaptured } from '../../../routes/testutils/testRequestCaptor'
+import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
 import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
 import { JourneyData } from '../../../@types/express'
-import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
+import { TEST_DPS_HOMEPAGE, TEST_PRISONER } from '../../../routes/testutils/testConstants'
 
-const TEST_PATH = 'referral/contributory-factors'
+const TEST_PATH = 'referral/check-answers'
 const uuid = uuidv4()
 
-const csipApiService = {
-  getReferenceData: () => [
-    { code: 'A', description: 'TEXT' },
-    { code: 'B', description: 'TEXT2' },
-  ],
-} as unknown as CsipApiService
 const journeyDataMock = {
   prisoner: TEST_PRISONER,
   referral: {
-    isOnBehalfOfReferral: false,
+    isOnBehalfOfReferral: true,
     referredBy: 'Test User',
     refererArea: { code: 'A', description: 'TEXT' },
     isProactiveReferral: true,
@@ -29,11 +22,28 @@ const journeyDataMock = {
     incidentType: { code: 'A', description: 'TEXT' },
     incidentDate: '2024-12-25',
     incidentTime: '23:59',
+    incidentInvolvement: { code: 'A', description: 'TEXT' },
+    staffAssaulted: true,
+    assaultedStaffName: 'Staff Name',
     descriptionOfConcern: 'Sample Concern Text',
+    knownReasons: 'Sample reason text',
+    contributoryFactors: [
+      {
+        factorType: { code: 'A', description: 'Text' },
+      },
+      {
+        factorType: { code: 'B', description: 'Text for type-B' },
+        comment: 'Sample Comment Text',
+      },
+      {
+        factorType: { code: 'C', description: 'Text with a TLA' },
+      },
+    ],
+    isSaferCustodyTeamInformed: 'yes',
+    otherInformation: 'Sample information text',
   },
 } as JourneyData
 
-let reqCaptured: TestRequestCaptured
 let requestCaptor: (req: Request) => void
 
 const app = (
@@ -45,9 +55,10 @@ const app = (
     validationErrors?: Locals['validationErrors']
   } = { journeyData: journeyDataMock, validationErrors: undefined },
 ) => {
-  ;[reqCaptured, requestCaptor] = testRequestCaptor(journeyData, uuid)
+  // eslint-disable-next-line prefer-destructuring
+  requestCaptor = testRequestCaptor(journeyData, uuid)[1]
   return appWithAllRoutes({
-    services: { csipApiService },
+    services: {},
     uuid,
     requestCaptor,
     validationErrors,
@@ -58,99 +69,259 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-describe('GET /referral/contributory-factors', () => {
-  it('render page', async () => {
+describe('GET /referral/check-answers', () => {
+  it('render page for proactive referral', async () => {
     const result = await request(app()).get(`/${uuid}/${TEST_PATH}`).expect(200).expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
-    expect(getByText(html, 'What are the contributory factors?')).toBeVisible()
-    expect((getByRole(html, 'checkbox', { name: 'TEXT' }) as HTMLInputElement).checked).toBeFalsy()
-    expect((getByRole(html, 'checkbox', { name: 'TEXT2' }) as HTMLInputElement).checked).toBeFalsy()
+    expect(getByRole(html, 'heading', { name: 'Behaviour details' })).toBeVisible()
+    expect(getByRole(html, 'heading', { name: 'Behaviour involvement' })).toBeVisible()
+    expect(getByRole(html, 'heading', { name: 'Behaviour description' })).toBeVisible()
+
+    expect(queryByText(html, 'Test User')).toBeInTheDocument()
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change if the referral is being made on behalf of someone else or not',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/on-behalf-of$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change name of referrer',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/referrer$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change area of work',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/referrer$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change if the referral is proactive or reactive',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/proactive-or-reactive$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change date of occurrence',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/details$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change time of occurrence',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/details$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change location of occurrence',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/details$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change main concern',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/details$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change how the prisoner was involved',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/involvement$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change if a staff member was assaulted or not',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/involvement$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change the name of the staff members assaulted',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/involvement$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change the description of the behaviour and concerns',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/description$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change the reasons given for the behaviour',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/reasons$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change the contributory factors',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/contributory-factors$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change the comment on text with a TLA factors',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/c-comment$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change if Safer Custody are aware of the referral or not',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/safer-custody$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change the additional information relating to the referral',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/additional-information$/)
+
+    expect((getByRole(html, 'link', { name: 'Cancel' }) as HTMLLinkElement).href).toEqual(TEST_DPS_HOMEPAGE)
   })
 
-  it('pre-fill form with values from journeyData', async () => {
+  it('render page for reactive referral', async () => {
     const result = await request(
       app({
         journeyData: {
           ...journeyDataMock,
           referral: {
             ...journeyDataMock.referral,
-            contributoryFactors: [{ factorType: { code: 'A', description: 'TEXT' } }],
+            isOnBehalfOfReferral: false,
+            isProactiveReferral: false,
           },
-        } as JourneyData,
+        },
       }),
     )
       .get(`/${uuid}/${TEST_PATH}`)
       .expect(200)
       .expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
-    expect(getByText(html, 'What are the contributory factors?')).toBeVisible()
-    expect((getByRole(html, 'checkbox', { name: 'TEXT' }) as HTMLInputElement).checked).toBeTruthy()
-    expect((getByRole(html, 'checkbox', { name: 'TEXT2' }) as HTMLInputElement).checked).toBeFalsy()
-  })
+    expect(getByRole(html, 'heading', { name: 'Incident details' })).toBeVisible()
+    expect(getByRole(html, 'heading', { name: 'Incident involvement' })).toBeVisible()
+    expect(getByRole(html, 'heading', { name: 'Incident description' })).toBeVisible()
 
-  it('render validation errors if any', async () => {
-    const result = await request(
-      app({ journeyData: journeyDataMock, validationErrors: { propertyName: ['Error message'] } }),
-    )
-      .get(`/${uuid}/${TEST_PATH}`)
-      .expect(200)
-      .expect('Content-Type', /html/)
+    expect(queryByText(html, 'Test User')).not.toBeInTheDocument()
 
-    const html = createTestHtmlElement(result.text)
-    expect(getByText(html, 'There is a problem')).toBeVisible()
-    const error = getByRole(html, 'link', { name: 'Error message' }) as HTMLLinkElement
-    expect(error).toBeVisible()
-    expect(error.href).toMatch(/#propertyName$/)
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change if the referral is being made on behalf of someone else or not',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/on-behalf-of$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change area of work',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/area-of-work$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change if the referral is proactive or reactive',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/proactive-or-reactive$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change date of incident',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/details$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change time of incident',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/details$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change location of incident',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/details$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change incident type',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/details$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change the description of the incident and concerns',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/description$/)
+
+    expect(
+      (
+        getByRole(html, 'link', {
+          name: 'Change the reasons given for the incident',
+        }) as HTMLLinkElement
+      ).href,
+    ).toMatch(/reasons$/)
   })
 })
 
-describe('POST /referral/contributory-factors', () => {
-  it('redirect to /referral/contributory-factors-comments, save multiple contributory factors on valid request', async () => {
+describe('POST /referral/check-answers', () => {
+  it('redirect to /referral/confirmation', async () => {
     await request(app())
       .post(`/${uuid}/${TEST_PATH}`)
       .type('form')
-      .send({ contributoryFactors: ['A', 'B'] })
+      .send({})
       .expect(302)
-      .expect('Location', 'contributory-factors-comments')
-
-    expect(reqCaptured.journeyData().referral?.contributoryFactors).toEqual([
-      { factorType: { code: 'A', description: 'TEXT' } },
-      { factorType: { code: 'B', description: 'TEXT2' } },
-    ])
-  })
-
-  it('redirect to /referral/contributory-factors-comments, save single contributory factor on valid request', async () => {
-    await request(app())
-      .post(`/${uuid}/${TEST_PATH}`)
-      .type('form')
-      .send({ contributoryFactors: 'B' })
-      .expect(302)
-      .expect('Location', 'contributory-factors-comments')
-
-    expect(reqCaptured.journeyData().referral?.contributoryFactors).toEqual([
-      { factorType: { code: 'B', description: 'TEXT2' } },
-    ])
-  })
-
-  it('redirect to go back and set validation errors if submitted contributory factor is missing', async () => {
-    await request(app())
-      .post(`/${uuid}/${TEST_PATH}`)
-      .type('form')
-      .send({ contributoryFactors: undefined })
-      .expect(302)
-      .expect('Location', '/')
-
-    expect(reqCaptured.validationErrors()).toEqual({ contributoryFactors: ['Select the contributory factors'] })
-  })
-
-  it('redirect to go back and set validation errors if submitted contributory factor does not exist or is inactive', async () => {
-    await request(app())
-      .post(`/${uuid}/${TEST_PATH}`)
-      .type('form')
-      .send({ contributoryFactors: ['A', 'C'] })
-      .expect(302)
-      .expect('Location', '/')
-
-    expect(reqCaptured.validationErrors()).toEqual({ contributoryFactors: ['Select the contributory factors'] })
+      .expect('Location', 'confirmation')
   })
 })

@@ -1,0 +1,178 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% extends "referral/check-answers/view-base.njk" %}
+
+{% block proactiveOrReactiveContent %}
+    <h1 class="govuk-heading-m">Incident details</h1>
+    {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-7",
+        rows: [
+            {
+                key: {
+                text: "Date of incident"
+            },
+                value: {
+                text: referral.incidentDate | formatDisplayDate
+            },
+                actions: {
+                items: [
+                    {
+                        href: "details",
+                        text: "Change",
+                        visuallyHiddenText: "date of incident"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Time of incident"
+            },
+                value: {
+                text: referral.incidentTime or "Not provided"
+            },
+                actions: {
+                items: [
+                    {
+                        href: "details",
+                        text: "Change",
+                        visuallyHiddenText: "time of incident"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Location of incident"
+            },
+                value: {
+                text: referral.incidentLocation.description
+            },
+                actions: {
+                items: [
+                    {
+                        href: "details",
+                        text: "Change",
+                        visuallyHiddenText: "location of incident"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Incident type"
+            },
+                value: {
+                text: referral.incidentType.description
+            },
+                actions: {
+                items: [
+                    {
+                        href: "details",
+                        text: "Change",
+                        visuallyHiddenText: "incident type"
+                    }
+                ]
+            }
+            }
+        ]
+    }) }}
+
+    <h1 class="govuk-heading-m">Incident involvement</h1>
+    {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-7",
+        rows: [
+            {
+                key: {
+                text: "Prisoner involvement"
+            },
+                value: {
+                text: referral.incidentInvolvement.description
+            },
+                actions: {
+                items: [
+                    {
+                        href: "involvement",
+                        text: "Change",
+                        visuallyHiddenText: "how the prisoner was involved"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Staff assaulted"
+            },
+                value: {
+                text: 'Yes' if referral.staffAssaulted else 'No'
+            },
+                actions: {
+                items: [
+                    {
+                        href: "involvement",
+                        text: "Change",
+                        visuallyHiddenText: "if a staff member was assaulted or not"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Names of staff assaulted"
+            },
+                value: {
+                text: referral.assaultedStaffName or ''
+            },
+                actions: {
+                items: [
+                    {
+                        href: "involvement",
+                        text: "Change",
+                        visuallyHiddenText: "the name of the staff members assaulted"
+                    }
+                ]
+            }
+            }
+        ] | filterBy(involvementFilter)
+    }) }}
+
+    <h1 class="govuk-heading-m">Incident description</h1>
+    {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-7",
+        rows: [
+            {
+                key: {
+                text: "Description of incident and concerns"
+            },
+                value: {
+                text: referral.descriptionOfConcern
+            },
+                actions: {
+                items: [
+                    {
+                        href: "description",
+                        text: "Change",
+                        visuallyHiddenText: "the description of the incident and concerns"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Reasons given for the incident"
+            },
+                value: {
+                text: referral.knownReasons
+            },
+                actions: {
+                items: [
+                    {
+                        href: "reasons",
+                        text: "Change",
+                        visuallyHiddenText: "the reasons given for the incident"
+                    }
+                ]
+            }
+            }
+        ]
+    }) }}
+{% endblock %}

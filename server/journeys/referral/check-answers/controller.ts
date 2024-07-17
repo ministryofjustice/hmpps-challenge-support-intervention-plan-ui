@@ -2,8 +2,20 @@ import { Request, Response } from 'express'
 
 export class ReferralCheckAnswersController {
   GET = async (req: Request, res: Response): Promise<void> => {
-    req.journeyData.checkAnswers = true
-    res.render('referral/check-answers/view', { referral: req.journeyData.referral })
+    req.journeyData.isCheckAnswers = true
+    const { referral } = req.journeyData
+    const referrerDetailsFilter = (itm: { key: { text: string } }) =>
+      referral!.isOnBehalfOfReferral || itm.key.text !== 'Name of referrer'
+
+    const involvementFilter = (itm: { key: { text: string } }) =>
+      referral!.assaultedStaffName || itm.key.text !== 'Names of staff assaulted'
+
+    res.render(
+      req.journeyData.referral!.isProactiveReferral
+        ? 'referral/check-answers/view-proactive'
+        : 'referral/check-answers/view-reactive',
+      { referral, referrerDetailsFilter, involvementFilter },
+    )
   }
 
   POST = async (_req: Request, res: Response): Promise<void> => {

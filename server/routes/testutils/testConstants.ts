@@ -7,6 +7,8 @@ export const TEST_PRISONER = {
   prisonerNumber: 'ABC123',
 } as Prisoner
 
+export const TEST_DPS_HOMEPAGE = 'http://localhost:3001/'
+
 const tomorrowDate = new Date()
 tomorrowDate.setDate(tomorrowDate.getDate() + 1)
 

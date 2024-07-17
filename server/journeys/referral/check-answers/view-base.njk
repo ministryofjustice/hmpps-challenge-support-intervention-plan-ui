@@ -1,0 +1,189 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = true %}
+{% set pageTitle = "Check answers - Make a CSIP referral" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Make a CSIP referral</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check your answers before sending the referral</h1>
+
+    <h1 class="govuk-heading-m">Referral details</h1>
+    {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-7",
+        rows: [
+            {
+                key: {
+                text: "Referral made on behalf of someone else"
+            },
+                value: {
+                text: "Yes" if referral.isOnBehalfOfReferral else "No"
+            },
+                actions: {
+                items: [
+                    {
+                        href: "on-behalf-of",
+                        text: "Change",
+                        visuallyHiddenText: "if the referral is being made on behalf of someone else or not"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Name of referrer"
+            },
+                value: {
+                text: referral.referredBy
+            },
+                actions: {
+                items: [
+                    {
+                        href: "referrer",
+                        text: "Change",
+                        visuallyHiddenText: "name of referrer"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Area of work"
+            },
+                value: {
+                html: referral.refererArea.description
+            },
+                actions: {
+                items: [
+                    {
+                        href: "referrer" if referral.isOnBehalfOfReferral else "area-of-work",
+                        text: "Change",
+                        visuallyHiddenText: "area of work"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Proactive or reactive referral"
+            },
+                value: {
+                html: "Proactive" if referral.isProactiveReferral else "Reactive"
+            },
+                actions: {
+                items: [
+                    {
+                        href: "proactive-or-reactive",
+                        text: "Change",
+                        visuallyHiddenText: "if the referral is proactive or reactive"
+                    }
+                ]
+            }
+            }
+        ] | filterBy(referrerDetailsFilter)
+    }) }}
+
+    {% block proactiveOrReactiveContent %}{% endblock %}
+
+    {% set factors = [] %}
+    {% for factor in referral.contributoryFactors %}
+        {% set factors = (factors.push(factor.factorType.description | escape), factors) %}
+    {% endfor %}
+
+    {% set contributoryFactorRows = [{
+        key: {
+            text: "Contributory factors"
+        },
+        value: {
+            html: factors | join('<br/>')
+        },
+        actions: {
+            items: [
+                {
+                    href: "contributory-factors",
+                    text: "Change",
+                    visuallyHiddenText: "the contributory factors"
+                }
+            ]
+        }
+    }] %}
+    {% for factor in referral.contributoryFactors %}
+        {% set contributoryFactorRows = (contributoryFactorRows.push({
+            key: {
+                text: 'Comment on ' + (factor.factorType.description | sentenceCase(false))
+            },
+            value: {
+                text: factor.comment or 'Not provided'
+            },
+            actions: {
+                items: [
+                    {
+                        href: (factor.factorType.code | lower | escape)  + '-comment',
+                        text: "Change",
+                        visuallyHiddenText: "the comment on " + (factor.factorType.description | sentenceCase(false)) + " factors"
+                    }
+                ]
+            }
+        }), contributoryFactorRows) %}
+    {% endfor %}
+
+    <h1 class="govuk-heading-m">Contributory factors</h1>
+    {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-7",
+        rows: contributoryFactorRows
+    }) }}
+
+    <h1 class="govuk-heading-m">Additional information</h1>
+    {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-7",
+        rows: [
+            {
+                key: {
+                text: "Safer Custody aware of referral"
+            },
+                value: {
+                text: "Yes" if referral.isSaferCustodyTeamInformed === 'yes' else ("No" if referral.isSaferCustodyTeamInformed === 'no' else "I don’t know")
+            },
+                actions: {
+                items: [
+                    {
+                        href: "safer-custody",
+                        text: "Change",
+                        visuallyHiddenText: "if Safer Custody are aware of the referral or not"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Other information relating to this referral"
+            },
+                value: {
+                text: referral.otherInformation or 'Not provided'
+            },
+                actions: {
+                items: [
+                    {
+                        href: "additional-information",
+                        text: "Change",
+                        visuallyHiddenText: "the additional information relating to the referral"
+                    }
+                ]
+            }
+            }
+        ]
+    }) }}
+
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        <div class="govuk-button-group">
+            {{ govukButton({
+                text: "Confirm and send",
+                preventDoubleClick: true
+            }) }}
+            <a class="govuk-link" href="{{ digitalPrisonServicesUrl }}">Cancel</a>
+        </div>
+    </form>
+{% endblock %}
