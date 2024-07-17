@@ -8,7 +8,9 @@
 
 {% block innerContent %}
     <span class="govuk-caption-l">Make a CSIP referral</span>
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Describe the behaviour and concerns</h1>
+    <label for="descriptionOfConcern">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Describe the behaviour and concerns</h1>
+    </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {{ govukDetails({

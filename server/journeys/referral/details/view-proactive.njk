@@ -16,7 +16,7 @@
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Behaviour details</h1>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        <h3 class="govuk-heading-m">When was the most recent occurrence of the behaviour?</h3>
+        <h2 class="govuk-heading-m">When was the most recent occurrence of the behaviour?</h2>
         {{ hmppsDatePicker({
             id: "incidentDate",
             name: "incidentDate",
@@ -57,9 +57,7 @@
         }) }}
         {{ govukSelect({
             label: {
-                text: "Where was the most recent occurrence of the behaviour?",
-                classes: "govuk-label--m",
-                isPageHeading: true
+                html: '<h2 class="govuk-heading-m">Where did the incident occur?</h2>'
             },
             id: "incidentLocation",
             name: "incidentLocation",
@@ -68,9 +66,7 @@
         }) }}
         {{ govukSelect({
             label: {
-                text: "What’s the main concern?",
-                classes: "govuk-label--m",
-                isPageHeading: true
+                html: '<h2 class="govuk-heading-m">What was the incident type?</h2>'
             },
             id: "incidentType",
             name: "incidentType",

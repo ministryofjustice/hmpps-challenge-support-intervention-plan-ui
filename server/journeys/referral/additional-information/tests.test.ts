@@ -55,7 +55,9 @@ describe('GET /referral/additional-information', () => {
     const result = await request(app()).get(`/${uuid}/${TEST_PATH}`).expect(200).expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
     expect(getByText(html, 'Add additional information (optional)')).toBeVisible()
-    expect((getByRole(html, 'textbox', { name: '' }) as HTMLInputElement).value).toEqual('')
+    expect(
+      (getByRole(html, 'textbox', { name: /add additional information \(optional\)/i }) as HTMLInputElement).value,
+    ).toEqual('')
   })
 
   it('pre-fill form with values from journeyData', async () => {
@@ -75,7 +77,9 @@ describe('GET /referral/additional-information', () => {
       .expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
     expect(getByText(html, 'Add additional information (optional)')).toBeVisible()
-    expect((getByRole(html, 'textbox', { name: '' }) as HTMLInputElement).value).toEqual('Sample Text')
+    expect(
+      (getByRole(html, 'textbox', { name: /add additional information \(optional\)/i }) as HTMLInputElement).value,
+    ).toEqual('Sample Text')
   })
 
   it('render validation errors if any', async () => {
