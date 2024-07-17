@@ -22,7 +22,7 @@ context('Make a Referral Journey', () => {
     cy.findByRole('button', { name: /continue/i }).click()
 
     cy.url().should('include', '/area-of-work')
-    cy.findByRole('combobox').select('AreaA')
+    cy.findByRole('combobox', { name: /which area do you work in\?/i }).select('AreaA')
     checkAxeAccessibility()
     cy.findByRole('button', { name: /continue/i }).click()
 
