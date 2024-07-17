@@ -18,7 +18,7 @@ export default function routes(services: Services): Router {
   })
 
   router.use(insertJourneyIdentifier())
-  router.use(redirectCheckAnswersMiddleware([/on-behalf-of$/, /referrer$/, /area-of-work$/]))
+  router.use(redirectCheckAnswersMiddleware([/on-behalf-of$/, /referrer$/, /area-of-work$/, /check-answers$/]))
   router.use('/:journeyId', journeyRoutes(services))
 
   return router
