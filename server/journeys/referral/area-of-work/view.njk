@@ -7,10 +7,14 @@
 
 {% block innerContent %}
     <span class="govuk-caption-l">Make a CSIP referral</span>
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Which area do you work in?</h1>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {{ govukSelect({
+            label: {
+                text: "Which area do you work in?",
+                classes: "govuk-label--l govuk-!-margin-bottom-7",
+                isPageHeading: true
+            },
             id: "areaOfWork",
             name: "areaOfWork",
             items: areaOfWorkOptions,

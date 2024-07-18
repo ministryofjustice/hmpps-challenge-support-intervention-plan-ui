@@ -60,7 +60,9 @@ describe('GET /referral/description - Proactive', () => {
     const result = await request(app()).get(`/${uuid}/referral/description`).expect(200).expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
     expect(getByText(html, 'Describe the behaviour and concerns')).toBeVisible()
-    expect((getByRole(html, 'textbox', { name: '' }) as HTMLInputElement).value).toEqual('')
+    expect(
+      (getByRole(html, 'textbox', { name: /describe the behaviour and concerns/i }) as HTMLInputElement).value,
+    ).toEqual('')
     expect(result.text).toContain('a summary of the concerns')
   })
 
@@ -81,7 +83,9 @@ describe('GET /referral/description - Proactive', () => {
       .expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
     expect(getByText(html, 'Describe the behaviour and concerns')).toBeVisible()
-    expect((getByRole(html, 'textbox', { name: '' }) as HTMLInputElement).value).toEqual('Sample Description Text')
+    expect(
+      (getByRole(html, 'textbox', { name: /describe the behaviour and concerns/i }) as HTMLInputElement).value,
+    ).toEqual('Sample Description Text')
   })
 
   it('render validation errors if any', async () => {
@@ -111,7 +115,9 @@ describe('GET /referral/description - Reactive', () => {
       .expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
     expect(getByText(html, 'Describe the incident and concerns')).toBeVisible()
-    expect((getByRole(html, 'textbox', { name: '' }) as HTMLInputElement).value).toEqual('')
+    expect(
+      (getByRole(html, 'textbox', { name: /describe the incident and concerns/i }) as HTMLInputElement).value,
+    ).toEqual('')
     expect(result.text).toContain('a summary of the incident')
   })
 
@@ -132,7 +138,9 @@ describe('GET /referral/description - Reactive', () => {
       .expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
     expect(getByText(html, 'Describe the incident and concerns')).toBeVisible()
-    expect((getByRole(html, 'textbox', { name: '' }) as HTMLInputElement).value).toEqual('Sample Description Text')
+    expect(
+      (getByRole(html, 'textbox', { name: /describe the incident and concerns/i }) as HTMLInputElement).value,
+    ).toEqual('Sample Description Text')
   })
 
   it('render validation errors if any', async () => {

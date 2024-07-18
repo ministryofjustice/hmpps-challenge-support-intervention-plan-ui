@@ -66,14 +66,22 @@ describe('GET /referral/:factorTypeCode-comment', () => {
     const result = await request(app()).get(`/${uuid}/referral/a-comment`).expect(200).expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
     expect(getByText(html, 'Add a comment on text factors (optional)?')).toBeVisible()
-    expect((getByRole(html, 'textbox', { name: '' }) as HTMLInputElement).value).toEqual('')
+    expect(
+      (getByRole(html, 'textbox', { name: /add a comment on text factors \(optional\)\?/i }) as HTMLInputElement).value,
+    ).toEqual('')
   })
 
   it('pre-fill form with values from journeyData', async () => {
     const result = await request(app()).get(`/${uuid}/referral/b-comment`).expect(200).expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
     expect(getByText(html, 'Add a comment on text for type-B factors (optional)?')).toBeVisible()
-    expect((getByRole(html, 'textbox', { name: '' }) as HTMLInputElement).value).toEqual('Sample Comment Text')
+    expect(
+      (
+        getByRole(html, 'textbox', {
+          name: /add a comment on text for type-b factors \(optional\)\?/i,
+        }) as HTMLInputElement
+      ).value,
+    ).toEqual('Sample Comment Text')
   })
 
   it('preserve acronym uppercase in factor type description text', async () => {

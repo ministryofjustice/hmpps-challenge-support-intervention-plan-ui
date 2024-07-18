@@ -7,7 +7,9 @@
 
 {% block innerContent %}
     <span class="govuk-caption-l">Make a CSIP referral</span>
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Add additional information (optional)</h1>
+    <label for="otherInformation">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Add additional information (optional)</h1>
+    </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {{ govukCharacterCount({

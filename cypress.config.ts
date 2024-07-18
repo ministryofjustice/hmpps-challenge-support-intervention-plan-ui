@@ -3,6 +3,7 @@ import { resetStubs } from './integration_tests/mockApis/wiremock'
 import auth from './integration_tests/mockApis/auth'
 import tokenVerification from './integration_tests/mockApis/tokenVerification'
 import prisonerSearchApi from './integration_tests/mockApis/prisonerSearchApi'
+import csipApi from './integration_tests/mockApis/csipApi'
 import logAccessibilityViolations from './integration_tests/support/accessibilityViolations'
 
 export default defineConfig({
@@ -23,6 +24,7 @@ export default defineConfig({
         ...tokenVerification,
         ...logAccessibilityViolations,
         ...prisonerSearchApi,
+        ...csipApi,
       })
     },
     baseUrl: 'http://localhost:3007',
