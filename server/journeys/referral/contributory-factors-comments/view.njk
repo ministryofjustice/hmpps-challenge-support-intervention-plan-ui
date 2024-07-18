@@ -14,7 +14,7 @@
         value: {
             text: factor.comment
         } if factor.comment else {
-            classes: 'govuk-link',
+            classes: 'govuk-link govuk-link--no-visited-state',
             html: '<a href="' + (factor.factorType.code | lower | escape)  + '-comment">Add comment<span class="govuk-visually-hidden"> on ' + (factor.factorType.description | escape) + ' factor</span></a>'
         },
         actions: {
@@ -22,7 +22,8 @@
                 {
                     href: (factor.factorType.code | lower | escape)  + '-comment',
                     text: "Edit comment",
-                    visuallyHiddenText: 'on ' + (factor.factorType.description | escape) + ' factor'
+                    visuallyHiddenText: 'on ' + (factor.factorType.description | escape) + ' factor',
+                    classes: 'govuk-link--no-visited-state'
                 }
             ]
         } if factor.comment else undefined
