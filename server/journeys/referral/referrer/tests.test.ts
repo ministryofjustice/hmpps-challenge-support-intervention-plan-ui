@@ -20,7 +20,7 @@ const csipApiService = {
 const journeyData = {
   prisoner: TEST_PRISONER,
   referral: {
-    subJourney: {
+    onBehalfOfSubJourney: {
       isOnBehalfOfReferral: true,
     },
   },
@@ -112,7 +112,7 @@ describe('POST /referral/referrer', () => {
     expect(reqCaptured.journeyData().referral?.refererArea).toEqual({ code: 'A', description: 'TEXT' })
     expect(reqCaptured.journeyData().referral?.referredBy).toEqual('test user')
     expect(reqCaptured.journeyData().referral?.isOnBehalfOfReferral).toEqual(true)
-    expect(reqCaptured.journeyData().referral?.subJourney).toBeUndefined()
+    expect(reqCaptured.journeyData().referral?.onBehalfOfSubJourney).toBeUndefined()
   })
 
   it('redirect to go back and set validation errors if submitted area code is missing', async () => {

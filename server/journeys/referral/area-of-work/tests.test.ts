@@ -21,7 +21,7 @@ const journeyDataMock = () =>
   ({
     prisoner: TEST_PRISONER,
     referral: {
-      subJourney: {
+      onBehalfOfSubJourney: {
         isOnBehalfOfReferral: false,
       },
     },
@@ -110,7 +110,7 @@ describe('POST /referral/area-of-work', () => {
     expect(reqCaptured.journeyData().referral?.refererArea).toEqual({ code: 'A', description: 'TEXT' })
     expect(reqCaptured.journeyData().referral?.referredBy).toEqual('First Last')
     expect(reqCaptured.journeyData().referral?.isOnBehalfOfReferral).toEqual(false)
-    expect(reqCaptured.journeyData().referral?.subJourney).toBeUndefined()
+    expect(reqCaptured.journeyData().referral?.onBehalfOfSubJourney).toBeUndefined()
   })
 
   it('truncate user name to 240 characters and save to journeyData on valid request', async () => {

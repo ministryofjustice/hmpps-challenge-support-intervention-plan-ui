@@ -15,32 +15,32 @@ const journeyDataMock = {
   prisoner: TEST_PRISONER,
   referral: {
     isOnBehalfOfReferral: true,
-    referredBy: 'Test User',
-    refererArea: { code: 'A', description: 'TEXT' },
+    referredBy: '<script>alert("Test User")</script>',
+    refererArea: { code: 'A', description: '<script>alert("Area")</script>' },
     isProactiveReferral: true,
-    incidentLocation: { code: 'A', description: 'TEXT' },
-    incidentType: { code: 'A', description: 'TEXT' },
+    incidentLocation: { code: 'A', description: '<script>alert("Location")</script>' },
+    incidentType: { code: 'A', description: '<script>alert("IncidentType")</script>' },
     incidentDate: '2024-12-25',
     incidentTime: '23:59',
-    incidentInvolvement: { code: 'A', description: 'TEXT' },
+    incidentInvolvement: { code: 'A', description: '<script>alert("Involvement")</script>' },
     staffAssaulted: true,
-    assaultedStaffName: 'Staff Name',
-    descriptionOfConcern: 'Sample Concern Text',
-    knownReasons: 'Sample reason text',
+    assaultedStaffName: '<script>alert("Staff Name")</script>',
+    descriptionOfConcern: '<script>alert("Sample Concern Text")</script>',
+    knownReasons: '<script>alert("Sample reason text")</script>',
     contributoryFactors: [
       {
         factorType: { code: 'A', description: 'Text' },
       },
       {
-        factorType: { code: 'B', description: 'Text for type-B' },
-        comment: 'Sample Comment Text',
+        factorType: { code: 'B', description: '<script>alert("Text for type-B")</script>' },
+        comment: '<script>alert("Sample Comment Text")</script>',
       },
       {
         factorType: { code: 'C', description: 'Text with a TLA' },
       },
     ],
     isSaferCustodyTeamInformed: 'yes',
-    otherInformation: 'Sample information text',
+    otherInformation: '<script>alert("Sample information text")</script>',
   },
 } as JourneyData
 
@@ -77,7 +77,18 @@ describe('GET /referral/check-answers', () => {
     expect(getByRole(html, 'heading', { name: 'Behaviour involvement' })).toBeVisible()
     expect(getByRole(html, 'heading', { name: 'Behaviour description' })).toBeVisible()
 
-    expect(queryByText(html, 'Test User')).toBeInTheDocument()
+    expect(queryByText(html, journeyDataMock.referral!.referredBy!)).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.refererArea!.description!)).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.incidentLocation!.description!)).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.incidentType!.description!)).toBeVisible()
+    expect(queryByText(html, '25 December 2024')).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.incidentInvolvement!.description!)).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.assaultedStaffName!)).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.descriptionOfConcern!)).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.knownReasons!)).toBeVisible()
+    expect(queryByText(html, 'Comment on <script>alert("text for type-b")</script>')).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.contributoryFactors![1]!.comment!)).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.otherInformation!)).toBeVisible()
 
     expect(
       (
@@ -239,7 +250,18 @@ describe('GET /referral/check-answers', () => {
     expect(getByRole(html, 'heading', { name: 'Incident involvement' })).toBeVisible()
     expect(getByRole(html, 'heading', { name: 'Incident description' })).toBeVisible()
 
-    expect(queryByText(html, 'Test User')).not.toBeInTheDocument()
+    expect(queryByText(html, journeyDataMock.referral!.referredBy!)).not.toBeInTheDocument()
+    expect(queryByText(html, journeyDataMock.referral!.refererArea!.description!)).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.incidentLocation!.description!)).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.incidentType!.description!)).toBeVisible()
+    expect(queryByText(html, '25 December 2024')).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.incidentInvolvement!.description!)).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.assaultedStaffName!)).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.descriptionOfConcern!)).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.knownReasons!)).toBeVisible()
+    expect(queryByText(html, 'Comment on <script>alert("text for type-b")</script>')).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.contributoryFactors![1]!.comment!)).toBeVisible()
+    expect(queryByText(html, journeyDataMock.referral!.otherInformation!)).toBeVisible()
 
     expect(
       (

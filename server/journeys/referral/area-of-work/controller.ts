@@ -10,15 +10,18 @@ export class ReferralAreaOfWorkController extends BaseJourneyController {
       res.locals.formResponses?.['refererArea'] || req.journeyData.referral!.refererArea,
     )
     const backUrl =
-      req.journeyData.isCheckAnswers && !req.journeyData.referral!.subJourney ? 'check-answers' : 'on-behalf-of'
+      req.journeyData.isCheckAnswers && !req.journeyData.referral!.onBehalfOfSubJourney
+        ? 'check-answers'
+        : 'on-behalf-of'
 
     res.render('referral/area-of-work/view', { areaOfWorkOptions, backUrl })
   }
 
   POST = async (req: Request, res: Response): Promise<void> => {
-    if (req.journeyData.referral!.subJourney) {
-      req.journeyData.referral!.isOnBehalfOfReferral = req.journeyData.referral!.subJourney.isOnBehalfOfReferral!
-      delete req.journeyData.referral!.subJourney
+    if (req.journeyData.referral!.onBehalfOfSubJourney) {
+      req.journeyData.referral!.isOnBehalfOfReferral =
+        req.journeyData.referral!.onBehalfOfSubJourney.isOnBehalfOfReferral!
+      delete req.journeyData.referral!.onBehalfOfSubJourney
     }
 
     req.journeyData.referral!.refererArea = req.body['areaOfWork']
