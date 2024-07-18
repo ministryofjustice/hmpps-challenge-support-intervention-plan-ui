@@ -4,7 +4,7 @@
 
 {% set pageTitle = "Confirmation - Make a CSIP referral" %}
 
-{% set theHtml = ("<div><strong>" + (prisoner.lastName + ", " + prisoner.firstName) | convertToTitleCase + "</strong></div><div>" + prisoner.prisonerNumber + "</div>") | safe %}
+{% set theHtml = ("<div><strong>" + (prisoner.lastName + ", " + prisoner.firstName) | convertToTitleCase + "</strong></div><div>" + prisoner.prisonerNumber + "</div>") | escape %}
 
 {% block innerContent %}
     {{ govukPanel({
