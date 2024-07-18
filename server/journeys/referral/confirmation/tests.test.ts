@@ -25,7 +25,7 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-describe('GET /referral/proactive-or-reactive', () => {
+describe('GET /referral/confirmation', () => {
   it('should render page', async () => {
     const result = await request(app).get(`/${uuid}/referral/confirmation`).expect(200).expect('Content-Type', /html/)
 
