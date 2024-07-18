@@ -3,6 +3,8 @@ import { Request, Response } from 'express'
 export class ReferralCheckAnswersController {
   GET = async (req: Request, res: Response): Promise<void> => {
     req.journeyData.isCheckAnswers = true
+    delete req.journeyData.referral!.onBehalfOfSubJourney
+
     const { referral } = req.journeyData
     const referrerDetailsFilter = (itm: { key: { text: string } }) =>
       referral!.isOnBehalfOfReferral || itm.key.text !== 'Name of referrer'

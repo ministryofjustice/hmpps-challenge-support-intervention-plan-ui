@@ -26,7 +26,8 @@
                     {
                         href: "on-behalf-of",
                         text: "Change",
-                        visuallyHiddenText: "if the referral is being made on behalf of someone else or not"
+                        visuallyHiddenText: "if the referral is being made on behalf of someone else or not",
+                        classes: "govuk-link--no-visited-state"
                     }
                 ]
             }
@@ -43,7 +44,8 @@
                     {
                         href: "referrer",
                         text: "Change",
-                        visuallyHiddenText: "name of referrer"
+                        visuallyHiddenText: "name of referrer",
+                        classes: "govuk-link--no-visited-state"
                     }
                 ]
             }
@@ -60,7 +62,8 @@
                     {
                         href: "referrer" if referral.isOnBehalfOfReferral else "area-of-work",
                         text: "Change",
-                        visuallyHiddenText: "area of work"
+                        visuallyHiddenText: "area of work",
+                        classes: "govuk-link--no-visited-state"
                     }
                 ]
             }
@@ -77,7 +80,8 @@
                     {
                         href: "proactive-or-reactive",
                         text: "Change",
-                        visuallyHiddenText: "if the referral is proactive or reactive"
+                        visuallyHiddenText: "if the referral is proactive or reactive",
+                        classes: "govuk-link--no-visited-state"
                     }
                 ]
             }
@@ -104,7 +108,8 @@
                 {
                     href: "contributory-factors",
                     text: "Change",
-                    visuallyHiddenText: "the contributory factors"
+                    visuallyHiddenText: "the contributory factors",
+                    classes: "govuk-link--no-visited-state"
                 }
             ]
         }
@@ -122,7 +127,8 @@
                     {
                         href: (factor.factorType.code | lower | escape)  + '-comment',
                         text: "Change",
-                        visuallyHiddenText: "the comment on " + (factor.factorType.description | sentenceCase(false)) + " factors"
+                        visuallyHiddenText: "the comment on " + (factor.factorType.description | sentenceCase(false)) + " factors",
+                        classes: "govuk-link--no-visited-state"
                     }
                 ]
             }
@@ -151,7 +157,8 @@
                     {
                         href: "safer-custody",
                         text: "Change",
-                        visuallyHiddenText: "if Safer Custody are aware of the referral or not"
+                        visuallyHiddenText: "if Safer Custody are aware of the referral or not",
+                        classes: "govuk-link--no-visited-state"
                     }
                 ]
             }
@@ -168,7 +175,8 @@
                     {
                         href: "additional-information",
                         text: "Change",
-                        visuallyHiddenText: "the additional information relating to the referral"
+                        visuallyHiddenText: "the additional information relating to the referral",
+                        classes: "govuk-link--no-visited-state"
                     }
                 ]
             }
@@ -183,7 +191,7 @@
                 text: "Confirm and send",
                 preventDoubleClick: true
             }) }}
-            <a class="govuk-link" href="{{ digitalPrisonServicesUrl }}">Cancel</a>
+            <a class="govuk-link govuk-link--no-visited-state" href="{{ digitalPrisonServicesUrl }}">Cancel</a>
         </div>
     </form>
 {% endblock %}
