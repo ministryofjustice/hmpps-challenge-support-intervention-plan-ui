@@ -18,8 +18,9 @@ type JourneyDataMap = {
 
 export type JourneyData = {
   instanceUnixEpoch: number
+  isCheckAnswers?: boolean
   prisoner?: PrisonerSummary
-  logNumber?: string
+  logCode?: string
   referral?: ReferralData
   saferCustodyScreening?: SaferCustodyScreening
   investigation?: Investigation
@@ -34,6 +35,7 @@ export type PrisonerSummary = {
 }
 
 type ReferralData = {
+  onBehalfOfSubJourney?: Partial<ReferralData>
   isOnBehalfOfReferral?: boolean
   referredBy?: string
   refererArea?: ReferenceData
