@@ -1,7 +1,7 @@
 import { Locals } from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import { agent as request } from 'supertest'
-import { getByRole, getByText } from '@testing-library/dom'
+import { getByRole, getByText, queryByText } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
@@ -68,12 +68,13 @@ describe('GET /referral/contributory-factors-comments', () => {
     const result = await request(app()).get(`/${uuid}/${TEST_PATH}`).expect(200).expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
     expect(getByText(html, 'Add comments about the contributory factors (optional)')).toBeVisible()
-    const addCommentLink = getByRole(html, 'link', { name: 'Add comment for TEXT factor' }) as HTMLLinkElement
+    const addCommentLink = getByRole(html, 'link', { name: 'Add comment on TEXT factor' }) as HTMLLinkElement
     expect(addCommentLink).toBeVisible()
     expect(addCommentLink.href.endsWith('a-comment')).toBeTruthy()
-    const editCommentLink = getByRole(html, 'link', { name: 'Edit comment for TEXT2 factor' }) as HTMLLinkElement
+    const editCommentLink = getByRole(html, 'link', { name: 'Edit comment on TEXT2 factor' }) as HTMLLinkElement
     expect(editCommentLink).toBeVisible()
     expect(editCommentLink.href.endsWith('b-comment')).toBeTruthy()
+    expect(queryByText(html, 'Sample Comment Text')).toBeVisible()
   })
 
   it('escape html characters in factor type code and description', async () => {
@@ -96,7 +97,7 @@ describe('GET /referral/contributory-factors-comments', () => {
       .expect(200)
       .expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
-    const addCommentLink = getByRole(html, 'link', { name: `Add comment for TEXT<>"'& factor` }) as HTMLLinkElement
+    const addCommentLink = getByRole(html, 'link', { name: `Add comment on TEXT<>"'& factor` }) as HTMLLinkElement
     expect(addCommentLink).toBeVisible()
     expect(addCommentLink.href.endsWith(`a%3C%3E%22'&-comment`)).toBeTruthy()
   })
