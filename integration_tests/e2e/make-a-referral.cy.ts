@@ -210,8 +210,7 @@ const fillInformationReactiveNotOnBehalf = () => {
 
   cy.url().should('include', '/contributory-factors-comments')
   cy.findAllByRole('link', { name: /add comment/i }).should('have.length', 2)
-  cy.findAllByRole('link', { name: /add comment/i })
-    .first()
+  cy.findByRole('link', { name: /add comment on factor1 factor/i })
     .should('be.visible')
     .click()
   cy.url().should('include', '/code1-comment')
