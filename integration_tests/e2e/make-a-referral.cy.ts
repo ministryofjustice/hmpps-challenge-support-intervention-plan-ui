@@ -12,7 +12,7 @@ context('Make a Referral Journey', () => {
     cy.task('stubContribFactors')
   })
 
-  it('happy path onbehalfof=no, reactive', () => {
+  it('happy path', () => {
     fillInformationReactiveNotOnBehalf()
 
     goBackCheckInfoSaved(false, false)
