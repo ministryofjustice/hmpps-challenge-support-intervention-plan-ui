@@ -1,7 +1,7 @@
 import { Locals } from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import { agent as request } from 'supertest'
-import { getByRole, getByText, queryByText } from '@testing-library/dom'
+import { getByRole, getByText } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
@@ -74,7 +74,7 @@ describe('GET /referral/contributory-factors-comments', () => {
     const editCommentLink = getByRole(html, 'link', { name: 'Edit comment on TEXT2 factor' }) as HTMLLinkElement
     expect(editCommentLink).toBeVisible()
     expect(editCommentLink.href.endsWith('b-comment')).toBeTruthy()
-    expect(queryByText(html, 'Sample Comment Text')).toBeVisible()
+    expect(getByText(html, 'Sample Comment Text')).toBeVisible()
   })
 
   it('escape html characters in factor type code and description', async () => {
