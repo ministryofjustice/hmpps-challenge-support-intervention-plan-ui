@@ -1,4 +1,4 @@
-{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% extends "partials/layout.njk" %}
@@ -7,15 +7,27 @@
 
 {% set contributoryFactorRows = [] %}
 {% for factor in contributoryFactors %}
-    {% set contributoryFactorRows = (contributoryFactorRows.push([
-        {
+    {% set contributoryFactorRows = (contributoryFactorRows.push({
+        key: {
             text: factor.factorType.description
         },
-        {
-            classes: 'govuk-link',
-            html: '<a href="' + (factor.factorType.code | lower | escape)  + '-comment">' + ('Edit comment' if factor.comment else 'Add comment') + '<span class="govuk-visually-hidden"> for ' + (factor.factorType.description | escape) + ' factor</span></a>'
-        }
-    ]), contributoryFactorRows) %}
+        value: {
+            text: factor.comment
+        } if factor.comment else {
+            classes: 'govuk-link govuk-link--no-visited-state',
+            html: '<a href="' + (factor.factorType.code | lower | escape)  + '-comment">Add comment<span class="govuk-visually-hidden"> on ' + (factor.factorType.description | escape) + ' factor</span></a>'
+        },
+        actions: {
+            items: [
+                {
+                    href: (factor.factorType.code | lower | escape)  + '-comment',
+                    text: "Edit comment",
+                    visuallyHiddenText: 'on ' + (factor.factorType.description | escape) + ' factor',
+                    classes: 'govuk-link--no-visited-state'
+                }
+            ]
+        } if factor.comment else undefined
+    }), contributoryFactorRows) %}
 {% endfor %}
 
 {% block innerContent %}
@@ -23,18 +35,7 @@
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Add comments about the contributory factors (optional)</h1>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        {{ govukTable({
-            id: "contributoryFactorsComments",
-            name: "contributoryFactorsComments",
-            firstCellIsHeader: false,
-            head: [
-                {
-                    text: "Contributory factor"
-                },
-                {
-                    text: ""
-                }
-            ],
+        {{ govukSummaryList({
             rows: contributoryFactorRows
         }) }}
         {{ govukButton({
