@@ -16,6 +16,7 @@ import { ReferralSaferCustodyRoutes } from './safer-custody/routes'
 import { ReferralAdditionalInformationRoutes } from './additional-information/routes'
 import { InvolvementRoutes } from './involvement/routes'
 import { ReferralCheckAnswersRoutes } from './check-answers/routes'
+import { ConfirmationRoutes } from './confirmation/routes'
 
 function Routes(csipApiService: CsipApiService): Router {
   const router = Router({ mergeParams: true })
@@ -34,6 +35,7 @@ function Routes(csipApiService: CsipApiService): Router {
   router.use('/additional-information', ReferralAdditionalInformationRoutes())
   router.use('/involvement', InvolvementRoutes(csipApiService))
   router.use('/check-answers', ReferralCheckAnswersRoutes())
+  router.use('/confirmation', ConfirmationRoutes())
 
   return router
 }
