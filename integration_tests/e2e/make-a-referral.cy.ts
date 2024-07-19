@@ -24,6 +24,14 @@ context('Make a Referral Journey', () => {
     goFromFirstScreenToCheckYourAnswersPage()
 
     changeAnswersOnCYAPage()
+
+    cy.findByRole('button', { name: /Confirm and send/i }).click()
+    cy.url().should('include', '/confirmation')
+    checkAxeAccessibility()
+    cy.findByRole('heading', { name: /CSIP referral complete/i })
+      .should('be.visible')
+      .next()
+      .should('include.text', 'User, TestnameA1111AA')
   })
 
   it('user stays on page after inputting invalid data after changing their answers', () => {
@@ -274,8 +282,10 @@ const goFromFirstScreenToCheckYourAnswersPage = () => {
   cy.findByRole('button', { name: /continue/i }).click()
   cy.findByRole('button', { name: /continue/i }).click()
   cy.findByRole('button', { name: /continue/i }).click()
+  cy.findByRole('textbox', { name: /add additional information \(optional\)/i }).type('additional info')
   cy.findByRole('button', { name: /continue/i }).click()
   cy.url().should('include', '/check-answers')
+  checkAxeAccessibility()
 }
 
 const changeAnswersOnCYAPage = () => {
@@ -321,6 +331,45 @@ const changeAnswersOnCYAPage = () => {
   cy.contains('dt', 'Proactive or reactive referral').next().should('include.text', 'Reactive')
 
   changeAnswersOnCYAReactiveSection()
+
+  cy.contains('dt', 'Contributory factors').next().should('include.text', 'Factor1Factor3')
+  cy.findByRole('link', { name: /change the contributory factors/i })
+    .should('be.visible')
+    .click()
+  cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
+  cy.findByRole('checkbox', { name: /factor2/i }).click()
+  cy.findByRole('button', { name: /continue/i }).click()
+  cy.contains('dt', 'Contributory factors').next().should('include.text', 'Factor1Factor2Factor3')
+
+  cy.contains('dt', 'Comment on factor2').next().should('include.text', 'Not provided')
+  cy.findByRole('link', { name: /change the comment on factor2 factor/i })
+    .should('be.visible')
+    .click()
+  cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
+  cy.findByRole('textbox', { name: /add a comment on factor2 factors \(optional\)\?/i }).type('factor two comment')
+  cy.findByRole('button', { name: /continue/i }).click()
+  cy.contains('dt', 'Comment on factor2').next().should('include.text', 'factor two comment')
+
+  cy.contains('dt', 'Safer Custody aware of referral').next().should('include.text', 'Yes')
+  cy.findByRole('link', { name: /change if Safer Custody are aware of the referral or not/i })
+    .should('be.visible')
+    .click()
+  cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
+  cy.findByRole('radio', { name: /^no/i }).click()
+  cy.findByRole('button', { name: /continue/i }).click()
+  cy.contains('dt', 'Safer Custody aware of referral').next().should('include.text', 'No')
+
+  cy.contains('dt', 'Other information relating to this referral').next().should('include.text', 'additional info')
+  cy.findByRole('link', { name: /change the additional information relating to the referral/i })
+    .should('be.visible')
+    .click()
+  cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
+  cy.findByRole('textbox', { name: /add additional information \(optional\)/i }).clear()
+  cy.findByRole('textbox', { name: /add additional information \(optional\)/i }).type('other additional info')
+  cy.findByRole('button', { name: /continue/i }).click()
+  cy.contains('dt', 'Other information relating to this referral')
+    .next()
+    .should('include.text', 'other additional info')
 }
 
 const changeAnswersOnCYAProactiveSection = () => {
