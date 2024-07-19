@@ -42,7 +42,8 @@
         errorMessage: validationErrors | findError('isOnBehalfOfReferral')
     }) }}
     {{ govukButton({
-        text: "Continue"
+        text: "Continue",
+        preventDoubleClick: true
     }) }}
   </form>
 {% endblock %}

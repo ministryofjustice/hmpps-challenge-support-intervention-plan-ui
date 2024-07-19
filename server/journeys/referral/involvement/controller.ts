@@ -32,6 +32,8 @@ export class InvolvementController extends BaseJourneyController {
     req.journeyData.referral!.staffAssaulted = req.body.staffAssaulted
     req.journeyData.referral!.assaultedStaffName = req.body.assaultedStaffName
 
+    console.log('submit involvement')
+
     res.redirect('description')
   }
 
