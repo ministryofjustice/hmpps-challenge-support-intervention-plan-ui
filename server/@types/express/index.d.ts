@@ -25,6 +25,7 @@ export type JourneyData = {
   saferCustodyScreening?: SaferCustodyScreening
   investigation?: Investigation
   plan?: Plan
+  csipRecordCreated?: boolean
 }
 
 export type PrisonerSummary = {

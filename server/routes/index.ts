@@ -6,6 +6,7 @@ import { Page } from '../services/auditService'
 import insertJourneyIdentifier from '../middleware/insertJourneyIdentifier'
 import journeyRoutes from './journeyRoutes'
 import redirectCheckAnswersMiddleware from '../middleware/redirectCheckAnswersMiddleware'
+import journeyStateMachine from '../middleware/journeyStateMachine'
 
 export default function routes(services: Services): Router {
   const router = Router({ mergeParams: true })
@@ -19,6 +20,7 @@ export default function routes(services: Services): Router {
 
   router.use(insertJourneyIdentifier())
   router.use(redirectCheckAnswersMiddleware([/on-behalf-of$/, /referrer$/, /area-of-work$/, /check-answers$/]))
+  router.use(journeyStateMachine())
   router.use('/:journeyId', journeyRoutes(services))
 
   return router

@@ -36,7 +36,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
             factorTypeCode: factor.factorType.code,
             ...(factor.comment !== undefined && { comment: factor.comment }),
           })),
-          // incidentDate: referral.incidentDate!,
+          incidentDate: referral.incidentDate!,
           incidentLocationCode: referral.incidentLocation!.code,
           incidentTypeCode: referral.incidentType!.code,
           refererAreaCode: referral.refererArea!.code,
@@ -54,6 +54,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
           ...(typeof referral.otherInformation === 'string' && { otherInformation: referral.otherInformation }),
         },
       })
+      req.journeyData.csipRecordCreated = true
     } catch (e) {
       if ((e as SanitisedError)['data']) {
         const errorRespData = (e as SanitisedError)['data'] as Record<string, string | unknown>
