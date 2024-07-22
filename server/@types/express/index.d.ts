@@ -32,6 +32,7 @@ export type PrisonerSummary = {
   firstName: string
   lastName: string
   cellLocation: string
+  prisonId: string
 }
 
 type ReferralData = {
