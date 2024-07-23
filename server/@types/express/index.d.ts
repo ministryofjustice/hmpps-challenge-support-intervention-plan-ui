@@ -25,6 +25,7 @@ export type JourneyData = {
   saferCustodyScreening?: SaferCustodyScreening
   investigation?: Investigation
   plan?: Plan
+  csipRecord?: CsipRecord
 }
 
 export type PrisonerSummary = {
@@ -59,11 +60,29 @@ export type ContributoryFactor = {
   comment?: string
 }
 
-type SaferCustodyScreening = object
+type SaferCustodyScreening = Partial<{
+  outcomeType: ReferenceData
+  reasonForDecision: string
+}>
 
 type Investigation = object
 
 type Plan = object
+
+export type CsipRecord = Partial<{
+  recordUuid: string
+  prisonNumber: string
+  prisonCodeWhenRecorded: string
+  logCode: string
+  createdAt: string
+  createdBy: string
+  createdByDisplayName: string
+  lastModifiedBy: string
+  lastModifiedAt: string
+  lastModifiedByDisplayName: string
+  referral: ReferralData
+  plan: Plan
+}>
 
 export declare global {
   namespace Express {

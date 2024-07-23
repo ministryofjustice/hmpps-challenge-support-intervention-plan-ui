@@ -1,6 +1,7 @@
 import RestClient from '../../data/restClient'
 import config from '../../config'
 import { ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
+import { CsipRecord } from '../../@types/express'
 
 export default class CsipApiClient {
   private readonly restClient: RestClient
@@ -13,5 +14,9 @@ export default class CsipApiClient {
     return this.restClient.get<ReferenceData[]>({
       path: `/reference-data/${domain}`,
     })
+  }
+
+  async getCsipRecord(id: string): Promise<CsipRecord> {
+    return this.restClient.get<CsipRecord>({ path: `/csip-records/${id}` })
   }
 }

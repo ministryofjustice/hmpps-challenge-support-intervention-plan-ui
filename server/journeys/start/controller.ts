@@ -14,6 +14,7 @@ export class StartJourneyController {
         const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, prisonerNumber as string)
         req.journeyData.prisoner = prisoner as PrisonerSummary
         req.journeyData.referral = {}
+        req.journeyData.saferCustodyScreening = {}
         res.redirect(`/${journeyId}${url}`)
       } catch (error: unknown) {
         if (!(error instanceof Error)) {
