@@ -7,6 +7,7 @@ import testRequestCaptor, { TestRequestCaptured } from '../../../routes/testutil
 import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
 import { JourneyData } from '../../../@types/express'
 import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
+import { schema } from './schemas'
 
 const TEST_PATH = 'referral/safer-custody'
 const uuid = uuidv4()
@@ -67,7 +68,7 @@ describe('GET /referral/safer-custody', () => {
           ...journeyDataMock,
           referral: {
             ...journeyDataMock.referral,
-            isSaferCustodyTeamInformed: 'do_not_know',
+            isSaferCustodyTeamInformed: schema.shape.isSaferCustodyTeamInformed.enum.DO_NOT_KNOW,
           },
         } as JourneyData,
       }),
@@ -80,6 +81,50 @@ describe('GET /referral/safer-custody', () => {
     expect((getByRole(html, 'radio', { name: 'Yes' }) as HTMLInputElement).checked).toBeFalsy()
     expect((getByRole(html, 'radio', { name: 'No' }) as HTMLInputElement).checked).toBeFalsy()
     expect((getByRole(html, 'radio', { name: 'I don’t know' }) as HTMLInputElement).checked).toBeTruthy()
+  })
+
+  it('pre-fill form with values from journeyData', async () => {
+    const result = await request(
+      app({
+        journeyData: {
+          ...journeyDataMock,
+          referral: {
+            ...journeyDataMock.referral,
+            isSaferCustodyTeamInformed: schema.shape.isSaferCustodyTeamInformed.enum.YES,
+          },
+        } as JourneyData,
+      }),
+    )
+      .get(`/${uuid}/${TEST_PATH}`)
+      .expect(200)
+      .expect('Content-Type', /html/)
+    const html = createTestHtmlElement(result.text)
+    expect(getByText(html, 'Is the Safer Custody team already aware of this referral?')).toBeVisible()
+    expect((getByRole(html, 'radio', { name: 'Yes' }) as HTMLInputElement).checked).toBeTruthy()
+    expect((getByRole(html, 'radio', { name: 'No' }) as HTMLInputElement).checked).toBeFalsy()
+    expect((getByRole(html, 'radio', { name: 'I don’t know' }) as HTMLInputElement).checked).toBeFalsy()
+  })
+
+  it('pre-fill form with values from journeyData', async () => {
+    const result = await request(
+      app({
+        journeyData: {
+          ...journeyDataMock,
+          referral: {
+            ...journeyDataMock.referral,
+            isSaferCustodyTeamInformed: schema.shape.isSaferCustodyTeamInformed.enum.NO,
+          },
+        } as JourneyData,
+      }),
+    )
+      .get(`/${uuid}/${TEST_PATH}`)
+      .expect(200)
+      .expect('Content-Type', /html/)
+    const html = createTestHtmlElement(result.text)
+    expect(getByText(html, 'Is the Safer Custody team already aware of this referral?')).toBeVisible()
+    expect((getByRole(html, 'radio', { name: 'Yes' }) as HTMLInputElement).checked).toBeFalsy()
+    expect((getByRole(html, 'radio', { name: 'No' }) as HTMLInputElement).checked).toBeTruthy()
+    expect((getByRole(html, 'radio', { name: 'I don’t know' }) as HTMLInputElement).checked).toBeFalsy()
   })
 
   it('render validation errors if any', async () => {
@@ -106,11 +151,13 @@ describe('POST /referral/safer-custody', () => {
     await request(app())
       .post(`/${uuid}/${TEST_PATH}`)
       .type('form')
-      .send({ isSaferCustodyTeamInformed: 'yes' })
+      .send({ isSaferCustodyTeamInformed: schema.shape.isSaferCustodyTeamInformed.enum.YES })
       .expect(302)
       .expect('Location', 'additional-information')
 
-    expect(reqCaptured.journeyData().referral?.isSaferCustodyTeamInformed).toEqual('yes')
+    expect(reqCaptured.journeyData().referral?.isSaferCustodyTeamInformed).toEqual(
+      schema.shape.isSaferCustodyTeamInformed.enum.YES,
+    )
   })
 
   it('redirect to go back and set validation errors if isSaferCustodyInformed answer is invalid', async () => {

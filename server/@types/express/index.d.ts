@@ -1,6 +1,7 @@
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import { Breadcrumbs } from '../../middleware/breadcrumbs'
 import { fieldErrors } from '../../middleware/validationMiddleware'
+import Prisoner from '../../services/prisonerSearch/prisoner'
 import { ReferenceData, YesNoAnswer } from '../csip/csipApiTypes'
 
 export declare module 'express-session' {
@@ -25,14 +26,10 @@ export type JourneyData = {
   saferCustodyScreening?: SaferCustodyScreening
   investigation?: Investigation
   plan?: Plan
+  csipRecordCreated?: boolean
 }
 
-export type PrisonerSummary = {
-  prisonerNumber: string
-  firstName: string
-  lastName: string
-  cellLocation: string
-}
+export type PrisonerSummary = Prisoner
 
 type ReferralData = {
   onBehalfOfSubJourney?: Partial<ReferralData>

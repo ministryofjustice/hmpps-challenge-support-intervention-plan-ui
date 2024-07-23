@@ -7,6 +7,9 @@ import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
 import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
 import { JourneyData } from '../../../@types/express'
 import { TEST_DPS_HOMEPAGE, TEST_PRISONER } from '../../../routes/testutils/testConstants'
+import type CsipApiService from '../../../services/csipApi/csipApiService'
+import { components } from '../../../@types/csip'
+import { schema as saferCustodySchema } from '../safer-custody/schemas'
 
 const TEST_PATH = 'referral/check-answers'
 const uuid = uuidv4()
@@ -39,7 +42,7 @@ const journeyDataMock = {
         factorType: { code: 'C', description: 'Text with a TLA' },
       },
     ],
-    isSaferCustodyTeamInformed: 'yes',
+    isSaferCustodyTeamInformed: saferCustodySchema.shape.isSaferCustodyTeamInformed.enum.YES,
     otherInformation: '<script>alert("Sample information text")</script>',
   },
 } as JourneyData
@@ -58,7 +61,36 @@ const app = (
   // eslint-disable-next-line prefer-destructuring
   requestCaptor = testRequestCaptor(journeyData, uuid)[1]
   return appWithAllRoutes({
-    services: {},
+    services: {
+      csipApiService: {
+        createReferral: async () => {
+          return {
+            createdAt: '',
+            createdBy: '',
+            createdByDisplayName: '',
+            prisonNumber: '',
+            recordUuid: '',
+            referral: {
+              isSaferCustodyTeamInformed: saferCustodySchema.shape.isSaferCustodyTeamInformed.enum.NO,
+              contributoryFactors: [],
+              incidentDate: '',
+              incidentLocation: {
+                code: '',
+                createdAt: '',
+                createdBy: '',
+              },
+              incidentType: {
+                code: '',
+                createdAt: '',
+                createdBy: '',
+              },
+              refererArea: { code: '', createdAt: '', createdBy: '' },
+              referredBy: '',
+            },
+          } as components['schemas']['CsipRecord']
+        },
+      } as unknown as CsipApiService,
+    },
     uuid,
     requestCaptor,
     validationErrors,
@@ -335,6 +367,29 @@ describe('GET /referral/check-answers', () => {
       ).href,
     ).toMatch(/reasons$/)
   })
+
+  it('render page with validation errors', async () => {
+    const result = await request(
+      app({
+        validationErrors: {
+          referral: [`Validation failure: Couldn't read request body`],
+        },
+        journeyData: {
+          ...journeyDataMock,
+          referral: {
+            ...journeyDataMock.referral,
+            isOnBehalfOfReferral: false,
+            isProactiveReferral: false,
+          },
+        },
+      }),
+    )
+      .get(`/${uuid}/${TEST_PATH}`)
+      .expect(200)
+      .expect('Content-Type', /html/)
+    const html = createTestHtmlElement(result.text)
+    expect(getByRole(html, 'link', { name: `Validation failure: Couldn't read request body` })).toBeVisible()
+  })
 })
 
 describe('POST /referral/check-answers', () => {
@@ -345,5 +400,32 @@ describe('POST /referral/check-answers', () => {
       .send({})
       .expect(302)
       .expect('Location', 'confirmation')
+  })
+
+  it('redirect to /referral/check-answers on bad api call', async () => {
+    await request(
+      appWithAllRoutes({
+        services: {
+          csipApiService: {
+            createReferral: () => {
+              // eslint-disable-next-line no-throw-literal
+              throw {
+                data: {
+                  userMessage: 'Bad request!',
+                },
+              }
+            },
+          } as unknown as CsipApiService,
+        },
+        uuid,
+        requestCaptor: testRequestCaptor(journeyDataMock, uuid)[1],
+      }),
+    )
+      .post(`/${uuid}/${TEST_PATH}`)
+      .type('form')
+      .send({})
+      .expect(302)
+      // We're redirecting 'back' which because we've only gone to one route means we go 'back' to root
+      .expect('Location', '/')
   })
 })

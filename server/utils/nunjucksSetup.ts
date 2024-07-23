@@ -8,6 +8,7 @@ import { ApplicationInfo } from '../applicationInfo'
 import config from '../config'
 import { buildErrorSummaryList, findError } from '../middleware/validationMiddleware'
 import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
+import { schema } from '../journeys/referral/safer-custody/schemas'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -59,4 +60,5 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   njkEnv.addFilter('formatDisplayDate', formatDisplayDate)
   njkEnv.addFilter('filterBy', (array: object[], filter: (itm: object) => boolean) => array.filter(filter))
   njkEnv.addGlobal('todayStringGBFormat', todayStringGBFormat)
+  njkEnv.addGlobal('YesNoDontKnow', schema.shape.isSaferCustodyTeamInformed.enum)
 }

@@ -3,4 +3,5 @@ export default interface Prisoner {
   firstName: string
   lastName: string
   cellLocation: string
+  prisonId: string
 }

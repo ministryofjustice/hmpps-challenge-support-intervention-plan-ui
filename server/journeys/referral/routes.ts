@@ -34,7 +34,7 @@ function Routes(csipApiService: CsipApiService): Router {
   router.use('/safer-custody', ReferralSaferCustodyRoutes())
   router.use('/additional-information', ReferralAdditionalInformationRoutes())
   router.use('/involvement', InvolvementRoutes(csipApiService))
-  router.use('/check-answers', ReferralCheckAnswersRoutes())
+  router.use('/check-answers', ReferralCheckAnswersRoutes(csipApiService))
   router.use('/confirmation', ConfirmationRoutes())
 
   return router
