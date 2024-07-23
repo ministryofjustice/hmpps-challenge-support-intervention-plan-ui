@@ -406,12 +406,12 @@ describe('POST /referral/check-answers', () => {
         services: {
           csipApiService: {
             createReferral: () => {
-              // eslint-disable-next-line prefer-promise-reject-errors
-              return Promise.reject(() => ({
+              // eslint-disable-next-line no-throw-literal
+              throw {
                 data: {
                   userMessage: 'Bad request!',
                 },
-              }))
+              }
             },
           } as unknown as CsipApiService,
         },
