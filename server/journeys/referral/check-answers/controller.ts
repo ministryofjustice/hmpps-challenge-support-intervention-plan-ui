@@ -27,7 +27,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
     const referral = req.journeyData.referral!
     try {
       await this.createReferral(req, {
-        logNumber: prisoner.prisonId,
+        logCode: prisoner.prisonId,
         referral: {
           contributoryFactors: referral.contributoryFactors!.map(factor => ({
             factorTypeCode: factor.factorType.code,
@@ -43,8 +43,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
           incidentInvolvementCode: referral.incidentInvolvement!.code,
           incidentTime: `${referral.incidentTime!}:00`,
           isProactiveReferral: referral.isProactiveReferral!,
-          // @ts-expect-error asd
-          isSaferCustodyTeamInformed: 'YES',
+          isSaferCustodyTeamInformed: referral.isSaferCustodyTeamInformed!,
           isReferralComplete: true,
           isStaffAssaulted: referral.staffAssaulted!,
           knownReasons: referral.knownReasons!,

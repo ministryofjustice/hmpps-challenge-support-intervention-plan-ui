@@ -41,7 +41,7 @@ const journeyDataMock = {
         factorType: { code: 'C', description: 'Text with a TLA' },
       },
     ],
-    isSaferCustodyTeamInformed: 'yes',
+    isSaferCustodyTeamInformed: 'YES',
     otherInformation: '<script>alert("Sample information text")</script>',
   },
 } as JourneyData
@@ -70,6 +70,7 @@ const app = (
             prisonNumber: '',
             recordUuid: '',
             referral: {
+              isSaferCustodyTeamInformed: 'NO',
               contributoryFactors: [],
               incidentDate: '',
               incidentLocation: {

@@ -70,7 +70,7 @@ describe('GET /referral/confirmation', () => {
           factorType: { code: 'C', description: 'Text with a TLA' },
         },
       ],
-      isSaferCustodyTeamInformed: 'yes',
+      isSaferCustodyTeamInformed: 'YES',
       otherInformation: 'foobar',
     },
   } as JourneyData
