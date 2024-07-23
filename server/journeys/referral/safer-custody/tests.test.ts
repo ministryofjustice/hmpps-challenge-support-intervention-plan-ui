@@ -7,6 +7,7 @@ import testRequestCaptor, { TestRequestCaptured } from '../../../routes/testutil
 import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
 import { JourneyData } from '../../../@types/express'
 import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
+import { schema } from './schemas'
 
 const TEST_PATH = 'referral/safer-custody'
 const uuid = uuidv4()
@@ -67,7 +68,7 @@ describe('GET /referral/safer-custody', () => {
           ...journeyDataMock,
           referral: {
             ...journeyDataMock.referral,
-            isSaferCustodyTeamInformed: 'DO_NOT_KNOW',
+            isSaferCustodyTeamInformed: schema.shape.isSaferCustodyTeamInformed.enum.DO_NOT_KNOW,
           },
         } as JourneyData,
       }),
@@ -89,7 +90,7 @@ describe('GET /referral/safer-custody', () => {
           ...journeyDataMock,
           referral: {
             ...journeyDataMock.referral,
-            isSaferCustodyTeamInformed: 'YES',
+            isSaferCustodyTeamInformed: schema.shape.isSaferCustodyTeamInformed.enum.YES,
           },
         } as JourneyData,
       }),
@@ -111,7 +112,7 @@ describe('GET /referral/safer-custody', () => {
           ...journeyDataMock,
           referral: {
             ...journeyDataMock.referral,
-            isSaferCustodyTeamInformed: 'NO',
+            isSaferCustodyTeamInformed: schema.shape.isSaferCustodyTeamInformed.enum.NO,
           },
         } as JourneyData,
       }),
@@ -150,11 +151,13 @@ describe('POST /referral/safer-custody', () => {
     await request(app())
       .post(`/${uuid}/${TEST_PATH}`)
       .type('form')
-      .send({ isSaferCustodyTeamInformed: 'YES' })
+      .send({ isSaferCustodyTeamInformed: schema.shape.isSaferCustodyTeamInformed.enum.YES })
       .expect(302)
       .expect('Location', 'additional-information')
 
-    expect(reqCaptured.journeyData().referral?.isSaferCustodyTeamInformed).toEqual('YES')
+    expect(reqCaptured.journeyData().referral?.isSaferCustodyTeamInformed).toEqual(
+      schema.shape.isSaferCustodyTeamInformed.enum.YES,
+    )
   })
 
   it('redirect to go back and set validation errors if isSaferCustodyInformed answer is invalid', async () => {

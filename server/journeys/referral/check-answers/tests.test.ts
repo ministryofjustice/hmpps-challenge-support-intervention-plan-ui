@@ -9,6 +9,7 @@ import { JourneyData } from '../../../@types/express'
 import { TEST_DPS_HOMEPAGE, TEST_PRISONER } from '../../../routes/testutils/testConstants'
 import type CsipApiService from '../../../services/csipApi/csipApiService'
 import { components } from '../../../@types/csip'
+import { schema as saferCustodySchema } from '../safer-custody/schemas'
 
 const TEST_PATH = 'referral/check-answers'
 const uuid = uuidv4()
@@ -41,7 +42,7 @@ const journeyDataMock = {
         factorType: { code: 'C', description: 'Text with a TLA' },
       },
     ],
-    isSaferCustodyTeamInformed: 'YES',
+    isSaferCustodyTeamInformed: saferCustodySchema.shape.isSaferCustodyTeamInformed.enum.YES,
     otherInformation: '<script>alert("Sample information text")</script>',
   },
 } as JourneyData
@@ -70,7 +71,7 @@ const app = (
             prisonNumber: '',
             recordUuid: '',
             referral: {
-              isSaferCustodyTeamInformed: 'NO',
+              isSaferCustodyTeamInformed: saferCustodySchema.shape.isSaferCustodyTeamInformed.enum.NO,
               contributoryFactors: [],
               incidentDate: '',
               incidentLocation: {

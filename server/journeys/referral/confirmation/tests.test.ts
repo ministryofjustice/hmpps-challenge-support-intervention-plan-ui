@@ -7,6 +7,7 @@ import createTestHtmlElement from '../../../routes/testutils/createTestHtmlEleme
 import { JourneyData } from '../../../@types/express'
 import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
 import type CsipApiService from '../../../services/csipApi/csipApiService'
+import { schema as saferCustodySchema } from '../safer-custody/schemas'
 
 const uuid = uuidv4()
 let app: Express
@@ -70,7 +71,7 @@ describe('GET /referral/confirmation', () => {
           factorType: { code: 'C', description: 'Text with a TLA' },
         },
       ],
-      isSaferCustodyTeamInformed: 'YES',
+      isSaferCustodyTeamInformed: saferCustodySchema.shape.isSaferCustodyTeamInformed.enum.YES,
       otherInformation: 'foobar',
     },
   } as JourneyData
