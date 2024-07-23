@@ -399,4 +399,31 @@ describe('POST /referral/check-answers', () => {
       .expect(302)
       .expect('Location', 'confirmation')
   })
+
+  it('redirect to /referral/check-answers on bad api call', async () => {
+    await request(
+      appWithAllRoutes({
+        services: {
+          csipApiService: {
+            createReferral: () => {
+              // eslint-disable-next-line prefer-promise-reject-errors
+              return Promise.reject(() => ({
+                data: {
+                  userMessage: 'Bad request!',
+                },
+              }))
+            },
+          } as unknown as CsipApiService,
+        },
+        uuid,
+        requestCaptor: testRequestCaptor(journeyDataMock, uuid)[1],
+      }),
+    )
+      .post(`/${uuid}/${TEST_PATH}`)
+      .type('form')
+      .send({})
+      .expect(302)
+      // We're redirecting 'back' which because we've only gone to one route means we go 'back' to root
+      .expect('Location', '/')
+  })
 })

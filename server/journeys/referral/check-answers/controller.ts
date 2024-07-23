@@ -23,11 +23,8 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
   }
 
   checkSubmitToAPI: RequestHandler = async (req, res, next) => {
-    const { prisoner, referral } = req.journeyData
-    if (!prisoner || !referral) {
-      const prisonerEmpty = !prisoner
-      throw new Error(`${prisonerEmpty ? 'Prisoner' : 'Referral'} in journeyData was empty!`)
-    }
+    const prisoner = req.journeyData.prisoner!
+    const referral = req.journeyData.referral!
     try {
       await this.createReferral(req, {
         logNumber: prisoner.prisonId,
