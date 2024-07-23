@@ -5,3 +5,4 @@ export type ReferenceDataType = operations['getReferenceData']['parameters']['pa
 
 // TODO: to be replaced with Enum from CSIP API
 export type YesNoAnswer = 'yes' | 'no' | 'do_not_know'
+export type CsipRecord = components['schemas']['CsipRecord']

@@ -10,20 +10,21 @@
   <form method="POST">
     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
     {{ govukRadios({
-        name: "saferCustodyOutcome",
+        name: "outcomeType",
         fieldset: {
             legend: {
                 text: "What's the outcome of Safer Custody screening?",
                 classes: "govuk-fieldset__legend--m"
             }
         },
-        items: saferCustodyOutcomeItems,
-        errorMessage: validationErrors | findError('saferCustodyOutcome')
+        items: outcomeTypeItems,
+        errorMessage: validationErrors | findError('outcomeType')
     }) }}
     
     {{ govukCharacterCount({
         label: {
-          html: '<h2 class="govuk-heading-m">Describe the reasons for this decision</h2>'
+          text: 'Describe the reasons for this decision',
+          classes: "govuk-label--m"
         },
         maxlength: 4000,
         rows: 5,

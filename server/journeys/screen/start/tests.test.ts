@@ -43,7 +43,7 @@ afterEach(() => {
 describe('tests', () => {
   it('should redirect to first stage of screen journey when going to start uri', async () => {
     await request(app)
-      .get(`/csip-record/${uuidv4()}/screen/start`)
+      .get(`/csip-record/${uuid}/screen/start`)
       .expect(302)
       .redirects(1)
       .expect('Location', /screen\/screen/)
@@ -65,7 +65,7 @@ describe('tests', () => {
         uuid,
       }),
     )
-      .get(`/csip-record/${uuidv4()}/screen/start`)
+      .get(`/csip-record/${uuid}/screen/start`)
       .expect(302)
       .redirects(1)
       .expect('Location', /\/csip-record\/([0-9A-Fa-f]+-?)+/)
@@ -87,7 +87,7 @@ describe('tests', () => {
         uuid,
       }),
     )
-      .get(`/csip-record/${uuidv4()}/screen/start`)
+      .get(`/csip-record/${uuid}/screen/start`)
       .expect(302)
       .redirects(1)
       .expect('Location', '/')
@@ -110,7 +110,7 @@ describe('tests', () => {
         uuid,
       }),
     )
-      .get(`/${uuidv4()}/csip-record/${uuidv4()}/screen/start`)
+      .get(`/${uuidv4()}/csip-record/${uuid}/screen/start`)
       .expect(500)
     const html = createTestHtmlElement(result.text)
     expect(getByRole(html, 'heading', { name: /500 error happened/i })).toBeVisible()

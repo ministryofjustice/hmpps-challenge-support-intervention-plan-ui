@@ -1,8 +1,7 @@
 import { Request } from 'express'
 import { RestClientBuilder } from '../../data'
-import { ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
+import { CsipRecord, ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
 import CsipApiClient from './csipApiClient'
-import { CsipRecord } from '../../@types/express'
 
 export default class CsipApiService {
   constructor(private readonly csipApiClientBuilder: RestClientBuilder<CsipApiClient>) {}

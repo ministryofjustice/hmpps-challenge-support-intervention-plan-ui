@@ -1,7 +1,6 @@
 import RestClient from '../../data/restClient'
 import config from '../../config'
-import { ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
-import { CsipRecord } from '../../@types/express'
+import { CsipRecord, ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
 
 export default class CsipApiClient {
   private readonly restClient: RestClient

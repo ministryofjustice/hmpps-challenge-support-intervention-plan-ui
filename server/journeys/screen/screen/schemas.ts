@@ -6,27 +6,27 @@ const csrfSchema = z.object({
   _csrf: z.string().optional(),
 })
 
-const saferCustodyOutcomeErrorMsg = 'Select the outcome of Safer Custody screening'
+const outcomeTypeErrorMsg = 'Select the outcome of Safer Custody screening'
 const REASONS_MSG = 'Enter a description of the reasons for this decision'
 
 const REASONS_TOO_LONG_MSG = 'Description must be 4,000 characters or less'
 
 export const schemaFactory = (csipApiService: CsipApiService) => async (req: Request) => {
-  const saferCustodyOutcomeMap = new Map(
+  const outcomeTypeMap = new Map(
     (await csipApiService.getReferenceData(req, 'outcome-type')).map(itm => [itm.code, itm]),
   )
 
   return z
     .object({
-      saferCustodyOutcome: z.string({ message: saferCustodyOutcomeErrorMsg }).transform((val, ctx) => {
-        if (!saferCustodyOutcomeMap.has(val)) {
+      outcomeType: z.string({ message: outcomeTypeErrorMsg }).transform((val, ctx) => {
+        if (!outcomeTypeMap.has(val)) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: saferCustodyOutcomeErrorMsg,
+            message: outcomeTypeErrorMsg,
           })
           return z.NEVER
         }
-        return saferCustodyOutcomeMap.get(val)!
+        return outcomeTypeMap.get(val)!
       }),
     })
     .and(
@@ -35,7 +35,8 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
           reasonForDecision: z
             .string({ message: REASONS_MSG })
             .max(4000, REASONS_TOO_LONG_MSG)
-            .refine(val => val && val.trim().length > 0, REASONS_MSG),
+            .trim()
+            .min(1, { message: REASONS_MSG }),
         }),
       ),
     )

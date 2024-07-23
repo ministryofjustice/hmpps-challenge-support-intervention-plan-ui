@@ -1,7 +1,7 @@
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import { Breadcrumbs } from '../../middleware/breadcrumbs'
 import { fieldErrors } from '../../middleware/validationMiddleware'
-import { ReferenceData, YesNoAnswer } from '../csip/csipApiTypes'
+import { CsipRecord, ReferenceData, YesNoAnswer } from '../csip/csipApiTypes'
 
 export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
@@ -68,21 +68,6 @@ type SaferCustodyScreening = Partial<{
 type Investigation = object
 
 type Plan = object
-
-export type CsipRecord = Partial<{
-  recordUuid: string
-  prisonNumber: string
-  prisonCodeWhenRecorded: string
-  logCode: string
-  createdAt: string
-  createdBy: string
-  createdByDisplayName: string
-  lastModifiedBy: string
-  lastModifiedAt: string
-  lastModifiedByDisplayName: string
-  referral: ReferralData
-  plan: Plan
-}>
 
 export declare global {
   namespace Express {

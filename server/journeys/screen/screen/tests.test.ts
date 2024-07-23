@@ -1,7 +1,7 @@
 import { Locals, Request } from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import { agent as request } from 'supertest'
-import { getAllByRole, getByRole, queryByAttribute, queryByRole } from '@testing-library/dom'
+import { getAllByRole, getAllByText, getByRole, getByText, queryByAttribute, queryByRole } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import testRequestCaptor, { TestRequestCaptured } from '../../../routes/testutils/testRequestCaptor'
@@ -64,6 +64,10 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
+const EXPECTED_OUTCOME_ERROR_MSG = 'Select the outcome of Safer Custody screening'
+const EXPECTED_REASON_ERROR_MSG = 'Enter a description of the reasons for this decision'
+const EXPECTED_REASON_ERROR_MSG_LENGTH = 'Description must be 4,000 characters or less'
+
 describe('tests', () => {
   it('render page', async () => {
     const result = await request(app()).get(`/${uuid}/screen/screen`).expect(200).expect('Content-Type', /html/)
@@ -71,7 +75,7 @@ describe('tests', () => {
     const html = createTestHtmlElement(result.text)
 
     expect(getByRole(html, 'heading', { name: /Screen a CSIP referral/ })).toBeVisible()
-    expect(getByRole(html, 'heading', { name: /Describe the reasons for this decision/ })).toBeVisible()
+    expect(getByRole(html, 'textbox', { name: /Describe the reasons for this decision/ })).toBeVisible()
 
     const radios = getAllByRole(html, 'radio')
     radios.forEach(radio => {
@@ -84,7 +88,7 @@ describe('tests', () => {
     expect(queryByRole(html, 'link', { name: 'Back' })).toBeNull()
   })
 
-  it('should prepopulate values', async () => {
+  it('should prepopulate values from journeyData ', async () => {
     const data = {
       journeyData: {
         instanceUnixEpoch: 0,
@@ -109,47 +113,82 @@ describe('tests', () => {
     expect(getByRole(html, 'button', { name: /continue/i })).toBeVisible()
   })
 
-  it('should redirect on posting empty data', async () => {
+  it('should display errors on posting empty data', async () => {
     await request(app()).post(`/${uuid}/screen/screen`).send({}).expect('Location', `/`)
 
-    expect(reqCaptured.validationErrors()).toEqual({
-      saferCustodyOutcome: ['Select the outcome of Safer Custody screening'],
-      reasonForDecision: ['Enter a description of the reasons for this decision'],
+    const errors = reqCaptured.validationErrors()
+
+    const result = await request(app({ journeyData: journeyDataProactive, validationErrors: errors }))
+      .get(`/${uuid}/screen/screen`)
+      .expect(200)
+      .expect('Content-Type', /html/)
+
+    const html = createTestHtmlElement(result.text)
+
+    expect(getAllByText(html, EXPECTED_OUTCOME_ERROR_MSG)).toHaveLength(2)
+    expect(getAllByText(html, EXPECTED_REASON_ERROR_MSG)).toHaveLength(2)
+
+    expect(errors).toEqual({
+      outcomeType: [EXPECTED_OUTCOME_ERROR_MSG],
+      reasonForDecision: [EXPECTED_REASON_ERROR_MSG],
     })
   })
 
-  it('should redirect on posting invalid data', async () => {
+  it('should display errors on posting invalid data', async () => {
     await request(app())
       .post(`/${uuid}/screen/screen`)
       .send({
-        saferCustodyOutcome: 'INVALID',
+        outcomeType: 'INVALID',
         reasonForDecision: 'Posting a value for outcomeType that should not be accepted',
       })
       .expect('Location', `/`)
 
-    expect(reqCaptured.validationErrors()).toEqual({
-      saferCustodyOutcome: ['Select the outcome of Safer Custody screening'],
+    const errors = reqCaptured.validationErrors()
+
+    const result = await request(app({ journeyData: journeyDataProactive, validationErrors: errors }))
+      .get(`/${uuid}/screen/screen`)
+      .expect(200)
+      .expect('Content-Type', /html/)
+
+    const html = createTestHtmlElement(result.text)
+
+    expect(getByText(html, 'There is a problem')).toBeVisible()
+
+    expect(getAllByText(html, EXPECTED_OUTCOME_ERROR_MSG)).toHaveLength(2)
+
+    expect(errors).toEqual({
+      outcomeType: [EXPECTED_OUTCOME_ERROR_MSG],
     })
   })
 
-  it('should redirect on posting over 4000 characters in reason', async () => {
+  it('should display an error on posting over 4000 characters in reason', async () => {
     await request(app())
       .post(`/${uuid}/screen/screen`)
       .send({
         reasonForDecision: 'o'.repeat(4001),
-        saferCustodyOutcome: 'WFA',
+        outcomeType: 'WFA',
       })
       .expect('Location', `/`)
 
-    expect(reqCaptured.validationErrors()).toEqual({
-      reasonForDecision: ['Description must be 4,000 characters or less'],
+    const errors = reqCaptured.validationErrors()
+
+    const result = await request(app({ journeyData: journeyDataProactive, validationErrors: errors }))
+      .get(`/${uuid}/screen/screen`)
+      .expect(200)
+      .expect('Content-Type', /html/)
+
+    const html = createTestHtmlElement(result.text)
+    expect(getAllByText(html, EXPECTED_REASON_ERROR_MSG_LENGTH)).toHaveLength(2)
+
+    expect(errors).toEqual({
+      reasonForDecision: [EXPECTED_REASON_ERROR_MSG_LENGTH],
     })
   })
 
   it('should return a 200 on posting valid data and redirect to check answers', async () => {
     await request(app())
       .post(`/${uuid}/screen/screen`)
-      .send({ saferCustodyOutcome: 'WFA', reasonForDecision: 'no action needed' })
+      .send({ outcomeType: 'WFA', reasonForDecision: 'no action needed' })
       .expect(302)
       .expect('Location', 'check-answers')
   })

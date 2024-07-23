@@ -1,8 +1,8 @@
 import { RequestHandler, Router } from 'express'
 import asyncMiddleware from '../../../middleware/asyncMiddleware'
-import { StartJourneyController } from './controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
+import { StartJourneyController } from '../../start/controller'
 
 export default function StartJourneyRoutes(
   csipApiService: CsipApiService,
