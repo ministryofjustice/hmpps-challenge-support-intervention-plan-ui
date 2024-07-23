@@ -13,22 +13,22 @@
         {{ govukRadios({
             items: [
                 {
-                    value: "YES",
+                    value: YesNoDontKnow.YES,
                     text: "Yes",
-                    checked: isSaferCustodyTeamInformed === 'YES'
+                    checked: isSaferCustodyTeamInformed === YesNoDontKnow.YES
                 },
                 {
-                    value: "NO",
+                    value: YesNoDontKnow.NO,
                     text: "No",
-                    checked: isSaferCustodyTeamInformed === 'NO'
+                    checked: isSaferCustodyTeamInformed === YesNoDontKnow.NO
                 },
                 {
                     divider: "or"
                 },
                 {
-                    value: "DO_NOT_KNOW",
+                    value: YesNoDontKnow.DO_NOT_KNOW,
                     text: "I don’t know",
-                    checked: isSaferCustodyTeamInformed === 'DO_NOT_KNOW'
+                    checked: isSaferCustodyTeamInformed === YesNoDontKnow.DO_NOT_KNOW
                 }
             ],
             name: "isSaferCustodyTeamInformed",
