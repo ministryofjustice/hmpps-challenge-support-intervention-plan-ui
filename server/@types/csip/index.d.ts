@@ -43,7 +43,7 @@ export interface paths {
     }
     /**
      * Retrieve and filter all CSIP records for a prisoner.
-     * @description Returns the CSIP records for a prisoner. Supports log number filtering.
+     * @description Returns the CSIP records for a prisoner. Supports log code filtering.
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -52,7 +52,7 @@ export interface paths {
     put?: never
     /**
      * Create a CSIP record for a prisoner.
-     * @description Create the CSIP record, referral and contributory factors. This starts the CSIP process. Publishes prisoner-csip.csip-record-created and prisoner-csip.contributory-factor-created events
+     * @description Create the CSIP record, referral and contributory factors. This starts the CSIP process. Publishes person.csip.record.created and person.csip.contributory-factor.created events
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -76,7 +76,7 @@ export interface paths {
     put?: never
     /**
      * Add safer custody screening outcome to the referral.
-     * @description Create the safer custody screening outcome. Publishes prisoner-csip.csip-record-updated event with saferCustodyScreeningOutcomeAffected = true
+     * @description Create the safer custody screening outcome. Publishes person.csip.record.updated event with saferCustodyScreeningOutcomeAffected = true
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -88,7 +88,7 @@ export interface paths {
     head?: never
     /**
      * Update the safer custody screening outcome.
-     * @description Update the safer custody screening outcome. Publishes prisoner-csip.csip-record-updated event with saferCustodyScreeningOutcomeAffected = true
+     * @description Update the safer custody screening outcome. Publishes person.csip.record.updated event with saferCustodyScreeningOutcomeAffected = true
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -107,7 +107,7 @@ export interface paths {
     put?: never
     /**
      * Add investigation and any interviews to the referral.
-     * @description Create the investigation and any interviews. Publishes prisoner-csip.csip-record-updated event with investigationAffected = true and prisoner-csip.interview-created event
+     * @description Create the investigation and any interviews. Publishes person.csip.record.updated event with investigationAffected = true and person.csip.interview.created event
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -119,7 +119,7 @@ export interface paths {
     head?: never
     /**
      * Update the investigation.
-     * @description Update the investigation only. Cannot update interviews with this endpoint. Publishes prisoner-csip.csip-record-updated event with investigationAffected = true
+     * @description Update the investigation only. Cannot update interviews with this endpoint. Publishes person.csip.record.updated event with investigationAffected = true
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -138,7 +138,7 @@ export interface paths {
     put?: never
     /**
      * Add an interview to the investigation.
-     * @description Add an interview to the investigation. Publishes prisoner-csip.interview-created event
+     * @description Add an interview to the investigation. Publishes person.csip.interview.created event
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -161,7 +161,7 @@ export interface paths {
     put?: never
     /**
      * Add decision and actions to the referral.
-     * @description Create the decision and actions. Publishes prisoner-csip.csip-record-updated event with decisionAndActionsAffected = true
+     * @description Create the decision and actions. Publishes person.csip.record.updated event with decisionAndActionsAffected = true
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -173,7 +173,7 @@ export interface paths {
     head?: never
     /**
      * Update the decision and actions.
-     * @description Update the decision and actions. Publishes prisoner-csip.csip-record-updated event with decisionAndActionsAffected = true
+     * @description Update the decision and actions. Publishes person.csip.record.updated event with decisionAndActionsAffected = true
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -192,7 +192,7 @@ export interface paths {
     put?: never
     /**
      * Add a contributory factor to the referral.
-     * @description Add a contributory factor to the referral. Publishes prisoner-csip.contributory-factor-created event
+     * @description Add a contributory factor to the referral. Publishes person.csip.contributory-factor.created event
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -215,7 +215,7 @@ export interface paths {
     put?: never
     /**
      * Create the CSIP plan and identified needs.
-     * @description Create the CSIP plan and identified needs. Publishes prisoner-csip.csip-record-updated event with planAffected = true and prisoner-csip.identified-need-created event
+     * @description Create the CSIP plan and identified needs. Publishes person.csip.record.updated event with planAffected = true and prisoner-csip.identified-need-created event
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -226,7 +226,7 @@ export interface paths {
     head?: never
     /**
      * Update the CSIP plan.
-     * @description Update the plan only. Cannot update identified needs with this endpoint. Publishes prisoner-csip.csip-record-updated event with planAffected = true
+     * @description Update the plan only. Cannot update identified needs with this endpoint. Publishes person.csip.record.updated event with planAffected = true
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -387,7 +387,7 @@ export interface paths {
     head?: never
     /**
      * Update the CSIP referral
-     * @description Update the CSIP referral only. Cannot update contributory factors with this endpoint. Publishes prisoner-csip.csip-record-created event with referralAffected = true
+     * @description Update the CSIP referral only. Cannot update contributory factors with this endpoint. Publishes person.csip.record.created event with referralAffected = true
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -409,8 +409,8 @@ export interface paths {
     options?: never
     head?: never
     /**
-     * Update the log number for a CSIP record.
-     * @description Update the log number for a CSIP record. Publishes prisoner-csip.csip-record-updated event with recordAffected = true
+     * Update the log code for a CSIP record.
+     * @description Update the log code for a CSIP record. Publishes person.csip.record.updated event with recordAffected = true
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -570,7 +570,7 @@ export interface paths {
     }
     /**
      * Retrieve and filter all CSIP records for prisoners resident in the prison.
-     * @description Returns the CSIP records for prisoners resident in the prison. Supports log number filtering.
+     * @description Returns the CSIP records for prisoners resident in the prison. Supports log code filtering.
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
@@ -597,6 +597,7 @@ export interface paths {
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     *     * ROLE_NOMIS_CSIP
      */
     get: operations['retrieveCsipRecord']
     put?: never
@@ -659,12 +660,12 @@ export interface components {
        * Format: date-time
        * @description The date and time the code was last modified
        */
-      modifiedAt?: string
+      lastModifiedAt?: string
       /**
        * @description The username of the user who last modified the code
        * @example USER1234
        */
-      modifiedBy?: string
+      lastModifiedBy?: string
       /**
        * Format: date-time
        * @description The date and time the code was deactivated
@@ -686,7 +687,7 @@ export interface components {
     /** @description The request body for creating a new CSIP Record for a person */
     CreateCsipRecordRequest: {
       /** @description User entered identifier for the CSIP record. Defaults to the prison code. */
-      logNumber?: string
+      logCode?: string
       referral: components['schemas']['CreateReferralRequest']
     }
     /** @description The request body for creating a CSIP referral */
@@ -710,8 +711,6 @@ export interface components {
       referredBy: string
       /** @description The area of work of the person reporting the incident or creating the CSIP referral. */
       refererAreaCode: string
-      /** @description Summary of the CSIP referral. */
-      referralSummary?: string
       /** @description Was this referral proactive or preventative. */
       isProactiveReferral?: boolean
       /** @description Were any members of staff assaulted in the incident. */
@@ -726,8 +725,11 @@ export interface components {
       knownReasons?: string
       /** @description Any other information about the incident or reasons for CSIP referral. */
       otherInformation?: string
-      /** @description Records whether the safer custody team been informed. */
-      isSaferCustodyTeamInformed?: boolean
+      /**
+       * @description Records whether the safer custody team been informed.
+       * @enum {string}
+       */
+      isSaferCustodyTeamInformed: 'YES' | 'NO' | 'DO_NOT_KNOW'
       /** @description Is the referral complete. */
       isReferralComplete?: boolean
       /** @description Contributory factors to the incident that motivated the referral. */
@@ -835,7 +837,7 @@ export interface components {
       /** @description The prison code where the person was resident at the time the CSIP record was created. */
       prisonCodeWhenRecorded?: string
       /** @description User entered identifier for the CSIP record. Defaults to the prison code. */
-      logNumber?: string
+      logCode?: string
       /**
        * Format: date-time
        * @description The date and time the CSIP Record was created
@@ -1071,8 +1073,6 @@ export interface components {
       /** @description The person reporting the incident or creating the CSIP referral. */
       referredBy: string
       refererArea: components['schemas']['ReferenceData']
-      /** @description Summary of the CSIP referral. */
-      referralSummary?: string
       /** @description Was this referral proactive or preventative. */
       isProactiveReferral?: boolean
       /** @description Were any members of staff assaulted in the incident. */
@@ -1091,8 +1091,11 @@ export interface components {
       knownReasons?: string
       /** @description Any other information about the incident or reasons for CSIP referral. */
       otherInformation?: string
-      /** @description Records whether the safer custody team been informed. */
-      isSaferCustodyTeamInformed?: boolean
+      /**
+       * @description Records whether the safer custody team been informed.
+       * @enum {string}
+       */
+      isSaferCustodyTeamInformed: 'YES' | 'NO' | 'DO_NOT_KNOW'
       /** @description Is the referral complete. */
       isReferralComplete?: boolean
       /** @description Contributory factors to the incident that motivated the referral. */
@@ -1400,8 +1403,6 @@ export interface components {
       referredBy: string
       /** @description The area of work of the person reporting the incident or creating the CSIP referral. */
       refererAreaCode: string
-      /** @description Summary of the CSIP referral. */
-      referralSummary?: string
       /** @description Was this referral proactive or preventative. */
       isProactiveReferral?: boolean
       /** @description Were any members of staff assaulted in the incident. */
@@ -1416,8 +1417,11 @@ export interface components {
       knownReasons?: string
       /** @description Any other information about the incident or reasons for CSIP referral. */
       otherInformation?: string
-      /** @description Records whether the safer custody team been informed. */
-      isSaferCustodyTeamInformed?: boolean
+      /**
+       * @description Records whether the safer custody team been informed.
+       * @enum {string}
+       */
+      isSaferCustodyTeamInformed: 'YES' | 'NO' | 'DO_NOT_KNOW'
       /** @description Is the referral complete. */
       isReferralComplete?: boolean
     }
@@ -1502,7 +1506,7 @@ export interface components {
     /** @description The request body for updating a CSIP Record */
     UpdateCsipRecordRequest: {
       /** @description User entered identifier for the CSIP record. Defaults to the prison code. */
-      logNumber?: string
+      logCode?: string
     }
     /** @description The request body to update an interview */
     UpdateInterviewRequest: {
@@ -1604,10 +1608,10 @@ export interface components {
       progression?: string
     }
     PageCsipRecord: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       /** Format: int32 */
       size?: number
       content?: components['schemas']['CsipRecord'][]
@@ -1616,9 +1620,9 @@ export interface components {
       sort?: components['schemas']['SortObject'][]
       first?: boolean
       last?: boolean
-      pageable?: components['schemas']['PageableObject']
       /** Format: int32 */
       numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
       empty?: boolean
     }
     PageableObject: {
@@ -1627,9 +1631,9 @@ export interface components {
       sort?: components['schemas']['SortObject'][]
       /** Format: int32 */
       pageSize?: number
+      paged?: boolean
       /** Format: int32 */
       pageNumber?: number
-      paged?: boolean
       unpaged?: boolean
     }
     SortObject: {
@@ -1784,10 +1788,10 @@ export interface operations {
     parameters: {
       query?: {
         /**
-         * @description Filter CSIP records that contain the search text in their Log Number. The search is case insensitive.
+         * @description Filter CSIP records that contain the search text in their Log Code. The search is case insensitive.
          * @example Search text
          */
-        logNumber?: string
+        logCode?: string
         /**
          * @description Filter CSIP records that have a created timestamp at or after the supplied time.
          * @example 2021-09-27T14:19:25
@@ -3573,10 +3577,10 @@ export interface operations {
     parameters: {
       query?: {
         /**
-         * @description Filter CSIP records that contain the search text in their Log Number. The search is case insensitive.
+         * @description Filter CSIP records that contain the search text in their Log Code. The search is case insensitive.
          * @example Search text
          */
-        logNumber?: string
+        logCode?: string
         /**
          * @description Filter CSIP records that have a created timestamp at or after the supplied time.
          * @example 2021-09-27T14:19:25
