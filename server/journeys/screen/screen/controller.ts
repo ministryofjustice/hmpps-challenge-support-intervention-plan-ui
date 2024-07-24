@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
 import { BaseJourneyController } from '../../base/controller'
+import { sortAscending } from '../../../utils/utils'
 
 export class ScreenController extends BaseJourneyController {
   GET = async (req: Request, res: Response): Promise<void> => {
@@ -32,8 +33,7 @@ export class ScreenController extends BaseJourneyController {
       acct.text = 'Support through ACCT'
     }
 
-    // eslint-disable-next-line no-nested-ternary
-    items.sort((a, b) => ((a.text || '') < (b.text || '') ? -1 : a.text === b.text ? 0 : 1))
+    items.sort((a, b) => sortAscending(a.text || '', b.text || ''))
 
     const nfaIndex = items.findIndex(o => o.value === 'NFA')
     if (nfaIndex > -1) {
