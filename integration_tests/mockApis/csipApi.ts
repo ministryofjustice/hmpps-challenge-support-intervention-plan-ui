@@ -173,7 +173,7 @@ const stubCsipRecordPostFailure = () => {
   return stubFor({
     request: {
       method: 'POST',
-      urlPattern: '/csip-api/FAIL_POST/csip-records',
+      urlPattern: '/csip-api/prisoners/FAIL_POST/csip-records',
     },
     response: {
       status: 200,
@@ -194,7 +194,7 @@ const stubCsipRecordPostSuccess = () => {
   return stubFor({
     request: {
       method: 'POST',
-      urlPattern: '/csip-api/[a-zA-Z0-9]*/csip-records',
+      urlPath: '/csip-api/prisoners/A1111AA/csip-records',
     },
     response: {
       status: 200,
