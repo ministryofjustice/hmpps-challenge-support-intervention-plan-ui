@@ -324,6 +324,48 @@ const stubCsipRecordPostSuccess = () => {
   })
 }
 
+const stubOutcomeType = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/reference-data/outcome-type',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: [
+        { code: 'NFA', description: 'No further action' },
+        { code: 'ACC', description: 'Another option' },
+      ],
+    },
+  })
+}
+
+const stubCsipRecordGetSuccess = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
+        prisonNumber: 'A1111AA',
+        prisonCodeWhenRecorded: 'LEI',
+        createdAt: '2024-07-22T11:21:48',
+        createdBy: 'AHUMAN_GEN',
+        createdByDisplayName: 'A Human',
+      },
+    },
+  })
+}
+
 export default {
   stubAreaOfWork,
   stubIncidentLocation,
@@ -332,4 +374,6 @@ export default {
   stubContribFactors,
   stubCsipRecordPostSuccess,
   stubCsipRecordPostFailure,
+  stubOutcomeType,
+  stubCsipRecordGetSuccess,
 }

@@ -43,7 +43,7 @@ function Routes(csipApiService: CsipApiService): Router {
 export default function routes(csipApiService: CsipApiService, prisonerSearchService: PrisonerSearchService): Router {
   const router = Router({ mergeParams: true })
 
-  router.use('/', StartJourneyRoutes(prisonerSearchService))
+  router.use('/', StartJourneyRoutes(csipApiService, prisonerSearchService))
   router.use('/referral', Routes(csipApiService))
 
   return router

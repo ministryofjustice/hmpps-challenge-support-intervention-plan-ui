@@ -1,8 +1,8 @@
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import { Breadcrumbs } from '../../middleware/breadcrumbs'
 import { fieldErrors } from '../../middleware/validationMiddleware'
+import { CsipRecord, ReferenceData, YesNoAnswer } from '../csip/csipApiTypes'
 import Prisoner from '../../services/prisonerSearch/prisoner'
-import { ReferenceData, YesNoAnswer } from '../csip/csipApiTypes'
 
 export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
@@ -26,6 +26,7 @@ export type JourneyData = {
   saferCustodyScreening?: SaferCustodyScreening
   investigation?: Investigation
   plan?: Plan
+  csipRecord?: CsipRecord
   csipRecordCreated?: boolean
 }
 
@@ -56,7 +57,10 @@ export type ContributoryFactor = {
   comment?: string
 }
 
-type SaferCustodyScreening = object
+type SaferCustodyScreening = Partial<{
+  outcomeType: ReferenceData
+  reasonForDecision: string
+}>
 
 type Investigation = object
 

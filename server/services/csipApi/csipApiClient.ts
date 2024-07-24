@@ -1,6 +1,6 @@
 import RestClient from '../../data/restClient'
 import config from '../../config'
-import { ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
+import { CsipRecord, ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
 import { components } from '../../@types/csip'
 
 export default class CsipApiClient {
@@ -14,6 +14,10 @@ export default class CsipApiClient {
     return this.restClient.get<ReferenceData[]>({
       path: `/reference-data/${domain}`,
     })
+  }
+
+  async getCsipRecord(id: string): Promise<CsipRecord> {
+    return this.restClient.get<CsipRecord>({ path: `/csip-records/${id}` })
   }
 
   async createReferral(
