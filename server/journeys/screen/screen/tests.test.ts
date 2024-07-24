@@ -16,7 +16,7 @@ const csipApiService = {
     switch (domain) {
       case 'outcome-type':
         return [
-          { code: 'WFA', description: 'No further action' },
+          { code: 'NFA', description: 'No further action' },
           { code: 'AAA', description: 'Another option' },
         ]
       default:
@@ -93,7 +93,7 @@ describe('tests', () => {
       journeyData: {
         instanceUnixEpoch: 0,
         saferCustodyScreening: {
-          outcomeType: { code: 'WFA', description: 'No further action' } as ReferenceData,
+          outcomeType: { code: 'NFA', description: 'No further action' } as ReferenceData,
           reasonForDecision: 'idklol',
         },
       },
@@ -105,8 +105,8 @@ describe('tests', () => {
 
     const radios = getAllByRole(html, 'radio')
 
-    expect(radios[0]).toBeChecked()
-    expect(radios[1]).not.toBeChecked()
+    expect(radios[0]).not.toBeChecked()
+    expect(radios[1]).toBeChecked()
 
     expect(html.getElementsByTagName('textarea')[0]!.value).toBe('idklol')
 
@@ -166,7 +166,7 @@ describe('tests', () => {
       .post(`/${uuid}/screen/screen`)
       .send({
         reasonForDecision: 'o'.repeat(4001),
-        outcomeType: 'WFA',
+        outcomeType: 'NFA',
       })
       .expect('Location', `/`)
 
@@ -188,7 +188,7 @@ describe('tests', () => {
   it('should return a 200 on posting valid data and redirect to check answers', async () => {
     await request(app())
       .post(`/${uuid}/screen/screen`)
-      .send({ outcomeType: 'WFA', reasonForDecision: 'no action needed' })
+      .send({ outcomeType: 'NFA', reasonForDecision: 'no action needed' })
       .expect(302)
       .expect('Location', 'check-answers')
   })
