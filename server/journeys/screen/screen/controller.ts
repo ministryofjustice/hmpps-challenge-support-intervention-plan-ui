@@ -1,15 +1,14 @@
 import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
 import { BaseJourneyController } from '../../base/controller'
-import { sortAscending } from '../../../utils/utils'
 
 export class ScreenController extends BaseJourneyController {
   GET = async (req: Request, res: Response): Promise<void> => {
-    const outcomeTypeItems = this.sortRadios(
+    const outcomeTypeItems = this.customOrderRadios(
       await this.getReferenceDataOptionsForRadios(
         req,
         'outcome-type',
-        res.locals.formResponses?.['outcomeType'] || req.journeyData.saferCustodyScreening?.outcomeType || '',
+        res.locals.formResponses?.['outcomeType'] || req.journeyData.saferCustodyScreening?.outcomeType,
       ),
     )
 
@@ -26,15 +25,8 @@ export class ScreenController extends BaseJourneyController {
     res.redirect('check-answers')
   }
 
-  private sortRadios = (items: { value: string; text: string | undefined }[]) => {
-    // TODO: No need to manually change ACC once ReferenceData DB is updated
-    const acct = items.find(o => o.value === 'ACC')
-    if (acct) {
-      acct.text = 'Support through ACCT'
-    }
-
-    items.sort((a, b) => sortAscending(a.text || '', b.text || ''))
-
+  /** Moves 'No further action' to the bottom of the list */
+  private customOrderRadios = (items: { value: string; text: string | undefined }[]) => {
     const nfaIndex = items.findIndex(o => o.value === 'NFA')
     if (nfaIndex > -1) {
       const nfa = items[nfaIndex]!
