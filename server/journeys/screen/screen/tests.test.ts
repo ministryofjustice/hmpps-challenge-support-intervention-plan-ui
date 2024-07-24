@@ -17,7 +17,7 @@ const csipApiService = {
       case 'outcome-type':
         return [
           { code: 'NFA', description: 'No further action' },
-          { code: 'AAA', description: 'Another option' },
+          { code: 'ACC', description: 'Another option' },
         ]
       default:
         return []
