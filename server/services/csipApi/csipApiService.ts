@@ -11,7 +11,6 @@ export default class CsipApiService {
     return this.csipApiClientBuilder(req.systemClientToken).getReferenceData(domain)
   }
 
-
   getCsipRecord(req: Request, id: string): Promise<CsipRecord> {
     return this.csipApiClientBuilder(req.systemClientToken).getCsipRecord(id)
   }

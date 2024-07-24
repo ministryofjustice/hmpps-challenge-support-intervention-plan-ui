@@ -16,7 +16,6 @@ export default class CsipApiClient {
     })
   }
 
-
   async getCsipRecord(id: string): Promise<CsipRecord> {
     return this.restClient.get<CsipRecord>({ path: `/csip-records/${id}` })
   }
