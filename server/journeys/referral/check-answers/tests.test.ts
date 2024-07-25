@@ -48,6 +48,7 @@ const journeyDataMock = {
 } as JourneyData
 
 let requestCaptor: (req: Request) => void
+let createReferralPayload: components['schemas']['CreateCsipRecordRequest']
 
 const app = (
   {
@@ -63,7 +64,8 @@ const app = (
   return appWithAllRoutes({
     services: {
       csipApiService: {
-        createReferral: async () => {
+        createReferral: async (_: unknown, createRequest: components['schemas']['CreateCsipRecordRequest']) => {
+          createReferralPayload = createRequest
           return {
             createdAt: '',
             createdBy: '',
@@ -393,6 +395,27 @@ describe('GET /referral/check-answers', () => {
 })
 
 describe('POST /referral/check-answers', () => {
+  it('redirect to /referral/confirmation and handle incidentTime being optional', async () => {
+    await request(
+      app({
+        journeyData: {
+          ...journeyDataMock,
+          referral: {
+            ...journeyDataMock.referral,
+            incidentTime: undefined,
+          } as unknown as JourneyData['referral'],
+        } as JourneyData,
+      }),
+    )
+      .post(`/${uuid}/${TEST_PATH}`)
+      .type('form')
+      .send({})
+      .expect(302)
+      .expect('Location', 'confirmation')
+
+    expect(createReferralPayload.referral.incidentTime).toBeFalsy()
+  })
+
   it('redirect to /referral/confirmation', async () => {
     await request(app())
       .post(`/${uuid}/${TEST_PATH}`)
