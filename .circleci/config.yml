@@ -35,12 +35,12 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: Install Dependencies
-          command: npm ci --no-audit
-      - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
-            - ~/.cache
+          command: NODE_DTRACE_PROVIDER_REQUIRE=hard npm install --no-audit
+#      - save_cache:
+#          key: dependency-cache-{{ checksum "package-lock.json" }}
+#          paths:
+#            - node_modules
+#            - ~/.cache
       - run:
           command: |
             npm run build
