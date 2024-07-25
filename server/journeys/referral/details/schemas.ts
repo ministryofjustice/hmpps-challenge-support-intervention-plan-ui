@@ -31,14 +31,6 @@ export const schemaFactory =
 
     return z
       .object({
-        incidentLocation: z
-          .string({ message: INCIDENT_LOCATION_MSG })
-          .refine(val => incidentLocationMap.has(val), INCIDENT_LOCATION_MSG)
-          .transform(val => incidentLocationMap.get(val)),
-        incidentType: z
-          .string({ message: INCIDENT_TYPE_MSG })
-          .refine(val => incidentTypeMap.has(val), INCIDENT_TYPE_MSG)
-          .transform(val => incidentTypeMap.get(val)),
         incidentDate: z
           .string({ message: INCIDENT_DATE_MSG })
           .superRefine((val, ctx) => {
@@ -52,6 +44,14 @@ export const schemaFactory =
           .transform(val => parseDate(val).data),
         hour: z.string().transform(val => (val?.length ? parse24Hour(val) : null)),
         minute: z.string().transform(val => (val?.length ? parseMinute(val) : null)),
+        incidentLocation: z
+          .string({ message: INCIDENT_LOCATION_MSG })
+          .refine(val => incidentLocationMap.has(val), INCIDENT_LOCATION_MSG)
+          .transform(val => incidentLocationMap.get(val)),
+        incidentType: z
+          .string({ message: INCIDENT_TYPE_MSG })
+          .refine(val => incidentTypeMap.has(val), INCIDENT_TYPE_MSG)
+          .transform(val => incidentTypeMap.get(val)),
       })
       .refine(val => (!val.hour && !val.minute) || (val.hour?.success && val.minute?.success), {
         message: 'Enter a time using the 24-hour clock',
