@@ -12,7 +12,7 @@ module.exports = buildConfig => {
     .build({
       entryPoints: glob.sync(buildConfig.app.entryPoints),
       outdir: buildConfig.app.outDir,
-      bundle: false,
+      bundle: true,
       sourcemap: true,
       platform: 'node',
       format: 'cjs',
