@@ -25,11 +25,6 @@ module.exports = buildConfig => {
           resolveFrom: 'cwd',
           assets: buildConfig.app.copy,
         }),
-        sentryEsbuildPlugin({
-          authToken: process.env.SENTRY_AUTH_TOKEN,
-          org: 'ministryofjustice',
-          project: 'csip-ui',
-        }),
       ],
     })
     .catch(() => process.exit(1))
