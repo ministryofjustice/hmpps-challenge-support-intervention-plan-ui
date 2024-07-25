@@ -1,7 +1,7 @@
 import { Locals, Request } from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import { agent as request } from 'supertest'
-import { getByRole, queryByText } from '@testing-library/dom'
+import { getByRole, queryAllByText, queryByRole, queryByText } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
 import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
@@ -28,22 +28,62 @@ const journeyDataMock = {
     incidentInvolvement: { code: 'A', description: '<script>alert("Involvement")</script>' },
     staffAssaulted: true,
     assaultedStaffName: '<script>alert("Staff Name")</script>',
-    descriptionOfConcern: '<script>alert("Sample Concern Text")</script>',
-    knownReasons: '<script>alert("Sample reason text")</script>',
+    descriptionOfConcern: `Text
+
+    • Bullet 1
+    • Bullet 2
+    • Bullet 3
+    
+    Paragraph
+    
+    <script>alert('xss');</script>
+    
+    <button>this button should be escaped</button>`,
+    knownReasons: `Text
+
+    • Bullet 1
+    • Bullet 2
+    • Bullet 3
+    
+    Paragraph
+    
+    <script>alert('xss');</script>
+    
+    <button>also should be escaped</button>`,
     contributoryFactors: [
       {
         factorType: { code: 'A', description: 'Text' },
       },
       {
         factorType: { code: 'B', description: '<script>alert("Text for type-B")</script>' },
-        comment: '<script>alert("Sample Comment Text")</script>',
+        comment: `Text
+
+        • Bullet 1
+        • Bullet 2
+        • Bullet 3
+        
+        Paragraph
+        
+        <script>alert('xss');</script>
+        
+        <button>factor comment button should be escaped</button>`,
       },
       {
         factorType: { code: 'C', description: 'Text with a TLA' },
       },
     ],
     isSaferCustodyTeamInformed: saferCustodySchema.shape.isSaferCustodyTeamInformed.enum.YES,
-    otherInformation: '<script>alert("Sample information text")</script>',
+    otherInformation: `Text
+
+    • Bullet 1
+    • Bullet 2
+    • Bullet 3
+    
+    Paragraph
+    
+    <script>alert('xss');</script>
+    
+    <button>otherinfo button should be escaped</button>`,
   },
 } as JourneyData
 
@@ -118,11 +158,21 @@ describe('GET /referral/check-answers', () => {
     expect(queryByText(html, '25 December 2024')).toBeVisible()
     expect(queryByText(html, journeyDataMock.referral!.incidentInvolvement!.description!)).toBeVisible()
     expect(queryByText(html, journeyDataMock.referral!.assaultedStaffName!)).toBeVisible()
-    expect(queryByText(html, journeyDataMock.referral!.descriptionOfConcern!)).toBeVisible()
-    expect(queryByText(html, journeyDataMock.referral!.knownReasons!)).toBeVisible()
+    // We should have script tags as plain text
+    expect(queryAllByText(html, /<script>alert\('xss'\);<\/script>/i)).toHaveLength(4)
+    // But not as actual script tags
+    expect(
+      [...html.querySelectorAll('script')].filter(el => (el as HTMLScriptElement)?.textContent?.includes('xss')),
+    ).toHaveLength(0)
+    expect(queryByRole(html, 'button', { name: /this button should be escaped/i })).not.toBeInTheDocument()
+    expect(queryByRole(html, 'button', { name: /also should be escaped/i })).not.toBeInTheDocument()
+    expect(queryByRole(html, 'button', { name: /factor comment button should be escaped/i })).not.toBeInTheDocument()
+    expect(queryByRole(html, 'button', { name: /otherinfo button should be escaped/i })).not.toBeInTheDocument()
+    const lines = (String(journeyDataMock.referral!.descriptionOfConcern!).match(/\n/g) || '').length
+    queryAllByText(html, /<script>alert\('xss'\);<\/script>/i).forEach(el => {
+      expect(el.querySelectorAll('br')).toHaveLength(lines)
+    })
     expect(queryByText(html, 'Comment on <script>alert("text for type-b")</script>')).toBeVisible()
-    expect(queryByText(html, journeyDataMock.referral!.contributoryFactors![1]!.comment!)).toBeVisible()
-    expect(queryByText(html, journeyDataMock.referral!.otherInformation!)).toBeVisible()
 
     expect(
       (
@@ -291,11 +341,21 @@ describe('GET /referral/check-answers', () => {
     expect(queryByText(html, '25 December 2024')).toBeVisible()
     expect(queryByText(html, journeyDataMock.referral!.incidentInvolvement!.description!)).toBeVisible()
     expect(queryByText(html, journeyDataMock.referral!.assaultedStaffName!)).toBeVisible()
-    expect(queryByText(html, journeyDataMock.referral!.descriptionOfConcern!)).toBeVisible()
-    expect(queryByText(html, journeyDataMock.referral!.knownReasons!)).toBeVisible()
     expect(queryByText(html, 'Comment on <script>alert("text for type-b")</script>')).toBeVisible()
-    expect(queryByText(html, journeyDataMock.referral!.contributoryFactors![1]!.comment!)).toBeVisible()
-    expect(queryByText(html, journeyDataMock.referral!.otherInformation!)).toBeVisible()
+    const lines = (String(journeyDataMock.referral!.descriptionOfConcern!).match(/\n/g) || '').length
+    queryAllByText(html, /<script>alert\('xss'\);<\/script>/i).forEach(el => {
+      expect(el.querySelectorAll('br')).toHaveLength(lines)
+    })
+    // We should have script tags as plain text
+    expect(queryAllByText(html, /<script>alert\('xss'\);<\/script>/i)).toHaveLength(4)
+    // But not as actual script tags
+    expect(
+      [...html.querySelectorAll('script')].filter(el => (el as HTMLScriptElement)?.textContent?.includes('xss')),
+    ).toHaveLength(0)
+    expect(queryByRole(html, 'button', { name: /this button should be escaped/i })).not.toBeInTheDocument()
+    expect(queryByRole(html, 'button', { name: /also should be escaped/i })).not.toBeInTheDocument()
+    expect(queryByRole(html, 'button', { name: /factor comment button should be escaped/i })).not.toBeInTheDocument()
+    expect(queryByRole(html, 'button', { name: /otherinfo button should be escaped/i })).not.toBeInTheDocument()
 
     expect(
       (
