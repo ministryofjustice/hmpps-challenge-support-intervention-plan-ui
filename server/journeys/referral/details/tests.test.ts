@@ -74,6 +74,12 @@ describe('GET /referral/details - Proactive', () => {
     expect(
       (getByRole(html, 'option', { name: 'Select main concern' }) as HTMLOptionElement).defaultSelected,
     ).toBeTruthy()
+    expect(getByRole(html, 'textbox', { name: /date of occurrence/i })).toBeVisible()
+    expect(getByText(html, /time of occurrence \(optional\)/i)).toBeVisible()
+    expect(
+      getByRole(html, 'combobox', { name: /where was the most recent occurrence of this behaviour\?/i }),
+    ).toBeVisible()
+    expect(getByRole(html, 'combobox', { name: /what's the main concern\?/i })).toBeVisible()
   })
 
   it('pre-fill form with values from journeyData', async () => {
@@ -137,6 +143,10 @@ describe('GET /referral/details - Reactive', () => {
     expect(
       (getByRole(html, 'option', { name: 'Select incident type' }) as HTMLOptionElement).defaultSelected,
     ).toBeTruthy()
+    expect(getByRole(html, 'textbox', { name: /date of incident/i })).toBeVisible()
+    expect(getByText(html, /time of incident \(optional\)/i)).toBeVisible()
+    expect(getByRole(html, 'combobox', { name: /Where did the incident occur\?/i })).toBeVisible()
+    expect(getByRole(html, 'combobox', { name: /What was the incident type\?/i })).toBeVisible()
   })
 
   it('pre-fill form with values from journeyData', async () => {
