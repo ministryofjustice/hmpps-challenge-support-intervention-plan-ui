@@ -253,6 +253,23 @@ describe('POST /referral/details - Proactive', () => {
     expect(reqCaptured.validationErrors()).toEqual({ incidentTime: ['Enter a time using the 24-hour clock'] })
   })
 
+  it('redirect to go back and set validation errors if time contains non numeric characters', async () => {
+    await request(app())
+      .post(`/${uuid}/referral/details`)
+      .type('form')
+      .send({
+        incidentLocation: 'A',
+        incidentType: 'B',
+        hour: '0d',
+        minute: 'ef',
+        incidentDate: '25/12/2009',
+      })
+      .expect(302)
+      .expect('Location', '/')
+
+    expect(reqCaptured.validationErrors()).toEqual({ incidentTime: ['Enter a time using the 24-hour clock'] })
+  })
+
   it('redirect to go back and set validation errors if incident date is in the future', async () => {
     await request(app())
       .post(`/${uuid}/referral/details`)
