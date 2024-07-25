@@ -15,12 +15,8 @@
 {% set datePickerHeading = "When was the most recent occurrence of the behaviour?" if isProactiveReferral else "When did the incident occur?" %}
 {% set datePickerLabel = "Date of occurrence" if isProactiveReferral else "Date of incident" %}
 {% set incidentTimeLabel = "Time of occurrence (optional)" if isProactiveReferral else "Time of incident (optional)" %}
-
-{% set incidentLocationLabelText = "Where was the most recent occurrence of this behaviour?" if isProactiveReferral else "Where did the incident occur?"  %}
-{% set incidentLocationLabel = ('<h2 class="govuk-heading-m">' + incidentLocationLabelText | escape + "</h2>") %}
-
-{% set incidentTypeLabelText = "What's the main concern?" if isProactiveReferral else "What was the incident type?" %}
-{% set incidentTypeLabel = ('<h2 class="govuk-heading-m">' + incidentTypeLabelText | escape + "</h2>")%}
+{% set incidentLocationLabel = "Where was the most recent occurrence of this behaviour?" if isProactiveReferral else "Where did the incident occur?"  %}
+{% set incidentTypeLabel = "What's the main concern?" if isProactiveReferral else "What was the incident type?" %}
 
 {% block innerContent %}
     <span class="govuk-caption-l">Make a CSIP referral</span>
@@ -68,7 +64,8 @@
         }) }}
         {{ govukSelect({
             label: {
-                html: incidentLocationLabel
+                text: incidentLocationLabel,
+                classes: "govuk-label--m"
             },
             id: "incidentLocation",
             name: "incidentLocation",
@@ -77,7 +74,8 @@
         }) }}
         {{ govukSelect({
             label: {
-                html: incidentTypeLabel
+                text: incidentTypeLabel,
+                classes: "govuk-label--m"
             },
             id: "incidentType",
             name: "incidentType",
