@@ -23,19 +23,15 @@ export class ReferralDetailsController extends BaseJourneyController {
     const hour = res.locals.formResponses?.['hour'] || journeyDataHour
     const minute = res.locals.formResponses?.['minute'] || journeyDataMinute
 
-    res.render(
-      req.journeyData.referral!.isProactiveReferral
-        ? 'referral/details/view-proactive'
-        : 'referral/details/view-reactive',
-      {
-        incidentLocationOptions,
-        incidentTypeOptions,
-        hour,
-        minute,
-        incidentDate,
-        backUrl: 'proactive-or-reactive',
-      },
-    )
+    res.render('referral/details/view', {
+      isProactiveReferral: req.journeyData.referral!.isProactiveReferral,
+      incidentLocationOptions,
+      incidentTypeOptions,
+      hour,
+      minute,
+      incidentDate,
+      backUrl: 'proactive-or-reactive',
+    })
   }
 
   POST = async (req: Request, res: Response): Promise<void> => {

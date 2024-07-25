@@ -11,17 +11,28 @@
 
 {% set pageTitle = "Details - Make a CSIP referral" %}
 
+{% set titleText = "Behaviour details" if isProactiveReferral else "Incident details" %}
+{% set datePickerHeading = "When was the most recent occurrence of the behaviour?" if isProactiveReferral else "When did the incident occur?" %}
+{% set datePickerLabel = "Date of occurrence" if isProactiveReferral else "Date of incident" %}
+{% set incidentTimeLabel = "Time of occurrence (optional)" if isProactiveReferral else "Time of incident (optional)" %}
+
+{% set incidentLocationLabelText = "Where was the most recent occurrence of this behaviour?" if isProactiveReferral else "Where did the incident occur?"  %}
+{% set incidentLocationLabel = ('<h2 class="govuk-heading-m">' + incidentLocationLabelText | escape + "</h2>") %}
+
+{% set incidentTypeLabelText = "What's the main concern?" if isProactiveReferral else "What was the incident type?" %}
+{% set incidentTypeLabel = ('<h2 class="govuk-heading-m">' + incidentTypeLabelText | escape + "</h2>")%}
+
 {% block innerContent %}
     <span class="govuk-caption-l">Make a CSIP referral</span>
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Behaviour details</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ titleText }}</h1>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        <h2 class="govuk-heading-m">When was the most recent occurrence of the behaviour?</h2>
+        <h2 class="govuk-heading-m">{{ datePickerHeading }}</h2>
         {{ hmppsDatePicker({
             id: "incidentDate",
             name: "incidentDate",
             label: {
-                text: "Date of occurrence"
+                text: datePickerLabel
             },
             value: incidentDate,
             errorMessage: validationErrors | findError('incidentDate'),
@@ -33,7 +44,7 @@
             name: "incidentTime",
             fieldset: {
                 legend: {
-                    text: "Time of occurrence (optional)"
+                    text: incidentTimeLabel
                 }
             },
             hint: {
@@ -57,7 +68,7 @@
         }) }}
         {{ govukSelect({
             label: {
-                html: '<h2 class="govuk-heading-m">Where did the incident occur?</h2>'
+                html: incidentLocationLabel
             },
             id: "incidentLocation",
             name: "incidentLocation",
@@ -66,7 +77,7 @@
         }) }}
         {{ govukSelect({
             label: {
-                html: '<h2 class="govuk-heading-m">What was the incident type?</h2>'
+                html: incidentTypeLabel
             },
             id: "incidentType",
             name: "incidentType",
