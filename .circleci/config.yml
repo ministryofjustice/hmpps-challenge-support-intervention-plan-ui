@@ -33,6 +33,7 @@ jobs:
           command: 'sudo npm install -g npm@latest'
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run: sudo apt-get install build-essential
       - run:
           name: Install Dependencies
           command: NODE_DTRACE_PROVIDER_REQUIRE=hard npm install --no-audit
