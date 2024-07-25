@@ -16,6 +16,9 @@ module.exports = buildConfig => {
       sourcemap: true,
       platform: 'node',
       format: 'cjs',
+      loader: {
+        '.node': 'copy',
+      },
       plugins: [
         typecheckPlugin(),
         copy({
