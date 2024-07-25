@@ -1,5 +1,3 @@
-const { sentryEsbuildPlugin } = require('@sentry/esbuild-plugin')
-
 const { copy } = require('esbuild-plugin-copy')
 const { typecheckPlugin } = require('@jgoz/esbuild-plugin-typecheck')
 const esbuild = require('esbuild')
