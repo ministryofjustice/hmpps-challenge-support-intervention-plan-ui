@@ -41,7 +41,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
           ...(typeof referral.assaultedStaffName === 'string' && { assaultedStaffName: referral.assaultedStaffName }),
           descriptionOfConcern: referral.descriptionOfConcern!,
           incidentInvolvementCode: referral.incidentInvolvement!.code,
-          incidentTime: `${referral.incidentTime!}:00`,
+          ...(referral.incidentTime && { incidentTime: `${referral.incidentTime!}:00` }),
           isProactiveReferral: referral.isProactiveReferral!,
           isSaferCustodyTeamInformed: referral.isSaferCustodyTeamInformed!,
           isReferralComplete: true,
