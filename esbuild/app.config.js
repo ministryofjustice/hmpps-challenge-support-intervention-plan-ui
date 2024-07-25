@@ -12,7 +12,7 @@ module.exports = buildConfig => {
     .build({
       entryPoints: glob.sync(buildConfig.app.entryPoints),
       outdir: buildConfig.app.outDir,
-      bundle: true,
+      bundle: false,
       sourcemap: true,
       platform: 'node',
       format: 'cjs',
@@ -25,11 +25,11 @@ module.exports = buildConfig => {
           resolveFrom: 'cwd',
           assets: buildConfig.app.copy,
         }),
-        sentryEsbuildPlugin({
-          authToken: process.env.SENTRY_AUTH_TOKEN,
-          org: 'ministryofjustice',
-          project: 'csip-ui',
-        }),
+        // sentryEsbuildPlugin({
+        //   authToken: process.env.SENTRY_AUTH_TOKEN,
+        //   org: 'ministryofjustice',
+        //   project: 'csip-ui',
+        // }),
       ],
     })
     .catch(() => process.exit(1))
