@@ -1,7 +1,7 @@
 import { Locals, Request } from 'express'
 import { v4 as uuidv4 } from 'uuid'
 import { agent as request } from 'supertest'
-import { getByRole, getByText } from '@testing-library/dom'
+import { getAllByText, getByRole, getByText } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import testRequestCaptor, { TestRequestCaptured } from '../../../routes/testutils/testRequestCaptor'
@@ -9,6 +9,7 @@ import createTestHtmlElement from '../../../routes/testutils/createTestHtmlEleme
 import { JourneyData } from '../../../@types/express'
 import { TEST_PRISONER, TOMORROW_GB_FORMAT } from '../../../routes/testutils/testConstants'
 import { ReferenceDataType } from '../../../@types/csip/csipApiTypes'
+import { schemaFactory } from './schemas'
 
 const uuid = uuidv4()
 const csipApiService = {
@@ -234,6 +235,53 @@ describe('POST /referral/details - Proactive', () => {
     expect(reqCaptured.journeyData().referral?.incidentType).toEqual({ code: 'B', description: 'TEXT2' })
     expect(reqCaptured.journeyData().referral?.incidentDate).toEqual('2009-12-25')
     expect(reqCaptured.journeyData().referral?.incidentTime).toBeNull()
+  })
+
+  it('redirect to go back and set all validation errors and in correct order if all inputs are invalid', async () => {
+    const errors = (
+      await schemaFactory(csipApiService)({
+        journeyData: journeyDataProactive,
+      } as Request)
+    )
+      .safeParse({
+        incidentLocation: '',
+        incidentType: '',
+        hour: '',
+        minute: '',
+        incidentDate: '',
+      })
+      .error?.flatten()?.fieldErrors
+    const res = await request(
+      app({
+        validationErrors: errors,
+        journeyData: journeyDataProactive,
+      }),
+    ).get(`/${uuid}/referral/details`)
+    const div = document.createElement('div')
+    div.innerHTML = res.text
+    document.body.appendChild(div)
+    const topLevelElement = document.documentElement
+    const errorMessages = [
+      'Enter the date of the most recent occurrence',
+      'Select the location of the most recent occurrence',
+      'Select the main concern',
+    ]
+    errorMessages.forEach(errMsg => {
+      expect(getByRole(topLevelElement, 'link', { name: errMsg })).toBeVisible()
+      const errorTextByInputs = getAllByText(topLevelElement, errMsg).filter(el => el.nodeName.toLowerCase() === 'p')[0]
+      expect(errorTextByInputs).not.toBeNull()
+    })
+
+    // This may end up being brittle, if breaking often, revisit, but this is to test error messages appear in correct order
+    expect(topLevelElement.querySelector('ul.govuk-error-summary__list li:nth-of-type(1) a')?.textContent).toEqual(
+      errorMessages[0],
+    )
+    expect(topLevelElement.querySelector('ul.govuk-error-summary__list li:nth-of-type(2) a')?.textContent).toEqual(
+      errorMessages[1],
+    )
+    expect(topLevelElement.querySelector('ul.govuk-error-summary__list li:nth-of-type(3) a')?.textContent).toEqual(
+      errorMessages[2],
+    )
   })
 
   it('redirect to go back and set validation errors if time input is invalid', async () => {
