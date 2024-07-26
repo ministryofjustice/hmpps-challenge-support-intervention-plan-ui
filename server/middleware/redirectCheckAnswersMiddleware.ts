@@ -19,7 +19,11 @@ export default function redirectCheckAnswersMiddleware(excludePaths: RegExp[] = 
         const url = (typeof param1 === 'string' ? param1 : param2) as string
         // eslint-disable-next-line no-nested-ternary
         const status = typeof param1 === 'number' ? param1 : typeof param2 === 'number' ? param2 : undefined
-        resRedirect.call(res, req.journeyData.isCheckAnswers ? 'check-answers' : url, status || 302)
+        const errors = req.flash('validationErrors')
+        if (errors.length) {
+          req.flash('validationErrors', errors[0]!)
+        }
+        resRedirect.call(res, req.journeyData.isCheckAnswers && !errors.length ? 'check-answers' : url, status || 302)
       }
     }
     next()

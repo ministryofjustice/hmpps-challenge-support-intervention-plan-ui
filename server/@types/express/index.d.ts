@@ -28,6 +28,7 @@ export type JourneyData = {
   plan?: Plan
   csipRecord?: CsipRecord
   csipRecordCreated?: boolean
+  hasValidationErrors?: boolean
 }
 
 export type PrisonerSummary = Prisoner

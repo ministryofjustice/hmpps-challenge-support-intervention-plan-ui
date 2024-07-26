@@ -520,4 +520,19 @@ describe('POST /referral/details - Reactive', () => {
 
     expect(reqCaptured.validationErrors()).toEqual({ incidentType: ['Select the incident type'] })
   })
+
+  it('redirects back to same page if validation fails after clicking change on CYA', async () => {
+    await request(app({ journeyData: { ...journeyDataReactive, isCheckAnswers: true } }))
+      .post(`/${uuid}/referral/details`)
+      .type('form')
+      .send({
+        incidentLocation: 'A',
+        incidentType: '',
+        hour: '',
+        minute: '',
+        incidentDate: '25/12/2009',
+      })
+      .expect(302)
+      .expect('Location', '/')
+  })
 })

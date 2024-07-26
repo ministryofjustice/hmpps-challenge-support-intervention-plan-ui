@@ -23,6 +23,26 @@ context('Make a Referral Journey', () => {
 
     // TODO: We should now continue all the way to CYA page, which isn't implemented yet - then check answers and do edits + checks
   })
+
+  it('user stays on page after inputting invalid data after changing their answers', () => {
+    fillInformationReactiveNotOnBehalf()
+
+    cy.findByRole('button', { name: /continue/i }).click()
+
+    cy.url().should('include', '/check-answers')
+
+    cy.findByText('Area of work').parent().findByText('Change').click()
+    cy.url().should('include', 'area-of-work')
+
+    cy.findByRole('combobox', { name: /which area do you work in\?/i }).select('Select area')
+    cy.findByRole('button', { name: /continue/i }).click()
+
+    cy.url().should('include', 'area-of-work')
+    cy.findByRole('combobox', { name: /which area do you work in\?/i }).select('AreaB')
+    cy.findByRole('button', { name: /continue/i }).click()
+
+    cy.url().should('include', 'check-answers')
+  })
 })
 
 const changeInformationProactiveOnBehalf = () => {
