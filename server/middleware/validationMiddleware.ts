@@ -32,6 +32,7 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
     const result = resolvedSchema.safeParse(req.body)
     if (result.success) {
       req.body = result.data
+      req.journeyData.hasValidationErrors = false
       return next()
     }
     req.flash('formResponses', JSON.stringify(req.body))
@@ -46,6 +47,7 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
       )
     }
     req.flash('validationErrors', JSON.stringify(deduplicatedFieldErrors))
+    req.journeyData.hasValidationErrors = true
     return res.redirect('back')
   }
 }
