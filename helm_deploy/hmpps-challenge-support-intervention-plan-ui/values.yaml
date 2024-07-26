@@ -51,7 +51,7 @@ generic-service:
     elasticache-redis:
       REDIS_HOST: "primary_endpoint_address"
       REDIS_AUTH_TOKEN: "auth_token"
-    sentry:
+    csip-ui-sentry:
       SENTRY_DSN: "SENTRY_DSN"
       SENTRY_LOADER_SCRIPT_ID: "SENTRY_LOADER_SCRIPT_ID"
     #sqs-hmpps-audit-secret:

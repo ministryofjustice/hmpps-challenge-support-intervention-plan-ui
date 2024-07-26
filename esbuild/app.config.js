@@ -1,5 +1,3 @@
-const { sentryEsbuildPlugin } = require('@sentry/esbuild-plugin')
-
 const { copy } = require('esbuild-plugin-copy')
 const { typecheckPlugin } = require('@jgoz/esbuild-plugin-typecheck')
 const esbuild = require('esbuild')
@@ -16,19 +14,11 @@ module.exports = buildConfig => {
       sourcemap: true,
       platform: 'node',
       format: 'cjs',
-      loader: {
-        '.node': 'copy',
-      },
       plugins: [
         typecheckPlugin(),
         copy({
           resolveFrom: 'cwd',
           assets: buildConfig.app.copy,
-        }),
-        sentryEsbuildPlugin({
-          authToken: process.env.SENTRY_AUTH_TOKEN,
-          org: 'ministryofjustice',
-          project: 'csip-ui',
         }),
       ],
     })
