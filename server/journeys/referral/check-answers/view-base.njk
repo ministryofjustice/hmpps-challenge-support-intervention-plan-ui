@@ -24,7 +24,7 @@
                 actions: {
                 items: [
                     {
-                        href: "on-behalf-of",
+                        href: "on-behalf-of#isOnBehalfOfReferral",
                         text: "Change",
                         visuallyHiddenText: "if the referral is being made on behalf of someone else or not",
                         classes: "govuk-link--no-visited-state"
@@ -42,7 +42,7 @@
                 actions: {
                 items: [
                     {
-                        href: "referrer",
+                        href: "referrer#referredBy",
                         text: "Change",
                         visuallyHiddenText: "name of referrer",
                         classes: "govuk-link--no-visited-state"
@@ -60,7 +60,7 @@
                 actions: {
                 items: [
                     {
-                        href: "referrer" if referral.isOnBehalfOfReferral else "area-of-work",
+                        href: "referrer#areaOfWork" if referral.isOnBehalfOfReferral else "area-of-work#areaOfWork",
                         text: "Change",
                         visuallyHiddenText: "area of work",
                         classes: "govuk-link--no-visited-state"
@@ -78,7 +78,7 @@
                 actions: {
                 items: [
                     {
-                        href: "proactive-or-reactive",
+                        href: "proactive-or-reactive#isProactiveReferral",
                         text: "Change",
                         visuallyHiddenText: "if the referral is proactive or reactive",
                         classes: "govuk-link--no-visited-state"
@@ -106,7 +106,7 @@
         actions: {
             items: [
                 {
-                    href: "contributory-factors",
+                    href: "contributory-factors#contributoryFactors",
                     text: "Change",
                     visuallyHiddenText: "the contributory factors",
                     classes: "govuk-link--no-visited-state"
@@ -125,7 +125,7 @@
             actions: {
                 items: [
                     {
-                        href: (factor.factorType.code | lower | escape)  + '-comment',
+                        href: (factor.factorType.code | lower | escape)  + '-comment#comment',
                         text: "Change",
                         visuallyHiddenText: "the comment on " + (factor.factorType.description | sentenceCase(false)) + " factors",
                         classes: "govuk-link--no-visited-state"
@@ -155,7 +155,7 @@
                 actions: {
                 items: [
                     {
-                        href: "safer-custody",
+                        href: "safer-custody#isSaferCustodyTeamInformed",
                         text: "Change",
                         visuallyHiddenText: "if Safer Custody are aware of the referral or not",
                         classes: "govuk-link--no-visited-state"
@@ -173,7 +173,7 @@
                 actions: {
                 items: [
                     {
-                        href: "additional-information",
+                        href: "additional-information#otherInformation",
                         text: "Change",
                         visuallyHiddenText: "the additional information relating to the referral",
                         classes: "govuk-link--no-visited-state"

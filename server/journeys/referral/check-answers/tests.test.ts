@@ -130,7 +130,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change if the referral is being made on behalf of someone else or not',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/on-behalf-of$/)
+    ).toMatch(/on-behalf-of#isOnBehalfOfReferral$/)
 
     expect(
       (
@@ -138,7 +138,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change name of referrer',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/referrer$/)
+    ).toMatch(/referrer#referredBy$/)
 
     expect(
       (
@@ -146,7 +146,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change area of work',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/referrer$/)
+    ).toMatch(/referrer#areaOfWork$/)
 
     expect(
       (
@@ -154,7 +154,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change if the referral is proactive or reactive',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/proactive-or-reactive$/)
+    ).toMatch(/proactive-or-reactive#isProactiveReferral$/)
 
     expect(
       (
@@ -162,7 +162,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change date of occurrence',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/details$/)
+    ).toMatch(/details#incidentDate$/)
 
     expect(
       (
@@ -170,7 +170,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change time of occurrence',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/details$/)
+    ).toMatch(/details#incidentTime-hour$/)
 
     expect(
       (
@@ -178,7 +178,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change location of occurrence',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/details$/)
+    ).toMatch(/details#incidentLocation$/)
 
     expect(
       (
@@ -186,7 +186,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change main concern',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/details$/)
+    ).toMatch(/details#incidentType$/)
 
     expect(
       (
@@ -194,7 +194,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change how the prisoner was involved',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/involvement$/)
+    ).toMatch(/involvement#involvementType$/)
 
     expect(
       (
@@ -202,7 +202,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change if a staff member was assaulted or not',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/involvement$/)
+    ).toMatch(/involvement#staffAssaulted$/)
 
     expect(
       (
@@ -210,7 +210,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change the name of the staff members assaulted',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/involvement$/)
+    ).toMatch(/involvement#assaultedStaffName$/)
 
     expect(
       (
@@ -218,7 +218,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change the description of the behaviour and concerns',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/description$/)
+    ).toMatch(/description#descriptionOfConcern$/)
 
     expect(
       (
@@ -226,7 +226,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change the reasons given for the behaviour',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/reasons$/)
+    ).toMatch(/reasons#knownReasons$/)
 
     expect(
       (
@@ -234,7 +234,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change the contributory factors',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/contributory-factors$/)
+    ).toMatch(/contributory-factors#contributoryFactors$/)
 
     expect(
       (
@@ -242,7 +242,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change the comment on text with a TLA factors',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/c-comment$/)
+    ).toMatch(/c-comment#comment$/)
 
     expect(
       (
@@ -250,7 +250,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change if Safer Custody are aware of the referral or not',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/safer-custody$/)
+    ).toMatch(/safer-custody#isSaferCustodyTeamInformed$/)
 
     expect(
       (
@@ -258,7 +258,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change the additional information relating to the referral',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/additional-information$/)
+    ).toMatch(/additional-information#otherInformation$/)
 
     expect((getByRole(html, 'link', { name: 'Cancel' }) as HTMLLinkElement).href).toEqual(TEST_DPS_HOMEPAGE)
   })
@@ -303,7 +303,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change if the referral is being made on behalf of someone else or not',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/on-behalf-of$/)
+    ).toMatch(/on-behalf-of#isOnBehalfOfReferral$/)
 
     expect(
       (
@@ -311,7 +311,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change area of work',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/area-of-work$/)
+    ).toMatch(/area-of-work#areaOfWork$/)
 
     expect(
       (
@@ -319,7 +319,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change if the referral is proactive or reactive',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/proactive-or-reactive$/)
+    ).toMatch(/proactive-or-reactive#isProactiveReferral$/)
 
     expect(
       (
@@ -327,7 +327,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change date of incident',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/details$/)
+    ).toMatch(/details#incidentDate$/)
 
     expect(
       (
@@ -335,7 +335,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change time of incident',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/details$/)
+    ).toMatch(/details#incidentTime-hour$/)
 
     expect(
       (
@@ -343,7 +343,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change location of incident',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/details$/)
+    ).toMatch(/details#incidentLocation$/)
 
     expect(
       (
@@ -351,7 +351,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change incident type',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/details$/)
+    ).toMatch(/details#incidentType$/)
 
     expect(
       (
@@ -359,7 +359,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change the description of the incident and concerns',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/description$/)
+    ).toMatch(/description#descriptionOfConcern$/)
 
     expect(
       (
@@ -367,7 +367,7 @@ describe('GET /referral/check-answers', () => {
           name: 'Change the reasons given for the incident',
         }) as HTMLLinkElement
       ).href,
-    ).toMatch(/reasons$/)
+    ).toMatch(/reasons#knownReasons$/)
   })
 
   it('render page with validation errors', async () => {
