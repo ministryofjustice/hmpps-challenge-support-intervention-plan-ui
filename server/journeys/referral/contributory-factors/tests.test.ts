@@ -84,6 +84,7 @@ describe('GET /referral/contributory-factors', () => {
       .expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
     expect(getByText(html, 'What are the contributory factors?')).toBeVisible()
+    expect(getByText(html, 'Select all that apply.')).toBeVisible()
     expect((getByRole(html, 'checkbox', { name: 'TEXT' }) as HTMLInputElement).checked).toBeTruthy()
     expect((getByRole(html, 'checkbox', { name: 'TEXT2' }) as HTMLInputElement).checked).toBeFalsy()
   })
