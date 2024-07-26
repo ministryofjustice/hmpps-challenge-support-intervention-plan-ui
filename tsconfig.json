@@ -23,7 +23,10 @@
     "noPropertyAccessFromIndexSignature": true,
     "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true
+    "noImplicitOverride": true,
+    "inlineSources": true,
+    // This improves issue grouping in Sentry.
+    "sourceRoot": "/"
   },
   "exclude": [
     "node_modules",

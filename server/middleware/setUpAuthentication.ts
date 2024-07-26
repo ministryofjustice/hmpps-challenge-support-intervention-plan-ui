@@ -2,6 +2,7 @@ import type { Router } from 'express'
 import express from 'express'
 import passport from 'passport'
 import flash from 'connect-flash'
+import * as Sentry from '@sentry/node'
 import config from '../config'
 import auth from '../authentication/auth'
 import { HmppsUser } from '../interfaces/hmppsUser'
@@ -47,6 +48,7 @@ export default function setUpAuth(): Router {
   })
 
   router.use((req, res, next) => {
+    if (req.isAuthenticated()) Sentry.setUser({ username: req.user.username })
     res.locals.user = req.user as HmppsUser
     next()
   })
