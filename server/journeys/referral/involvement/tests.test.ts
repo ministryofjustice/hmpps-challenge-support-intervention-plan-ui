@@ -283,6 +283,37 @@ describe('tests', () => {
   })
 
   it.each([
+    {
+      alias: 'proactive',
+      proactive: true,
+      errors: [
+        'Select how the prisoner has been involved in the behaviour',
+        'Select if any staff were assaulted as a result of the behaviour or not',
+      ],
+    },
+    {
+      alias: 'reactive',
+      proactive: false,
+      errors: [
+        'Select how the prisoner was involved in the incident',
+        'Select if any staff were assaulted during the incident or not',
+      ],
+    },
+  ])('should return validation errors for $alias referral', async args => {
+    const errors = (
+      await schemaFactory(csipApiService)({
+        journeyData: { referral: { isProactiveReferral: args.proactive } },
+      } as Request)
+    )
+      .safeParse({ _csrf: '', staffAssaulted: '', assaultedStaffName: '' })
+      .error?.flatten()?.fieldErrors
+    const involvementTypeError = errors?.['involvementType']?.[0]
+    const staffAssaultedError = errors?.['staffAssaulted']?.[0]
+    expect(involvementTypeError).toBe(args.errors[0])
+    expect(staffAssaultedError).toBe(args.errors[1])
+  })
+
+  it.each([
     [{ _csrf: '', assaultedStaffName: '' }, ['staffAssaulted', 'involvementType']],
     [{ _csrf: '', assaultedStaffName: '', involvementType: 'FOOBAR' }, ['staffAssaulted', 'involvementType']],
     [{ _csrf: '', assaultedStaffName: '', involvementType: 'VIC' }, ['staffAssaulted']],
@@ -302,7 +333,11 @@ describe('tests', () => {
   ] as [Record<string, unknown>, ('involvementType' | 'staffAssaulted' | 'assaultedStaffName' | '_csrf')[]][])(
     'should prepopulate %j',
     async (body, expectedErrors) => {
-      const errors = (await schemaFactory(csipApiService)({} as Request)).safeParse(body).error?.flatten()?.fieldErrors
+      const errors = (
+        await schemaFactory(csipApiService)({ journeyData: { referral: { isProactiveReferral: true } } } as Request)
+      )
+        .safeParse(body)
+        .error?.flatten()?.fieldErrors
       expectedErrors.forEach(err => {
         expect(errors?.[err]?.[0]).toBeTruthy()
       })
