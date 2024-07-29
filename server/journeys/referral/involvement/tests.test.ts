@@ -333,11 +333,7 @@ describe('tests', () => {
   ] as [Record<string, unknown>, ('involvementType' | 'staffAssaulted' | 'assaultedStaffName' | '_csrf')[]][])(
     'should prepopulate %j',
     async (body, expectedErrors) => {
-      const errors = (
-        await schemaFactory(csipApiService)({ journeyData: { referral: { isProactiveReferral: true } } } as Request)
-      )
-        .safeParse(body)
-        .error?.flatten()?.fieldErrors
+      const errors = (await schemaFactory(csipApiService)({} as Request)).safeParse(body).error?.flatten()?.fieldErrors
       expectedErrors.forEach(err => {
         expect(errors?.[err]?.[0]).toBeTruthy()
       })
