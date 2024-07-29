@@ -5,8 +5,7 @@ import type CsipApiService from '../../../services/csipApi/csipApiService'
 const csrfSchema = z.object({
   _csrf: z.string().optional(),
 })
-const involvementTypeErrorMsg = `Select how the prisoner has been involved in the behaviour`
-const isStaffAssaultedErrorMsg = `Select if any staff were assaulted as a result of the behaviour or not`
+
 const emptyStaffMemberErrorMsg = `Enter the staff member's name`
 const tooLongStaffMemberErrorMsg = `Staff member's name must be 240 characters or less`
 
@@ -14,6 +13,10 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
   const incidentInvolvementMap = new Map(
     (await csipApiService.getReferenceData(req, 'incident-involvement')).map(itm => [itm.code, itm]),
   )
+
+  const isProactive = !!req.journeyData?.referral?.isProactiveReferral
+  const involvementTypeErrorMsg = `Select how the prisoner ${isProactive ? 'has been involved in the behaviour' : 'was involved in the incident'}`
+  const isStaffAssaultedErrorMsg = `Select if any staff were assaulted ${isProactive ? 'as a result of the behaviour' : 'during the incident'} or not`
 
   return z
     .object({
