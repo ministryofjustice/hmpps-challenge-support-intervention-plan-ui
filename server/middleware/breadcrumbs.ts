@@ -6,9 +6,6 @@ export class Breadcrumbs {
   breadcrumbs: Breadcrumb[]
 
   constructor(res: Response) {
-    if (!res.locals.digitalPrisonServicesUrl) {
-      throw new Error(`digitalPrisonServicesUrl is empty`)
-    }
     this.breadcrumbs = [
       {
         text: 'Digital Prison Services',
