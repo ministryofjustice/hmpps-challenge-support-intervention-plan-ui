@@ -25,10 +25,10 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
     // Version only changes with new commits
     app.locals['version'] = applicationInfo.gitShortHash
     app.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
-    app.use((_req, res, next) => {
-      res.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
-      return next()
-    })
+    // app.use((_req, res, next) => {
+    //   res.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
+    //   return next()
+    // })
   } else {
     // Version changes every request
     app.use((_req, res, next) => {
