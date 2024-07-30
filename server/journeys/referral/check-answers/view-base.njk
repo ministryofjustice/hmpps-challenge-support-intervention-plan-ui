@@ -117,7 +117,7 @@
     {% for factor in referral.contributoryFactors %}
         {% set contributoryFactorRows = (contributoryFactorRows.push({
             key: {
-                text: 'Comment on ' + (factor.factorType.description | sentenceCase(false))
+                text: 'Comment on ' + (factor.factorType.description | sentenceCase(false)) + ' factors'
             },
             value: {
                 text: factor.comment | escape | nl2br or 'Not provided'

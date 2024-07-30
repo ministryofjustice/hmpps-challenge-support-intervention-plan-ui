@@ -172,7 +172,7 @@ describe('GET /referral/check-answers', () => {
     queryAllByText(html, /<script>alert\('xss'\);<\/script>/i).forEach(el => {
       expect(el.querySelectorAll('br')).toHaveLength(lines)
     })
-    expect(queryByText(html, 'Comment on <script>alert("text for type-b")</script>')).toBeVisible()
+    expect(queryByText(html, 'Comment on <script>alert("text for type-b")</script> factors')).toBeVisible()
 
     expect(
       (
@@ -341,7 +341,7 @@ describe('GET /referral/check-answers', () => {
     expect(queryByText(html, '25 December 2024')).toBeVisible()
     expect(queryByText(html, journeyDataMock.referral!.incidentInvolvement!.description!)).toBeVisible()
     expect(queryByText(html, journeyDataMock.referral!.assaultedStaffName!)).toBeVisible()
-    expect(queryByText(html, 'Comment on <script>alert("text for type-b")</script>')).toBeVisible()
+    expect(queryByText(html, 'Comment on <script>alert("text for type-b")</script> factors')).toBeVisible()
     const lines = (String(journeyDataMock.referral!.descriptionOfConcern!).match(/\n/g) || '').length
     queryAllByText(html, /<script>alert\('xss'\);<\/script>/i).forEach(el => {
       expect(el.querySelectorAll('br')).toHaveLength(lines)
