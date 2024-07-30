@@ -4,10 +4,12 @@ import { BaseJourneyController } from '../../base/controller'
 
 export class InvolvementController extends BaseJourneyController {
   GET = async (req: Request, res: Response): Promise<void> => {
-    const items = await this.getReferenceDataOptionsForRadios(
-      req,
-      'incident-involvement',
-      res.locals.formResponses?.['involvementType'] || req.journeyData.referral!.incidentInvolvement,
+    const items = this.customOrderRadios(
+      await this.getReferenceDataOptionsForRadios(
+        req,
+        'incident-involvement',
+        res.locals.formResponses?.['involvementType'] || req.journeyData.referral!.incidentInvolvement,
+      ),
     )
     // Differentiate between not set, false and true
     const formResponsesStaffAssaulted =
@@ -31,5 +33,16 @@ export class InvolvementController extends BaseJourneyController {
     req.journeyData.referral!.assaultedStaffName = req.body.assaultedStaffName
 
     res.redirect('description')
+  }
+
+  /** Moves 'Other' to the bottom of the list */
+  private customOrderRadios = (items: { value: string; text: string | undefined }[]) => {
+    const othIndex = items.findIndex(o => o.value === 'OTH')
+    if (othIndex > -1) {
+      const oth = items[othIndex]!
+      items.splice(othIndex, 1)
+      items.push(oth)
+    }
+    return items
   }
 }
