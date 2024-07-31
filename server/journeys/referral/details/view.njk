@@ -15,7 +15,7 @@
 {% set datePickerHeading = "When was the most recent occurrence of the behaviour?" if isProactiveReferral else "When did the incident occur?" %}
 {% set datePickerLabel = "Date of occurrence" if isProactiveReferral else "Date of incident" %}
 {% set incidentTimeLabel = "Time of occurrence (optional)" if isProactiveReferral else "Time of incident (optional)" %}
-{% set incidentLocationLabel = "Where was the most recent occurrence of this behaviour?" if isProactiveReferral else "Where did the incident occur?"  %}
+{% set incidentLocationLabel = "Where was the most recent occurrence of the behaviour?" if isProactiveReferral else "Where did the incident occur?"  %}
 {% set incidentTypeLabel = "What's the main concern?" if isProactiveReferral else "What was the incident type?" %}
 
 {% block innerContent %}
