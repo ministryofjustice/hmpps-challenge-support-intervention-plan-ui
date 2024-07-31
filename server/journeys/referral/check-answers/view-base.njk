@@ -120,7 +120,7 @@
                 text: 'Comment on ' + (factor.factorType.description | sentenceCase(false)) + ' factors'
             },
             value: {
-                text: factor.comment or 'Not provided'
+                html: (factor.comment or 'Not provided') | escape | nl2br
             },
             actions: {
                 items: [
@@ -168,7 +168,7 @@
                 text: "Other information relating to this referral"
             },
                 value: {
-                text: referral.otherInformation or 'Not provided'
+                html: (referral.otherInformation or 'Not provided') | escape | nl2br
             },
                 actions: {
                 items: [
