@@ -5,17 +5,21 @@ import { getByRole } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
 import { JourneyData } from '../../../@types/express'
-import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
+import {
+  MOCK_INPUT_RADIO,
+  MOCK_INPUT_TEXT_MULTI,
+  MOCK_INPUT_TEXT_MULTI_EXPECTED,
+  TEST_PRISONER,
+} from '../../../routes/testutils/testConstants'
 import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
-import { MOCK_INPUT } from '../../../testutils/constants'
 
 const uuid = uuidv4()
 
 const journeyDataMock = {
   prisoner: TEST_PRISONER,
   saferCustodyScreening: {
-    outcomeType: MOCK_INPUT.RADIO,
-    reasonForDecision: MOCK_INPUT.TEXT_MULTI,
+    outcomeType: MOCK_INPUT_RADIO,
+    reasonForDecision: MOCK_INPUT_TEXT_MULTI,
   },
 } as JourneyData
 
@@ -55,7 +59,7 @@ describe('GET /screen/check-answers', () => {
     )
 
     expect(rows[1]?.children[0]?.innerHTML).toContain('Reason for decision')
-    expect(rows[1]?.children[1]?.innerHTML).toContain(MOCK_INPUT.TEXT_MULTI_EXPECTED)
+    expect(rows[1]?.children[1]?.innerHTML).toContain(MOCK_INPUT_TEXT_MULTI_EXPECTED)
     expect(rows[1]?.children[2]?.innerHTML).toContain('Change')
     expect(rows[1]?.children[2]?.innerHTML).toContain('the description of the reason for the decision')
     expect(
