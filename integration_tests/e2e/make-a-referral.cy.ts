@@ -354,7 +354,7 @@ const changeAnswersOnCYAPage = () => {
     .should('be.visible')
     .click()
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
-  cy.findByRole('textbox', { name: /add a comment on factor2 factors \(optional\)\?/i }).type('factor two comment')
+  cy.findByRole('textbox', { name: /add a comment on factor2 factors \(optional\)/i }).type('factor two comment')
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Comment on factor2').next().should('include.text', 'factor two comment')
 
