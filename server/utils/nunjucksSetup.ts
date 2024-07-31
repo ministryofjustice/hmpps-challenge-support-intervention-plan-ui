@@ -2,7 +2,11 @@
 import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
-import { personDateOfBirth, personProfileName } from 'hmpps-court-cases-release-dates-design/hmpps/utils/utils'
+import {
+  firstNameSpaceLastName,
+  personDateOfBirth,
+  personProfileName,
+} from 'hmpps-court-cases-release-dates-design/hmpps/utils/utils'
 import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
 import { ApplicationInfo } from '../applicationInfo'
 import config from '../config'
@@ -42,6 +46,7 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
     [
       path.join(__dirname, '../../server/views'),
       path.join(__dirname, '../../server/journeys'),
+      path.join(__dirname, '../../server/routes'),
       'node_modules/govuk-frontend/dist/',
       'node_modules/@ministryofjustice/frontend/',
       'node_modules/@ministryofjustice/frontend/moj/components/',
@@ -63,6 +68,7 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   njkEnv.addFilter('sentenceCase', sentenceCase)
   njkEnv.addFilter('formatDisplayDate', formatDisplayDate)
   njkEnv.addFilter('filterBy', (array: object[], filter: (itm: object) => boolean) => array.filter(filter))
+  njkEnv.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
   njkEnv.addGlobal('todayStringGBFormat', todayStringGBFormat)
   njkEnv.addGlobal('YesNoDontKnow', schema.shape.isSaferCustodyTeamInformed.enum)
 }

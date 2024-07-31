@@ -1,0 +1,31 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "moj/components/page-header-actions/macro.njk" import mojPageHeaderActions %}
+
+{% set fullWidth = true %}
+{% set pageTitle = "CSIP record - CSIP" %}
+{% extends "partials/layout.njk" %}
+
+{% block pageHeader %}
+  {{ mojPageHeaderActions({
+    classes: 'govuk-!-margin-bottom-3',
+    heading: {
+      text: 'CSIP referral for ' + (prisoner | firstNameSpaceLastName),
+      classes: 'govuk-heading-l'
+    },
+    items: [{
+      text: 'Screen referral',
+      href: '/csip-record/' + recordUuid + '/screen/start',
+      classes: 'govuk-button--primary'
+    }]
+  }) }}
+  <hr class="govuk-section-break govuk-section-break--visible">
+{% endblock %}
+
+{% block innerContent %}
+  {% include './components/referral.njk' %}
+
+  {{ govukButton({
+    text: "Screen referral",
+    href: '/csip-record/' + recordUuid + '/screen/start'
+  }) }}
+{% endblock %}
