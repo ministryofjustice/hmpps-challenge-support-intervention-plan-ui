@@ -1,0 +1,65 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = false %}
+{% set pageTitle = "Check answers - Make a CSIP referral" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Screen CSIP referral</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check your answers before recording the screening outcome</h1>
+
+    {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-7",
+        rows: [
+            {
+                key: {
+                text: "Screening outcome"
+            },
+                value: {
+                text: saferCustodyScreening.outcomeType.description
+            },
+                actions: {
+                items: [
+                    {
+                        href: "screen#outcomeType",
+                        text: "Change",
+                        visuallyHiddenText: "the screening outcome",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Reason for decision"
+            },
+                value: {
+                html: saferCustodyScreening.reasonForDecision | escape | nl2br
+            },
+                actions: {
+                items: [
+                    {
+                        href: "screen#reasonForDecision",
+                        text: "Change",
+                        visuallyHiddenText: "the description of the reason for the decision",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            }
+        ]
+    }) }}
+
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        <div class="govuk-button-group">
+            {{ govukButton({
+                text: "Record outcome",
+                preventDoubleClick: true
+            }) }}
+            <a class="govuk-link govuk-link--no-visited-state" href="{{ digitalPrisonServicesUrl }}">Cancel</a>
+        </div>
+    </form>
+{% endblock %}
