@@ -76,7 +76,8 @@
           errorMessage: validationErrors | findError('staffAssaulted')
       }) }}
       {{ govukButton({
-          text: "Continue"
+          text: "Continue",
+          preventDoubleClick: true
       }) }}
     </form>
 {% endblock %}

@@ -151,7 +151,7 @@
                 text: "Description of incident and concerns"
             },
                 value: {
-                text: referral.descriptionOfConcern | escape | nl2br
+                html: referral.descriptionOfConcern | escape | nl2br
             },
                 actions: {
                 items: [
@@ -169,7 +169,7 @@
                 text: "Reasons given for the incident"
             },
                 value: {
-                text: referral.knownReasons | escape | nl2br
+                html: referral.knownReasons | escape | nl2br
             },
                 actions: {
                 items: [

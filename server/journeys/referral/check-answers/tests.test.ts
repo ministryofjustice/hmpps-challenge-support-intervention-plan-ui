@@ -36,7 +36,7 @@ const journeyDataMock = {
     
     Paragraph
     
-    <script>alert('xss');</script>
+    <script>alert('concerns');</script>
     
     <button>this button should be escaped</button>`,
     knownReasons: `Text
@@ -159,7 +159,7 @@ describe('GET /referral/check-answers', () => {
     expect(queryByText(html, journeyDataMock.referral!.incidentInvolvement!.description!)).toBeVisible()
     expect(queryByText(html, journeyDataMock.referral!.assaultedStaffName!)).toBeVisible()
     // We should have script tags as plain text
-    expect(queryAllByText(html, /<script>alert\('xss'\);<\/script>/i)).toHaveLength(4)
+    expect(queryAllByText(html, /<script>alert\('xss'\);<\/script>/i)).toHaveLength(3)
     // But not as actual script tags
     expect(
       [...html.querySelectorAll('script')].filter(el => (el as HTMLScriptElement)?.textContent?.includes('xss')),
@@ -169,7 +169,7 @@ describe('GET /referral/check-answers', () => {
     expect(queryByRole(html, 'button', { name: /factor comment button should be escaped/i })).not.toBeInTheDocument()
     expect(queryByRole(html, 'button', { name: /otherinfo button should be escaped/i })).not.toBeInTheDocument()
     const lines = (String(journeyDataMock.referral!.descriptionOfConcern!).match(/\n/g) || '').length
-    queryAllByText(html, /<script>alert\('xss'\);<\/script>/i).forEach(el => {
+    queryAllByText(html, /<script>alert\('concerns'\);<\/script>/i).forEach(el => {
       expect(el.querySelectorAll('br')).toHaveLength(lines)
     })
     expect(queryByText(html, 'Comment on <script>alert("text for type-b")</script> factors')).toBeVisible()
@@ -343,11 +343,11 @@ describe('GET /referral/check-answers', () => {
     expect(queryByText(html, journeyDataMock.referral!.assaultedStaffName!)).toBeVisible()
     expect(queryByText(html, 'Comment on <script>alert("text for type-b")</script> factors')).toBeVisible()
     const lines = (String(journeyDataMock.referral!.descriptionOfConcern!).match(/\n/g) || '').length
-    queryAllByText(html, /<script>alert\('xss'\);<\/script>/i).forEach(el => {
+    queryAllByText(html, /<script>alert\('concerns'\);<\/script>/i).forEach(el => {
       expect(el.querySelectorAll('br')).toHaveLength(lines)
     })
     // We should have script tags as plain text
-    expect(queryAllByText(html, /<script>alert\('xss'\);<\/script>/i)).toHaveLength(4)
+    expect(queryAllByText(html, /<script>alert\('xss'\);<\/script>/i)).toHaveLength(3)
     // But not as actual script tags
     expect(
       [...html.querySelectorAll('script')].filter(el => (el as HTMLScriptElement)?.textContent?.includes('xss')),
