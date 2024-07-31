@@ -10,6 +10,7 @@ context('Make a Referral Journey', () => {
     cy.task('stubIncidentType')
     cy.task('stubIncidentInvolvement')
     cy.task('stubContribFactors')
+    cy.task('stubCsipRecordPostSuccess')
   })
 
   it('happy path', () => {
@@ -34,7 +35,6 @@ context('Make a Referral Journey', () => {
       .should('include.text', 'User, TestnameA1111AA')
 
     cy.go('back')
-    cy.reload()
     // There is nothing to test or wait on when going back here - the entire redirection is handled in the express middleware, so we just wait for a second to ensure
     // that we arent just immediately testing that the same url is there, and then that the state handling has redirected us back to confirmation
     // eslint-disable-next-line cypress/no-unnecessary-waiting

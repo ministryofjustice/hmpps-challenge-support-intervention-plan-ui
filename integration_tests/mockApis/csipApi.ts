@@ -194,7 +194,7 @@ const stubCsipRecordPostSuccess = () => {
   return stubFor({
     request: {
       method: 'POST',
-      urlPattern: '/csip-api/[a-zA-Z0-9]*/csip-records',
+      urlPattern: '/csip-api/prisoners/[a-zA-Z0-9]*/csip-records',
     },
     response: {
       status: 200,
