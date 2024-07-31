@@ -78,9 +78,9 @@ describe('GET /referral/details - Proactive', () => {
     expect(getByRole(html, 'textbox', { name: /date of occurrence/i })).toBeVisible()
     expect(getByText(html, /time of occurrence \(optional\)/i)).toBeVisible()
     expect(
-      getByRole(html, 'combobox', { name: /where was the most recent occurrence of this behaviour\?/i }),
+      getByRole(html, 'combobox', { name: /where was the most recent occurrence of the behaviour\?/i }),
     ).toBeVisible()
-    expect(getByRole(html, 'combobox', { name: /what's the main concern\?/i })).toBeVisible()
+    expect(getByRole(html, 'combobox', { name: /What’s the main concern\?/i })).toBeVisible()
   })
 
   it('pre-fill form with values from journeyData', async () => {
