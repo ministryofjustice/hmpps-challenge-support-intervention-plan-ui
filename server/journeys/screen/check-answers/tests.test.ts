@@ -7,29 +7,15 @@ import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
 import { JourneyData } from '../../../@types/express'
 import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
 import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
+import { MOCK_INPUT } from '../../../testutils/constants'
 
 const uuid = uuidv4()
-
-const MOCK_INPUT_RADIO = { code: 'AAA', description: 'Selected radio option' }
-const MOCK_INPUT_TEXT_MULTI = `Text
-
-    • Bullet 1
-    • Bullet 2
-    • Bullet 3
-    
-    Paragraph
-    
-    <script>alert('concerns');</script>
-    
-    <button>this button should be escaped</button>`
-
-const MOCK_INPUT_TEXT_MULTI_EXPECTED = `Text<br>\n      <br>\n          • Bullet 1<br>\n          • Bullet 2<br>\n          • Bullet 3<br>\n          <br>\n          Paragraph<br>\n          <br>\n          &lt;script&gt;alert('concerns');&lt;/script&gt;<br>\n          <br>\n          &lt;button&gt;this button should be escaped&lt;/button&gt;`
 
 const journeyDataMock = {
   prisoner: TEST_PRISONER,
   saferCustodyScreening: {
-    outcomeType: MOCK_INPUT_RADIO,
-    reasonForDecision: MOCK_INPUT_TEXT_MULTI,
+    outcomeType: MOCK_INPUT.RADIO,
+    reasonForDecision: MOCK_INPUT.TEXT_MULTI,
   },
 } as JourneyData
 
@@ -69,7 +55,7 @@ describe('GET /screen/check-answers', () => {
     )
 
     expect(rows[1]?.children[0]?.innerHTML).toContain('Reason for decision')
-    expect(rows[1]?.children[1]?.innerHTML).toContain(MOCK_INPUT_TEXT_MULTI_EXPECTED)
+    expect(rows[1]?.children[1]?.innerHTML).toContain(MOCK_INPUT.TEXT_MULTI_EXPECTED)
     expect(rows[1]?.children[2]?.innerHTML).toContain('Change')
     expect(rows[1]?.children[2]?.innerHTML).toContain('the description of the reason for the decision')
     expect(
