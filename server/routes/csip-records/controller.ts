@@ -36,6 +36,11 @@ export class CsipRecordController {
     const involvementFilter = (itm: { key: { text: string } }) =>
       referral.assaultedStaffName || itm.key.text !== 'Names of staff assaulted'
 
-    res.render('csip-records/view', { recordUuid, prisoner, referral, involvementFilter })
+    const actionButton = {
+      label: 'Screen referral',
+      href: `/csip-record/${recordUuid}/screen/start`,
+    }
+
+    res.render('csip-records/view', { actionButton, prisoner, referral, involvementFilter })
   }
 }

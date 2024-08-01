@@ -13,8 +13,8 @@
       classes: 'govuk-heading-l'
     },
     items: [{
-      text: 'Screen referral',
-      href: '/csip-record/' + recordUuid + '/screen/start',
+      text: actionButton.label,
+      href: actionButton.href,
       classes: 'govuk-button--primary'
     }]
   }) }}
@@ -25,7 +25,7 @@
   {% include './components/referral.njk' %}
 
   {{ govukButton({
-    text: "Screen referral",
-    href: '/csip-record/' + recordUuid + '/screen/start'
+    text: actionButton.label,
+    href: actionButton.href
   }) }}
 {% endblock %}
