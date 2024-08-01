@@ -1,0 +1,92 @@
+<h1 class="govuk-heading-m">Incident details</h1>
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
+            text: "Date of incident"
+        },
+            value: {
+            text: referral.incidentDate | formatDisplayDate
+        }
+        },
+        {
+            key: {
+            text: "Time of incident"
+        },
+            value: {
+            text: referral.incidentTime or "Not provided"
+        }
+        },
+        {
+            key: {
+            text: "Location of incident"
+        },
+            value: {
+            text: referral.incidentLocation.description
+        }
+        },
+        {
+            key: {
+            text: "Incident type"
+        },
+            value: {
+            text: referral.incidentType.description
+        }
+        }
+    ]
+}) }}
+
+<h1 class="govuk-heading-m">Incident involvement</h1>
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
+            text: "Prisoner involvement"
+        },
+            value: {
+            text: referral.incidentInvolvement.description
+        }
+        },
+        {
+            key: {
+            text: "Staff assaulted"
+        },
+            value: {
+            text: 'Yes' if referral.staffAssaulted else 'No'
+        }
+        },
+        {
+            key: {
+            text: "Names of staff assaulted"
+        },
+            value: {
+            text: referral.assaultedStaffName or ''
+        }
+        }
+    ] | filterBy(involvementFilter)
+}) }}
+
+<h1 class="govuk-heading-m">Incident description</h1>
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
+            text: "Description of incident and concerns"
+        },
+            value: {
+            html: referral.descriptionOfConcern | escape | nl2br
+        }
+        },
+        {
+            key: {
+            text: "Reasons given for the incident"
+        },
+            value: {
+            html: referral.knownReasons | escape | nl2br
+        }
+        }
+    ]
+}) }}

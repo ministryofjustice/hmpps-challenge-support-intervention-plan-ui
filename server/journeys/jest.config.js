@@ -18,7 +18,7 @@ module.exports = {
     'server/index.ts',
   ],
   moduleFileExtensions: ['web.js', 'js', 'json', 'node', 'ts'],
-  testMatch: ['<rootDir>/server/journeys/**/*.test.ts'],
+  testMatch: ['<rootDir>/server/journeys/**/*.test.ts', '<rootDir>/server/routes/csip-records/*.test.ts'],
   testPathIgnorePatterns: ['node_modules'],
   testEnvironment: 'jest-fixed-jsdom',
 }

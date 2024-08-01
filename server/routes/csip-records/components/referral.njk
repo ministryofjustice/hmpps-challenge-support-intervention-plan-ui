@@ -1,0 +1,102 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+<h1 class="govuk-heading-l govuk-!-margin-bottom-7">Referral</h1>
+
+<h1 class="govuk-heading-m">Referral details</h1>
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
+            text: "Referrer date"
+        },
+            value: {
+            text: referral.createdAt | formatDisplayDate
+        }
+        },
+        {
+            key: {
+            text: "Referrer name"
+        },
+            value: {
+            text: referral.referredBy
+        }
+        },
+        {
+            key: {
+            text: "Area of work"
+        },
+            value: {
+            text: referral.refererArea.description
+        }
+        },
+        {
+            key: {
+            text: "Proactive or reactive referral"
+        },
+            value: {
+            text: "Proactive" if referral.isProactiveReferral else "Reactive"
+        }
+        }
+    ]
+}) }}
+
+{% if referral.isProactiveReferral %}
+    {% include './proactive.njk' %}
+{% else %}
+    {% include './reactive.njk' %}
+{% endif %}
+
+
+  {% set factors = [] %}
+  {% for factor in referral.contributoryFactors %}
+      {% set factors = (factors.push(factor.factorType.description | escape), factors) %}
+  {% endfor %}
+
+  {% set contributoryFactorRows = [{
+      key: {
+          text: "Contributory factors"
+      },
+      value: {
+          html: factors | join('<br/>')
+      }
+  }] %}
+  {% for factor in referral.contributoryFactors %}
+      {% set contributoryFactorRows = (contributoryFactorRows.push({
+          key: {
+              text: 'Comment on ' + (factor.factorType.description | sentenceCase(false)) + ' factors'
+          },
+          value: {
+              html: (factor.comment or 'Not provided') | escape | nl2br
+          }
+      }), contributoryFactorRows) %}
+  {% endfor %}
+
+<h1 class="govuk-heading-m">Contributory factors</h1>
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: contributoryFactorRows
+}) }}
+
+<h1 class="govuk-heading-m">Additional information</h1>
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
+            text: "Safer Custody aware of referral"
+        },
+            value: {
+            text: "Yes" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.YES else ("No" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.NO else "I don’t know")
+        }
+        },
+        {
+            key: {
+            text: "Other information relating to this referral"
+        },
+            value: {
+            html: (referral.otherInformation or 'Not provided') | escape | nl2br
+        }
+        }
+    ]
+}) }}

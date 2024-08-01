@@ -22,6 +22,10 @@ const buildConfig = {
         from: path.join(cwd, 'server/journeys/**/*'),
         to: path.join(cwd, 'dist/server/journeys'),
       },
+      {
+        from: path.join(cwd, 'server/routes/**/*'),
+        to: path.join(cwd, 'dist/server/routes'),
+      },
     ],
   },
 

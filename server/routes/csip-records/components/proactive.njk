@@ -1,0 +1,94 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+<h1 class="govuk-heading-m">Behaviour details</h1>
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
+            text: "Date of occurrence"
+        },
+            value: {
+            text: referral.incidentDate | formatDisplayDate
+        }
+        },
+        {
+            key: {
+            text: "Time of occurrence"
+        },
+            value: {
+            text: referral.incidentTime or "Not provided"
+        }
+        },
+        {
+            key: {
+            text: "Location of occurrence"
+        },
+            value: {
+            text: referral.incidentLocation.description
+        }
+        },
+        {
+            key: {
+            text: "Main concern"
+        },
+            value: {
+            text: referral.incidentType.description
+        }
+        }
+    ]
+}) }}
+
+<h1 class="govuk-heading-m">Behaviour involvement</h1>
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
+            text: "Prisoner involvement"
+        },
+            value: {
+            text: referral.incidentInvolvement.description
+        }
+        },
+        {
+            key: {
+            text: "Staff assaulted"
+        },
+            value: {
+            text: 'Yes' if referral.staffAssaulted else 'No'
+        }
+        },
+        {
+            key: {
+            text: "Names of staff assaulted"
+        },
+            value: {
+            text: referral.assaultedStaffName or ''
+        }
+        }
+    ] | filterBy(involvementFilter)
+}) }}
+
+<h1 class="govuk-heading-m">Behaviour description</h1>
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
+            text: "Description of behaviour and concerns"
+        },
+            value: {
+            html: referral.descriptionOfConcern | escape | nl2br
+        }
+        },
+        {
+            key: {
+            text: "Reasons given for the behaviour"
+        },
+            value: {
+            html: referral.knownReasons | escape | nl2br
+        }
+        }
+    ]
+}) }}

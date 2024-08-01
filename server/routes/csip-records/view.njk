@@ -1,0 +1,41 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "moj/components/page-header-actions/macro.njk" import mojPageHeaderActions %}
+
+{% set fullWidth = true %}
+{% set pageTitle = "CSIP record - CSIP" %}
+{% extends "partials/layout.njk" %}
+
+{% set actionButtonHtml %}
+  <form method="post">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+    <input type="hidden" name="action" value="{{ actionButton.action }}"/>
+    {{ govukButton({
+      text: actionButton.label,
+      preventDoubleClick: true,
+      classes: 'govuk-body govuk-!-margin-bottom-0'
+    }) }}
+  </form>
+{% endset %}
+
+{% block pageHeader %}
+  {{ mojPageHeaderActions({
+    classes: 'govuk-!-margin-bottom-3',
+    heading: {
+      text: 'CSIP referral for ' + (prisoner | firstNameSpaceLastName),
+      classes: 'govuk-heading-l'
+    },
+    items: [{
+      html: actionButtonHtml,
+      classes: 'govuk-!-display-none'
+    }]
+  }) }}
+  <hr class="govuk-section-break govuk-section-break--visible">
+{% endblock %}
+
+{% block innerContent %}
+  {% include './components/referral.njk' %}
+
+  <div class="govuk-body govuk-!-margin-bottom-6">
+  {{ actionButtonHtml | safe }}
+  </div>
+{% endblock %}
