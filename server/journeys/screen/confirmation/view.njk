@@ -1,0 +1,19 @@
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Confirmation - Screen CSIP referral" %}
+
+{% set theHtml = ("<div><strong>Decision: </strong>" + outcomeTypeDescription + "</div>") %}
+
+{% block innerContent %}
+    {{ govukPanel({
+        titleText: "CSIP referral screening outcome recorded",
+        html: theHtml
+    }) }}
+    <p class="govuk-body">We've updated the status of the referral to "{{outcomeStatus}}".</p>
+    {% if outcomeTypeDescription == "Progress to investigation" %}
+      <h1 class="govuk-heading-m">What needs to happen next</h1>
+      <p class="govuk-body">An investigation must now be carried out. This should include interviewing {{(prisoner.firstName + " " + prisoner.lastName) | convertToTitleCase | escape}} about the behaviour that led to the referral</p>
+    {% endif %}
+{% endblock %}

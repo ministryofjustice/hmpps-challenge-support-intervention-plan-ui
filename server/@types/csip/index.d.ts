@@ -1213,6 +1213,8 @@ export interface components {
       date: string
       /** @description The reasons for the safer custody screening outcome decision. */
       reasonForDecision: string
+      recordedBy: string
+      recordedByDisplayName: string
     }
     /** @description The request body to create an interview */
     CreateInterviewRequest: {

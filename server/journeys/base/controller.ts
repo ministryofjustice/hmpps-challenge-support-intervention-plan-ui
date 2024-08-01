@@ -1,4 +1,5 @@
 import { Request } from 'express'
+import { jwtDecode } from 'jwt-decode'
 import CsipApiService from '../../services/csipApi/csipApiService'
 import { ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
 import { components } from '../../@types/csip'
@@ -9,6 +10,11 @@ export class BaseJourneyController {
 
   createReferral = async (req: Request, createCsipRecordRequest: components['schemas']['CreateCsipRecordRequest']) =>
     this.csipApiService.createReferral(req, createCsipRecordRequest)
+
+  createScreeningOutcome = async (
+    req: Request,
+    createScreeningOutcomeRequest: components['schemas']['CreateSaferCustodyScreeningOutcomeRequest'],
+  ) => this.csipApiService.createScreeningOutcome(req, createScreeningOutcomeRequest)
 
   getReferenceDataOptionsForRadios = async (
     req: Request,
@@ -52,4 +58,12 @@ export class BaseJourneyController {
         checked: Array.isArray(value) ? value.includes(refData.code) : refData.code === value,
       }))
       .sort((a, b) => sortAscending(a.text, b.text))
+
+  getRecordedByFieldsFromJwt = (token: string) => {
+    const jwt = jwtDecode(token) as { user_name: string; name: string }
+    return {
+      recordedBy: jwt.user_name,
+      recordedByDisplayName: jwt.name,
+    }
+  }
 }

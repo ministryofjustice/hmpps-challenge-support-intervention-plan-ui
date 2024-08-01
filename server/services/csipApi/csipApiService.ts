@@ -24,4 +24,14 @@ export default class CsipApiService {
       createCsipRecordRequest,
     )
   }
+
+  createScreeningOutcome(
+    req: Request,
+    createScreeningOutcomeRequest: components['schemas']['CreateSaferCustodyScreeningOutcomeRequest'],
+  ): Promise<components['schemas']['SaferCustodyScreeningOutcome']> {
+    return this.csipApiClientBuilder(req.systemClientToken).createScreeningOutcome(
+      req.journeyData.csipRecord!.recordUuid,
+      createScreeningOutcomeRequest,
+    )
+  }
 }
