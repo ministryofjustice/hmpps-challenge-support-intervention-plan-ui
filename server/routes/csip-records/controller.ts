@@ -38,9 +38,22 @@ export class CsipRecordController {
 
     const actionButton = {
       label: 'Screen referral',
-      href: `/csip-record/${recordUuid}/screen/start`,
+      action: 'screen',
     }
 
-    res.render('csip-records/view', { actionButton, prisoner, referral, involvementFilter })
+    res.render('csip-records/view', { actionButton, prisoner, referral, involvementFilter, showBreadcrumbs: true })
+  }
+
+  POST = async (req: Request, res: Response): Promise<void> => {
+    const { recordUuid } = req.params
+    const { action } = req.body
+
+    switch (action) {
+      case 'screen':
+        res.redirect(`/csip-record/${recordUuid}/screen/start`)
+        break
+      default:
+        res.redirect('back')
+    }
   }
 }

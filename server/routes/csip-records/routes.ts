@@ -11,10 +11,12 @@ export const CsipRecordRoutes = (
   const router = Router({ mergeParams: true })
 
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
+  const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
   const controller = new CsipRecordController(csipApiService, prisonerSearchService)
 
   get('/', controller.GET)
+  post('/', controller.POST)
 
   return router
 }

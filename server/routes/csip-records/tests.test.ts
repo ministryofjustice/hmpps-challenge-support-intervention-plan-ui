@@ -134,13 +134,7 @@ describe('GET /csip-records/:recordUuid', () => {
     })
     expect(queryByText(html, 'Comment on <script>alert("text for type-b")</script> factors')).toBeVisible()
 
-    const actionButtons = getAllByRole(html, 'button', { name: 'Screen referral' })
-    expect(actionButtons).toHaveLength(2)
-    actionButtons.forEach(actionButton =>
-      expect((actionButton as HTMLLinkElement).href).toMatch(
-        /\/csip-record\/de643405-7bc9-4181-9677-db887a41f78d\/screen\/start/,
-      ),
-    )
+    expect(getAllByRole(html, 'button', { name: 'Screen referral' })).toHaveLength(2)
   })
 
   it('render page for CSIP record with reactive referral', async () => {
@@ -184,12 +178,17 @@ describe('GET /csip-records/:recordUuid', () => {
     expect(queryByRole(html, 'button', { name: /factor comment button should be escaped/i })).not.toBeInTheDocument()
     expect(queryByRole(html, 'button', { name: /otherinfo button should be escaped/i })).not.toBeInTheDocument()
 
-    const actionButtons = getAllByRole(html, 'button', { name: 'Screen referral' })
-    expect(actionButtons).toHaveLength(2)
-    actionButtons.forEach(actionButton =>
-      expect((actionButton as HTMLLinkElement).href).toMatch(
-        /\/csip-record\/de643405-7bc9-4181-9677-db887a41f78d\/screen\/start/,
-      ),
-    )
+    expect(getAllByRole(html, 'button', { name: 'Screen referral' })).toHaveLength(2)
+  })
+})
+
+describe('POST /csip-records/:recordUuid', () => {
+  it('redirect to /csip-record/:recordUuid/screen/start for screen action', async () => {
+    await request(app(csipRecordMock))
+      .post(TEST_PATH)
+      .type('form')
+      .send({ action: 'screen' })
+      .expect(302)
+      .expect('Location', '/csip-record/de643405-7bc9-4181-9677-db887a41f78d/screen/start')
   })
 })
