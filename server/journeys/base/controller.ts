@@ -11,10 +11,8 @@ export class BaseJourneyController {
   createReferral = async (req: Request, createCsipRecordRequest: components['schemas']['CreateCsipRecordRequest']) =>
     this.csipApiService.createReferral(req, createCsipRecordRequest)
 
-  createScreeningOutcome = async (
-    req: Request,
-    createScreeningOutcomeRequest: components['schemas']['CreateSaferCustodyScreeningOutcomeRequest'],
-  ) => this.csipApiService.createScreeningOutcome(req, createScreeningOutcomeRequest)
+  createScreeningOutcome = async (req: Request, payload: Parameters<CsipApiService['createScreeningOutcome']>[1]) =>
+    this.csipApiService.createScreeningOutcome(req, payload)
 
   getReferenceDataOptionsForRadios = async (
     req: Request,
