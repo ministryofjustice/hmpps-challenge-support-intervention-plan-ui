@@ -48,7 +48,7 @@ describe('GET screen/confirmation', () => {
     expect(getByText(html, 'CSIP referral screening outcome recorded')).toBeVisible()
     expect(getByText(html, 'Progress to investigation')).toBeVisible()
 
-    expect(getByText(html, 'We\'ve updated the status of the referral to "investigation pending".')).toBeVisible()
+    expect(getByText(html, 'We’ve updated the status of the referral to “investigation pending”.')).toBeVisible()
 
     expect(getByText(html, 'What needs to happen next')).toBeVisible()
     expect(
@@ -71,7 +71,7 @@ describe('GET screen/confirmation', () => {
     expect(getByText(html, 'CSIP referral screening outcome recorded')).toBeVisible()
     expect(getByText(html, 'Progress to CSIP')).toBeVisible()
 
-    expect(getByText(html, 'We\'ve updated the status of the referral to "plan pending".')).toBeVisible()
+    expect(getByText(html, 'We’ve updated the status of the referral to “plan pending”.')).toBeVisible()
 
     expect(queryByText(html, 'What needs to happen next')).not.toBeInTheDocument()
     expect(
@@ -94,7 +94,7 @@ describe('GET screen/confirmation', () => {
     expect(getByText(html, 'CSIP referral screening outcome recorded')).toBeVisible()
     expect(getByText(html, 'No further action')).toBeVisible()
 
-    expect(getByText(html, 'We\'ve updated the status of the referral to "No further action".')).toBeVisible()
+    expect(getByText(html, 'We’ve updated the status of the referral to “no further action”.')).toBeVisible()
 
     expect(queryByText(html, 'What needs to happen next')).not.toBeInTheDocument()
     expect(

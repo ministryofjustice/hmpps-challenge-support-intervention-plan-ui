@@ -361,6 +361,75 @@ const stubCsipRecordGetSuccess = () => {
         createdAt: '2024-07-22T11:21:48',
         createdBy: 'AHUMAN_GEN',
         createdByDisplayName: 'A Human',
+        referral: {
+          isOnBehalfOfReferral: true,
+          referredBy: '<script>alert("Test User")</script>',
+          refererArea: { code: 'A', description: '<script>alert("Area")</script>' },
+          isProactiveReferral: true,
+          incidentLocation: { code: 'A', description: '<script>alert("Location")</script>' },
+          incidentType: { code: 'A', description: '<script>alert("IncidentType")</script>' },
+          incidentDate: '2024-12-25',
+          incidentTime: '23:59',
+          incidentInvolvement: { code: 'A', description: '<script>alert("Involvement")</script>' },
+          staffAssaulted: true,
+          assaultedStaffName: '<script>alert("Staff Name")</script>',
+          descriptionOfConcern: `Text
+      
+          • Bullet 1
+          • Bullet 2
+          • Bullet 3
+          
+          Paragraph
+          
+          <script>alert('concerns');</script>
+          
+          <button>this button should be escaped</button>`,
+          knownReasons: `Text
+      
+          • Bullet 1
+          • Bullet 2
+          • Bullet 3
+          
+          Paragraph
+          
+          <script>alert('xss');</script>
+          
+          <button>also should be escaped</button>`,
+          contributoryFactors: [
+            {
+              factorType: { code: 'A', description: 'Text' },
+            },
+            {
+              factorType: { code: 'B', description: '<script>alert("Text for type-B")</script>' },
+              comment: `Text
+      
+              • Bullet 1
+              • Bullet 2
+              • Bullet 3
+              
+              Paragraph
+              
+              <script>alert('xss');</script>
+              
+              <button>factor comment button should be escaped</button>`,
+            },
+            {
+              factorType: { code: 'C', description: 'Text with a TLA' },
+            },
+          ],
+          isSaferCustodyTeamInformed: 'Yes',
+          otherInformation: `Text
+      
+          • Bullet 1
+          • Bullet 2
+          • Bullet 3
+          
+          Paragraph
+          
+          <script>alert('xss');</script>
+          
+          <button>otherinfo button should be escaped</button>`,
+        },
       },
     },
   })
