@@ -94,7 +94,8 @@
             {
                 classes: "custom-task-list-first-row",
                 title: {
-                text: "Check and submit report"
+                text: "Check and submit report",
+                classes: "govuk-link--no-visited-state" if formCompleted else undefined
             },
                 href: "record-investigation/check-answers" if formCompleted else undefined,
                 status: incompleteStatus if formCompleted else notReadyStatus
