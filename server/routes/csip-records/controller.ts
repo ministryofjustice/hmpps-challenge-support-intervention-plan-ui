@@ -13,7 +13,6 @@ export class CsipRecordController {
     const { recordUuid } = req.params
     const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
     const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
-
     const referral = {
       createdAt: record.createdAt,
       referredBy: record.referral!.referredBy,
@@ -36,12 +35,29 @@ export class CsipRecordController {
     const involvementFilter = (itm: { key: { text: string } }) =>
       referral.assaultedStaffName || itm.key.text !== 'Names of staff assaulted'
 
-    const actionButton = {
-      label: 'Screen referral',
-      action: 'screen',
+    const screening = record.referral!.saferCustodyScreeningOutcome
+
+    let actionButton
+    if (!screening) {
+      actionButton = {
+        label: 'Screen referral',
+        action: 'screen',
+      }
+    } else if (screening.outcome.code === 'OPE') {
+      actionButton = {
+        label: 'Record investigation',
+        action: 'investigation',
+      }
     }
 
-    res.render('csip-records/view', { actionButton, prisoner, referral, involvementFilter, showBreadcrumbs: true })
+    res.render('csip-records/view', {
+      actionButton,
+      prisoner,
+      referral,
+      screening,
+      involvementFilter,
+      showBreadcrumbs: true,
+    })
   }
 
   POST = async (req: Request, res: Response): Promise<void> => {
@@ -51,6 +67,9 @@ export class CsipRecordController {
     switch (action) {
       case 'screen':
         res.redirect(`/csip-record/${recordUuid}/screen/start`)
+        break
+      case 'investigation':
+        res.redirect(`/csip-record/${recordUuid}/record-investigation/start`)
         break
       default:
         res.redirect('back')

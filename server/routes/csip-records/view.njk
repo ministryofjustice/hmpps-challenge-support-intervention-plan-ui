@@ -27,15 +27,21 @@
     items: [{
       html: actionButtonHtml,
       classes: 'govuk-!-display-none'
-    }]
+    }] if actionButton else []
   }) }}
   <hr class="govuk-section-break govuk-section-break--visible">
 {% endblock %}
 
 {% block innerContent %}
+  {% if screening %}
+    {% include './components/screening.njk' %}
+  {% endif %}
+
   {% include './components/referral.njk' %}
 
   <div class="govuk-body govuk-!-margin-bottom-6">
-  {{ actionButtonHtml | safe }}
+    {% if actionButton %}
+      {{ actionButtonHtml | safe }}
+    {% endif %}
   </div>
 {% endblock %}

@@ -1,0 +1,43 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+<h1 class="govuk-heading-l govuk-!-margin-bottom-7">Screening</h1>
+
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-9",
+    rows: [
+        {
+            key: {
+            text: "Screening date"
+        },
+            value: {
+            text: screening.date | formatDisplayDate
+        }
+        },
+        {
+            key: {
+            text: "Screening outcome"
+        },
+            value: {
+            text: screening.outcome.description
+        }
+        },
+        {
+            key: {
+            text: "Reason for decision"
+        },
+            value: {
+            html: screening.reasonForDecision | escape | nl2br
+        }
+        },
+        {
+            key: {
+            text: "Recorded by"
+        },
+            value: {
+            text: screening.recordedByDisplayName
+        }
+        }
+    ]
+}) }}
+
+<hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-9">
