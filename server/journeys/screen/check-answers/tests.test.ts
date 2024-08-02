@@ -99,12 +99,12 @@ describe('GET /screen/check-answers', () => {
       /screen#outcomeType$/,
     )
 
-    expect(rows[1]?.children[0]?.innerHTML).toContain('Reason for decision')
+    expect(rows[1]?.children[0]?.innerHTML).toContain('Reasons for decision')
     expect(rows[1]?.children[1]?.innerHTML).toContain(MOCK_INPUT_TEXT_MULTI_EXPECTED)
     expect(rows[1]?.children[2]?.innerHTML).toContain('Change')
-    expect(rows[1]?.children[2]?.innerHTML).toContain('the description of the reason for the decision')
+    expect(rows[1]?.children[2]?.innerHTML).toContain('the description of the reasons for the decision')
     expect(
-      (getByRole(html, 'link', { name: 'Change the description of the reason for the decision' }) as HTMLLinkElement)
+      (getByRole(html, 'link', { name: 'Change the description of the reasons for the decision' }) as HTMLLinkElement)
         .href,
     ).toMatch(/screen#reasonForDecision$/)
   })
