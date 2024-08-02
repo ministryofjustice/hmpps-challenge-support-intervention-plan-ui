@@ -366,6 +366,33 @@ const stubCsipRecordGetSuccess = () => {
   })
 }
 
+const stubPostSaferCustodyScreening = () => {
+  return stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/safer-custody-screening',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        outcome: {
+          code: 'string',
+          description: 'string',
+          listSequence: 3,
+          deactivatedAt: '2024-08-02T10:16:01.374Z',
+        },
+        recordedBy: 'string',
+        recordedByDisplayName: 'string',
+        date: '2021-09-27',
+        reasonForDecision: 'string',
+      },
+    },
+  })
+}
+
 export default {
   stubAreaOfWork,
   stubIncidentLocation,
@@ -376,4 +403,5 @@ export default {
   stubCsipRecordPostFailure,
   stubOutcomeType,
   stubCsipRecordGetSuccess,
+  stubPostSaferCustodyScreening,
 }

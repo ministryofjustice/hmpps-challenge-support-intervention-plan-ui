@@ -5,6 +5,8 @@ context('Make a Referral Journey', () => {
     cy.task('reset')
     cy.task('stubSignIn')
     cy.task('stubGetPrisoner')
+    cy.task('stubGetPrisonerImage')
+    cy.task('stubComponents')
     cy.task('stubAreaOfWork')
     cy.task('stubIncidentLocation')
     cy.task('stubIncidentType')
