@@ -27,7 +27,6 @@ export type JourneyData = {
   investigation?: Investigation
   plan?: Plan
   csipRecord?: CsipRecord
-  csipRecordCreated?: boolean
   hasValidationErrors?: boolean
   journeyCompleted?: boolean
 }

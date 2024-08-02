@@ -192,8 +192,6 @@ describe('tests', () => {
               incidentInvolvement: {
                 code: testData.type,
                 description: testData.description,
-                createdAt: new Date().toISOString(),
-                createdBy: 'foobar',
               },
               staffAssaulted: testData.staffAssaulted,
               assaultedStaffName: testData.assaultedStaffName,

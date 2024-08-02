@@ -50,7 +50,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
           ...(typeof referral.otherInformation === 'string' && { otherInformation: referral.otherInformation }),
         },
       })
-      req.journeyData.csipRecordCreated = true
+      req.journeyData.journeyCompleted = true
     } catch (e) {
       if ((e as SanitisedError)['data']) {
         const errorRespData = (e as SanitisedError)['data'] as Record<string, string | unknown>
