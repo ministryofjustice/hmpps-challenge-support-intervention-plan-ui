@@ -118,8 +118,8 @@ describe('POST /screen/check-answers', () => {
       date: new Date().toISOString().substring(0, 10),
       outcomeTypeCode: 'AAA',
       reasonForDecision: MOCK_INPUT_TEXT_MULTI,
-      recordedBy: 'USER_GEN',
-      recordedByDisplayName: 'User',
+      recordedBy: 'user1',
+      recordedByDisplayName: 'First Last',
     })
   })
 

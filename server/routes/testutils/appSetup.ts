@@ -33,8 +33,7 @@ const testAppInfo: ApplicationInfo = {
 export const user: HmppsUser = {
   name: 'FIRST LAST',
   userId: 'id',
-  token:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVXNlciIsInVzZXJfbmFtZSI6IlVTRVJfR0VOIn0.koLy0YtwVZqmcoVvGxjyXs0FBns6JyBs4dkURBr2TnI',
+  token: 'token',
   username: 'user1',
   displayName: 'First Last',
   authSource: 'nomis',

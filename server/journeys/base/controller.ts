@@ -2,17 +2,10 @@ import { Request } from 'express'
 import { jwtDecode } from 'jwt-decode'
 import CsipApiService from '../../services/csipApi/csipApiService'
 import { ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
-import { components } from '../../@types/csip'
 import { sortAscending } from '../../utils/utils'
 
 export class BaseJourneyController {
-  constructor(private readonly csipApiService: CsipApiService) {}
-
-  createReferral = async (req: Request, createCsipRecordRequest: components['schemas']['CreateCsipRecordRequest']) =>
-    this.csipApiService.createReferral(req, createCsipRecordRequest)
-
-  createScreeningOutcome = async (req: Request, payload: Parameters<CsipApiService['createScreeningOutcome']>[1]) =>
-    this.csipApiService.createScreeningOutcome(req, payload)
+  constructor(readonly csipApiService: CsipApiService) {}
 
   getReferenceDataOptionsForRadios = async (
     req: Request,

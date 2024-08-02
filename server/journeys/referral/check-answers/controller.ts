@@ -26,7 +26,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
     const prisoner = req.journeyData.prisoner!
     const referral = req.journeyData.referral!
     try {
-      await this.createReferral(req, {
+      await this.csipApiService.createReferral(req, {
         logCode: prisoner.prisonId,
         referral: {
           contributoryFactors: referral.contributoryFactors!.map(factor => ({

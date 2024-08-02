@@ -1,6 +1,7 @@
 import { Request, RequestHandler, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
 import { SanitisedError } from '../../../sanitisedError'
+import { todayString } from '../../../utils/datetimeUtils'
 
 export class ScreenCheckAnswersController extends BaseJourneyController {
   GET = async (req: Request, res: Response): Promise<void> => {
@@ -14,11 +15,12 @@ export class ScreenCheckAnswersController extends BaseJourneyController {
   checkSubmitToAPI: RequestHandler = async (req, res, next) => {
     const screening = req.journeyData.saferCustodyScreening!
     try {
-      await this.createScreeningOutcome(req, {
+      await this.csipApiService.createScreeningOutcome(req, {
         outcomeTypeCode: screening.outcomeType!.code,
-        date: new Date().toISOString().substring(0, 10),
+        date: todayString(),
         reasonForDecision: screening.reasonForDecision!,
-        ...this.getRecordedByFieldsFromJwt(res.locals.user.token),
+        recordedBy: res.locals.user.username,
+        recordedByDisplayName: res.locals.user.displayName,
       })
       req.journeyData.journeyCompleted = true
     } catch (e) {
