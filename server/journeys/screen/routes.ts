@@ -4,12 +4,14 @@ import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchS
 import StartJourneyRoutes from './start/routes'
 import { ScreenRoutes } from './screen/routes'
 import { ScreenCheckAnswersRoutes } from './check-answers/routes'
+import { ConfirmationRoutes } from './confirmation/routes'
 
 function Routes(csipApiService: CsipApiService): Router {
   const router = Router({ mergeParams: true })
 
   router.use('/screen', ScreenRoutes(csipApiService))
   router.use('/check-answers', ScreenCheckAnswersRoutes(csipApiService))
+  router.use('/confirmation', ConfirmationRoutes())
 
   return router
 }

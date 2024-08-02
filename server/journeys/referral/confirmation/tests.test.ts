@@ -44,7 +44,7 @@ describe('GET /referral/confirmation', () => {
   } as unknown as CsipApiService
   const journeyDataMock = {
     prisoner: TEST_PRISONER,
-    csipRecordCreated: true,
+    journeyCompleted: true,
     referral: {
       isOnBehalfOfReferral: true,
       referredBy: 'foobar',

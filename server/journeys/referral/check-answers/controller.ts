@@ -26,7 +26,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
     const prisoner = req.journeyData.prisoner!
     const referral = req.journeyData.referral!
     try {
-      await this.createReferral(req, {
+      await this.csipApiService.createReferral(req, {
         logCode: prisoner.prisonId,
         referral: {
           contributoryFactors: referral.contributoryFactors!.map(factor => ({
@@ -50,7 +50,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
           ...(typeof referral.otherInformation === 'string' && { otherInformation: referral.otherInformation }),
         },
       })
-      req.journeyData.csipRecordCreated = true
+      req.journeyData.journeyCompleted = true
     } catch (e) {
       if ((e as SanitisedError)['data']) {
         const errorRespData = (e as SanitisedError)['data'] as Record<string, string | unknown>

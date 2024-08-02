@@ -3,7 +3,9 @@ import { resetStubs } from './integration_tests/mockApis/wiremock'
 import auth from './integration_tests/mockApis/auth'
 import tokenVerification from './integration_tests/mockApis/tokenVerification'
 import prisonerSearchApi from './integration_tests/mockApis/prisonerSearchApi'
+import prisonerImageApi from './integration_tests/mockApis/prisonerImageApi'
 import csipApi from './integration_tests/mockApis/csipApi'
+import componentsApi from './integration_tests/mockApis/componentsApi'
 import logAccessibilityViolations from './integration_tests/support/accessibilityViolations'
 
 export default defineConfig({
@@ -25,6 +27,8 @@ export default defineConfig({
         ...logAccessibilityViolations,
         ...prisonerSearchApi,
         ...csipApi,
+        ...prisonerImageApi,
+        ...componentsApi,
       })
     },
     baseUrl: 'http://localhost:3007',

@@ -1,14 +1,10 @@
 import { Request } from 'express'
 import CsipApiService from '../../services/csipApi/csipApiService'
 import { ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
-import { components } from '../../@types/csip'
 import { sortAscending } from '../../utils/utils'
 
 export class BaseJourneyController {
-  constructor(private readonly csipApiService: CsipApiService) {}
-
-  createReferral = async (req: Request, createCsipRecordRequest: components['schemas']['CreateCsipRecordRequest']) =>
-    this.csipApiService.createReferral(req, createCsipRecordRequest)
+  constructor(readonly csipApiService: CsipApiService) {}
 
   getReferenceDataOptionsForRadios = async (
     req: Request,

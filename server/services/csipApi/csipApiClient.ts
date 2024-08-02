@@ -29,4 +29,14 @@ export default class CsipApiClient {
       data: createCsipRecordRequest,
     })
   }
+
+  async createScreeningOutcome(
+    csipRecordId: string,
+    payload: components['schemas']['CreateSaferCustodyScreeningOutcomeRequest'],
+  ) {
+    return this.restClient.post<components['schemas']['SaferCustodyScreeningOutcome']>({
+      path: `/csip-records/${csipRecordId}/referral/safer-custody-screening`,
+      data: payload,
+    })
+  }
 }

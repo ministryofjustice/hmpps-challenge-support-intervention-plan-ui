@@ -4,30 +4,72 @@
  */
 
 export interface paths {
-  '/reference-data/{domain}': {
+  '/csip-records/{recordUuid}/referral/investigation': {
     parameters: {
       query?: never
       header?: never
       path?: never
       cookie?: never
     }
+    get?: never
     /**
-     * Retrieve all reference data fo a domain.
-     * @description Get all reference data for a domain e.g. area-of-work
+     * Add or update the investigation.
+     * @description Create or update the investigation. Publishes person.csip.record.updated event with affected component of Investigation
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     *     * ROLE_NOMIS_CSIP
      */
-    get: operations['getReferenceData']
-    put?: never
+    put: operations['upsertInvestigation']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/csip-records/{recordUuid}/referral/decision-and-actions': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
-     * Add a reference data code.
-     * @description Add a reference data code. Publishes prisoner-csip.reference-data-code-created event
+     * Add decision and actions to the referral.
+     * @description Create or update the decision and actions. Publishes person.csip.record.updated event with affected component of DecisionAndActions
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     *     * ROLE_NOMIS_CSIP
      */
-    post: operations['addReferenceDataCode']
+    put: operations['createDecision']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/csip-records/{recordUuid}/plan': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Create or update the CSIP plan
+     * @description Create or update the CSIP plan. Publishes person.csip.record.updated event with affected component of Plan
+     *
+     *     Requires one of the following roles:
+     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     *     * ROLE_NOMIS_CSIP
+     */
+    put: operations['createPlan']
+    post?: never
     delete?: never
     options?: never
     head?: never
@@ -86,45 +128,7 @@ export interface paths {
     delete?: never
     options?: never
     head?: never
-    /**
-     * Update the safer custody screening outcome.
-     * @description Update the safer custody screening outcome. Publishes person.csip.record.updated event with saferCustodyScreeningOutcomeAffected = true
-     *
-     *     Requires one of the following roles:
-     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
-     */
-    patch: operations['updateScreeningOutcome']
-    trace?: never
-  }
-  '/csip-records/{recordUuid}/referral/investigation': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Add investigation and any interviews to the referral.
-     * @description Create the investigation and any interviews. Publishes person.csip.record.updated event with investigationAffected = true and person.csip.interview.created event
-     *
-     *     Requires one of the following roles:
-     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
-     *     * ROLE_NOMIS_CSIP
-     */
-    post: operations['createInvestigation']
-    delete?: never
-    options?: never
-    head?: never
-    /**
-     * Update the investigation.
-     * @description Update the investigation only. Cannot update interviews with this endpoint. Publishes person.csip.record.updated event with investigationAffected = true
-     *
-     *     Requires one of the following roles:
-     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
-     */
-    patch: operations['updateInvestigation']
+    patch?: never
     trace?: never
   }
   '/csip-records/{recordUuid}/referral/investigation/interviews': {
@@ -142,43 +146,13 @@ export interface paths {
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     *     * ROLE_NOMIS_CSIP
      */
     post: operations['createInterview']
     delete?: never
     options?: never
     head?: never
     patch?: never
-    trace?: never
-  }
-  '/csip-records/{recordUuid}/referral/decision-and-actions': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Add decision and actions to the referral.
-     * @description Create the decision and actions. Publishes person.csip.record.updated event with decisionAndActionsAffected = true
-     *
-     *     Requires one of the following roles:
-     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
-     *     * ROLE_NOMIS_CSIP
-     */
-    post: operations['createDecision']
-    delete?: never
-    options?: never
-    head?: never
-    /**
-     * Update the decision and actions.
-     * @description Update the decision and actions. Publishes person.csip.record.updated event with decisionAndActionsAffected = true
-     *
-     *     Requires one of the following roles:
-     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
-     */
-    patch: operations['updateDecision']
     trace?: never
   }
   '/csip-records/{recordUuid}/referral/contributory-factors': {
@@ -196,42 +170,13 @@ export interface paths {
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     *     * ROLE_NOMIS_CSIP
      */
     post: operations['createContributoryFactor']
     delete?: never
     options?: never
     head?: never
     patch?: never
-    trace?: never
-  }
-  '/csip-records/{recordUuid}/plan': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Create the CSIP plan and identified needs.
-     * @description Create the CSIP plan and identified needs. Publishes person.csip.record.updated event with planAffected = true and prisoner-csip.identified-need-created event
-     *
-     *     Requires one of the following roles:
-     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
-     */
-    post: operations['createPlan']
-    delete?: never
-    options?: never
-    head?: never
-    /**
-     * Update the CSIP plan.
-     * @description Update the plan only. Cannot update identified needs with this endpoint. Publishes person.csip.record.updated event with planAffected = true
-     *
-     *     Requires one of the following roles:
-     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
-     */
-    patch: operations['updatePlan']
     trace?: never
   }
   '/csip-records/{recordUuid}/plan/reviews': {
@@ -268,10 +213,11 @@ export interface paths {
     put?: never
     /**
      * Add an identified need to the plan.
-     * @description Add an identified need to the plan. Publishes prisoner-csip.identified-need-created event
+     * @description Add an identified need to the plan. Publishes prisoner-csip.identified-need.created event
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     *     * ROLE_NOMIS_CSIP
      */
     post: operations['createIdentifiedNeed']
     delete?: never
@@ -303,117 +249,42 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/reference-data/{domain}/{code}': {
+  '/csip-records/{recordUuid}': {
     parameters: {
       query?: never
       header?: never
       path?: never
       cookie?: never
     }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
     /**
-     * Update a reference data code’s properties.
-     * @description Update a reference data code’s properties. Publishes prisoner-csip.reference-data-code-updated event
+     * Get a CSIP record by its unique identifier
+     * @description Returns the CSIP record with the matching identifier.
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     *     * ROLE_NOMIS_CSIP
      */
-    patch: operations['updateReferenceDataCode']
-    trace?: never
-  }
-  '/reference-data/{domain}/{code}/reactivate': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
+    get: operations['retrieveCsipRecord']
     put?: never
     post?: never
-    delete?: never
-    options?: never
-    head?: never
     /**
-     * Reactivate a reference data code.
-     * @description Reactivate a reference data code. Publishes prisoner-csip.reference-data-code-reactivated event
+     * Delete a complete CSIP record.
+     * @description Delete the whole of a CSIP record, including its referral and plan. Publishes prisoner-csip.csip-record-deleted event
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     *     * ROLE_NOMIS_CSIP
      */
-    patch: operations['reactivateReferenceDataCode']
-    trace?: never
-  }
-  '/reference-data/{domain}/{code}/deactivate': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
+    delete: operations['deleteCsipRecord']
     options?: never
     head?: never
     /**
-     * Deactivate a reference data code.
-     * @description Deactivate a reference data code. Publishes prisoner-csip.reference-data-code-deactivated event
+     * Update the log code for a CSIP record and/or optionally the referral.
+     * @description Update the log code for a CSIP record. Publishes person.csip.record.updated event with affected component of `Record`
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
-     */
-    patch: operations['deactivateReferenceDataCode']
-    trace?: never
-  }
-  '/csip-records/{recordUuid}/referral': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    /**
-     * Update the CSIP referral
-     * @description Update the CSIP referral only. Cannot update contributory factors with this endpoint. Publishes person.csip.record.created event with referralAffected = true
-     *
-     *     Requires one of the following roles:
-     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
-     */
-    patch: operations['updateReferral']
-    trace?: never
-  }
-  '/csip-records/{recordUuid}/log-number': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    /**
-     * Update the log code for a CSIP record.
-     * @description Update the log code for a CSIP record. Publishes person.csip.record.updated event with recordAffected = true
-     *
-     *     Requires one of the following roles:
-     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     *     * ROLE_NOMIS_CSIP
      */
     patch: operations['updateCsipRecord']
     trace?: never
@@ -561,6 +432,29 @@ export interface paths {
     patch: operations['updateIdentifiedNeed']
     trace?: never
   }
+  '/reference-data/{domain}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Retrieve all reference data fo a domain.
+     * @description Get all reference data for a domain e.g. area-of-work
+     *
+     *     Requires one of the following roles:
+     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     */
+    get: operations['getReferenceData']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/prisons/{prisonCode}/csip-records': {
     parameters: {
       query?: never
@@ -584,47 +478,24 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/csip-records/{recordUuid}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /**
-     * Get a CSIP record by its unique identifier
-     * @description Returns the CSIP record with the matching identifier.
-     *
-     *     Requires one of the following roles:
-     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
-     *     * ROLE_NOMIS_CSIP
-     */
-    get: operations['retrieveCsipRecord']
-    put?: never
-    post?: never
-    /**
-     * Delete a complete CSIP record.
-     * @description Delete the whole of a CSIP record, including its referral and plan. Publishes prisoner-csip.csip-record-deleted event
-     *
-     *     Requires one of the following roles:
-     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
-     */
-    delete: operations['deleteCsipRecord']
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
 }
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
-    /** @description The request body to create a new code to a reference data table */
-    CreateReferenceDataRequest: {
-      /** @description The short code for a reference data */
-      code: string
-      /** @description The description for the reference data code */
-      description?: string
+    /** @description The request body to create an investigation on the incident that motivated the CSIP referral. */
+    UpsertInvestigationRequest: {
+      /** @description The names of the staff involved in the investigation. */
+      staffInvolved?: string
+      /** @description Any evidence that was secured as part of the investigation. */
+      evidenceSecured?: string
+      /** @description The reasons why the incident occurred. */
+      occurrenceReason?: string
+      /** @description The normal behaviour of the person in prison. */
+      personsUsualBehaviour?: string
+      /** @description What triggers the person in prison has that could have motivated the incident. */
+      personsTrigger?: string
+      /** @description Any protective factors to reduce the person's risk factors and prevent triggers for instance of violence */
+      protectiveFactors?: string
     }
     ErrorResponse: {
       /** Format: int32 */
@@ -633,6 +504,73 @@ export interface components {
       userMessage?: string
       developerMessage?: string
       moreInfo?: string
+    }
+    /** @description An interview in relation to the investigation on the incident that motivated the CSIP referral */
+    Interview: {
+      /**
+       * Format: uuid
+       * @description The unique identifier assigned to the Interview
+       * @example 8cdadcf3-b003-4116-9956-c99bd8df6a00
+       */
+      interviewUuid: string
+      /** @description Name of the person being interviewed. */
+      interviewee: string
+      /**
+       * Format: date
+       * @description The date the interview took place.
+       * @example 2021-09-27
+       */
+      interviewDate: string
+      intervieweeRole: components['schemas']['ReferenceData']
+      /** @description Information provided in interview. */
+      interviewText?: string
+      /**
+       * Format: date-time
+       * @description The date and time the Interview was created
+       */
+      createdAt: string
+      /**
+       * @description The username of the user who created the Interview
+       * @example USER1234
+       */
+      createdBy: string
+      /**
+       * @description The displayable name of the user who created the Interview
+       * @example Firstname Lastname
+       */
+      createdByDisplayName: string
+      /**
+       * Format: date-time
+       * @description The date and time the Interview was last modified
+       */
+      lastModifiedAt?: string
+      /**
+       * @description The username of the user who last modified the Interview
+       * @example USER1234
+       */
+      lastModifiedBy?: string
+      /**
+       * @description The displayable name of the user who last modified the Interview
+       * @example Firstname Lastname
+       */
+      lastModifiedByDisplayName?: string
+    }
+    /** @description The investigation on the incident that motivated the CSIP referral */
+    Investigation: {
+      /** @description The names of the staff involved in the investigation. */
+      staffInvolved?: string
+      /** @description Any evidence that was secured as part of the investigation. */
+      evidenceSecured?: string
+      /** @description The reasons why the incident occurred. */
+      occurrenceReason?: string
+      /** @description The normal behaviour of the person in prison. */
+      personsUsualBehaviour?: string
+      /** @description What triggers the person in prison has that could have motivated the incident. */
+      personsTrigger?: string
+      /** @description Any protective factors to reduce the person's risk factors and prevent triggers for instance of violence */
+      protectiveFactors?: string
+      /** @description The interviews in relation to the Investigation */
+      interviews: components['schemas']['Interview'][]
     }
     /** @description A reference data code to categorise various aspects related to a CSIP record */
     ReferenceData: {
@@ -648,34 +586,296 @@ export interface components {
       listSequence?: number
       /**
        * Format: date-time
-       * @description The date and time the code was created
+       * @description The date and time the code was deactivated
+       */
+      deactivatedAt?: string
+    }
+    /** @description The request body to create a Decision and Actions for a CSIP referral */
+    UpsertDecisionAndActionsRequest: {
+      /** @description The conclusion of the referral and reasons for the outcome decision. */
+      conclusion?: string
+      /** @description The outcome decision for the referral. */
+      outcomeTypeCode: string
+      /** @description The role of the person making the outcome decision. */
+      signedOffByRoleCode?: string
+      /** @description The username of the user who recorded the outcome decision. */
+      recordedBy?: string
+      /** @description The displayable name of the user who recorded the outcome decision. */
+      recordedByDisplayName?: string
+      /**
+       * Format: date
+       * @description The date the outcome decision was made.
+       * @example 2021-09-27
+       */
+      date?: string
+      /** @description The next steps that should be taken following the outcome decision. */
+      nextSteps?: string
+      /** @description Any other actions that are recommended to be considered. */
+      actionOther?: string
+      /** @description A list of recommended actions. */
+      actions: (
+        | 'OpenCsipAlert'
+        | 'NonAssociationsUpdated'
+        | 'ObservationBook'
+        | 'UnitOrCellMove'
+        | 'CsraOrRsraReview'
+        | 'ServiceReferral'
+        | 'SimReferral'
+      )[]
+    }
+    /** @description The Decision and Actions for the CSIP referral */
+    DecisionAndActions: {
+      /** @description The conclusion of the referral and reasons for the outcome decision. */
+      conclusion?: string
+      outcome: components['schemas']['ReferenceData']
+      signedOffByRole?: components['schemas']['ReferenceData']
+      /** @description The username of the user who recorded the outcome decision. */
+      recordedBy?: string
+      /** @description The displayable name of the user who recorded the outcome decision. */
+      recordedByDisplayName?: string
+      /**
+       * Format: date
+       * @description The date the outcome decision was made.
+       * @example 2021-09-27
+       */
+      date?: string
+      /** @description The next steps that should be taken following the outcome decision. */
+      nextSteps?: string
+      /** @description A list of recommended actions. */
+      actions: (
+        | 'OpenCsipAlert'
+        | 'NonAssociationsUpdated'
+        | 'ObservationBook'
+        | 'UnitOrCellMove'
+        | 'CsraOrRsraReview'
+        | 'ServiceReferral'
+        | 'SimReferral'
+      )[]
+      /** @description Any other actions that are recommended to be considered. */
+      actionOther?: string
+    }
+    /** @description The request for creating a CSIP Plan for a CSIP record */
+    UpsertPlanRequest: {
+      /** @description The case manager assigned to the CSIP plan. */
+      caseManager: string
+      /** @description The reasons motivating the creation of a CSIP plan. */
+      reasonForPlan: string
+      /**
+       * Format: date
+       * @description The first date the CSIP plan should be reviewed.
+       * @example 2021-09-27
+       */
+      firstCaseReviewDate: string
+    }
+    /** @description An Attendee or Contributor to a Review of a CSIP Plan */
+    Attendee: {
+      /**
+       * Format: uuid
+       * @description The unique identifier assigned to the Attendee
+       * @example 8cdadcf3-b003-4116-9956-c99bd8df6a00
+       */
+      attendeeUuid: string
+      /** @description Name of review attendee/contributor. */
+      name?: string
+      /** @description Role of review attendee/contributor. */
+      role?: string
+      /** @description If the person attended the review. */
+      isAttended?: boolean
+      /** @description Description of attendee contribution. */
+      contribution?: string
+      /**
+       * Format: date-time
+       * @description The date and time the Attendee was created
        */
       createdAt: string
       /**
-       * @description The username of the user who created the code
+       * @description The username of the user who created the Attendee
        * @example USER1234
        */
       createdBy: string
       /**
+       * @description The displayable name of the user who created the Attendee
+       * @example Firstname Lastname
+       */
+      createdByDisplayName: string
+      /**
        * Format: date-time
-       * @description The date and time the code was last modified
+       * @description The date and time the Attendee was last modified
        */
       lastModifiedAt?: string
       /**
-       * @description The username of the user who last modified the code
+       * @description The username of the user who last modified the Attendee
        * @example USER1234
        */
       lastModifiedBy?: string
       /**
-       * Format: date-time
-       * @description The date and time the code was deactivated
+       * @description The displayable name of the user who last modified the Attendee
+       * @example Firstname Lastname
        */
-      deactivatedAt?: string
+      lastModifiedByDisplayName?: string
+    }
+    /** @description A need identified in the CSIP Plan */
+    IdentifiedNeed: {
       /**
-       * @description The username of the user who deactivated the code
+       * Format: uuid
+       * @description The unique identifier assigned to the Contributory Factor
+       * @example 8cdadcf3-b003-4116-9956-c99bd8df6a00
+       */
+      identifiedNeedUuid: string
+      /** @description Details of the need identified in the CSIP plan. */
+      identifiedNeed: string
+      /** @description The name of the person who identified the need. */
+      needIdentifiedBy: string
+      /**
+       * Format: date
+       * @description The date the need was identified.
+       * @example 2021-09-27
+       */
+      createdDate: string
+      /**
+       * Format: date
+       * @description The target date the need should be progressed or resolved.
+       * @example 2021-09-27
+       */
+      targetDate: string
+      /**
+       * Format: date
+       * @description The date the identified need was resolved or closed.
+       * @example 2021-09-27
+       */
+      closedDate?: string
+      /** @description The planned intervention for the identified need. */
+      intervention: string
+      /** @description How the plan to address the identified need is progressing. */
+      progression?: string
+      /**
+       * Format: date-time
+       * @description The date and time the Identified Need was created
+       */
+      createdAt: string
+      /**
+       * @description The username of the user who created the Identified Need
        * @example USER1234
        */
-      deactivatedBy?: string
+      createdBy: string
+      /**
+       * @description The displayable name of the user who created the Identified Need
+       * @example Firstname Lastname
+       */
+      createdByDisplayName: string
+      /**
+       * Format: date-time
+       * @description The date and time the Identified Need was last modified
+       */
+      lastModifiedAt?: string
+      /**
+       * @description The username of the user who last modified the Identified Need
+       * @example USER1234
+       */
+      lastModifiedBy?: string
+      /**
+       * @description The displayable name of the user who last modified the Identified Need
+       * @example Firstname Lastname
+       */
+      lastModifiedByDisplayName?: string
+    }
+    /** @description The CSIP Plan of a CSIP record */
+    Plan: {
+      /** @description The case manager assigned to the CSIP plan. */
+      caseManager: string
+      /** @description The reasons motivating the creation of a CSIP plan. */
+      reasonForPlan: string
+      /**
+       * Format: date
+       * @description The first date the CSIP plan should be reviewed.
+       * @example 2021-09-27
+       */
+      firstCaseReviewDate: string
+      /** @description The needs identified in the CSIP plan. */
+      identifiedNeeds: components['schemas']['IdentifiedNeed'][]
+      /** @description Regular reviews of the CSIP Plan */
+      reviews: components['schemas']['Review'][]
+    }
+    /** @description A regular review of a CSIP Plan */
+    Review: {
+      /**
+       * Format: uuid
+       * @description The unique identifier assigned to the Review
+       * @example 8cdadcf3-b003-4116-9956-c99bd8df6a00
+       */
+      reviewUuid: string
+      /**
+       * Format: int32
+       * @description The sequence number of the Review. Used for ordering reviews correctly in lists and/or drop downs.
+       * @example 3
+       */
+      reviewSequence: number
+      /**
+       * Format: date
+       * @description The date of the review.
+       * @example 2021-09-27
+       */
+      reviewDate?: string
+      /** @description The username of the person who recorded the review. */
+      recordedBy: string
+      /** @description The displayable name of the person who recorded the review. */
+      recordedByDisplayName: string
+      /**
+       * Format: date
+       * @description The date of the next review.
+       * @example 2021-09-27
+       */
+      nextReviewDate?: string
+      /** @description If an action following the review was to inform people responsible for the person in prison. */
+      isActionResponsiblePeopleInformed?: boolean
+      /** @description If an action following the review was to update the CSIP plan. */
+      isActionCsipUpdated?: boolean
+      /** @description If the outcome decision following the review was the person should remain on the CSIP plan. */
+      isActionRemainOnCsip?: boolean
+      /** @description If an action following the review was to add a CSIP case note. */
+      isActionCaseNote?: boolean
+      /** @description If the outcome decision following the review was closing the CSIP plan. */
+      isActionCloseCsip?: boolean
+      /**
+       * Format: date
+       * @description The date the CSIP plan was closed following a review outcome decision to close it.
+       * @example 2021-09-27
+       */
+      csipClosedDate?: string
+      /** @description Additional information about the review. */
+      summary?: string
+      /**
+       * Format: date-time
+       * @description The date and time the Review was created
+       */
+      createdAt: string
+      /**
+       * @description The username of the user who created the Review
+       * @example USER1234
+       */
+      createdBy: string
+      /**
+       * @description The displayable name of the user who created the Review
+       * @example Firstname Lastname
+       */
+      createdByDisplayName: string
+      /**
+       * Format: date-time
+       * @description The date and time the Review was last modified
+       */
+      lastModifiedAt?: string
+      /**
+       * @description The username of the user who last modified the Review
+       * @example USER1234
+       */
+      lastModifiedBy?: string
+      /**
+       * @description The displayable name of the user who last modified the Review
+       * @example Firstname Lastname
+       */
+      lastModifiedByDisplayName?: string
+      /** @description The attendees/contributors to the review. */
+      attendees: components['schemas']['Attendee'][]
     }
     /** @description The request body to create a contributory factor to the incident that motivated the CSIP referral */
     CreateContributoryFactorRequest: {
@@ -732,55 +932,18 @@ export interface components {
       isSaferCustodyTeamInformed: 'YES' | 'NO' | 'DO_NOT_KNOW'
       /** @description Is the referral complete. */
       isReferralComplete?: boolean
+      /**
+       * Format: date
+       * @description The date the referral was completed.
+       * @example 2024-07-29
+       */
+      completedDate?: string
+      /** @description The username of the person who completed the referral. */
+      completedBy?: string
+      /** @description The displayable name of the person who completed the referral. */
+      completedByDisplayName?: string
       /** @description Contributory factors to the incident that motivated the referral. */
       contributoryFactors: components['schemas']['CreateContributoryFactorRequest'][]
-    }
-    /** @description An Attendee or Contributor to a Review of a CSIP Plan */
-    Attendee: {
-      /**
-       * Format: uuid
-       * @description The unique identifier assigned to the Attendee
-       * @example 8cdadcf3-b003-4116-9956-c99bd8df6a00
-       */
-      attendeeUuid: string
-      /** @description Name of review attendee/contributor. */
-      name?: string
-      /** @description Role of review attendee/contributor. */
-      role?: string
-      /** @description If the person attended the review. */
-      isAttended?: boolean
-      /** @description Description of attendee contribution. */
-      contribution?: string
-      /**
-       * Format: date-time
-       * @description The date and time the Attendee was created
-       */
-      createdAt: string
-      /**
-       * @description The username of the user who created the Attendee
-       * @example USER1234
-       */
-      createdBy: string
-      /**
-       * @description The displayable name of the user who created the Attendee
-       * @example Firstname Lastname
-       */
-      createdByDisplayName: string
-      /**
-       * Format: date-time
-       * @description The date and time the Attendee was last modified
-       */
-      lastModifiedAt?: string
-      /**
-       * @description The username of the user who last modified the Attendee
-       * @example USER1234
-       */
-      lastModifiedBy?: string
-      /**
-       * @description The displayable name of the user who last modified the Attendee
-       * @example Firstname Lastname
-       */
-      lastModifiedByDisplayName?: string
     }
     /** @description The contributory factor to the incident that motivated the CSIP referral */
     ContributoryFactor: {
@@ -871,190 +1034,6 @@ export interface components {
       referral: components['schemas']['Referral']
       plan?: components['schemas']['Plan']
     }
-    /** @description The Decision and Actions for the CSIP referral */
-    DecisionAndActions: {
-      /** @description The conclusion of the referral and reasons for the outcome decision. */
-      conclusion?: string
-      outcome: components['schemas']['ReferenceData']
-      outcomeSignedOffByRole?: components['schemas']['ReferenceData']
-      /** @description The username of the user who recorded the outcome decision. */
-      outcomeRecordedBy?: string
-      /** @description The displayable name of the user who recorded the outcome decision. */
-      outcomeRecordedByDisplayName?: string
-      /**
-       * Format: date
-       * @description The date the outcome decision was made.
-       * @example 2021-09-27
-       */
-      outcomeDate?: string
-      /** @description The next steps that should be taken following the outcome decision. */
-      nextSteps?: string
-      /** @description If a recommended action is to open a CSIP alert. */
-      isActionOpenCsipAlert: boolean
-      /** @description If a recommended action is to update the non associations for the person. */
-      isActionNonAssociationsUpdated: boolean
-      /** @description If a recommended action is to add the person to the observation book. */
-      isActionObservationBook: boolean
-      /** @description If a recommended action is to move the person. */
-      isActionUnitOrCellMove: boolean
-      /** @description If a recommended action is to perform a CSRA/RSRA review. */
-      isActionCsraOrRsraReview: boolean
-      /** @description If a recommended action is to refer the person to another service. */
-      isActionServiceReferral: boolean
-      /** @description If a recommended action is to refer the person to SIM. */
-      isActionSimReferral: boolean
-      /** @description Any other actions that are recommended to be considered. */
-      actionOther?: string
-    }
-    /** @description A need identified in the CSIP Plan */
-    IdentifiedNeed: {
-      /**
-       * Format: uuid
-       * @description The unique identifier assigned to the Contributory Factor
-       * @example 8cdadcf3-b003-4116-9956-c99bd8df6a00
-       */
-      identifiedNeedUuid: string
-      /** @description Details of the need identified in the CSIP plan. */
-      identifiedNeed: string
-      /** @description The name of the person who identified the need. */
-      needIdentifiedBy: string
-      /**
-       * Format: date
-       * @description The date the need was identified.
-       * @example 2021-09-27
-       */
-      createdDate: string
-      /**
-       * Format: date
-       * @description The target date the need should be progressed or resolved.
-       * @example 2021-09-27
-       */
-      targetDate: string
-      /**
-       * Format: date
-       * @description The date the identified need was resolved or closed.
-       * @example 2021-09-27
-       */
-      closedDate?: string
-      /** @description The planned intervention for the identified need. */
-      intervention: string
-      /** @description How the plan to address the identified need is progressing. */
-      progression?: string
-      /**
-       * Format: date-time
-       * @description The date and time the Identified Need was created
-       */
-      createdAt: string
-      /**
-       * @description The username of the user who created the Identified Need
-       * @example USER1234
-       */
-      createdBy: string
-      /**
-       * @description The displayable name of the user who created the Identified Need
-       * @example Firstname Lastname
-       */
-      createdByDisplayName: string
-      /**
-       * Format: date-time
-       * @description The date and time the Identified Need was last modified
-       */
-      lastModifiedAt?: string
-      /**
-       * @description The username of the user who last modified the Identified Need
-       * @example USER1234
-       */
-      lastModifiedBy?: string
-      /**
-       * @description The displayable name of the user who last modified the Identified Need
-       * @example Firstname Lastname
-       */
-      lastModifiedByDisplayName?: string
-    }
-    /** @description An interview in relation to the investigation on the incident that motivated the CSIP referral */
-    Interview: {
-      /**
-       * Format: uuid
-       * @description The unique identifier assigned to the Interview
-       * @example 8cdadcf3-b003-4116-9956-c99bd8df6a00
-       */
-      interviewUuid: string
-      /** @description Name of the person being interviewed. */
-      interviewee: string
-      /**
-       * Format: date
-       * @description The date the interview took place.
-       * @example 2021-09-27
-       */
-      interviewDate: string
-      intervieweeRole: components['schemas']['ReferenceData']
-      /** @description Information provided in interview. */
-      interviewText?: string
-      /**
-       * Format: date-time
-       * @description The date and time the Interview was created
-       */
-      createdAt: string
-      /**
-       * @description The username of the user who created the Interview
-       * @example USER1234
-       */
-      createdBy: string
-      /**
-       * @description The displayable name of the user who created the Interview
-       * @example Firstname Lastname
-       */
-      createdByDisplayName: string
-      /**
-       * Format: date-time
-       * @description The date and time the Interview was last modified
-       */
-      lastModifiedAt?: string
-      /**
-       * @description The username of the user who last modified the Interview
-       * @example USER1234
-       */
-      lastModifiedBy?: string
-      /**
-       * @description The displayable name of the user who last modified the Interview
-       * @example Firstname Lastname
-       */
-      lastModifiedByDisplayName?: string
-    }
-    /** @description The investigation on the incident that motivated the CSIP referral */
-    Investigation: {
-      /** @description The names of the staff involved in the investigation. */
-      staffInvolved?: string
-      /** @description Any evidence that was secured as part of the investigation. */
-      evidenceSecured?: string
-      /** @description The reasons why the incident occurred. */
-      occurrenceReason?: string
-      /** @description The normal behaviour of the person in prison. */
-      personsUsualBehaviour?: string
-      /** @description What triggers the person in prison has that could have motivated the incident. */
-      personsTrigger?: string
-      /** @description Any protective factors to reduce the person's risk factors and prevent triggers for instance of violence */
-      protectiveFactors?: string
-      /** @description The interviews in relation to the Investigation */
-      interviews: components['schemas']['Interview'][]
-    }
-    /** @description The CSIP Plan of a CSIP record */
-    Plan: {
-      /** @description The case manager assigned to the CSIP plan. */
-      caseManager: string
-      /** @description The reasons motivating the creation of a CSIP plan. */
-      reasonForPlan: string
-      /**
-       * Format: date
-       * @description The first date the CSIP plan should be reviewed.
-       * @example 2021-09-27
-       */
-      firstCaseReviewDate: string
-      /** @description The needs identified in the CSIP plan. */
-      identifiedNeeds: components['schemas']['IdentifiedNeed'][]
-      /** @description Regular reviews of the CSIP Plan */
-      reviews: components['schemas']['Review'][]
-    }
     /** @description The referral of a CSIP record */
     Referral: {
       /**
@@ -1079,11 +1058,6 @@ export interface components {
       isStaffAssaulted?: boolean
       /** @description Name or names of assaulted members of staff if any. */
       assaultedStaffName?: string
-      /**
-       * Format: date
-       * @description The release date of the person in prison. Can be planned released date or the date they were released.
-       */
-      releaseDate?: string
       incidentInvolvement?: components['schemas']['ReferenceData']
       /** @description The reasons why there is cause for concern. */
       descriptionOfConcern?: string
@@ -1103,87 +1077,6 @@ export interface components {
       investigation?: components['schemas']['Investigation']
       saferCustodyScreeningOutcome?: components['schemas']['SaferCustodyScreeningOutcome']
       decisionAndActions?: components['schemas']['DecisionAndActions']
-    }
-    /** @description A regular review of a CSIP Plan */
-    Review: {
-      /**
-       * Format: uuid
-       * @description The unique identifier assigned to the Review
-       * @example 8cdadcf3-b003-4116-9956-c99bd8df6a00
-       */
-      reviewUuid: string
-      /**
-       * Format: int32
-       * @description The sequence number of the Review. Used for ordering reviews correctly in lists and/or drop downs.
-       * @example 3
-       */
-      reviewSequence: number
-      /**
-       * Format: date
-       * @description The date of the review.
-       * @example 2021-09-27
-       */
-      reviewDate?: string
-      /** @description The username of the person who recorded the review. */
-      recordedBy: string
-      /** @description The displayable name of the person who recorded the review. */
-      recordedByDisplayName: string
-      /**
-       * Format: date
-       * @description The date of the next review.
-       * @example 2021-09-27
-       */
-      nextReviewDate?: string
-      /** @description If an action following the review was to inform people responsible for the person in prison. */
-      isActionResponsiblePeopleInformed?: boolean
-      /** @description If an action following the review was to update the CSIP plan. */
-      isActionCsipUpdated?: boolean
-      /** @description If the outcome decision following the review was the person should remain on the CSIP plan. */
-      isActionRemainOnCsip?: boolean
-      /** @description If an action following the review was to add a CSIP case note. */
-      isActionCaseNote?: boolean
-      /** @description If the outcome decision following the review was closing the CSIP plan. */
-      isActionCloseCsip?: boolean
-      /**
-       * Format: date
-       * @description The date the CSIP plan was closed following a review outcome decision to close it.
-       * @example 2021-09-27
-       */
-      csipClosedDate?: string
-      /** @description Additional information about the review. */
-      summary?: string
-      /**
-       * Format: date-time
-       * @description The date and time the Review was created
-       */
-      createdAt: string
-      /**
-       * @description The username of the user who created the Review
-       * @example USER1234
-       */
-      createdBy: string
-      /**
-       * @description The displayable name of the user who created the Review
-       * @example Firstname Lastname
-       */
-      createdByDisplayName: string
-      /**
-       * Format: date-time
-       * @description The date and time the Review was last modified
-       */
-      lastModifiedAt?: string
-      /**
-       * @description The username of the user who last modified the Review
-       * @example USER1234
-       */
-      lastModifiedBy?: string
-      /**
-       * @description The displayable name of the user who last modified the Review
-       * @example Firstname Lastname
-       */
-      lastModifiedByDisplayName?: string
-      /** @description The attendees/contributors to the review. */
-      attendees: components['schemas']['Attendee'][]
     }
     /** @description The Safer Custody Screening Outcome to the CSIP referral */
     SaferCustodyScreeningOutcome: {
@@ -1213,6 +1106,10 @@ export interface components {
       date: string
       /** @description The reasons for the safer custody screening outcome decision. */
       reasonForDecision: string
+      /** @description The username of the user who recorded the screening outcome. */
+      recordedBy: string
+      /** @description The displayable name of the user who recorded the screening outcome. */
+      recordedByDisplayName: string
     }
     /** @description The request body to create an interview */
     CreateInterviewRequest: {
@@ -1228,104 +1125,6 @@ export interface components {
       intervieweeRoleCode: string
       /** @description Information provided in interview. */
       interviewText?: string
-    }
-    /** @description The request body to create an investigation on the incident that motivated the CSIP referral. */
-    CreateInvestigationRequest: {
-      /** @description The names of the staff involved in the investigation. */
-      staffInvolved?: string
-      /** @description Any evidence that was secured as part of the investigation. */
-      evidenceSecured?: string
-      /** @description The reasons why the incident occurred. */
-      occurrenceReason?: string
-      /** @description The normal behaviour of the person in prison. */
-      personsUsualBehaviour?: string
-      /** @description What triggers the person in prison has that could have motivated the incident. */
-      personsTrigger?: string
-      /** @description Any protective factors to reduce the person's risk factors and prevent triggers for instance of violence */
-      protectiveFactors?: string
-      /** @description The interviews in relation to the investigation */
-      interviews?: components['schemas']['CreateInterviewRequest'][]
-    }
-    /** @description The request body to create a Decision and Actions for a CSIP referral */
-    CreateDecisionAndActionsRequest: {
-      /** @description The conclusion of the referral and reasons for the outcome decision. */
-      conclusion?: string
-      /** @description The outcome decision for the referral. */
-      outcomeTypeCode: string
-      /** @description The role of the person making the outcome decision. */
-      outcomeSignedOffByRoleCode?: string
-      /** @description The username of the user who recorded the outcome decision. */
-      outcomeRecordedBy?: string
-      /** @description The displayable name of the user who recorded the outcome decision. */
-      outcomeRecordedByDisplayName?: string
-      /**
-       * Format: date
-       * @description The date the outcome decision was made.
-       * @example 2021-09-27
-       */
-      outcomeDate?: string
-      /** @description The next steps that should be taken following the outcome decision. */
-      nextSteps?: string
-      /** @description If a recommended action is to open a CSIP alert. */
-      isActionOpenCsipAlert: boolean
-      /** @description If a recommended action is to update the non associations for the person. */
-      isActionNonAssociationsUpdated: boolean
-      /** @description If a recommended action is to add the person to the observation book. */
-      isActionObservationBook: boolean
-      /** @description If a recommended action is to move the person. */
-      isActionUnitOrCellMove: boolean
-      /** @description If a recommended action is to perform a CSRA/RSRA review. */
-      isActionCsraOrRsraReview: boolean
-      /** @description If a recommended action is to refer the person to another service. */
-      isActionServiceReferral: boolean
-      /** @description If a recommended action is to refer the person to SIM. */
-      isActionSimReferral: boolean
-      /** @description Any other actions that are recommended to be considered. */
-      actionOther?: string
-    }
-    /** @description The request body to create an Identified Need in a CSIP Plan */
-    CreateIdentifiedNeedRequest: {
-      /** @description Details of the need identified in the CSIP plan. */
-      identifiedNeed: string
-      /** @description The name of the person who identified the need. */
-      needIdentifiedBy: string
-      /**
-       * Format: date
-       * @description The date the need was identified.
-       * @example 2021-09-27
-       */
-      createdDate: string
-      /**
-       * Format: date
-       * @description The target date the need should be progressed or resolved.
-       * @example 2021-09-27
-       */
-      targetDate: string
-      /**
-       * Format: date
-       * @description The date the identified need was resolved or closed.
-       * @example 2021-09-27
-       */
-      closedDate?: string
-      /** @description The planned intervention for the identified need. */
-      intervention: string
-      /** @description How the plan to address the identified need is progressing. */
-      progression?: string
-    }
-    /** @description The request for creating a CSIP Plan for a CSIP record */
-    CreatePlanRequest: {
-      /** @description The case manager assigned to the CSIP plan. */
-      caseManager: string
-      /** @description The reasons motivating the creation of a CSIP plan. */
-      reasonForPlan: string
-      /**
-       * Format: date
-       * @description The first date the CSIP plan should be reviewed.
-       * @example 2021-09-27
-       */
-      firstCaseReviewDate: string
-      /** @description The needs identified in the CSIP plan. */
-      identifiedNeeds: components['schemas']['CreateIdentifiedNeedRequest'][]
     }
     /** @description The request body to create a Attendee/Contributor to the review of a CSIP Plan */
     CreateAttendeeRequest: {
@@ -1377,13 +1176,43 @@ export interface components {
       /** @description The attendees/contributors to the review. */
       attendees?: components['schemas']['CreateAttendeeRequest'][]
     }
-    /** @description The request body to update the description of a code in a reference data table */
-    UpdateReferenceDataRequest: {
-      /** @description The description for the reference data code */
-      description?: string
+    /** @description The request body to create an Identified Need in a CSIP Plan */
+    CreateIdentifiedNeedRequest: {
+      /** @description Details of the need identified in the CSIP plan. */
+      identifiedNeed: string
+      /** @description The name of the person who identified the need. */
+      needIdentifiedBy: string
+      /**
+       * Format: date
+       * @description The date the need was identified.
+       * @example 2021-09-27
+       */
+      createdDate: string
+      /**
+       * Format: date
+       * @description The target date the need should be progressed or resolved.
+       * @example 2021-09-27
+       */
+      targetDate: string
+      /**
+       * Format: date
+       * @description The date the identified need was resolved or closed.
+       * @example 2021-09-27
+       */
+      closedDate?: string
+      /** @description The planned intervention for the identified need. */
+      intervention: string
+      /** @description How the plan to address the identified need is progressing. */
+      progression?: string
     }
-    /** @description The request body for updating a CSIP referral */
-    UpdateReferralRequest: {
+    /** @description The request body for updating a CSIP Record */
+    UpdateCsipRecordRequest: {
+      /** @description User entered identifier for the CSIP record. Defaults to the prison code. */
+      logCode?: string
+      referral?: components['schemas']['UpdateReferral']
+    }
+    /** @description The detail for updating a CSIP referral */
+    UpdateReferral: {
       /**
        * Format: date
        * @description The date the incident that motivated the CSIP referral occurred
@@ -1424,89 +1253,16 @@ export interface components {
       isSaferCustodyTeamInformed: 'YES' | 'NO' | 'DO_NOT_KNOW'
       /** @description Is the referral complete. */
       isReferralComplete?: boolean
-    }
-    /** @description The request body to update the Safer Custody Screening Outcome to the CSIP referral */
-    UpdateSaferCustodyScreeningOutcomeRequest: {
-      /** @description The type of outcome of the safer custody screening. */
-      outcomeTypeCode: string
       /**
        * Format: date
-       * @description The date of the safer custody screening outcome.
-       * @example 2021-09-27
+       * @description The date the referral was completed.
+       * @example 2024-07-29
        */
-      date: string
-      /** @description The reasons for the safer custody screening outcome decision. */
-      reasonForDecision: string
-    }
-    /** @description The request body to update an investigation on the incident that motivated the CSIP referral. */
-    UpdateInvestigationRequest: {
-      /** @description The names of the staff involved in the investigation. */
-      staffInvolved?: string
-      /** @description Any evidence that was secured as part of the investigation. */
-      evidenceSecured?: string
-      /** @description The reasons why the incident occurred. */
-      occurrenceReason?: string
-      /** @description The normal behaviour of the person in prison. */
-      personsUsualBehaviour?: string
-      /** @description What triggers the person in prison has that could have motivated the incident. */
-      personsTrigger?: string
-      /** @description Any protective factors to reduce the person's risk factors and prevent triggers for instance of violence */
-      protectiveFactors?: string
-    }
-    /** @description The request body to update a Decision and Actions for a CSIP referral */
-    UpdateDecisionAndActionsRequest: {
-      /** @description The conclusion of the referral and reasons for the outcome decision. */
-      conclusion?: string
-      /** @description The outcome decision for the referral. */
-      outcomeTypeCode: string
-      /** @description The role of the person making the outcome decision. */
-      outcomeSignedOffByRoleCode?: string
-      /** @description The username of the user who recorded the outcome decision. */
-      outcomeRecordedBy?: string
-      /** @description The displayable name of the user who recorded the outcome decision. */
-      outcomeRecordedByDisplayName?: string
-      /**
-       * Format: date
-       * @description The date the outcome decision was made.
-       * @example 2021-09-27
-       */
-      outcomeDate?: string
-      /** @description The next steps that should be taken following the outcome decision. */
-      nextSteps?: string
-      /** @description If a recommended action is to open a CSIP alert. */
-      isActionOpenCsipAlert?: boolean
-      /** @description If a recommended action is to update the non associations for the person. */
-      isActionNonAssociationsUpdated?: boolean
-      /** @description If a recommended action is to add the person to the observation book. */
-      isActionObservationBook?: boolean
-      /** @description If a recommended action is to move the person. */
-      isActionUnitOrCellMove?: boolean
-      /** @description If a recommended action is to perform a CSRA/RSRA review. */
-      isActionCsraOrRsraReview?: boolean
-      /** @description If a recommended action is to refer the person to another service. */
-      isActionServiceReferral?: boolean
-      /** @description If a recommended action is to refer the person to SIM. */
-      isActionSimReferral?: boolean
-      /** @description Any other actions that are recommended to be considered. */
-      actionOther?: string
-    }
-    /** @description The request for updating a CSIP Plan for a CSIP record */
-    UpdatePlanRequest: {
-      /** @description The case manager assigned to the CSIP plan. */
-      caseManager: string
-      /** @description The reasons motivating the creation of a CSIP plan. */
-      reasonForPlan: string
-      /**
-       * Format: date
-       * @description The first date the CSIP plan should be reviewed.
-       * @example 2021-09-27
-       */
-      firstCaseReviewDate: string
-    }
-    /** @description The request body for updating a CSIP Record */
-    UpdateCsipRecordRequest: {
-      /** @description User entered identifier for the CSIP record. Defaults to the prison code. */
-      logCode?: string
+      completedDate?: string
+      /** @description The username of the person who completed the referral. */
+      completedBy?: string
+      /** @description The displayable name of the person who completed the referral. */
+      completedByDisplayName?: string
     }
     /** @description The request body to update an interview */
     UpdateInterviewRequest: {
@@ -1612,14 +1368,14 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['CsipRecord'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -1643,6 +1399,7 @@ export interface components {
       property?: string
       ignoreCase?: boolean
     }
+    Unit: Record<string, never>
   }
   responses: never
   parameters: never
@@ -1652,98 +1409,38 @@ export interface components {
 }
 export type $defs = Record<string, never>
 export interface operations {
-  getReferenceData: {
-    parameters: {
-      query?: {
-        /** @description Include inactive reference data. Defaults to false */
-        includeInactive?: boolean
-      }
-      header?: never
-      path: {
-        /** @description Reference data domain. */
-        domain:
-          | 'area-of-work'
-          | 'contributory-factor-type'
-          | 'role'
-          | 'incident-involvement'
-          | 'incident-location'
-          | 'incident-type'
-          | 'interviewee-role'
-          | 'outcome-type'
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Reference data found */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ReferenceData'][]
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The reference data associated with this domain was not found. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  addReferenceDataCode: {
+  upsertInvestigation: {
     parameters: {
       query?: never
       header?: never
       path: {
-        /** @description Reference data domain. */
-        domain:
-          | 'area-of-work'
-          | 'contributory-factor-type'
-          | 'role'
-          | 'incident-involvement'
-          | 'incident-location'
-          | 'incident-type'
-          | 'interviewee-role'
-          | 'outcome-type'
+        /** @description CSIP record unique identifier */
+        recordUuid: string
       }
       cookie?: never
     }
     requestBody: {
       content: {
-        'application/json': components['schemas']['CreateReferenceDataRequest']
+        'application/json': components['schemas']['UpsertInvestigationRequest']
       }
     }
     responses: {
-      /** @description Reference data code added */
+      /** @description Investigation updated and/or interviews added to CSIP referral */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['Investigation']
+        }
+      }
+      /** @description Investigation and interviews added to CSIP referral */
       201: {
         headers: {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['ReferenceData']
+          'application/json': components['schemas']['Investigation']
         }
       }
       /** @description Bad request */
@@ -1773,7 +1470,169 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description The reference data associated with this domain was not found. */
+      /** @description The CSIP referral associated with this identifier was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Conflict. The CSIP referral already has an Investigation created. */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createDecision: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description CSIP record unique identifier */
+        recordUuid: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpsertDecisionAndActionsRequest']
+      }
+    }
+    responses: {
+      /** @description Decision and actions updated for CSIP referral */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DecisionAndActions']
+        }
+      }
+      /** @description Decision and actions added to CSIP referral */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DecisionAndActions']
+        }
+      }
+      /** @description Bad request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The CSIP referral associated with this identifier was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The CSIP referral associated with this identifier already has a decision and actions */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createPlan: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description CSIP record unique identifier */
+        recordUuid: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpsertPlanRequest']
+      }
+    }
+    responses: {
+      /** @description CSIP plan updated */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['Plan']
+        }
+      }
+      /** @description CSIP plan created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['Plan']
+        }
+      }
+      /** @description Bad request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The CSIP referral associated with this identifier was not found. */
       404: {
         headers: {
           [name: string]: unknown
@@ -1973,204 +1832,6 @@ export interface operations {
       }
     }
   }
-  updateScreeningOutcome: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description CSIP record unique identifier */
-        recordUuid: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['UpdateSaferCustodyScreeningOutcomeRequest']
-      }
-    }
-    responses: {
-      /** @description Safer Custody Screening Outcome updated */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['SaferCustodyScreeningOutcome']
-        }
-      }
-      /** @description Bad request */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The CSIP referral associated with this identifier was not found. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  createInvestigation: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description CSIP record unique identifier */
-        recordUuid: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['CreateInvestigationRequest']
-      }
-    }
-    responses: {
-      /** @description Investigation and interviews added to CSIP referral */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['Investigation']
-        }
-      }
-      /** @description Bad request */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The CSIP referral associated with this identifier was not found. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Conflict. The CSIP referral already has an Investigation created. */
-      409: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  updateInvestigation: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description CSIP record unique identifier */
-        recordUuid: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['UpdateInvestigationRequest']
-      }
-    }
-    responses: {
-      /** @description Investigation updated */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['Investigation']
-        }
-      }
-      /** @description Bad request */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The CSIP referral associated with this identifier was not found. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
   createInterview: {
     parameters: {
       query?: never
@@ -2194,141 +1855,6 @@ export interface operations {
         }
         content: {
           'application/json': components['schemas']['Interview']
-        }
-      }
-      /** @description Bad request */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The CSIP referral associated with this identifier was not found. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  createDecision: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description CSIP record unique identifier */
-        recordUuid: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['CreateDecisionAndActionsRequest']
-      }
-    }
-    responses: {
-      /** @description Decision and actions added to CSIP referral */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['DecisionAndActions']
-        }
-      }
-      /** @description Bad request */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The CSIP referral associated with this identifier was not found. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The CSIP referral associated with this identifier already has a decision and actions */
-      409: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  updateDecision: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description CSIP record unique identifier */
-        recordUuid: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['UpdateDecisionAndActionsRequest']
-      }
-    }
-    responses: {
-      /** @description Decision and Actions updated */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['DecisionAndActions']
         }
       }
       /** @description Bad request */
@@ -2422,132 +1948,6 @@ export interface operations {
         }
       }
       /** @description The CSIP referral associated with this identifier was not found. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  createPlan: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description CSIP record unique identifier */
-        recordUuid: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['CreatePlanRequest']
-      }
-    }
-    responses: {
-      /** @description CSIP plan and identified needs created */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['Plan']
-        }
-      }
-      /** @description Bad request */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The CSIP referral associated with this identifier was not found. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  updatePlan: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description CSIP record unique identifier */
-        recordUuid: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['UpdatePlanRequest']
-      }
-    }
-    responses: {
-      /** @description CSIP Plan updated */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['Plan']
-        }
-      }
-      /** @description Bad request */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The CSIP plan associated with this identifier was not found. */
       404: {
         headers: {
           [name: string]: unknown
@@ -2747,200 +2147,7 @@ export interface operations {
       }
     }
   }
-  updateReferenceDataCode: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description Reference data domain. */
-        domain:
-          | 'area-of-work'
-          | 'contributory-factor-type'
-          | 'role'
-          | 'incident-involvement'
-          | 'incident-location'
-          | 'incident-type'
-          | 'interviewee-role'
-          | 'outcome-type'
-        /** @description Short code of the reference data to be updated */
-        code: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['UpdateReferenceDataRequest']
-      }
-    }
-    responses: {
-      /** @description Reference data code updated */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ReferenceData']
-        }
-      }
-      /** @description Bad request */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The reference data associated with this domain and code was not found. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  reactivateReferenceDataCode: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description Reference data domain. */
-        domain:
-          | 'area-of-work'
-          | 'contributory-factor-type'
-          | 'role'
-          | 'incident-involvement'
-          | 'incident-location'
-          | 'incident-type'
-          | 'interviewee-role'
-          | 'outcome-type'
-        /** @description Short code of the reference data to be reactivated */
-        code: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Reference data code reactivated */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ReferenceData']
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The reference data associated with this domain and code was not found. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  deactivateReferenceDataCode: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description Reference data domain. */
-        domain:
-          | 'area-of-work'
-          | 'contributory-factor-type'
-          | 'role'
-          | 'incident-involvement'
-          | 'incident-location'
-          | 'incident-type'
-          | 'interviewee-role'
-          | 'outcome-type'
-        /** @description Short code of the reference data to be deactivated */
-        code: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Reference data code deactivated */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ReferenceData']
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The reference data associated with this domain and code was not found. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  updateReferral: {
+  retrieveCsipRecord: {
     parameters: {
       query?: never
       header?: never
@@ -2950,19 +2157,74 @@ export interface operations {
       }
       cookie?: never
     }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['UpdateReferralRequest']
-      }
-    }
+    requestBody?: never
     responses: {
-      /** @description CSIP referral updated */
+      /** @description CSIP record found */
       200: {
         headers: {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['Referral']
+          'application/json': components['schemas']['CsipRecord']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The CSIP record associated with this identifier was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCsipRecord: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description CSIP record unique identifier */
+        recordUuid: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description CSIP previously deleted or never existed */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['Unit']
+        }
+      }
+      /** @description CSIP record deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['Unit']
         }
       }
       /** @description Bad request */
@@ -2985,15 +2247,6 @@ export interface operations {
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The CSIP referral associated with this identifier was not found. */
-      404: {
         headers: {
           [name: string]: unknown
         }
@@ -3573,6 +2826,67 @@ export interface operations {
       }
     }
   }
+  getReferenceData: {
+    parameters: {
+      query?: {
+        /** @description Include inactive reference data. Defaults to false */
+        includeInactive?: boolean
+      }
+      header?: never
+      path: {
+        /** @description Reference data domain. */
+        domain:
+          | 'area-of-work'
+          | 'contributory-factor-type'
+          | 'role'
+          | 'incident-involvement'
+          | 'incident-location'
+          | 'incident-type'
+          | 'interviewee-role'
+          | 'outcome-type'
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Reference data found */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ReferenceData'][]
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The reference data associated with this domain was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getCsipRecordsByPrisonCode: {
     parameters: {
       query?: {
@@ -3627,113 +2941,6 @@ export interface operations {
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  retrieveCsipRecord: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description CSIP record unique identifier */
-        recordUuid: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description CSIP record found */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['CsipRecord']
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The CSIP record associated with this identifier was not found. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  deleteCsipRecord: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description CSIP record unique identifier */
-        recordUuid: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description CSIP record deleted */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description Bad request */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The CSIP record associated with this identifier was not found. */
-      404: {
         headers: {
           [name: string]: unknown
         }

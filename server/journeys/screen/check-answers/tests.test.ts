@@ -12,6 +12,8 @@ import {
   TEST_PRISONER,
 } from '../../../routes/testutils/testConstants'
 import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
+import CsipApiService from '../../../services/csipApi/csipApiService'
+import { Services } from '../../../services'
 
 const uuid = uuidv4()
 
@@ -27,12 +29,51 @@ const URL = `/${uuid}/screen/check-answers`
 
 let requestCaptor: (req: Request) => void
 
-type AppMockSetup = { journeyData?: JourneyData; validationErrors?: Locals['validationErrors'] }
-const app = ({ journeyData, validationErrors }: AppMockSetup = { journeyData: journeyDataMock }) => {
+type PartialServices = Partial<{
+  [K in keyof Services]: Partial<Services[K]>
+}>
+
+const createMock = <T extends unknown[]>() => {
+  const record: T[] = []
+
+  return {
+    mock: (...args: T) => record.push(args),
+    last: () => record[record.length - 1],
+    calls: () => record,
+  }
+}
+
+const createThrowMock = <T extends unknown[]>() => {
+  const record: T[] = []
+
+  return {
+    mock: (...args: T) => {
+      record.push(args)
+      // eslint-disable-next-line no-throw-literal
+      throw { data: { userMessage: 'bad request' } }
+    },
+    last: () => record[record.length - 1],
+    calls: () => record,
+  }
+}
+
+const mockCreateScreeningOutcome = createMock<Parameters<typeof CsipApiService.prototype.createScreeningOutcome>>()
+
+const mockServices: Partial<PartialServices> = {
+  csipApiService: {
+    createScreeningOutcome: mockCreateScreeningOutcome.mock,
+  } as unknown as CsipApiService,
+}
+
+const app = (
+  journeyData: JourneyData = journeyDataMock,
+  services: PartialServices = mockServices,
+  validationErrors: Locals['validationErrors'] = {},
+) => {
   // eslint-disable-next-line prefer-destructuring
   requestCaptor = testRequestCaptor(journeyData, uuid)[1]
   return appWithAllRoutes({
-    services: {},
+    services: services as Partial<Services>,
     uuid,
     requestCaptor,
     validationErrors,
@@ -72,5 +113,22 @@ describe('GET /screen/check-answers', () => {
 describe('POST /screen/check-answers', () => {
   it('should redirect to /screen/confirmation', async () => {
     await request(app()).post(URL).type('form').send({}).expect(302).expect('Location', 'confirmation')
+
+    expect(mockCreateScreeningOutcome.last()![1]).toEqual({
+      date: new Date().toISOString().substring(0, 10),
+      outcomeTypeCode: 'AAA',
+      reasonForDecision: MOCK_INPUT_TEXT_MULTI,
+      recordedBy: 'user1',
+      recordedByDisplayName: 'First Last',
+    })
+  })
+
+  it('redirect to /referral/check-answers on bad api call', async () => {
+    await request(app(journeyDataMock, { csipApiService: { createScreeningOutcome: createThrowMock().mock } }))
+      .post(URL)
+      .type('form')
+      .send({})
+      .expect(302)
+      .expect('Location', '/')
   })
 })

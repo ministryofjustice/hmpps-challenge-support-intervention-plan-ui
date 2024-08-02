@@ -6,8 +6,8 @@ const journeyStateMachine = () => {
   router.use((req: Request, res: Response, next: NextFunction) => {
     const resRender = res.render
     res.render = (view: string, options?) => {
-      if (req.journeyData.csipRecordCreated && !view.includes('referral/confirmation')) {
-        res.redirect('confirmation')
+      if (req.journeyData?.journeyCompleted && !view.endsWith('/confirmation/view')) {
+        res.redirect(`confirmation`)
         return
       }
       resRender.call(res, view, options as never)
