@@ -4,6 +4,7 @@ import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchS
 import StartJourneyRoutes from './start/routes'
 import { RecordInvestigationController } from './controller'
 import asyncMiddleware from '../../middleware/asyncMiddleware'
+import { StaffInvolvedRoutes } from './staff-involved/routes'
 
 function Routes(_csipApiService: CsipApiService): Router {
   const router = Router({ mergeParams: true })
@@ -11,6 +12,7 @@ function Routes(_csipApiService: CsipApiService): Router {
   const controller = new RecordInvestigationController()
 
   router.get('/', asyncMiddleware(controller.GET))
+  router.use('/staff-involved', StaffInvolvedRoutes())
 
   return router
 }
