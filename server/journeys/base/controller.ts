@@ -1,5 +1,4 @@
 import { Request } from 'express'
-import { jwtDecode } from 'jwt-decode'
 import CsipApiService from '../../services/csipApi/csipApiService'
 import { ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
 import { sortAscending } from '../../utils/utils'
@@ -49,12 +48,4 @@ export class BaseJourneyController {
         checked: Array.isArray(value) ? value.includes(refData.code) : refData.code === value,
       }))
       .sort((a, b) => sortAscending(a.text, b.text))
-
-  getRecordedByFieldsFromJwt = (token: string) => {
-    const jwt = jwtDecode(token) as { user_name: string; name: string }
-    return {
-      recordedBy: jwt.user_name,
-      recordedByDisplayName: jwt.name,
-    }
-  }
 }
