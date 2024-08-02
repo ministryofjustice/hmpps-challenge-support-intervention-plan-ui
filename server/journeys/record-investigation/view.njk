@@ -8,6 +8,7 @@
 {% set completedStatus = { text: "Completed" } %}
 {% set incompleteStatus = { tag: { text: "Incomplete", classes: "govuk-tag--blue" } } %}
 {% set notReadyStatus = { text: "Cannot start yet", classes: "govuk-task-list__status--cannot-start-yet" } %}
+{% set formCompleted = investigation.interviews and investigation.staffInvolved and investigation.occurrenceReason and investigation.evidenceSecured and investigation.personsUsualBehaviour and investigation.personsTrigger and investigation.protectiveFactors %}
 
 {% block innerContent %}
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Record a CSIP investigation</h1>
@@ -95,7 +96,8 @@
                 title: {
                 text: "Check and submit report"
             },
-                status: incompleteStatus if investigation.interviews and investigation.staffInvolved and investigation.occurrenceReason and investigation.evidenceSecured and investigation.personsUsualBehaviour and investigation.personsTrigger and investigation.protectiveFactors else notReadyStatus
+                href: "record-investigation/check-answers" if formCompleted else undefined,
+                status: incompleteStatus if formCompleted else notReadyStatus
             }
         ]
     }) }}
