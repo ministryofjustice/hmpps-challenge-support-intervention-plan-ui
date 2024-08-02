@@ -63,7 +63,23 @@ type SaferCustodyScreening = Partial<{
   reasonForDecision: string
 }>
 
-type Investigation = object
+type Investigation = Partial<{
+  interviewsSubJourney: Interview
+  interviews: Interview[]
+  staffInvolved: string
+  evidenceSecured: string
+  occurrenceReason: string
+  personsUsualBehaviour: string
+  personsTrigger: string
+  protectiveFactors: string
+}>
+
+type Interview = Partial<{
+  interviewee: string
+  interviewDate: string
+  intervieweeRole: ReferenceData
+  interviewText: string
+}>
 
 type Plan = object
 

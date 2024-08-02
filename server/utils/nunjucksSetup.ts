@@ -69,6 +69,7 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   njkEnv.addFilter('formatDisplayDate', formatDisplayDate)
   njkEnv.addFilter('filterBy', (array: object[], filter: (itm: object) => boolean) => array.filter(filter))
   njkEnv.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
+  njkEnv.addFilter('possessiveComma', (name: string) => (name.endsWith('s') ? `${name}’` : `${name}’s`))
   njkEnv.addGlobal('todayStringGBFormat', todayStringGBFormat)
   njkEnv.addGlobal('YesNoDontKnow', schema.shape.isSaferCustodyTeamInformed.enum)
 }
