@@ -1,0 +1,40 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Why the behaviour occurred - Record a CSIP investigation" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Record a CSIP investigation</span>
+    <label for="occurrenceReason">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Why did the behaviour occur?</h1>
+    </label>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukDetails({
+            summaryText: "What type of information to include",
+            html: '
+            <p>Include reasons:</p>
+            <ul>
+              <li>given by the prisoner during conversations or interviews</li>
+              <li>available in any other known data</li>
+            </ul>
+            '
+        }) }}
+        {{ govukCharacterCount({
+            maxlength: 4000,
+            rows: 5,
+            threshold: "75",
+            id: "occurrenceReason",
+            name: "occurrenceReason",
+            value: occurrenceReason,
+            errorMessage: validationErrors | findError('occurrenceReason')
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}
