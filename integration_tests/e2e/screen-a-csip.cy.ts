@@ -47,6 +47,10 @@ context('Screen a CSIP Referral Journey', () => {
 
     cy.url().should('include', '/screen/confirmation')
     checkAxeAccessibility()
+
+    // Prevent double submissions after journey is complete
+    cy.go('back')
+    cy.url().should('include', '/screen/confirmation')
   })
 
   it('should prepopulate radios after an invalid input', () => {
