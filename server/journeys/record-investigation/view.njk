@@ -1,0 +1,105 @@
+{% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = false %}
+{% set pageTitle = "Record a CSIP investigation" %}
+
+{% set completedStatus = { text: "Completed" } %}
+{% set incompleteStatus = { tag: { text: "Incomplete", classes: "govuk-tag--blue" } } %}
+{% set notReadyStatus = { text: "Cannot start yet", classes: "govuk-task-list__status--cannot-start-yet" } %}
+{% set formCompleted = investigation.interviews and investigation.staffInvolved and investigation.occurrenceReason and investigation.evidenceSecured and investigation.personsUsualBehaviour and investigation.personsTrigger and investigation.protectiveFactors %}
+
+{% block innerContent %}
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Record a CSIP investigation</h1>
+    <p class="govuk-body govuk-!-margin-bottom-8"><strong>CSIP log code: </strong>{{ logCode }}</p>
+    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-7">
+
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-7">1. Log interviews</h2>
+    {{ govukTaskList({
+        classes: "govuk-!-margin-bottom-7",
+        items: [
+            {
+                classes: "custom-task-list-first-row",
+                title: {
+                text: "Interview details",
+                classes: "govuk-link--no-visited-state"
+            },
+                href: "record-investigation/interview-details",
+                status: completedStatus if investigation.interviews else incompleteStatus
+            }
+        ]
+    }) }}
+
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-7">2. Enter findings</h2>
+    {{ govukTaskList({
+        classes: "govuk-!-margin-bottom-7",
+        items: [
+            {
+                classes: "custom-task-list-first-row",
+                title: {
+                text: "Staff involved in the investigation",
+                classes: "govuk-link--no-visited-state"
+            },
+                href: "record-investigation/staff-involved",
+                status: completedStatus if investigation.staffInvolved else incompleteStatus
+            },
+            {
+                title: {
+                text: "Why the behaviour occurred",
+                classes: "govuk-link--no-visited-state"
+            },
+                href: "record-investigation/why-behaviour-occurred",
+                status: completedStatus if investigation.occurrenceReason else incompleteStatus
+            },
+            {
+                title: {
+                text: "Evidence secured",
+                classes: "govuk-link--no-visited-state"
+            },
+                href: "record-investigation/evidence-secured",
+                status: completedStatus if investigation.evidenceSecured else incompleteStatus
+            },
+            {
+                title: {
+                text: "Usual behaviour presentation",
+                classes: "govuk-link--no-visited-state"
+            },
+                href: "record-investigation/usual-behaviour-presentation",
+                status: completedStatus if investigation.personsUsualBehaviour else incompleteStatus
+            },
+            {
+                title: {
+                text: (prisoner | firstNameSpaceLastName | possessiveComma) + " triggers",
+                classes: "govuk-link--no-visited-state"
+            },
+                href: "record-investigation/triggers",
+                status: completedStatus if investigation.personsTrigger else incompleteStatus
+            },
+            {
+                title: {
+                text: "Protective factors",
+                classes: "govuk-link--no-visited-state"
+            },
+                href: "record-investigation/protective-factors",
+                status: completedStatus if investigation.protectiveFactors else incompleteStatus
+            }
+        ]
+    }) }}
+
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-7">3. Submit report</h2>
+    {{ govukTaskList({
+        classes: "govuk-!-margin-bottom-7",
+        items: [
+            {
+                classes: "custom-task-list-first-row",
+                title: {
+                text: "Check and submit report",
+                classes: "govuk-link--no-visited-state" if formCompleted else undefined
+            },
+                href: "record-investigation/check-answers" if formCompleted else undefined,
+                status: incompleteStatus if formCompleted else notReadyStatus
+            }
+        ]
+    }) }}
+{% endblock %}
