@@ -47,13 +47,7 @@ function appSetup(
 
   app.set('view engine', 'njk')
 
-  nunjucksSetup(app, {
-    applicationName: 'test',
-    buildNumber: '1',
-    gitRef: 'long ref',
-    gitShortHash: 'short ref',
-    branchName: 'main',
-  })
+  nunjucksSetup(app)
   app.use(setUpWebSession())
   app.use(setUpAuth())
   app.use((req, res, next) => {

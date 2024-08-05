@@ -9,14 +9,13 @@ import {
 } from 'hmpps-court-cases-release-dates-design/hmpps/utils/utils'
 import fs from 'fs'
 import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
-import { ApplicationInfo } from '../applicationInfo'
 import config from '../config'
 import { buildErrorSummaryList, findError } from '../middleware/validationMiddleware'
 import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
 import { schema } from '../journeys/referral/safer-custody/schemas'
 import logger from '../../logger'
 
-export default function nunjucksSetup(app: express.Express, applicationInfo: ApplicationInfo): void {
+export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')
 
   app.locals['asset_path'] = '/assets/'
@@ -34,23 +33,11 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
     }
   }
 
-  // Cachebusting version string
-  if (process.env.NODE_ENV === 'production') {
-    // Version only changes with new commits
-    app.locals['version'] = applicationInfo.gitShortHash
-    app.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
-    app.use((_req, res, next) => {
-      res.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
-      return next()
-    })
-  } else {
-    // Version changes every request
-    app.use((_req, res, next) => {
-      res.locals['version'] = Date.now().toString()
-      res.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
-      return next()
-    })
-  }
+  app.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
+  app.use((_req, res, next) => {
+    res.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
+    return next()
+  })
 
   const njkEnv = nunjucks.configure(
     [
