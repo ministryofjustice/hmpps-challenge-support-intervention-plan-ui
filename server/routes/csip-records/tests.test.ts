@@ -180,6 +180,71 @@ describe('GET /csip-records/:recordUuid', () => {
 
     expect(getAllByRole(html, 'button', { name: 'Screen referral' })).toHaveLength(2)
   })
+
+  it('render page for CSIP record with screening outcome of Progress to investigation', async () => {
+    const result = await request(
+      app({
+        ...csipRecordMock,
+        referral: {
+          ...csipRecordMock.referral,
+          saferCustodyScreeningOutcome: {
+            outcome: {
+              code: 'OPE',
+              description: 'Progress to investigation',
+            },
+            recordedBy: 'TEST_USER',
+            recordedByDisplayName: 'Test User',
+            date: '2024-08-02',
+            reasonForDecision: "<script>alert('decisionReason');</script>",
+          },
+        },
+      }),
+    )
+      .get(TEST_PATH)
+      .expect(200)
+      .expect('Content-Type', /html/)
+    const html = createTestHtmlElement(result.text)
+    expect(getByRole(html, 'heading', { name: 'Referral' })).toBeVisible()
+    expect(getByRole(html, 'heading', { name: 'Screening' })).toBeVisible()
+
+    expect(queryByText(html, '02 August 2024')).toBeVisible()
+    expect(queryByText(html, 'Progress to investigation')).toBeVisible()
+    expect(queryByText(html, "<script>alert('decisionReason');</script>")).toBeVisible()
+    expect(queryByText(html, 'Test User')).toBeVisible()
+
+    expect(queryByRole(html, 'button', { name: 'Screen referral' })).not.toBeInTheDocument()
+    expect(getAllByRole(html, 'button', { name: 'Record investigation' })).toHaveLength(2)
+  })
+
+  it('render page for CSIP record with screening outcome of No further action', async () => {
+    const result = await request(
+      app({
+        ...csipRecordMock,
+        referral: {
+          ...csipRecordMock.referral,
+          saferCustodyScreeningOutcome: {
+            outcome: {
+              code: 'NFA',
+              description: 'No further action',
+            },
+            recordedBy: 'TEST_USER',
+            recordedByDisplayName: 'Test User',
+            date: '2024-08-02',
+            reasonForDecision: "<script>alert('decisionReason');</script>",
+          },
+        },
+      }),
+    )
+      .get(TEST_PATH)
+      .expect(200)
+      .expect('Content-Type', /html/)
+    const html = createTestHtmlElement(result.text)
+    expect(getByRole(html, 'heading', { name: 'Referral' })).toBeVisible()
+    expect(getByRole(html, 'heading', { name: 'Screening' })).toBeVisible()
+
+    expect(queryByRole(html, 'button', { name: 'Screen referral' })).not.toBeInTheDocument()
+    expect(queryByRole(html, 'button', { name: 'Record investigation' })).not.toBeInTheDocument()
+  })
 })
 
 describe('POST /csip-records/:recordUuid', () => {
@@ -190,5 +255,14 @@ describe('POST /csip-records/:recordUuid', () => {
       .send({ action: 'screen' })
       .expect(302)
       .expect('Location', '/csip-record/de643405-7bc9-4181-9677-db887a41f78d/screen/start')
+  })
+
+  it('redirect to /csip-record/:recordUuid/record-investigation/start for investigation action', async () => {
+    await request(app(csipRecordMock))
+      .post(TEST_PATH)
+      .type('form')
+      .send({ action: 'investigation' })
+      .expect(302)
+      .expect('Location', '/csip-record/de643405-7bc9-4181-9677-db887a41f78d/record-investigation/start')
   })
 })
