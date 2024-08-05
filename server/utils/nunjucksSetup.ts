@@ -7,14 +7,14 @@ import {
   personDateOfBirth,
   personProfileName,
 } from 'hmpps-court-cases-release-dates-design/hmpps/utils/utils'
+import fs from 'fs'
 import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
 import { ApplicationInfo } from '../applicationInfo'
 import config from '../config'
 import { buildErrorSummaryList, findError } from '../middleware/validationMiddleware'
 import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
 import { schema } from '../journeys/referral/safer-custody/schemas'
-
-const production = process.env.NODE_ENV === 'production'
+import logger from '../../logger'
 
 export default function nunjucksSetup(app: express.Express, applicationInfo: ApplicationInfo): void {
   app.set('view engine', 'njk')
@@ -23,9 +23,19 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   app.locals['applicationName'] = 'Hmpps Challenge Support Intervention Plan Ui'
   app.locals['environmentName'] = config.environmentName
   app.locals['environmentNameColour'] = config.environmentName === 'PRE-PRODUCTION' ? 'govuk-tag--green' : ''
+  let assetManifest: Record<string, string> = {}
+
+  try {
+    const assetMetadataPath = path.resolve(__dirname, '../../assets/manifest.json')
+    assetManifest = JSON.parse(fs.readFileSync(assetMetadataPath, 'utf8'))
+  } catch (e) {
+    if (process.env.NODE_ENV !== 'test') {
+      logger.error('Could not read asset manifest file')
+    }
+  }
 
   // Cachebusting version string
-  if (production) {
+  if (process.env.NODE_ENV === 'production') {
     // Version only changes with new commits
     app.locals['version'] = applicationInfo.gitShortHash
     app.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
@@ -72,4 +82,5 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   njkEnv.addFilter('possessiveComma', (name: string) => (name.endsWith('s') ? `${name}’` : `${name}’s`))
   njkEnv.addGlobal('todayStringGBFormat', todayStringGBFormat)
   njkEnv.addGlobal('YesNoDontKnow', schema.shape.isSaferCustodyTeamInformed.enum)
+  njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
 }
