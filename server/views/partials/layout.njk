@@ -5,7 +5,7 @@
 {% from "hmpps/components/mini-profile/macro.njk" import miniProfile %}
 
 {% block head %}
-  <link href="/assets/css/app.css?{{ version }}" rel="stylesheet"/>
+  <link href="{{ '/assets/css/app.css' | assetMap }}" rel="stylesheet"/>
 
   {% for js in feComponents.jsIncludes %}
     <script src="{{ js }}" nonce="{{ cspNonce }}"></script>
@@ -89,7 +89,7 @@
     </script>
     <script src="https://js.sentry-cdn.com/{{ sentry.loaderScriptId }}.min.js" nonce="{{ cspNonce }}" crossorigin="anonymous"></script>
   {% endif %}
-  <script type="module" src="/assets/js/app.js"></script>
+  <script type="module" src="{{ '/assets/js/app.js' | assetMap }}"></script>
   {# Javascript block for individual pages #}
   {% block additionalScripts %}
   {% endblock %}

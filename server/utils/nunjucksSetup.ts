@@ -7,40 +7,37 @@ import {
   personDateOfBirth,
   personProfileName,
 } from 'hmpps-court-cases-release-dates-design/hmpps/utils/utils'
+import fs from 'fs'
 import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
-import { ApplicationInfo } from '../applicationInfo'
 import config from '../config'
 import { buildErrorSummaryList, findError } from '../middleware/validationMiddleware'
 import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
 import { schema } from '../journeys/referral/safer-custody/schemas'
+import logger from '../../logger'
 
-const production = process.env.NODE_ENV === 'production'
-
-export default function nunjucksSetup(app: express.Express, applicationInfo: ApplicationInfo): void {
+export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')
 
   app.locals['asset_path'] = '/assets/'
   app.locals['applicationName'] = 'Hmpps Challenge Support Intervention Plan Ui'
   app.locals['environmentName'] = config.environmentName
   app.locals['environmentNameColour'] = config.environmentName === 'PRE-PRODUCTION' ? 'govuk-tag--green' : ''
+  let assetManifest: Record<string, string> = {}
 
-  // Cachebusting version string
-  if (production) {
-    // Version only changes with new commits
-    app.locals['version'] = applicationInfo.gitShortHash
-    app.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
-    app.use((_req, res, next) => {
-      res.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
-      return next()
-    })
-  } else {
-    // Version changes every request
-    app.use((_req, res, next) => {
-      res.locals['version'] = Date.now().toString()
-      res.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
-      return next()
-    })
+  try {
+    const assetMetadataPath = path.resolve(__dirname, '../../assets/manifest.json')
+    assetManifest = JSON.parse(fs.readFileSync(assetMetadataPath, 'utf8'))
+  } catch (e) {
+    if (process.env.NODE_ENV !== 'test') {
+      logger.error('Could not read asset manifest file')
+    }
   }
+
+  app.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
+  app.use((_req, res, next) => {
+    res.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
+    return next()
+  })
 
   const njkEnv = nunjucks.configure(
     [
@@ -72,4 +69,5 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   njkEnv.addFilter('possessiveComma', (name: string) => (name.endsWith('s') ? `${name}’` : `${name}’s`))
   njkEnv.addGlobal('todayStringGBFormat', todayStringGBFormat)
   njkEnv.addGlobal('YesNoDontKnow', schema.shape.isSaferCustodyTeamInformed.enum)
+  njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
 }
