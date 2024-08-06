@@ -7,6 +7,7 @@ import asyncMiddleware from '../../middleware/asyncMiddleware'
 import { StaffInvolvedRoutes } from './staff-involved/routes'
 import { OccurrenceReasonRoutes } from './why-behaviour-occurred/routes'
 import { EvidenceSecuredRoutes } from './evidence-secured/routes'
+import { UsualBehaviourPresentationRoutes } from './usual-behaviour-presentation/routes'
 
 function Routes(_csipApiService: CsipApiService): Router {
   const router = Router({ mergeParams: true })
@@ -17,6 +18,7 @@ function Routes(_csipApiService: CsipApiService): Router {
   router.use('/staff-involved', StaffInvolvedRoutes())
   router.use('/why-behaviour-occurred', OccurrenceReasonRoutes())
   router.use('/evidence-secured', EvidenceSecuredRoutes())
+  router.use('/usual-behaviour-presentation', UsualBehaviourPresentationRoutes())
 
   return router
 }
