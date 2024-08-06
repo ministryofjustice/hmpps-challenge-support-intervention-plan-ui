@@ -8,6 +8,7 @@ import { StaffInvolvedRoutes } from './staff-involved/routes'
 import { OccurrenceReasonRoutes } from './why-behaviour-occurred/routes'
 import { EvidenceSecuredRoutes } from './evidence-secured/routes'
 import { UsualBehaviourPresentationRoutes } from './usual-behaviour-presentation/routes'
+import { TriggersRoutes } from './triggers/routes'
 
 function Routes(_csipApiService: CsipApiService): Router {
   const router = Router({ mergeParams: true })
@@ -19,6 +20,7 @@ function Routes(_csipApiService: CsipApiService): Router {
   router.use('/why-behaviour-occurred', OccurrenceReasonRoutes())
   router.use('/evidence-secured', EvidenceSecuredRoutes())
   router.use('/usual-behaviour-presentation', UsualBehaviourPresentationRoutes())
+  router.use('/triggers', TriggersRoutes())
 
   return router
 }
