@@ -1,0 +1,40 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Usual behaviour presentation - Record a CSIP investigation" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Record a CSIP investigation</span>
+    <label for="personsUsualBehaviour">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">What’s {{prisoner | firstNameSpaceLastName | possessiveComma}} usual behaviour presentation?</h1>
+    </label>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukDetails({
+            summaryText: "Where to find this information",
+            html: '
+            <p>You might find relevant information in: </p>
+            <ul>
+              <li>staff knowledge and observations</li>
+              <li>case notes, visit history and adjudications history</li>
+              <li>other records, such as offence or sentence information</li>
+            </ul>'
+        }) }}
+        {{ govukCharacterCount({
+            maxlength: 4000,
+            rows: 5,
+            threshold: "75",
+            id: "personsUsualBehaviour",
+            name: "personsUsualBehaviour",
+            value: personsUsualBehaviour,
+            errorMessage: validationErrors | findError('personsUsualBehaviour')
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}
