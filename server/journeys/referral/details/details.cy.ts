@@ -22,6 +22,10 @@ context('Make a Referral Journey', () => {
 
     checkDatepickerEdgeCases()
 
+    goBackCheckWithProactive()
+  })
+
+  const goBackCheckWithProactive = () => {
     cy.findByRole('link', { name: /^back/i }).click()
     cy.findByRole('link', { name: /^back/i }).click()
     cy.findByRole('radio', { name: /proactive/i }).click()
@@ -52,7 +56,7 @@ context('Make a Referral Journey', () => {
     cy.findByRole('link', { name: /select the location of the most recent occurrence/i }).should('be.visible')
     cy.findByRole('link', { name: /select the main concern/i }).should('be.visible')
     cy.get('.govuk-error-summary a').should('have.length', 4)
-  })
+  }
 
   const checkDatepickerEdgeCases = () => {
     cy.findByRole('textbox', { name: /hour/i }).type('23')
