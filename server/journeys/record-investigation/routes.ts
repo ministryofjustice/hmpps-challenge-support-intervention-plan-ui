@@ -16,11 +16,11 @@ function Routes(_services: Services) {
   return router
 }
 
-export default function routes(services: Services) {
+export default function routes({ services, path }: { services: Services; path: string }) {
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/record-investigation/start', StartJourneyRoutes(services))
-  router.use('/record-investigation', Routes(services))
+  router.use(path, Routes(services))
 
   return router
 }

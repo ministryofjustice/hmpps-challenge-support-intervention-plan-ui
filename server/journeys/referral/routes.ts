@@ -39,11 +39,11 @@ function Routes({ csipApiService }: Services) {
   return router
 }
 
-export default function routes(services: Services) {
+export default function routes({ services, path }: { services: Services; path: string }) {
   const { router } = JourneyRouter()
 
   router.use('/prisoners/:prisonerNumber/referral/start', StartJourneyRoutes(services))
-  router.use('/referral', Routes(services))
+  router.use(path, Routes(services))
 
   return router
 }
