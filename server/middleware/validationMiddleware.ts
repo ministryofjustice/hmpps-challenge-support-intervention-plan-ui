@@ -26,10 +26,10 @@ export const createSchema = <T = object>(shape: T) => zodAlwaysRefine(zObjectStr
 const zObjectStrict = <T = object>(shape: T) => z.object({ _csrf: z.string().optional(), ...shape }).strict()
 
 const zodAlwaysRefine = <T extends z.ZodTypeAny>(zodType: T) =>
-  z.any().transform((value, ctx) => {
-    const res = zodType.safeParse(value)
+  z.any().transform((val, ctx) => {
+    const res = zodType.safeParse(val)
     if (!res.success) res.error.issues.forEach(ctx.addIssue)
-    return res.data || value
+    return res.data || val
   }) as unknown as T
 
 export const validateAndTransformReferenceData =

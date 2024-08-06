@@ -8,7 +8,7 @@ export const schema = createSchema({
   personsUsualBehaviour: z
     .string({ message: REASONS_MSG })
     .max(4000, TOO_LONG_ERROR_MSG)
-    .refine(value => value?.trim().length > 0, { message: REASONS_MSG }),
+    .refine(val => val?.trim().length > 0, { message: REASONS_MSG }),
 })
 
 export type SchemaType = z.infer<typeof schema>
