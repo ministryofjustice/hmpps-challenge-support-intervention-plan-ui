@@ -4,6 +4,8 @@ import { StaffInvolvedRoutes } from './staff-involved/routes'
 import { OccurrenceReasonRoutes } from './why-behaviour-occurred/routes'
 import { Services } from '../../services'
 import { JourneyRouter } from '../base/routes'
+import { EvidenceSecuredRoutes } from './evidence-secured/routes'
+import { UsualBehaviourPresentationRoutes } from './usual-behaviour-presentation/routes'
 
 function Routes(_services: Services) {
   const { router, get } = JourneyRouter()
@@ -12,6 +14,8 @@ function Routes(_services: Services) {
   get('/', controller.GET)
   router.use('/staff-involved', StaffInvolvedRoutes())
   router.use('/why-behaviour-occurred', OccurrenceReasonRoutes())
+  router.use('/evidence-secured', EvidenceSecuredRoutes())
+  router.use('/usual-behaviour-presentation', UsualBehaviourPresentationRoutes())
 
   return router
 }
