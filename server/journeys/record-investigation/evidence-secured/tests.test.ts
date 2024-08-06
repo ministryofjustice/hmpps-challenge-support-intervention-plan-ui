@@ -67,7 +67,7 @@ describe('GET record-investigation/evidence-secured', () => {
 })
 
 describe('POST record-investigation/evidence-secured', () => {
-  it('should redirect to usual-behaviour-presentation', async () => {
+  it('should redirect to ../record-investigation', async () => {
     await request(app())
       .post(URL)
       .type('form')
