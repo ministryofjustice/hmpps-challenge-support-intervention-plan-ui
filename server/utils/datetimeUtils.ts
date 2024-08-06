@@ -42,7 +42,7 @@ export const formatInputDate = (value?: string) => value && DATE_FORMAT_GB.forma
 export const formatDisplayDate = (value?: string) => value && DATE_FORMAT_GB_VERBOSE.format(new Date(Date.parse(value)))
 
 // format HH:mm time into separate input field values HH and mm
-export const formatInputTime = (value?: string) => {
+export const formatInputTime = (value?: string | null) => {
   if (!value || value.length !== 5) {
     return [null, null]
   }

@@ -1,10 +1,9 @@
 import { Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
 import { SchemaType } from './schemas'
-import { ContributoryFactor } from '../../../@types/express'
 
 export class ReferralContributoryFactorsController extends BaseJourneyController {
-  GET = async (req: Request, res: Response): Promise<void> => {
+  GET = async (req: Request, res: Response) => {
     const contributoryFactorCheckboxes = await this.getReferenceDataOptionsForCheckboxes(
       req,
       'contributory-factor-type',
@@ -14,12 +13,11 @@ export class ReferralContributoryFactorsController extends BaseJourneyController
     res.render('referral/contributory-factors/view', { contributoryFactorCheckboxes, backUrl: 'reasons' })
   }
 
-  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response): Promise<void> => {
-    req.journeyData.referral!.contributoryFactors = (req.body.contributoryFactors as ContributoryFactor[]).map(
+  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
+    req.journeyData.referral!.contributoryFactors = req.body.contributoryFactors.map(
       factor =>
-        (req.journeyData.referral!.contributoryFactors as ContributoryFactor[])?.find(
-          itm => itm.factorType.code === factor.factorType.code,
-        ) || factor,
+        req.journeyData.referral!.contributoryFactors?.find(itm => itm.factorType.code === factor.factorType.code) ||
+        factor,
     )
     res.redirect('contributory-factors-comments')
   }

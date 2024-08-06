@@ -1,17 +1,17 @@
 import { Locals, Request } from 'express'
-import { v4 as uuidv4 } from 'uuid'
-import { agent as request } from 'supertest'
+import { v4 as uuidV4 } from 'uuid'
+import request from 'supertest'
 import { getAllByText, getByRole, getByText } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import CsipApiService from '../../../services/csipApi/csipApiService'
-import testRequestCaptor, { TestRequestCaptured } from '../../../routes/testutils/testRequestCaptor'
-import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
+import testRequestCaptor, { TestRequestCaptured } from '../../../testutils/testRequestCaptor'
+import createTestHtmlElement from '../../../testutils/createTestHtmlElement'
 import { JourneyData } from '../../../@types/express'
-import { TEST_PRISONER, TOMORROW_GB_FORMAT } from '../../../routes/testutils/testConstants'
+import { TEST_PRISONER, TOMORROW_GB_FORMAT } from '../../../testutils/testConstants'
 import { ReferenceDataType } from '../../../@types/csip/csipApiTypes'
 import { schemaFactory } from './schemas'
 
-const uuid = uuidv4()
+const uuid = uuidV4()
 const csipApiService = {
   getReferenceData: (_: Request, domain: ReferenceDataType) => {
     switch (domain) {

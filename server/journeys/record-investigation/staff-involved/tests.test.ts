@@ -1,12 +1,12 @@
 import { Locals, Request } from 'express'
 import { v4 as uuidV4 } from 'uuid'
-import { agent as request } from 'supertest'
+import request from 'supertest'
 import { getByRole, getByText } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
-import testRequestCaptor, { TestRequestCaptured } from '../../../routes/testutils/testRequestCaptor'
-import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
+import testRequestCaptor, { TestRequestCaptured } from '../../../testutils/testRequestCaptor'
+import createTestHtmlElement from '../../../testutils/createTestHtmlElement'
 import { JourneyData } from '../../../@types/express'
-import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
+import { TEST_PRISONER } from '../../../testutils/testConstants'
 
 const TEST_PATH = 'record-investigation/staff-involved'
 const uuid = uuidV4()

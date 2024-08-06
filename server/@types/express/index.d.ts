@@ -33,25 +33,25 @@ export type JourneyData = {
 
 export type PrisonerSummary = Prisoner
 
-type ReferralData = {
-  onBehalfOfSubJourney?: Partial<ReferralData>
-  isOnBehalfOfReferral?: boolean
-  referredBy?: string
-  refererArea?: ReferenceData
-  isProactiveReferral?: boolean
-  incidentLocation?: ReferenceData
-  incidentType?: ReferenceData
-  incidentDate?: string
-  incidentTime?: string
-  descriptionOfConcern?: string
-  knownReasons?: string
-  contributoryFactors?: ContributoryFactor[]
-  isSaferCustodyTeamInformed?: YesNoAnswer
-  otherInformation?: string | null
-  incidentInvolvement?: ReferenceData
-  staffAssaulted?: boolean
-  assaultedStaffName?: string | null
-}
+type ReferralData = Partial<{
+  onBehalfOfSubJourney: ReferralData
+  isOnBehalfOfReferral: boolean
+  referredBy: string
+  refererArea: ReferenceData
+  isProactiveReferral: boolean
+  incidentLocation: ReferenceData
+  incidentType: ReferenceData
+  incidentDate: string
+  incidentTime: string | null
+  descriptionOfConcern: string
+  knownReasons: string
+  contributoryFactors: ContributoryFactor[]
+  isSaferCustodyTeamInformed: YesNoAnswer
+  otherInformation: string | null
+  incidentInvolvement: ReferenceData
+  staffAssaulted: boolean
+  assaultedStaffName: string | null
+}>
 
 export type ContributoryFactor = {
   factorType: ReferenceData

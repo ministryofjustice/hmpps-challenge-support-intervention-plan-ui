@@ -1,5 +1,5 @@
 import { RequestHandler, Request } from 'express'
-import z from 'zod'
+import z, { RefinementCtx } from 'zod'
 
 export type fieldErrors = {
   [field: string | number | symbol]: string[] | undefined
@@ -20,6 +20,30 @@ export const findError = (errors: fieldErrors, fieldName: string) => {
     text: errors[fieldName]?.[0],
   }
 }
+
+export const createSchema = <T = object>(shape: T) => zodAlwaysRefine(zObjectStrict(shape))
+
+const zObjectStrict = <T = object>(shape: T) => z.object({ _csrf: z.string().optional(), ...shape }).strict()
+
+const zodAlwaysRefine = <T extends z.ZodTypeAny>(zodType: T) =>
+  z.any().transform((value, ctx) => {
+    const res = zodType.safeParse(value)
+    if (!res.success) res.error.issues.forEach(ctx.addIssue)
+    return res.data || value
+  }) as unknown as T
+
+export const validateAndTransformReferenceData =
+  <T>(refDataMap: Map<string, T>, errorMessage: string) =>
+  (val: string, ctx: RefinementCtx) => {
+    if (!refDataMap.has(val)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: errorMessage,
+      })
+      return z.NEVER
+    }
+    return refDataMap.get(val)!
+  }
 
 export type SchemaFactory = (request: Request) => Promise<z.ZodTypeAny>
 

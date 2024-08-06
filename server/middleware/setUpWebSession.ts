@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidV4 } from 'uuid'
 import session, { MemoryStore, Store } from 'express-session'
 import RedisStore from 'connect-redis'
 import express, { Router } from 'express'
@@ -39,7 +39,7 @@ export default function setUpWebSession(): Router {
   router.use((req, res, next) => {
     const headerName = 'X-Request-Id'
     const oldValue = req.get(headerName)
-    const id = oldValue === undefined ? uuidv4() : oldValue
+    const id = oldValue === undefined ? uuidV4() : oldValue
 
     res.set(headerName, id)
     req.id = id

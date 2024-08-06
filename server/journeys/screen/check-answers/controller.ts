@@ -1,10 +1,10 @@
-import { Request, RequestHandler, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
 import { SanitisedError } from '../../../sanitisedError'
 import { todayString } from '../../../utils/datetimeUtils'
 
 export class ScreenCheckAnswersController extends BaseJourneyController {
-  GET = async (req: Request, res: Response): Promise<void> => {
+  GET = async (req: Request, res: Response) => {
     req.journeyData.isCheckAnswers = true
 
     res.render('screen/check-answers/view', {
@@ -12,7 +12,7 @@ export class ScreenCheckAnswersController extends BaseJourneyController {
     })
   }
 
-  checkSubmitToAPI: RequestHandler = async (req, res, next) => {
+  checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction) => {
     const screening = req.journeyData.saferCustodyScreening!
     try {
       await this.csipApiService.createScreeningOutcome(req, {
@@ -39,7 +39,7 @@ export class ScreenCheckAnswersController extends BaseJourneyController {
     next()
   }
 
-  POST = async (_req: Request, res: Response): Promise<void> => {
+  POST = async (_req: Request, res: Response) => {
     res.redirect('confirmation')
   }
 }

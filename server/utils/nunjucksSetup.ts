@@ -12,7 +12,7 @@ import { ApplicationInfo } from '../applicationInfo'
 import config from '../config'
 import { buildErrorSummaryList, findError } from '../middleware/validationMiddleware'
 import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
-import { schema } from '../journeys/referral/safer-custody/schemas'
+import { YES_NO_ANSWER } from '../journeys/referral/safer-custody/schemas'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -71,5 +71,5 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   njkEnv.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
   njkEnv.addFilter('possessiveComma', (name: string) => (name.endsWith('s') ? `${name}’` : `${name}’s`))
   njkEnv.addGlobal('todayStringGBFormat', todayStringGBFormat)
-  njkEnv.addGlobal('YesNoDontKnow', schema.shape.isSaferCustodyTeamInformed.enum)
+  njkEnv.addGlobal('YesNoDontKnow', YES_NO_ANSWER.enum)
 }

@@ -1,14 +1,14 @@
 import { Express } from 'express'
-import { v4 as uuidv4 } from 'uuid'
-import { agent as request } from 'supertest'
+import { v4 as uuidV4 } from 'uuid'
+import request from 'supertest'
 import { getByRole, getByText } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
-import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
-import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
+import testRequestCaptor from '../../../testutils/testRequestCaptor'
+import createTestHtmlElement from '../../../testutils/createTestHtmlElement'
 import { JourneyData } from '../../../@types/express'
-import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
+import { TEST_PRISONER } from '../../../testutils/testConstants'
 
-const uuid = uuidv4()
+const uuid = uuidV4()
 let app: Express
 const journeyData = {
   prisoner: TEST_PRISONER,

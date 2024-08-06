@@ -1,13 +1,12 @@
-import { Router } from 'express'
-import CsipApiService from '../../services/csipApi/csipApiService'
-import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
 import StartJourneyRoutes from './start/routes'
 import { ScreenRoutes } from './screen/routes'
 import { ScreenCheckAnswersRoutes } from './check-answers/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
+import { Services } from '../../services'
+import { JourneyRouter } from '../base/routes'
 
-function Routes(csipApiService: CsipApiService): Router {
-  const router = Router({ mergeParams: true })
+function Routes({ csipApiService }: Services) {
+  const { router } = JourneyRouter()
 
   router.use('/screen', ScreenRoutes(csipApiService))
   router.use('/check-answers', ScreenCheckAnswersRoutes(csipApiService))
@@ -16,11 +15,11 @@ function Routes(csipApiService: CsipApiService): Router {
   return router
 }
 
-export default function routes(csipApiService: CsipApiService, prisonerSearchService: PrisonerSearchService): Router {
-  const router = Router({ mergeParams: true })
+export default function routes(services: Services) {
+  const { router } = JourneyRouter()
 
-  router.use('/', StartJourneyRoutes(csipApiService, prisonerSearchService))
-  router.use('/screen', Routes(csipApiService))
+  router.use('/csip-record/:csipRecordId/screen/start', StartJourneyRoutes(services))
+  router.use('/screen', Routes(services))
 
   return router
 }
