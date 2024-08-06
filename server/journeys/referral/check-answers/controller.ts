@@ -52,8 +52,8 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
       })
       req.journeyData.journeyCompleted = true
     } catch (e) {
-      if ((e as SanitisedError)['data']) {
-        const errorRespData = (e as SanitisedError)['data'] as Record<string, string | unknown>
+      if ((e as SanitisedError).data) {
+        const errorRespData = (e as SanitisedError).data as Record<string, string | unknown>
         req.flash(
           'validationErrors',
           JSON.stringify({
