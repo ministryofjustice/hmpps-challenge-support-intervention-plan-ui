@@ -1,13 +1,9 @@
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "hmpps/components/date-picker/macro.njk" import hmppsDatePicker %}
+{% from "moj/components/date-picker/macro.njk" import mojDatePicker %}
 
 {% extends "partials/layout.njk" %}
-
-{% block additionalScripts %}
-    <script src="/assets/javascript/datepicker.js"></script>
-{% endblock %}
 
 {% set pageTitle = "Details - Make a CSIP referral" %}
 
@@ -24,7 +20,7 @@
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         <h2 class="govuk-heading-m">{{ datePickerHeading }}</h2>
-        {{ hmppsDatePicker({
+        {{ mojDatePicker({
             id: "incidentDate",
             name: "incidentDate",
             label: {
