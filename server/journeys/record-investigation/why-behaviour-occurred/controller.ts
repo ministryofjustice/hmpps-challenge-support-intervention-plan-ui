@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
 
 export class OccurrenceReasonController {
-  GET = async (req: Request, res: Response): Promise<void> => {
+  GET = async (req: Request, res: Response) => {
     const occurrenceReason =
       res.locals.formResponses?.['staffInvolved'] || req.journeyData.investigation!.occurrenceReason
     res.render('record-investigation/why-behaviour-occurred/view', {
@@ -11,7 +11,7 @@ export class OccurrenceReasonController {
     })
   }
 
-  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response): Promise<void> => {
+  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
     req.journeyData.investigation!.occurrenceReason = req.body.occurrenceReason
     res.redirect('../record-investigation')
   }

@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
 import { formatInputDate, formatInputTime } from '../../../utils/datetimeUtils'
+import { SchemaType } from './schemas'
 
 export class ReferralDetailsController extends BaseJourneyController {
-  GET = async (req: Request, res: Response): Promise<void> => {
+  GET = async (req: Request, res: Response) => {
     const incidentLocationOptions = await this.getReferenceDataOptionsForSelect(
       req,
       'incident-location',
@@ -34,11 +35,11 @@ export class ReferralDetailsController extends BaseJourneyController {
     })
   }
 
-  POST = async (req: Request, res: Response): Promise<void> => {
-    req.journeyData.referral!.incidentLocation = req.body['incidentLocation']
-    req.journeyData.referral!.incidentType = req.body['incidentType']
-    req.journeyData.referral!.incidentDate = req.body['incidentDate']
-    req.journeyData.referral!.incidentTime = req.body['incidentTime']
+  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
+    req.journeyData.referral!.incidentLocation = req.body.incidentLocation
+    req.journeyData.referral!.incidentType = req.body.incidentType
+    req.journeyData.referral!.incidentDate = req.body.incidentDate
+    req.journeyData.referral!.incidentTime = req.body.incidentTime
     res.redirect('involvement')
   }
 }

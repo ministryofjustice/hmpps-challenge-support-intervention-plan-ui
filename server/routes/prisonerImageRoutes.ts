@@ -7,7 +7,7 @@ const placeHolderImage = path.join(process.cwd(), '/assets/images/prisoner-profi
 export default class PrisonerImageRoutes {
   constructor(private readonly prisonerImageService: PrisonerImageService) {}
 
-  GET = async (req: Request, res: Response): Promise<void> => {
+  GET = async (req: Request, res: Response) => {
     const { prisonerNumber } = req.params
 
     return this.prisonerImageService

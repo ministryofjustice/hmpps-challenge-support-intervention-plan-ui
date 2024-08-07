@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
 
 export class ReferralReasonsController {
-  GET = async (req: Request, res: Response): Promise<void> => {
+  GET = async (req: Request, res: Response) => {
     const knownReasons = res.locals.formResponses?.['knownReasons'] || req.journeyData.referral!.knownReasons
     res.render(
       req.journeyData.referral!.isProactiveReferral
@@ -15,7 +15,7 @@ export class ReferralReasonsController {
     )
   }
 
-  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response): Promise<void> => {
+  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
     req.journeyData.referral!.knownReasons = req.body.knownReasons
     res.redirect('contributory-factors')
   }

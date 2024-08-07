@@ -3,7 +3,7 @@ import { SchemaType } from './schemas'
 import { BaseJourneyController } from '../../base/controller'
 
 export class ScreenController extends BaseJourneyController {
-  GET = async (req: Request, res: Response): Promise<void> => {
+  GET = async (req: Request, res: Response) => {
     const outcomeTypeItems = this.customOrderRadios(
       await this.getReferenceDataOptionsForRadios(
         req,
@@ -19,7 +19,7 @@ export class ScreenController extends BaseJourneyController {
     })
   }
 
-  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response): Promise<void> => {
+  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
     req.journeyData.saferCustodyScreening!.outcomeType = req.body.outcomeType
     req.journeyData.saferCustodyScreening!.reasonForDecision = req.body.reasonForDecision
     res.redirect('check-answers')

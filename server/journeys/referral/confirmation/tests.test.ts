@@ -1,15 +1,15 @@
 import { Express } from 'express'
-import { v4 as uuidv4 } from 'uuid'
-import { agent as request } from 'supertest'
+import { v4 as uuidV4 } from 'uuid'
+import request from 'supertest'
 import { getByRole, getByText } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
-import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
+import createTestHtmlElement from '../../../testutils/createTestHtmlElement'
 import { JourneyData } from '../../../@types/express'
-import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
+import { TEST_PRISONER } from '../../../testutils/testConstants'
 import type CsipApiService from '../../../services/csipApi/csipApiService'
-import { schema as saferCustodySchema } from '../safer-custody/schemas'
+import { YES_NO_ANSWER } from '../safer-custody/schemas'
 
-const uuid = uuidv4()
+const uuid = uuidV4()
 let app: Express
 const journeyData = {
   prisoner: TEST_PRISONER,
@@ -71,7 +71,7 @@ describe('GET /referral/confirmation', () => {
           factorType: { code: 'C', description: 'Text with a TLA' },
         },
       ],
-      isSaferCustodyTeamInformed: saferCustodySchema.shape.isSaferCustodyTeamInformed.enum.YES,
+      isSaferCustodyTeamInformed: YES_NO_ANSWER.enum.YES,
       otherInformation: 'foobar',
     },
   } as JourneyData

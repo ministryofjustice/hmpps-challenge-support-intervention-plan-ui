@@ -1,4 +1,4 @@
-import type Prisoner from '../../services/prisonerSearch/prisoner'
+import type Prisoner from '../services/prisonerSearch/prisoner'
 
 export const TEST_PRISONER = {
   cellLocation: '',

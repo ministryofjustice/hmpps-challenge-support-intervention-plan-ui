@@ -9,7 +9,7 @@ export class CsipRecordController {
     private readonly prisonerSearchService: PrisonerSearchService,
   ) {}
 
-  GET = async (req: Request, res: Response): Promise<void> => {
+  GET = async (req: Request, res: Response) => {
     const { recordUuid } = req.params
     const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
     const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
@@ -60,7 +60,7 @@ export class CsipRecordController {
     })
   }
 
-  POST = async (req: Request, res: Response): Promise<void> => {
+  POST = async (req: Request, res: Response) => {
     const { recordUuid } = req.params
     const { action } = req.body
 

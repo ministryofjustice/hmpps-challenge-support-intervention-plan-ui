@@ -1,6 +1,6 @@
 import type { Express } from 'express'
 import request from 'supertest'
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidV4 } from 'uuid'
 import { appWithAllRoutes, user } from './testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
 import HmppsAuditClient from '../data/hmppsAuditClient'
@@ -25,7 +25,7 @@ beforeEach(() => {
       auditService,
     },
     userSupplier: () => user,
-    uuid: uuidv4(),
+    uuid: uuidV4(),
   })
 })
 

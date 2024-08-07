@@ -1,9 +1,9 @@
-import { Request, RequestHandler, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
 import { SanitisedError } from '../../../sanitisedError'
 
 export class ReferralCheckAnswersController extends BaseJourneyController {
-  GET = async (req: Request, res: Response): Promise<void> => {
+  GET = async (req: Request, res: Response) => {
     req.journeyData.isCheckAnswers = true
     delete req.journeyData.referral!.onBehalfOfSubJourney
 
@@ -22,7 +22,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
     )
   }
 
-  checkSubmitToAPI: RequestHandler = async (req, res, next) => {
+  checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction) => {
     const prisoner = req.journeyData.prisoner!
     const referral = req.journeyData.referral!
     try {
@@ -52,8 +52,8 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
       })
       req.journeyData.journeyCompleted = true
     } catch (e) {
-      if ((e as SanitisedError)['data']) {
-        const errorRespData = (e as SanitisedError)['data'] as Record<string, string | unknown>
+      if ((e as SanitisedError).data) {
+        const errorRespData = (e as SanitisedError).data as Record<string, string | unknown>
         req.flash(
           'validationErrors',
           JSON.stringify({

@@ -1,18 +1,18 @@
 import { Locals, Request } from 'express'
-import { v4 as uuidv4 } from 'uuid'
-import { agent as request } from 'supertest'
+import { v4 as uuidV4 } from 'uuid'
+import request from 'supertest'
 import { getByRole, queryAllByText, queryByRole, queryByText } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
-import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
-import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
+import testRequestCaptor from '../../../testutils/testRequestCaptor'
+import createTestHtmlElement from '../../../testutils/createTestHtmlElement'
 import { JourneyData } from '../../../@types/express'
-import { TEST_DPS_HOMEPAGE, TEST_PRISONER } from '../../../routes/testutils/testConstants'
+import { TEST_DPS_HOMEPAGE, TEST_PRISONER } from '../../../testutils/testConstants'
 import type CsipApiService from '../../../services/csipApi/csipApiService'
 import { components } from '../../../@types/csip'
-import { schema as saferCustodySchema } from '../safer-custody/schemas'
+import { YES_NO_ANSWER } from '../safer-custody/schemas'
 
 const TEST_PATH = 'referral/check-answers'
-const uuid = uuidv4()
+const uuid = uuidV4()
 
 const journeyDataMock = {
   prisoner: TEST_PRISONER,
@@ -72,7 +72,7 @@ const journeyDataMock = {
         factorType: { code: 'C', description: 'Text with a TLA' },
       },
     ],
-    isSaferCustodyTeamInformed: saferCustodySchema.shape.isSaferCustodyTeamInformed.enum.YES,
+    isSaferCustodyTeamInformed: YES_NO_ANSWER.enum.YES,
     otherInformation: `Text
 
     • Bullet 1
@@ -113,7 +113,7 @@ const app = (
             prisonNumber: '',
             recordUuid: '',
             referral: {
-              isSaferCustodyTeamInformed: saferCustodySchema.shape.isSaferCustodyTeamInformed.enum.NO,
+              isSaferCustodyTeamInformed: YES_NO_ANSWER.enum.NO,
               contributoryFactors: [],
               incidentDate: '',
               incidentLocation: {

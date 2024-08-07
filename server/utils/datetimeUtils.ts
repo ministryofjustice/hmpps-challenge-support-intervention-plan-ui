@@ -26,23 +26,13 @@ export const parse24Hour = (value: string) => parseNumber(value, 0, 23, 2)
 
 export const parseMinute = (value: string) => parseNumber(value, 0, 59, 2)
 
-// parse dd/mm/yyyy date string from Datepicker component into yyyy-mm-dd format
-export const parseDate = (value: string) => {
-  const date =
-    value.length !== 10
-      ? null
-      : new Date(Date.parse(`${value.substring(6, 10)}-${value.substring(3, 5)}-${value.substring(0, 2)}`))
-  const result = date === null || Number.isNaN(date) ? null : date.toISOString().substring(0, 10)
-  return RESULT_VALIDATOR.safeParse(result)
-}
-
 // format ISO Date into GB date string
 export const formatInputDate = (value?: string) => value && DATE_FORMAT_GB.format(new Date(Date.parse(value)))
 
 export const formatDisplayDate = (value?: string) => value && DATE_FORMAT_GB_VERBOSE.format(new Date(Date.parse(value)))
 
 // format HH:mm time into separate input field values HH and mm
-export const formatInputTime = (value?: string) => {
+export const formatInputTime = (value?: string | null) => {
   if (!value || value.length !== 5) {
     return [null, null]
   }

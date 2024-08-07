@@ -1,5 +1,5 @@
 import type { Express } from 'express'
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidV4 } from 'uuid'
 import request from 'supertest'
 import { appWithAllRoutes } from './routes/testutils/appSetup'
 
@@ -7,7 +7,7 @@ let app: Express
 let uuid: string
 
 beforeEach(() => {
-  uuid = uuidv4()
+  uuid = uuidV4()
   app = appWithAllRoutes({
     uuid,
   })
@@ -30,7 +30,7 @@ describe('GET 404', () => {
   })
 
   it('should render content without stack in production mode', () => {
-    const uuidLocal = uuidv4()
+    const uuidLocal = uuidV4()
     return request(appWithAllRoutes({ production: true, uuid: uuidLocal }))
       .get(`/${uuidLocal}/unknown`)
       .expect(404)

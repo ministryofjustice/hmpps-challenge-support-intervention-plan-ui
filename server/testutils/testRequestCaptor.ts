@@ -1,5 +1,5 @@
 import { Request } from 'express'
-import { JourneyData } from '../../@types/express'
+import { JourneyData } from '../@types/express'
 
 export class TestRequestCaptured {
   private req = {} as Request

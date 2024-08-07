@@ -1,5 +1,5 @@
 import { Express, Request } from 'express'
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidV4 } from 'uuid'
 import request from 'supertest'
 import {
   findByRole,
@@ -14,13 +14,13 @@ import {
 import { userEvent } from '@testing-library/user-event'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import { schemaFactory } from './schemas'
-import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
+import { TEST_PRISONER } from '../../../testutils/testConstants'
 import { JourneyData } from '../../../@types/express'
 import type CsipApiService from '../../../services/csipApi/csipApiService'
 import type AuditService from '../../../services/auditService'
 
 let app: Express
-const uuid = uuidv4()
+const uuid = uuidV4()
 const auditService = {
   logPageView: () => {},
   logAuditEvent: () => {},
@@ -219,7 +219,7 @@ describe('tests', () => {
   })
 
   it('should return a 200 on posting good data with quoted boolean and redirect to referrer', async () => {
-    const uuid2 = uuidv4()
+    const uuid2 = uuidV4()
     await request(
       appWithAllRoutes({
         services: {
@@ -237,7 +237,7 @@ describe('tests', () => {
   })
 
   it('should return a 200 on posting good data with quoted boolean and redirect to area-of-work', async () => {
-    const uuid2 = uuidv4()
+    const uuid2 = uuidV4()
     await request(
       appWithAllRoutes({
         services: {

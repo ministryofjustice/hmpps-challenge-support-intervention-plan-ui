@@ -1,19 +1,14 @@
-import { RequestHandler, Router } from 'express'
 import { ReferralContributoryFactorCommentController } from './controller'
-import asyncMiddleware from '../../../middleware/asyncMiddleware'
 import { validate } from '../../../middleware/validationMiddleware'
 import { schema } from './schemas'
+import { JourneyRouter } from '../../base/routes'
 
-export const ReferralContributoryFactorCommentRoutes = (): Router => {
-  const router = Router({ mergeParams: true })
-
-  const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
-  const post = (path: string, handler: RequestHandler) => router.post(path, validate(schema), asyncMiddleware(handler))
-
+export const ReferralContributoryFactorCommentRoutes = () => {
+  const { router, get, post } = JourneyRouter()
   const controller = new ReferralContributoryFactorCommentController()
 
   get('/', controller.GET)
-  post('/', controller.POST)
+  post('/', validate(schema), controller.POST)
 
   return router
 }

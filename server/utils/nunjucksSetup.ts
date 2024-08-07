@@ -12,7 +12,7 @@ import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
 import config from '../config'
 import { buildErrorSummaryList, findError } from '../middleware/validationMiddleware'
 import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
-import { schema } from '../journeys/referral/safer-custody/schemas'
+import { YES_NO_ANSWER } from '../journeys/referral/safer-custody/schemas'
 import logger from '../../logger'
 
 export default function nunjucksSetup(app: express.Express): void {
@@ -68,6 +68,6 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
   njkEnv.addFilter('possessiveComma', (name: string) => (name.endsWith('s') ? `${name}’` : `${name}’s`))
   njkEnv.addGlobal('todayStringGBFormat', todayStringGBFormat)
-  njkEnv.addGlobal('YesNoDontKnow', schema.shape.isSaferCustodyTeamInformed.enum)
+  njkEnv.addGlobal('YesNoDontKnow', YES_NO_ANSWER.enum)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
 }
