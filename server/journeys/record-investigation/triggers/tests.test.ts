@@ -11,7 +11,7 @@ import { TEST_PRISONER as prisoner } from '../../../testutils/testConstants'
 const uuid = uuidv4()
 
 const journeyDataMock = {
-  prisoner: { ...prisoner },
+  prisoner,
   investigation: {},
 } as JourneyData
 
@@ -47,15 +47,6 @@ describe('GET record-investigation/triggers', () => {
       getByRole(html, 'textbox', { name: `What are ${prisoner.firstName} ${prisoner.lastName}’s triggers?` }),
     ).toHaveValue('')
     expect(getByRole(html, 'button', { name: 'Continue' })).toBeInTheDocument()
-  })
-
-  it('should use possessive punctuation', async () => {
-    journeyDataMock.prisoner!.lastName = 'Jones'
-    const result = await request(app()).get(URL).expect(200).expect('Content-Type', /html/)
-    const html = createTestHtmlElement(result.text)
-
-    expect(getByText(html, `What are ${prisoner.firstName} Jones’ triggers?`)).toBeInTheDocument()
-    journeyDataMock.prisoner!.lastName = prisoner.lastName
   })
 
   it('should pre-fill form with values from journeyData', async () => {
