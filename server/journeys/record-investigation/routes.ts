@@ -9,6 +9,7 @@ import { OccurrenceReasonRoutes } from './why-behaviour-occurred/routes'
 import { EvidenceSecuredRoutes } from './evidence-secured/routes'
 import { UsualBehaviourPresentationRoutes } from './usual-behaviour-presentation/routes'
 import { TriggersRoutes } from './triggers/routes'
+import { ProtectiveFactorsRoutes } from './protective-factors/routes'
 
 function Routes(_csipApiService: CsipApiService): Router {
   const router = Router({ mergeParams: true })
@@ -21,6 +22,7 @@ function Routes(_csipApiService: CsipApiService): Router {
   router.use('/evidence-secured', EvidenceSecuredRoutes())
   router.use('/usual-behaviour-presentation', UsualBehaviourPresentationRoutes())
   router.use('/triggers', TriggersRoutes())
+  router.use('/protective-factors', ProtectiveFactorsRoutes())
 
   return router
 }
