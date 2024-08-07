@@ -94,7 +94,7 @@ describe('POST record-investigation/protective-factors', () => {
     await request(app()).post(URL).type('form').send({ protectiveFactors: '   ' }).expect(302).expect('Location', '/')
 
     expect(reqCaptured.validationErrors()).toEqual({
-      protectiveFactors: ["Enter a description of the prisoner's protective factors"],
+      protectiveFactors: ['Enter a description of the prisoner’s protective factors'],
     })
   })
 
