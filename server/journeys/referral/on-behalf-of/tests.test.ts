@@ -1,5 +1,5 @@
 import { Express } from 'express'
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidV4 } from 'uuid'
 import request from 'supertest'
 import {
   findByText,
@@ -13,12 +13,12 @@ import {
 import { userEvent } from '@testing-library/user-event'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import { schema } from './schemas'
-import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
+import { TEST_PRISONER } from '../../../testutils/testConstants'
 import { JourneyData } from '../../../@types/express'
-import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
+import testRequestCaptor from '../../../testutils/testRequestCaptor'
 
 let app: Express
-const uuid = uuidv4()
+const uuid = uuidV4()
 const journeyData = {
   prisoner: TEST_PRISONER,
   referral: {},

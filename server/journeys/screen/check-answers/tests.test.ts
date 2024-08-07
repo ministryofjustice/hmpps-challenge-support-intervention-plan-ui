@@ -1,21 +1,21 @@
 import { Locals, Request } from 'express'
-import { v4 as uuidv4 } from 'uuid'
-import { agent as request } from 'supertest'
+import { v4 as uuidV4 } from 'uuid'
+import request from 'supertest'
 import { getByRole } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
-import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
+import testRequestCaptor from '../../../testutils/testRequestCaptor'
 import { JourneyData } from '../../../@types/express'
 import {
   MOCK_INPUT_RADIO,
   MOCK_INPUT_TEXT_MULTI,
   MOCK_INPUT_TEXT_MULTI_EXPECTED,
   TEST_PRISONER,
-} from '../../../routes/testutils/testConstants'
-import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
+} from '../../../testutils/testConstants'
+import createTestHtmlElement from '../../../testutils/createTestHtmlElement'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import { Services } from '../../../services'
 
-const uuid = uuidv4()
+const uuid = uuidV4()
 
 const journeyDataMock = {
   prisoner: TEST_PRISONER,

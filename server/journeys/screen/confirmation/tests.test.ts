@@ -1,15 +1,15 @@
 import { Locals, Request } from 'express'
-import { v4 as uuidv4 } from 'uuid'
-import { agent as request } from 'supertest'
+import { v4 as uuidV4 } from 'uuid'
+import request from 'supertest'
 import { getByText, queryByText } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
-import testRequestCaptor from '../../../routes/testutils/testRequestCaptor'
+import testRequestCaptor from '../../../testutils/testRequestCaptor'
 import { JourneyData } from '../../../@types/express'
-import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
-import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
+import createTestHtmlElement from '../../../testutils/createTestHtmlElement'
+import { TEST_PRISONER } from '../../../testutils/testConstants'
 import { ReferenceData } from '../../../@types/csip/csipApiTypes'
 
-const uuid = uuidv4()
+const uuid = uuidV4()
 
 const getJourneyDataMock = () => {
   return {

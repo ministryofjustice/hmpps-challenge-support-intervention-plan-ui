@@ -3,7 +3,7 @@ import { SchemaType } from './schemas'
 import { BaseJourneyController } from '../../base/controller'
 
 export class InvolvementController extends BaseJourneyController {
-  GET = async (req: Request, res: Response): Promise<void> => {
+  GET = async (req: Request, res: Response) => {
     const items = this.customOrderRadios(
       await this.getReferenceDataOptionsForRadios(
         req,
@@ -27,7 +27,7 @@ export class InvolvementController extends BaseJourneyController {
     })
   }
 
-  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response): Promise<void> => {
+  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
     req.journeyData.referral!.incidentInvolvement = req.body.involvementType
     req.journeyData.referral!.staffAssaulted = req.body.staffAssaulted
     req.journeyData.referral!.assaultedStaffName = req.body.assaultedStaffName

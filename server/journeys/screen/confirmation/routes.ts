@@ -1,12 +1,8 @@
-import { RequestHandler, Router } from 'express'
 import { ConfirmationController } from './controller'
-import asyncMiddleware from '../../../middleware/asyncMiddleware'
+import { JourneyRouter } from '../../base/routes'
 
-export const ConfirmationRoutes = (): Router => {
-  const router = Router({ mergeParams: true })
-
-  const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
-
+export const ConfirmationRoutes = () => {
+  const { router, get } = JourneyRouter()
   const controller = new ConfirmationController()
 
   get('/', controller.GET)

@@ -1,9 +1,8 @@
 import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
-import { YesNoAnswer } from '../../../@types/csip/csipApiTypes'
 
 export class ReferralSaferCustodyController {
-  GET = async (req: Request, res: Response): Promise<void> => {
+  GET = async (req: Request, res: Response) => {
     const isSaferCustodyTeamInformed =
       res.locals.formResponses?.['isSaferCustodyTeamInformed'] || req.journeyData.referral!.isSaferCustodyTeamInformed
     res.render('referral/safer-custody/view', {
@@ -12,8 +11,8 @@ export class ReferralSaferCustodyController {
     })
   }
 
-  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response): Promise<void> => {
-    req.journeyData.referral!.isSaferCustodyTeamInformed = req.body.isSaferCustodyTeamInformed as YesNoAnswer
+  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
+    req.journeyData.referral!.isSaferCustodyTeamInformed = req.body.isSaferCustodyTeamInformed
     res.redirect('additional-information')
   }
 }

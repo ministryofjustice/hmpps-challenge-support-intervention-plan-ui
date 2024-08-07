@@ -1,28 +1,17 @@
 import z from 'zod'
+import { createSchema, validateAndTransformReferenceData } from '../../../middleware/validationMiddleware'
 
-const csrfSchema = z.object({
-  _csrf: z.string().optional(),
+const IS_ON_BEHALF_OF_REFERRAL_ERROR_MSG = `Select if you're making this referral on someone else's behalf or not`
+
+const IS_ON_BEHALF_OF_REFERRAL_MAP = new Map([
+  ['true', true],
+  ['false', false],
+])
+
+export const schema = createSchema({
+  isOnBehalfOfReferral: z
+    .string({ message: IS_ON_BEHALF_OF_REFERRAL_ERROR_MSG })
+    .transform(validateAndTransformReferenceData(IS_ON_BEHALF_OF_REFERRAL_MAP, IS_ON_BEHALF_OF_REFERRAL_ERROR_MSG)),
 })
 
-const isOnBehalfOfReferralErrorMsg = `Select if you're making this referral on someone else's behalf or not`
-export const schema = csrfSchema
-  .merge(
-    z.object({
-      isOnBehalfOfReferral: z
-        .string({
-          message: isOnBehalfOfReferralErrorMsg,
-        })
-        .transform<boolean>((val, ctx) => {
-          if (!['false', 'true'].includes(val)) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: isOnBehalfOfReferralErrorMsg,
-            })
-            return z.NEVER
-          }
-          return val === 'true'
-        }),
-    }),
-  )
-  .strict()
 export type SchemaType = z.infer<typeof schema>

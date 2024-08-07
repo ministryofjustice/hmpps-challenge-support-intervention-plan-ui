@@ -1,7 +1,9 @@
 import { Request, Response } from 'express'
+import { ParamsDictionary } from 'express-serve-static-core'
+import { SchemaType } from './schemas'
 
 export class ReferralContributoryFactorCommentController {
-  GET = async (req: Request, res: Response): Promise<void> => {
+  GET = async (req: Request, res: Response) => {
     const { factorTypeCode } = req.params
     const factor = req.journeyData.referral!.contributoryFactors!.find(
       itm => itm.factorType.code.toLowerCase() === factorTypeCode,
@@ -13,7 +15,7 @@ export class ReferralContributoryFactorCommentController {
     })
   }
 
-  POST = async (req: Request, res: Response): Promise<void> => {
+  POST = async (req: Request<ParamsDictionary, unknown, SchemaType>, res: Response) => {
     const { factorTypeCode } = req.params
     const factor = req.journeyData.referral!.contributoryFactors!.find(
       itm => itm.factorType.code.toLowerCase() === factorTypeCode,

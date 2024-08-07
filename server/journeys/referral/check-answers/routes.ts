@@ -1,19 +1,13 @@
-import { RequestHandler, Router } from 'express'
 import { ReferralCheckAnswersController } from './controller'
-import asyncMiddleware from '../../../middleware/asyncMiddleware'
 import type CsipApiService from '../../../services/csipApi/csipApiService'
+import { JourneyRouter } from '../../base/routes'
 
-export const ReferralCheckAnswersRoutes = (csipApiService: CsipApiService): Router => {
-  const router = Router({ mergeParams: true })
-
+export const ReferralCheckAnswersRoutes = (csipApiService: CsipApiService) => {
+  const { router, get, post } = JourneyRouter()
   const controller = new ReferralCheckAnswersController(csipApiService)
 
-  const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
-  const post = (path: string, handler: RequestHandler) =>
-    router.post(path, controller.checkSubmitToAPI, asyncMiddleware(handler))
-
   get('/', controller.GET)
-  post('/', controller.POST)
+  post('/', controller.checkSubmitToAPI, controller.POST)
 
   return router
 }

@@ -1,16 +1,16 @@
 import { Express } from 'express'
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidV4 } from 'uuid'
 import request from 'supertest'
 import { getByRole } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
 import type PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
 import { SanitisedError } from '../../../sanitisedError'
 import type CsipApiService from '../../../services/csipApi/csipApiService'
-import createTestHtmlElement from '../../../routes/testutils/createTestHtmlElement'
-import { TEST_PRISONER } from '../../../routes/testutils/testConstants'
+import createTestHtmlElement from '../../../testutils/createTestHtmlElement'
+import { TEST_PRISONER } from '../../../testutils/testConstants'
 
 let app: Express
-const uuid = uuidv4()
+const uuid = uuidV4()
 const csipApiService = {
   getReferenceData: () => [
     { code: 'A', description: 'TEXT' },
@@ -110,7 +110,7 @@ describe('tests', () => {
         uuid,
       }),
     )
-      .get(`/${uuidv4()}/csip-record/${uuid}/screen/start`)
+      .get(`/${uuidV4()}/csip-record/${uuid}/screen/start`)
       .expect(500)
     const html = createTestHtmlElement(result.text)
     expect(getByRole(html, 'heading', { name: /500 error happened/i })).toBeVisible()

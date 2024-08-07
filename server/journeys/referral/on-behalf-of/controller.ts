@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
 
 export class ReferralOnBehalfOfController {
-  GET = async (req: Request, res: Response): Promise<void> => {
+  GET = async (req: Request, res: Response) => {
     res.render('referral/on-behalf-of/view', {
       isOnBehalfOfReferral: req.journeyData.referral!.onBehalfOfSubJourney
         ? req.journeyData.referral?.onBehalfOfSubJourney?.isOnBehalfOfReferral
@@ -11,7 +11,7 @@ export class ReferralOnBehalfOfController {
     })
   }
 
-  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response): Promise<void> => {
+  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
     req.journeyData.referral!.onBehalfOfSubJourney = { isOnBehalfOfReferral: req.body.isOnBehalfOfReferral }
 
     if (req.journeyData.referral!.onBehalfOfSubJourney.isOnBehalfOfReferral) {
