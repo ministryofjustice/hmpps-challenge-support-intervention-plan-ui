@@ -49,6 +49,15 @@ describe('GET record-investigation/triggers', () => {
     expect(getByRole(html, 'button', { name: 'Continue' })).toBeInTheDocument()
   })
 
+  it('should use possessive punctuation', async () => {
+    journeyDataMock.prisoner!.lastName = 'Jones'
+    const result = await request(app()).get(URL).expect(200).expect('Content-Type', /html/)
+    const html = createTestHtmlElement(result.text)
+
+    expect(getByText(html, `What are ${prisoner.firstName} Jones’ triggers?`)).toBeInTheDocument()
+    journeyDataMock.prisoner!.lastName = prisoner.lastName
+  })
+
   it('should pre-fill form with values from journeyData', async () => {
     const appWithMock = app({ journeyData: { ...journeyDataMock, investigation: { personsTrigger: 'test' } } })
     const result = await request(appWithMock).get(URL).expect(200).expect('Content-Type', /html/)
