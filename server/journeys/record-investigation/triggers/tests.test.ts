@@ -1,5 +1,5 @@
 import { Locals, Request } from 'express'
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidV4 } from 'uuid'
 import { agent as request } from 'supertest'
 import { getByRole, getByText } from '@testing-library/dom'
 import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
@@ -8,10 +8,10 @@ import { JourneyData } from '../../../@types/express'
 import createTestHtmlElement from '../../../testutils/createTestHtmlElement'
 import { TEST_PRISONER as prisoner } from '../../../testutils/testConstants'
 
-const uuid = uuidv4()
+const uuid = uuidV4()
 
 const journeyDataMock = {
-  prisoner,
+  prisoner: { ...prisoner },
   investigation: {},
 } as JourneyData
 
