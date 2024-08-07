@@ -5,10 +5,6 @@
 
 {% extends "partials/layout.njk" %}
 
-{% block additionalScripts %}
-    <script src="/assets/javascript/datepicker.js"></script>
-{% endblock %}
-
 {% set pageTitle = "Details - Make a CSIP referral" %}
 
 {% set titleText = "Behaviour details" if isProactiveReferral else "Incident details" %}
