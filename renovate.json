@@ -2,7 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["github>ministryofjustice/hmpps-renovate-config:node"],
   "prBodyTemplate": "{{{table}}}{{{notes}}}{{{warnings}}}{{{controls}}}",
-  "ignoreDeps": ["@opentelemetry/api", "applicationinsights", "type-fest"],
+  "ignoreDeps": ["@opentelemetry/api", "applicationinsights"],
   "packageRules": [
     {
       "matchManagers": ["npm"],
