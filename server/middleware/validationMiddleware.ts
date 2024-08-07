@@ -25,6 +25,11 @@ export const createSchema = <T = object>(shape: T) => zodAlwaysRefine(zObjectStr
 
 const zObjectStrict = <T = object>(shape: T) => z.object({ _csrf: z.string().optional(), ...shape }).strict()
 
+/*
+ * Ensure that all parts of the schema get tried and can fail before exiting schema checks - this ensures we don't have to
+ * have complicated schemas if we want to both ensure the order of fields and have all the schema validation run
+ * more info regarding this issue and workaround on: https://github.com/colinhacks/zod/issues/479#issuecomment-2067278879
+ */
 const zodAlwaysRefine = <T extends z.ZodTypeAny>(zodType: T) =>
   z.any().transform((val, ctx) => {
     const res = zodType.safeParse(val)
