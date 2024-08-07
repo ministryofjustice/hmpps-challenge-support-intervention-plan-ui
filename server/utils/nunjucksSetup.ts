@@ -10,7 +10,7 @@ import {
 import fs from 'fs'
 import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
 import config from '../config'
-import { buildErrorSummaryList, findError } from '../middleware/validationMiddleware'
+import { buildErrorSummaryList, customErrorOrderBuilder, findError } from '../middleware/validationMiddleware'
 import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
 import { YES_NO_ANSWER } from '../journeys/referral/safer-custody/schemas'
 import logger from '../../logger'
@@ -65,6 +65,7 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('sentenceCase', sentenceCase)
   njkEnv.addFilter('formatDisplayDate', formatDisplayDate)
   njkEnv.addFilter('filterBy', (array: object[], filter: (itm: object) => boolean) => array.filter(filter))
+  njkEnv.addFilter('customErrorOrderBuilder', customErrorOrderBuilder)
   njkEnv.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
   njkEnv.addFilter('possessiveComma', (name: string) => (name.endsWith('s') ? `${name}’` : `${name}’s`))
   njkEnv.addGlobal('todayStringGBFormat', todayStringGBFormat)

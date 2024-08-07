@@ -117,7 +117,7 @@ describe('GET /referral/details - Proactive', () => {
     const result = await request(
       app({
         journeyData: journeyDataProactive,
-        validationErrors: { propertyName: ['Error message'] },
+        validationErrors: { incidentDate: ['Error message'] },
       }),
     )
       .get(`/${uuid}/referral/details`)
@@ -128,7 +128,7 @@ describe('GET /referral/details - Proactive', () => {
     expect(getByText(html, 'There is a problem')).toBeVisible()
     const error = getByRole(html, 'link', { name: 'Error message' }) as HTMLLinkElement
     expect(error).toBeVisible()
-    expect(error.href).toMatch(/#propertyName$/)
+    expect(error.href).toMatch(/#incidentDate$/)
   })
 })
 
@@ -182,7 +182,7 @@ describe('GET /referral/details - Reactive', () => {
 
   it('render validation errors if any', async () => {
     const result = await request(
-      app({ journeyData: journeyDataReactive, validationErrors: { propertyName: ['Error message'] } }),
+      app({ journeyData: journeyDataReactive, validationErrors: { incidentDate: ['Error message'] } }),
     )
       .get(`/${uuid}/referral/details`)
       .expect(200)
@@ -192,7 +192,7 @@ describe('GET /referral/details - Reactive', () => {
     expect(getByText(html, 'There is a problem')).toBeVisible()
     const error = getByRole(html, 'link', { name: 'Error message' }) as HTMLLinkElement
     expect(error).toBeVisible()
-    expect(error.href).toMatch(/#propertyName$/)
+    expect(error.href).toMatch(/#incidentDate$/)
   })
 })
 
