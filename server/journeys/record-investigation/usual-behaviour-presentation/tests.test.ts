@@ -99,7 +99,7 @@ describe('POST record-investigation/usual-behaviour-presentation', () => {
       .expect('Location', '/')
 
     expect(reqCaptured.validationErrors()).toEqual({
-      personsUsualBehaviour: ["Enter a description of the prisoner's usual behaviour presentation"],
+      personsUsualBehaviour: ['Enter a description of the prisoner’s usual behaviour presentation'],
     })
   })
 
@@ -113,7 +113,7 @@ describe('POST record-investigation/usual-behaviour-presentation', () => {
 
     expect(reqCaptured.validationErrors()).toEqual({
       personsUsualBehaviour: [
-        "Description of the prisoner's usual behaviour presentation must be 4,000 characters or less",
+        'Description of the prisoner’s usual behaviour presentation must be 4,000 characters or less',
       ],
     })
   })
