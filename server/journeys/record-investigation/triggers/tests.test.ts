@@ -85,7 +85,7 @@ describe('POST record-investigation/triggers', () => {
     await request(app()).post(URL).type('form').send({ personsTrigger: '   ' }).expect(302).expect('Location', '/')
 
     expect(reqCaptured.validationErrors()).toEqual({
-      personsTrigger: ["Enter a description of the prisoner's triggers"],
+      personsTrigger: ['Enter a description of the prisoner’s triggers'],
     })
   })
 
@@ -98,7 +98,7 @@ describe('POST record-investigation/triggers', () => {
       .expect('Location', '/')
 
     expect(reqCaptured.validationErrors()).toEqual({
-      personsTrigger: ["Description of the prisoner's triggers must be 4,000 characters or less"],
+      personsTrigger: ['Description of the prisoner’s triggers must be 4,000 characters or less'],
     })
   })
 })
