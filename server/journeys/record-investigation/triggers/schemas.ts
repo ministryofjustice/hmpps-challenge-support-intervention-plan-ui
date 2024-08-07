@@ -1,7 +1,7 @@
 import z from 'zod'
 
-const REASONS_MSG = "Enter a description of the prisoner's triggers"
-const TOO_LONG_ERROR_MSG = "Description of the prisoner's triggers must be 4,000 characters or less"
+const REASONS_MSG = 'Enter a description of the prisoner’s triggers'
+const TOO_LONG_ERROR_MSG = 'Description of the prisoner’s triggers must be 4,000 characters or less'
 
 export const schema = z.object({
   personsTrigger: z
