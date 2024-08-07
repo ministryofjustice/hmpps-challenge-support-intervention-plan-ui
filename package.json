@@ -92,7 +92,7 @@
     "passport-oauth2": "^1.8.0",
     "redis": "^4.6.15",
     "superagent": "^9.0.2",
-    "type-fest": "^0.20.2",
+    "type-fest": "^2.19.0",
     "url-value-parser": "^2.2.0",
     "uuid": "^10.0.0",
     "zod": "^3.23.8"
