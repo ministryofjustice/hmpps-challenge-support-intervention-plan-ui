@@ -1,6 +1,5 @@
 import z from 'zod'
 import { Request } from 'express'
-import { AsyncReturnType } from 'type-fest'
 import { createSchema } from '../../../middleware/validationMiddleware'
 
 const REASONS_TOO_LONG_MSG = 'Description must be 4,000 characters or less'
@@ -18,4 +17,4 @@ export const schemaFactory = async (req: Request) => {
   })
 }
 
-export type SchemaType = z.infer<AsyncReturnType<typeof schemaFactory>>
+export type SchemaType = z.infer<Awaited<ReturnType<typeof schemaFactory>>>

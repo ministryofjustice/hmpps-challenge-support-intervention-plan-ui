@@ -1,6 +1,5 @@
 import z from 'zod'
 import { Request } from 'express'
-import { AsyncReturnType } from 'type-fest'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import { parse24Hour, parseMinute } from '../../../utils/datetimeUtils'
 import { createSchema, validateAndTransformReferenceData } from '../../../middleware/validationMiddleware'
@@ -77,4 +76,4 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
     }))
 }
 
-export type SchemaType = z.infer<AsyncReturnType<ReturnType<typeof schemaFactory>>>
+export type SchemaType = z.infer<Awaited<ReturnType<ReturnType<typeof schemaFactory>>>>
