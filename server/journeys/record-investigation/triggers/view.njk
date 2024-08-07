@@ -1,0 +1,43 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Triggers - Record a CSIP investigation" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Record a CSIP investigation</span>
+    <label for="personsTrigger">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">What are {{prisoner | firstNameSpaceLastName | possessiveComma}} triggers?</h1>
+    </label>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukDetails({
+            summaryText: "Where to find this information",
+            html: '
+            <p>A trigger is anything that gives someone the urge to harm themselves or
+              others, such as a situation, a person, a smell, a sight or an emotion. </p>
+            <p>A trigger temporarily increases risk. </p>
+            <p>You can: </p>
+            <ul>
+              <li>ask the prisoner or their key worker about their triggers</li>
+              <li>find information in OASys</li>
+              <li>find information in other records</li>
+            </ul>'
+        }) }}
+        {{ govukCharacterCount({
+            maxlength: 4000,
+            rows: 5,
+            threshold: "75",
+            id: "personsTrigger",
+            name: "personsTrigger",
+            value: personsTrigger,
+            errorMessage: validationErrors | findError('personsTrigger')
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}
