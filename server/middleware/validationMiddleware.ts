@@ -21,6 +21,9 @@ export const findError = (errors: fieldErrors, fieldName: string) => {
   }
 }
 
+export const customErrorOrderBuilder = (errorSummaryList: { href: string }[], order: string[]) =>
+  order.map(key => errorSummaryList.find(error => error.href === `#${key}`)).filter(Boolean)
+
 export const createSchema = <T = object>(shape: T) => zodAlwaysRefine(zObjectStrict(shape))
 
 const zObjectStrict = <T = object>(shape: T) => z.object({ _csrf: z.string().optional(), ...shape }).strict()
