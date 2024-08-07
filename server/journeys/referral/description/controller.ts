@@ -3,17 +3,12 @@ import { SchemaType } from './schemas'
 
 export class ReferralDescriptionController {
   GET = async (req: Request, res: Response) => {
-    const descriptionOfConcern =
-      res.locals.formResponses?.['descriptionOfConcern'] || req.journeyData.referral!.descriptionOfConcern
-    res.render(
-      req.journeyData.referral!.isProactiveReferral
-        ? 'referral/description/view-proactive'
-        : 'referral/description/view-reactive',
-      {
-        descriptionOfConcern,
-        backUrl: 'involvement',
-      },
-    )
+    res.render('referral/description/view', {
+      isProactiveReferral: req.journeyData.referral!.isProactiveReferral,
+      descriptionOfConcern:
+        res.locals.formResponses?.['descriptionOfConcern'] || req.journeyData.referral!.descriptionOfConcern,
+      backUrl: 'involvement',
+    })
   }
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {

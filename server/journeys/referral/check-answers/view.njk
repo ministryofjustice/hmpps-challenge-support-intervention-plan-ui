@@ -89,7 +89,11 @@
         ] | filterBy(referrerDetailsFilter)
     }) }}
 
-    {% block proactiveOrReactiveContent %}{% endblock %}
+    {% if referral.isProactiveReferral %}
+        {% include './components/proactive.njk' %}
+    {% else %}
+        {% include './components/reactive.njk' %}
+    {% endif %}
 
     {% set factors = [] %}
     {% for factor in referral.contributoryFactors %}

@@ -7,7 +7,7 @@
 {% block innerContent %}
   <h1 class="govuk-heading-l">Make a CSIP referral</h1>
 
-  <p>You can use this service to refer {{ (prisoner.firstName + ' ' + prisoner.lastName) | convertToTitleCase }} for a Challenge, Support and Intervention Plan (CSIP).</p>
+  <p>You can use this service to refer {{ prisoner | firstNameSpaceLastName }} for a Challenge, Support and Intervention Plan (CSIP).</p>
 
   {{ govukDetails({
       summaryText: "Help with CSIP referrals",
@@ -17,13 +17,13 @@
             '
   }) }}
 
-  <form method="POST">
+  <form method="post">
     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
     {{ govukRadios({
         name: "isOnBehalfOfReferral",
         fieldset: {
             legend: {
-                text: "Are you making this referral on someone else's behalf?",
+                text: "Are you making this referral on someone else’s behalf?",
                 classes: "govuk-fieldset__legend--m"
             }
         },
