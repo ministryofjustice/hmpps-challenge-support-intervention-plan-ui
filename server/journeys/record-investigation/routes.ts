@@ -6,6 +6,7 @@ import { Services } from '../../services'
 import { JourneyRouter } from '../base/routes'
 import { EvidenceSecuredRoutes } from './evidence-secured/routes'
 import { UsualBehaviourPresentationRoutes } from './usual-behaviour-presentation/routes'
+import { TriggersRoutes } from './triggers/routes'
 
 function Routes(_services: Services) {
   const { router, get } = JourneyRouter()
@@ -16,6 +17,7 @@ function Routes(_services: Services) {
   router.use('/why-behaviour-occurred', OccurrenceReasonRoutes())
   router.use('/evidence-secured', EvidenceSecuredRoutes())
   router.use('/usual-behaviour-presentation', UsualBehaviourPresentationRoutes())
+  router.use('/triggers', TriggersRoutes())
 
   return router
 }
