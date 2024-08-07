@@ -22,6 +22,10 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
     ? 'Date of the most recent occurrence must be today or in the past'
     : 'Date of the incident must be today or in the past'
 
+  const INCIDENT_DATE_INVALID_MSG = req.journeyData.referral!.isProactiveReferral
+    ? 'Date of the most recent occurrence must be a real date'
+    : 'Date of the incident must be a real date'
+
   const incidentLocationMap = new Map(
     (await csipApiService.getReferenceData(req, 'incident-location')).map(itm => [itm.code, itm]),
   )
