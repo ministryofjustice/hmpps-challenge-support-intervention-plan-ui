@@ -16,6 +16,7 @@ module.exports = {
     '.*jest.config.js',
     'server/app.ts',
     'server/index.ts',
+    '.*.cy.ts',
   ],
   moduleFileExtensions: ['web.js', 'js', 'json', 'node', 'ts'],
   testMatch: ['<rootDir>/server/journeys/**/*.test.ts', '<rootDir>/server/routes/csip-records/*.test.ts'],

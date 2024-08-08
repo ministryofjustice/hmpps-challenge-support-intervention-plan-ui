@@ -15,5 +15,5 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "../**/*.cy.ts"]
 }

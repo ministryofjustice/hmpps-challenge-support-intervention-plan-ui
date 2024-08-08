@@ -14,6 +14,7 @@ module.exports = {
     '.*jest.config.js',
     'server/app.ts',
     'server/index.ts',
+    '.*.cy.ts',
   ],
   testMatch: ['<rootDir>/(server|job)/**/?(*.)(cy|test).{ts,js,jsx,mjs}'],
   testPathIgnorePatterns: ['<rootDir>/server/journeys', '<rootDir>/server/routes/csip-records', 'node_modules'],
