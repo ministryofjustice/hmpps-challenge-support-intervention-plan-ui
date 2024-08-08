@@ -122,6 +122,7 @@ context('Make a Referral Journey', () => {
     cy.findByRole('link', { name: /enter the date of the incident/i }).should('be.visible')
     cy.findByRole('link', { name: /select the location of the incident/i }).should('be.visible')
     cy.findByRole('link', { name: /select the incident type/i }).should('not.exist')
+    cy.findByRole('combobox', { name: /what was the incident type\?/i }).should('have.value', 'A')
     cy.get('.govuk-error-summary a').should('have.length', 3)
 
     // Check location error message disappears
@@ -131,6 +132,7 @@ context('Make a Referral Journey', () => {
     cy.findByRole('link', { name: /enter a time using the 24-hour clock/i }).should('be.visible')
     cy.findByRole('link', { name: /enter the date of the incident/i }).should('be.visible')
     cy.findByRole('link', { name: /select the location of the incident/i }).should('not.exist')
+    cy.findByRole('link', { name: /select the location of the incident/i }).should('have.value', 'A')
     cy.findByRole('link', { name: /select the incident type/i }).should('be.visible')
     cy.get('.govuk-error-summary a').should('have.length', 3)
 
@@ -140,6 +142,7 @@ context('Make a Referral Journey', () => {
     cy.findByRole('button', { name: /continue/i }).click()
     cy.findByRole('link', { name: /enter a time using the 24-hour clock/i }).should('be.visible')
     cy.findByRole('link', { name: /enter the date of the incident/i }).should('not.exist')
+    cy.findByRole('link', { name: /enter the date of the incident/i }).should('have.value', '01/01/2024')
     cy.findByRole('link', { name: /select the location of the incident/i }).should('be.visible')
     cy.findByRole('link', { name: /select the incident type/i }).should('be.visible')
     cy.get('.govuk-error-summary a').should('have.length', 3)
@@ -151,6 +154,8 @@ context('Make a Referral Journey', () => {
     cy.findByRole('textbox', { name: /minute/i }).type('23')
     cy.findByRole('button', { name: /continue/i }).click()
     cy.findByRole('link', { name: /enter a time using the 24-hour clock/i }).should('not.exist')
+    cy.findByRole('textbox', { name: /hour/i }).should('have.value', '23')
+    cy.findByRole('textbox', { name: /minute/i }).should('have.value', '23')
     cy.findByRole('link', { name: /enter the date of the incident/i }).should('be.visible')
     cy.findByRole('link', { name: /select the location of the incident/i }).should('be.visible')
     cy.findByRole('link', { name: /select the incident type/i }).should('be.visible')
