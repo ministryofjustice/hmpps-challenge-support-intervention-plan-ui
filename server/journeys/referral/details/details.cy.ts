@@ -59,17 +59,20 @@ context('Make a Referral Journey', () => {
   }
 
   const checkDatepickerEdgeCases = () => {
+    // Select valid options for all other inputs
     cy.findByRole('textbox', { name: /hour/i }).type('23')
     cy.findByRole('textbox', { name: /minute/i }).type('23')
     cy.findByRole('combobox', { name: /what was the incident type\?/i }).select(1)
     cy.findByRole('combobox', { name: /where did the incident occur\?/i }).select(1)
 
+    // Invalid date check
     cy.findByRole('textbox', { name: /date of incident/i }).type('35/07/2024')
     cy.findByRole('button', { name: /continue/i }).click()
     cy.findByRole('link', { name: /date of the incident must be a real date/i }).should('be.visible')
     cy.get('.govuk-error-summary a').should('have.length', 1)
     cy.findByRole('textbox', { name: /date of incident/i }).clear()
 
+    // Future date check
     const today = new Date()
     const tomorrow = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate() + 1)) // this will tick over if today is last day of month
     cy.findByRole('textbox', { name: /date of incident/i }).type(
@@ -83,6 +86,7 @@ context('Make a Referral Journey', () => {
     cy.findByRole('button', { name: /choose date/i }).click()
     cy.findByRole('button', { name: /select/i }).should('be.visible') // Don't test the entire component - we assume it works ok, just test that it appears so we know we've integrated it
 
+    // Check selecting today works
     const firstOfMonth = new Date()
     firstOfMonth.setDate(1)
     cy.findByRole('button', {
@@ -100,6 +104,7 @@ context('Make a Referral Journey', () => {
   }
 
   const submitCheckErrorMessagesDisappear = () => {
+    // Get all error messages to appear
     cy.findByRole('textbox', { name: /hour/i }).type('25')
     cy.findByRole('button', { name: /continue/i }).click()
     cy.get('.govuk-error-summary a').should('have.length', 4)
@@ -110,6 +115,7 @@ context('Make a Referral Journey', () => {
     cy.get('.govuk-error-summary li:nth-of-type(3) a').should('have.text', 'Select the location of the incident')
     cy.get('.govuk-error-summary li:nth-of-type(4) a').should('have.text', 'Select the incident type')
 
+    // Check type error message disappears
     cy.findByRole('combobox', { name: /what was the incident type\?/i }).select(1)
     cy.findByRole('button', { name: /continue/i }).click()
     cy.findByRole('link', { name: /enter a time using the 24-hour clock/i }).should('be.visible')
@@ -118,6 +124,7 @@ context('Make a Referral Journey', () => {
     cy.findByRole('link', { name: /select the incident type/i }).should('not.exist')
     cy.get('.govuk-error-summary a').should('have.length', 3)
 
+    // Check location error message disappears
     cy.findByRole('combobox', { name: /what was the incident type\?/i }).select(0)
     cy.findByRole('combobox', { name: /where did the incident occur\?/i }).select(1)
     cy.findByRole('button', { name: /continue/i }).click()
@@ -127,6 +134,7 @@ context('Make a Referral Journey', () => {
     cy.findByRole('link', { name: /select the incident type/i }).should('be.visible')
     cy.get('.govuk-error-summary a').should('have.length', 3)
 
+    // Check date error message disappears
     cy.findByRole('combobox', { name: /where did the incident occur\?/i }).select(0)
     cy.findByRole('textbox', { name: /date of incident/i }).type('01/01/2024')
     cy.findByRole('button', { name: /continue/i }).click()
@@ -136,6 +144,7 @@ context('Make a Referral Journey', () => {
     cy.findByRole('link', { name: /select the incident type/i }).should('be.visible')
     cy.get('.govuk-error-summary a').should('have.length', 3)
 
+    // Check time error message disappears
     cy.findByRole('textbox', { name: /date of incident/i }).clear()
     cy.findByRole('textbox', { name: /hour/i }).clear()
     cy.findByRole('textbox', { name: /hour/i }).type('23')
