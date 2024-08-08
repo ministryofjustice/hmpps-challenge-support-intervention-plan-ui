@@ -57,8 +57,8 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
           .max(new Date(), { message: INCIDENT_DATE_FUTURE_MSG }),
       )
       .transform(dateString => dateString.toISOString().substring(0, 10)),
-    hour: z.string().transform(val => (val?.length ? parse24Hour(val) : null)),
-    minute: z.string().transform(val => (val?.length ? parseMinute(val) : null)),
+    hour: z.string(),
+    minute: z.string(),
     incidentLocation: z
       .string({ message: INCIDENT_LOCATION_MSG })
       .transform(validateAndTransformReferenceData(incidentLocationMap, INCIDENT_LOCATION_MSG)),
@@ -66,14 +66,24 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
       .string({ message: INCIDENT_TYPE_MSG })
       .transform(validateAndTransformReferenceData(incidentTypeMap, INCIDENT_TYPE_MSG)),
   })
-    .refine(val => (!val.hour && !val.minute) || (val.hour?.success && val.minute?.success), {
-      message: 'Enter a time using the 24-hour clock',
-      path: ['incidentTime'],
+    .superRefine((val, ctx) => {
+      if (
+        !!val.hour?.length !== !!val.minute?.length ||
+        (val.hour?.length && val.minute?.length && (!parse24Hour(val.hour).success || !parseMinute(val.minute).success))
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Enter a time using the 24-hour clock',
+          path: ['incidentTime'],
+        })
+      }
     })
-    .transform(val => ({
-      ...val,
-      incidentTime: val.hour?.success && val.minute?.success ? `${val.hour.data}:${val.minute.data}` : null,
-    }))
+    .transform(val => {
+      const hour = val.hour?.length ? parse24Hour(val.hour) : null
+      const minute = val.minute?.length ? parseMinute(val.minute) : null
+      const incidentTime = hour?.success && minute?.success ? `${hour.data}:${minute.data}` : null
+      return { ...val, incidentTime }
+    })
 }
 
 export type SchemaType = z.infer<Awaited<ReturnType<ReturnType<typeof schemaFactory>>>>

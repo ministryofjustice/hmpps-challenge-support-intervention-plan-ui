@@ -8,13 +8,9 @@
 {% block content %}
 
     <span class="govuk-caption-l">Make a CSIP referral</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ "Behaviour involvement" if isProactiveReferral else "Incident involvement" }}</h1>
 
-    {% set pageHeading -%}
-        {{ "Behaviour involvement" if isProactiveReferral else "Incident involvement" }}
-      {%- endset %}
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ pageHeading }}</h1>
-
-    <form method="POST">
+    <form method="post">
       <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
       {% set involvementTypeLabel -%}

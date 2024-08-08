@@ -1,7 +1,5 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
-{% extends "referral/check-answers/view-base.njk" %}
 
-{% block proactiveOrReactiveContent %}
     <h1 class="govuk-heading-m">Incident details</h1>
     {{ govukSummaryList({
         classes: "govuk-!-margin-bottom-7",
@@ -184,4 +182,3 @@
             }
         ]
     }) }}
-{% endblock %}

@@ -14,12 +14,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
     const involvementFilter = (itm: { key: { text: string } }) =>
       referral!.assaultedStaffName || itm.key.text !== 'Names of staff assaulted'
 
-    res.render(
-      req.journeyData.referral!.isProactiveReferral
-        ? 'referral/check-answers/view-proactive'
-        : 'referral/check-answers/view-reactive',
-      { referral, referrerDetailsFilter, involvementFilter },
-    )
+    res.render('referral/check-answers/view', { referral, referrerDetailsFilter, involvementFilter })
   }
 
   checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction) => {

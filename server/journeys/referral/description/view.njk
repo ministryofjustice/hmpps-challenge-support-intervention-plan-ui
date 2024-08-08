@@ -6,23 +6,34 @@
 
 {% set pageTitle = "Description - Make a CSIP referral" %}
 
-{% block innerContent %}
-    <span class="govuk-caption-l">Make a CSIP referral</span>
-    <label for="descriptionOfConcern">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Describe the behaviour and concerns</h1>
-    </label>
-    <form method="post">
-        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        {{ govukDetails({
-            summaryText: "What type of information to include",
-            html: '
+{% set headerText = 'Describe the behaviour and concerns' if isProactiveReferral else 'Describe the incident and concerns' %}
+{% set detailsHtml = '
             <p>The description could include: </p>
             <ul>
                 <li>a summary of the concerns</li>
                 <li>information from OASys or other records</li>
                 <li>observations of behaviour in custody</li>
             </ul>
-            '
+            ' if isProactiveReferral else '
+            <p>The description could include: </p>
+            <ul>
+              <li>a summary of the incident</li>
+              <li>information about the incident report (if one has been made)</li>
+              <li>the concerns relating to the incident</li>
+              <li>observations of behaviour in custody</li>
+            </ul>
+            ' %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Make a CSIP referral</span>
+    <label for="descriptionOfConcern">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ headerText }}</h1>
+    </label>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukDetails({
+            summaryText: "What type of information to include",
+            html: detailsHtml
         }) }}
         {{ govukCharacterCount({
             maxlength: 4000,

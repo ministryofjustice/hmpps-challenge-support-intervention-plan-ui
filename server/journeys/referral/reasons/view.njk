@@ -6,22 +6,31 @@
 
 {% set pageTitle = "Reasons - Make a CSIP referral" %}
 
-{% block innerContent %}
-    <span class="govuk-caption-l">Make a CSIP referral</span>
-    <label for="knownReasons">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">What reasons have been given for the incident?</h1>
-    </label>
-    <form method="post">
-        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        {{ govukDetails({
-            summaryText: "What type of information to include",
-            html: '
+{% set headerText = 'What reasons have been given for the behaviour?' if isProactiveReferral else 'What reasons have been given for the incident?' %}
+{% set detailsHtml = '
+            <p>Include any reasons given: </p>
+            <ul>
+              <li>by the prisoner during conversations with staff members</li>
+              <li>in information received from other people</li>
+            </ul>
+            ' if isProactiveReferral else '
             <p>Include any reasons given: </p>
             <ul>
                 <li>by the prisoner during conversations after the incident</li>
                 <li>in information received from other people after the incident</li>
             </ul>
-            '
+            ' %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Make a CSIP referral</span>
+    <label for="knownReasons">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ headerText }}</h1>
+    </label>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukDetails({
+            summaryText: "What type of information to include",
+            html: detailsHtml
         }) }}
         {{ govukCharacterCount({
             maxlength: 4000,
