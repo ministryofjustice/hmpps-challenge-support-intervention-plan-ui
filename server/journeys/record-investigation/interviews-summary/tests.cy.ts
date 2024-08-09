@@ -1,5 +1,8 @@
+import { v4 as uuidV4 } from 'uuid'
+import { injectJourneyData } from '../../../../integration_tests/utils/e2eTestUtils'
+
 context('test /record-investigation/interviews-summary', () => {
-  const uuid = 'a232c47e-4096-4bf5-8ee5-3d6397136d01'
+  const uuid = uuidV4()
 
   beforeEach(() => {
     cy.task('reset')
@@ -16,11 +19,16 @@ context('test /record-investigation/interviews-summary', () => {
     cy.findByRole('heading', { name: /Interviews summary/ }).should('be.visible')
     cy.findByText(/No interview details recorded./).should('be.visible')
 
-    proceedToAddInterview()
+    proceedToAddInterview('Add interview')
     cy.go('back')
 
     assertPageWithSubmittedInterview()
     assertInterviewCommentFallbackDisplay()
+
+    cy.findByText(/No interview details recorded./).should('not.exist')
+
+    proceedToAddInterview('Add another interview')
+    cy.go('back')
 
     continueToTaskList()
   })
@@ -32,13 +40,13 @@ context('test /record-investigation/interviews-summary', () => {
     cy.findByRole('link', { name: /Interview details/i }).click()
   }
 
-  const proceedToAddInterview = () => {
-    cy.findByRole('button', { name: /Add Interview/i }).click()
+  const proceedToAddInterview = (buttonName: string) => {
+    cy.findByRole('button', { name: buttonName }).click()
     cy.url().should('to.match', /\/interview-details$/)
   }
 
   const assertPageWithSubmittedInterview = () => {
-    injectJourneyData({
+    injectJourneyData(uuid, {
       investigation: {
         interviews: [
           {
@@ -89,7 +97,7 @@ context('test /record-investigation/interviews-summary', () => {
   }
 
   const assertInterviewCommentFallbackDisplay = () => {
-    injectJourneyData({
+    injectJourneyData(uuid, {
       investigation: {
         interviews: [
           {
@@ -108,11 +116,5 @@ context('test /record-investigation/interviews-summary', () => {
   const continueToTaskList = () => {
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.url().should('to.match', /\/record-investigation$/)
-  }
-
-  const injectJourneyData = (json: object) => {
-    const data = btoa(JSON.stringify(json))
-    cy.request('GET', `/${uuid}/inject-journey-data?data=${data}`)
-    cy.reload()
   }
 })
