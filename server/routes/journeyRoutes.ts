@@ -4,7 +4,6 @@ import referralRoutes from '../journeys/referral/routes'
 import screenRoutes from '../journeys/screen/routes'
 import investigationRoutes from '../journeys/record-investigation/routes'
 import populatePrisonerSummary from '../middleware/populatePrisonerSummary'
-import config from '../config'
 
 export default function journeyRoutes(services: Services) {
   const router = Router({ mergeParams: true })
@@ -15,7 +14,7 @@ export default function journeyRoutes(services: Services) {
   router.use('/', screenRoutes({ services, path: '/screen' }))
   router.use('/', investigationRoutes({ services, path: '/record-investigation' }))
 
-  if (config.environmentName === 'dev') {
+  if (process.env.NODE_ENV === 'e2e-test') {
     router.get('/inject-journey-data', (req, res) => {
       const { data } = req.query
       const json = JSON.parse(atob(data as string))
