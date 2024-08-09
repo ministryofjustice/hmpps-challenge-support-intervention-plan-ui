@@ -8,6 +8,7 @@ import { EvidenceSecuredRoutes } from './evidence-secured/routes'
 import { UsualBehaviourPresentationRoutes } from './usual-behaviour-presentation/routes'
 import { TriggersRoutes } from './triggers/routes'
 import { ProtectiveFactorsRoutes } from './protective-factors/routes'
+import { InterviewsSummaryRoutes } from './interviews-summary/routes'
 
 function Routes(_services: Services) {
   const { router, get } = JourneyRouter()
@@ -20,6 +21,7 @@ function Routes(_services: Services) {
   router.use('/usual-behaviour-presentation', UsualBehaviourPresentationRoutes())
   router.use('/triggers', TriggersRoutes())
   router.use('/protective-factors', ProtectiveFactorsRoutes())
+  router.use('/interviews-summary', InterviewsSummaryRoutes())
 
   return router
 }

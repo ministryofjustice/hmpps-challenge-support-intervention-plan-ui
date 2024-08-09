@@ -1,0 +1,118 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = interviews.length %}
+{% set pageTitle = "Interviews summary - Record a CSIP investigation " %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Record a CSIP investigation</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Interviews summary</h1>
+
+    {% for interview in interviews %}
+        {{ govukSummaryList({
+            card: {
+                title: { text: "Interview with " + interview.interviewee },
+                actions: {
+                    items: [
+                        {
+                            href: 'delete-interview/' + loop.index,
+                            text: "Delete",
+                            visuallyHiddenText: "interview with " + interview.interviewee,
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            },
+            rows: [{
+                key: {
+                    text: 'Interviewee'
+                },
+                value: {
+                    text: interview.interviewee
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'interview-details/' + loop.index + '#interviewee',
+                            text: "Change",
+                            visuallyHiddenText: "the interviewee's name for interview " + loop.index,
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            }, {
+                key: {
+                    text: 'Interview date'
+                },
+                value: {
+                    text: interview.interviewDate | formatDisplayDate
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'interview-details/' + loop.index + '#interviewDate',
+                            text: "Change",
+                            visuallyHiddenText: "the interview date for interview " + loop.index,
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            }, {
+                key: {
+                    text: 'Role'
+                },
+                value: {
+                    text: interview.intervieweeRole.description
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'interview-details/' + loop.index + '#intervieweeRole',
+                            text: "Change",
+                            visuallyHiddenText: "the interviewee's role for interview " + loop.index,
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            }, {
+                key: {
+                    text: 'Comments'
+                },
+                value: {
+                    html: (interview.interviewText or "Not provided") | escape | nl2br
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'interview-details/' + loop.index + '#interviewText',
+                            text: "Change",
+                            visuallyHiddenText: "the comments for interview " + loop.index,
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            }]
+        }) }}
+    {% endfor %}
+
+    {% if not interviews.length %}
+        <p class="govuk-!-margin-bottom-8">No interview details recorded.</p>
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-8">
+    {% endif %}
+
+    {{ govukButton({
+        text: "Add another interview" if interviews.length else "Add interview",
+        href: "interview-details",
+        classes: "govuk-button--secondary",
+        preventDoubleClick: true
+    }) }}
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}

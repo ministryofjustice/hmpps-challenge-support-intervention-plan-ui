@@ -44,7 +44,7 @@ describe('GET /record-investigation', () => {
     expect(getByRole(html, 'heading', { name: '3. Submit report' })).toBeVisible()
     expect(getByText(html, 'LEI123')).toBeVisible()
     expect((getByRole(html, 'link', { name: 'Interview details' }) as HTMLLinkElement).href).toMatch(
-      /record-investigation\/interview-details$/,
+      /record-investigation\/interviews-summary/,
     )
     expect((getByRole(html, 'link', { name: 'Staff involved in the investigation' }) as HTMLLinkElement).href).toMatch(
       /record-investigation\/staff-involved$/,
