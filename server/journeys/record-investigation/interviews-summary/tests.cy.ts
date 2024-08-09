@@ -11,6 +11,7 @@ context('test /record-investigation/interviews-summary', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
     cy.task('stubCsipRecordGetSuccess')
+    cy.task('stubIntervieweeRoles')
   })
 
   it('should try out all cases', () => {

@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 export class InterviewsSummaryController {
   GET = async (req: Request, res: Response) => {
     res.render('record-investigation/interviews-summary/view', {
-      interviews: req.journeyData.investigation!.interviews || [],
+      interviews: req.journeyData.investigation!.interviews?.filter(o => o.interviewee) || [],
     })
   }
 

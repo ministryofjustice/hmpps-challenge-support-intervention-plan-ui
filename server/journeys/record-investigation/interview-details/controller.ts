@@ -8,7 +8,7 @@ export class InterviewDetailsController extends BaseJourneyController {
     const index = Number(req.params['index']) - 1
 
     if (Number.isNaN(index)) {
-      throw new Error('Interview index is not a number')
+      return res.status(404).redirect('/pages/404')
     }
 
     const intervieweeRoleOptions = await this.getReferenceDataOptionsForRadios(
@@ -37,7 +37,7 @@ export class InterviewDetailsController extends BaseJourneyController {
     const index = Number(req.params['index']) - 1
 
     if (Number.isNaN(index)) {
-      throw new Error('Interview index is not a number')
+      return res.status(404).redirect('/pages/404')
     }
 
     req.journeyData.investigation!.interviews![index]!.interviewee = req.body.interviewee
@@ -48,7 +48,7 @@ export class InterviewDetailsController extends BaseJourneyController {
   }
 
   NO_INDEX = async (req: Request, res: Response) => {
-    const index = req.journeyData.investigation?.interviews?.length || 0
+    const index = req.journeyData.investigation?.interviews?.filter(o => o.interviewee).length || 0
 
     if (!req.journeyData.investigation?.interviews) {
       req.journeyData.investigation!.interviews = []
