@@ -1,0 +1,63 @@
+import { Request, Response } from 'express'
+import { SchemaType } from './schemas'
+import { BaseJourneyController } from '../../base/controller'
+import { formatInputDate } from '../../../utils/datetimeUtils'
+
+export class InterviewDetailsController extends BaseJourneyController {
+  GET = async (req: Request, res: Response) => {
+    const index = Number(req.params['index']) - 1
+
+    if (Number.isNaN(index)) {
+      throw new Error('Interview index is not a number')
+    }
+
+    const intervieweeRoleOptions = await this.getReferenceDataOptionsForRadios(
+      req,
+      'interviewee-role',
+      res.locals.formResponses?.['intervieweeRole'] ||
+        req.journeyData.investigation!.interviews![index]!.intervieweeRole,
+    )
+    res.render('record-investigation/interview-details/view', {
+      interviewText:
+        res.locals.formResponses?.['interviewText'] || req.journeyData.investigation?.interviews![index]?.interviewText,
+      intervieweeRoleOptions,
+      intervieweeRole:
+        res.locals.formResponses?.['intervieweeRole'] ||
+        req.journeyData.investigation?.interviews![index]?.intervieweeRole,
+      interviewDate:
+        res.locals.formResponses?.['interviewDate'] ||
+        formatInputDate(req.journeyData.investigation?.interviews![index]?.interviewDate),
+      interviewee:
+        res.locals.formResponses?.['interviewee'] || req.journeyData.investigation?.interviews![index]?.interviewee,
+      backUrl: '../interviews-summary',
+    })
+  }
+
+  POST = async (req: Request<Record<string, string>, unknown, SchemaType>, res: Response) => {
+    const index = Number(req.params['index']) - 1
+
+    if (Number.isNaN(index)) {
+      throw new Error('Interview index is not a number')
+    }
+
+    req.journeyData.investigation!.interviews![index]!.interviewee = req.body.interviewee
+    req.journeyData.investigation!.interviews![index]!.interviewDate = req.body.interviewDate
+    req.journeyData.investigation!.interviews![index]!.intervieweeRole = req.body.intervieweeRole
+    req.journeyData.investigation!.interviews![index]!.interviewText = req.body.interviewText
+    res.redirect('../interviews-summary')
+  }
+
+  NO_INDEX = async (req: Request, res: Response) => {
+    const index = req.journeyData.investigation?.interviews?.length || 0
+
+    if (!req.journeyData.investigation?.interviews) {
+      req.journeyData.investigation!.interviews = []
+    }
+
+    if (!req.journeyData.investigation?.interviews[index]) {
+      req.journeyData.investigation!.interviews[index] = {}
+    }
+
+    res.redirect(`interview-details/${index + 1}`)
+  }
+}
