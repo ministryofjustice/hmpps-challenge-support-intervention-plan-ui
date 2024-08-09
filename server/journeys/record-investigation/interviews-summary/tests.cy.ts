@@ -1,5 +1,5 @@
 import { v4 as uuidV4 } from 'uuid'
-import { injectJourneyData } from '../../../../integration_tests/utils/e2eTestUtils'
+import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /record-investigation/interviews-summary', () => {
   const uuid = uuidV4()
@@ -46,7 +46,7 @@ context('test /record-investigation/interviews-summary', () => {
   }
 
   const assertPageWithSubmittedInterview = () => {
-    injectJourneyData(uuid, {
+    injectJourneyDataAndReload(uuid, {
       investigation: {
         interviews: [
           {
@@ -97,7 +97,7 @@ context('test /record-investigation/interviews-summary', () => {
   }
 
   const assertInterviewCommentFallbackDisplay = () => {
-    injectJourneyData(uuid, {
+    injectJourneyDataAndReload(uuid, {
       investigation: {
         interviews: [
           {
