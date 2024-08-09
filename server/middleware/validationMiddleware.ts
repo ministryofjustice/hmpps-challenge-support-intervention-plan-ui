@@ -81,3 +81,30 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
     return res.redirect('back')
   }
 }
+
+export const validateDateEarlierThanToday = (requiredErr: string, invalidErr: string, maxErr: string) => {
+  return z
+    .string({ message: requiredErr })
+    .min(8, { message: requiredErr })
+    .max(10, { message: requiredErr })
+    .transform(value => value.split(/[-/]/).reverse())
+    .transform(value => {
+      // Prefix month and date with a 0 if needed
+      const month = value[1]?.length === 2 ? value[1] : `0${value[1]}`
+      const date = value[2]?.length === 2 ? value[2] : `0${value[2]}`
+      return `${value[0]}-${month}-${date}T00:00:00Z` // We put a full timestamp on it so it gets parsed as UTC time and the date doesn't get changed due to locale
+    })
+    .pipe(
+      z.coerce
+        .date({
+          errorMap: (issue, ctx) => {
+            if (issue.code === 'invalid_date') {
+              return { message: invalidErr }
+            }
+            return { message: ctx.defaultError }
+          },
+        })
+        .max(new Date(), { message: maxErr }),
+    )
+    .transform(dateString => dateString.toISOString().substring(0, 10))
+}
