@@ -1,0 +1,67 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = true %}
+{% set pageTitle = "Delete interview - Record a CSIP investigation" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Record a CSIP investigation</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Are you sure you want to delete this interview?</h1>
+
+    {{ govukSummaryList({
+        card: {
+            title: { text: "Interview with " + interview.interviewee }
+        },
+        rows: [{
+            key: {
+                text: 'Interviewee'
+            },
+            value: {
+                text: interview.interviewee
+            }
+        }, {
+            key: {
+                text: 'Interview date'
+            },
+            value: {
+                text: interview.interviewDate | formatDisplayDate
+            }
+        }, {
+            key: {
+                text: 'Role'
+            },
+            value: {
+                text: interview.intervieweeRole.description
+            }
+        }, {
+            key: {
+                text: 'Comments'
+            },
+            value: {
+                html: (interview.interviewText or "Not provided") | escape | nl2br
+            }
+        }]
+    }) }}
+
+
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        <div class="govuk-button-group">
+            {{ govukButton({
+                text: "Yes, delete it",
+                classes: "govuk-button--warning",
+                preventDoubleClick: true
+            }) }}
+
+            {{ govukButton({
+                text: "No, do not delete it",
+                href: "../interviews-summary",
+                classes: "govuk-button--secondary",
+                preventDoubleClick: true
+            }) }}
+        </div>
+
+    </form>
+{% endblock %}
