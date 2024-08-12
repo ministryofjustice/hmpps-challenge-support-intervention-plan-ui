@@ -22,6 +22,7 @@ export class ScreenCheckAnswersController extends BaseJourneyController {
         recordedBy: res.locals.user.username,
         recordedByDisplayName: res.locals.user.displayName,
       })
+      req.journeyData.csipRecord = await this.csipApiService.getCsipRecord(req, req.journeyData.csipRecord!.recordUuid)
       req.journeyData.journeyCompleted = true
     } catch (e) {
       if ((e as SanitisedError).data) {
