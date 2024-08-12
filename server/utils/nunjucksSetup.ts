@@ -2,11 +2,6 @@
 import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
-import {
-  firstNameSpaceLastName,
-  personDateOfBirth,
-  personProfileName,
-} from 'hmpps-court-cases-release-dates-design/hmpps/utils/utils'
 import fs from 'fs'
 import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
 import config from '../config'
@@ -15,6 +10,7 @@ import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
 import { YES_NO_ANSWER } from '../journeys/referral/safer-custody/schemas'
 import logger from '../../logger'
 import { csipStatusDisplayText } from './csipDisplayTextUtils'
+import { firstNameSpaceLastName, personDateOfBirth, personProfileName } from './miniProfileUtils'
 
 export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')

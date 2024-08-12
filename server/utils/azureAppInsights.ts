@@ -6,6 +6,7 @@ import {
   TelemetryClient,
 } from 'applicationinsights'
 import { RequestHandler } from 'express'
+import { v4 } from 'uuid'
 import type { ApplicationInfo } from '../applicationInfo'
 
 export function initialiseAppInsights(): void {
@@ -50,6 +51,7 @@ export function appInsightsMiddleware(): RequestHandler {
       const context = getCorrelationContext()
       if (context && req.route) {
         context.customProperties.setProperty('operationName', `${req.method} ${req.route?.path}`)
+        context.customProperties.setProperty('operationId', v4())
       }
     })
     next()
