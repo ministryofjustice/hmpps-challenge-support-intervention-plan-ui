@@ -24,9 +24,6 @@ export class InterviewDetailsController extends BaseJourneyController {
       interviewText:
         res.locals.formResponses?.['interviewText'] || req.journeyData.investigation?.interviews![index]?.interviewText,
       intervieweeRoleOptions,
-      intervieweeRole:
-        res.locals.formResponses?.['intervieweeRole'] ||
-        req.journeyData.investigation?.interviews![index]?.intervieweeRole,
       interviewDate:
         res.locals.formResponses?.['interviewDate'] ||
         formatInputDate(req.journeyData.investigation?.interviews![index]?.interviewDate),
@@ -40,10 +37,7 @@ export class InterviewDetailsController extends BaseJourneyController {
     const index = Number(req.params['index']) - 1
 
     if (Number.isNaN(index)) {
-      return res.render('pages/error', {
-        message: 'Interview not found',
-        status: 404,
-      })
+      return res.status(404).redirect('/pages/404')
     }
 
     req.journeyData.investigation!.interviews![index]!.interviewee = req.body.interviewee
