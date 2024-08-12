@@ -16,6 +16,11 @@ context('Make a Referral Journey', () => {
   })
 
   it('happy path', () => {
+    cy.signIn()
+    cy.visit('/prisoners/A1111AA/referral/start')
+
+    prisonerProfileShouldDisplay()
+
     fillInformationReactiveNotOnBehalf()
 
     goBackCheckInfoSaved(false, false)
@@ -64,6 +69,16 @@ context('Make a Referral Journey', () => {
     cy.url().should('include', 'check-answers')
   })
 })
+
+const prisonerProfileShouldDisplay = () => {
+  cy.findByRole('img', { name: /Image of User, Testname/ }).should('be.visible')
+  cy.findByRole('link', { name: /User, Testname/ }).should('be.visible')
+  cy.findByText('A1111AA').should('be.visible')
+  cy.findByText('02/02/1932').should('be.visible')
+  cy.findByText('HMP Kirkham').should('be.visible')
+  cy.findByText('A-1-1').should('be.visible')
+  cy.findByText('On remand').should('be.visible')
+}
 
 const changeInformationProactiveOnBehalf = () => {
   cy.findByRole('radio', { name: /yes/i }).click()
@@ -175,9 +190,6 @@ const goBackCheckInfoSaved = (onBehalfOf: boolean, proactive: boolean) => {
 }
 
 const fillInformationReactiveNotOnBehalf = () => {
-  cy.signIn()
-  cy.visit('/prisoners/A1111AA/referral/start')
-
   cy.url().should('include', '/on-behalf-of')
   cy.findByRole('radio', { name: /no/i }).click()
   checkAxeAccessibility()

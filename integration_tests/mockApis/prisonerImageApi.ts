@@ -8,7 +8,7 @@ const stubGetPrisonerImage = () => {
     },
     response: {
       status: 200,
-      body: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
+      bodyFileName: '../../assets/images/prisoner-profile-image.png',
       headers: {
         'Content-Type': 'image/png',
       },
