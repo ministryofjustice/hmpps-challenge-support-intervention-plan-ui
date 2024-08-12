@@ -17,6 +17,9 @@ const getJourneyDataMock = () => {
     saferCustodyScreening: {
       outcomeType: { code: 'OPE', description: 'Progress to investigation' },
     },
+    csipRecord: {
+      status: 'INVESTIGATION_PENDING',
+    },
   } as JourneyData
 }
 
@@ -62,6 +65,7 @@ describe('GET screen/confirmation', () => {
   it('should render page correctly for outcome type "Progress to CSIP"', async () => {
     const mockData = getJourneyDataMock()
     mockData.saferCustodyScreening!.outcomeType = { code: 'CUR', description: 'Progress to CSIP' } as ReferenceData
+    mockData.csipRecord!.status = 'PLAN_PENDING'
     const result = await request(app({ journeyData: mockData }))
       .get(URL)
       .expect(200)
@@ -85,6 +89,7 @@ describe('GET screen/confirmation', () => {
   it('should render page correctly for any other outcome type', async () => {
     const mockData = getJourneyDataMock()
     mockData.saferCustodyScreening!.outcomeType = { code: 'AAA', description: 'No further action' } as ReferenceData
+    mockData.csipRecord!.status = 'NO_FURTHER_ACTION'
     const result = await request(app({ journeyData: mockData }))
       .get(URL)
       .expect(200)

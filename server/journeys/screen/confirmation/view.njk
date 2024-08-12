@@ -4,16 +4,14 @@
 
 {% set pageTitle = "Confirmation - Screen CSIP referral" %}
 
-{% set theHtml = ("<div><strong>Decision: </strong>" + outcomeTypeDescription | escape + "</div>") %}
-
 {% block innerContent %}
     {{ govukPanel({
         titleText: "CSIP referral screening outcome recorded",
-        html: theHtml
+        html: ("<div><strong>Decision: </strong>" + outcomeTypeDescription | escape + "</div>")
     }) }}
-    <p class="govuk-body">We’ve updated the status of the referral to “{{outcomeStatus | sentenceCase(false)}}”.</p>
+    <p class="govuk-body">We’ve updated the status of the referral to “{{ csipRecord | csipStatusDisplayText | sentenceCase(false) }}”.</p>
     {% if outcomeTypeDescription == "Progress to investigation" %}
       <h1 class="govuk-heading-m">What needs to happen next</h1>
-      <p class="govuk-body">An investigation must now be carried out. This should include interviewing {{(prisoner.firstName + " " + prisoner.lastName) | convertToTitleCase }} about the behaviour that led to the referral</p>
+      <p class="govuk-body">An investigation must now be carried out. This should include interviewing {{ (prisoner.firstName + " " + prisoner.lastName) | convertToTitleCase }} about the behaviour that led to the referral</p>
     {% endif %}
 {% endblock %}

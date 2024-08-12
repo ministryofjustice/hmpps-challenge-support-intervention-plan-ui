@@ -129,6 +129,7 @@ const app = (
               refererArea: { code: '', createdAt: '', createdBy: '' },
               referredBy: '',
             },
+            status: 'REFERRAL_SUBMITTED',
           } as components['schemas']['CsipRecord']
         },
       } as unknown as CsipApiService,
