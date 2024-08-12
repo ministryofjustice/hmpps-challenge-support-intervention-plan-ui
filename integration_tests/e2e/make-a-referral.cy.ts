@@ -16,8 +16,7 @@ context('Make a Referral Journey', () => {
   })
 
   it('happy path', () => {
-    cy.signIn()
-    cy.visit('/prisoners/A1111AA/referral/start')
+    signinAndStart()
 
     prisonerProfileShouldDisplay()
 
@@ -50,6 +49,8 @@ context('Make a Referral Journey', () => {
   })
 
   it('user stays on page after inputting invalid data after changing their answers', () => {
+    signinAndStart()
+
     fillInformationReactiveNotOnBehalf()
 
     cy.findByRole('button', { name: /continue/i }).click()
@@ -69,6 +70,11 @@ context('Make a Referral Journey', () => {
     cy.url().should('include', 'check-answers')
   })
 })
+
+const signinAndStart = () => {
+  cy.signIn()
+  cy.visit('/prisoners/A1111AA/referral/start')
+}
 
 const prisonerProfileShouldDisplay = () => {
   cy.findByRole('img', { name: /Image of User, Testname/ }).should('be.visible')
