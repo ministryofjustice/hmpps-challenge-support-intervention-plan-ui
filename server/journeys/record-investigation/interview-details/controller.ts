@@ -41,14 +41,15 @@ export class InterviewDetailsController extends BaseJourneyController {
       req.journeyData.investigation!.interviews = []
     }
 
-    if (!req.journeyData.investigation!.interviews?.[index]) {
+req.journeyData.investigation!.interviews?.[index] = {
+  interviewee: req.body.interviewee
+  interviewDate: req.body.interviewDate
+  intervieweeRole: req.body.intervieweeRole
+  interviewText: req.body.interviewText
+}
       req.journeyData.investigation!.interviews![index] = {}
     }
 
-    req.journeyData.investigation!.interviews![index]!.interviewee = req.body.interviewee
-    req.journeyData.investigation!.interviews![index]!.interviewDate = req.body.interviewDate
-    req.journeyData.investigation!.interviews![index]!.intervieweeRole = req.body.intervieweeRole
-    req.journeyData.investigation!.interviews![index]!.interviewText = req.body.interviewText
     return res.redirect('../interviews-summary')
   }
 }
