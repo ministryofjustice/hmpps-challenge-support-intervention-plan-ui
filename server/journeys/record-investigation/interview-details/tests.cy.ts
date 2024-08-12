@@ -49,6 +49,12 @@ context('test /record-investigation/interview-details', () => {
 
     cy.get('a[href*="interview-details/1#interviewee"]').first().click()
     verifyDetailsAreRestoredFromJourney()
+
+    cy.url().then(currentUrl => {
+      const modifiedUrl = currentUrl.replace(/interview-details\/(\d+)/g, 'interview-details/$10')
+      cy.visit(modifiedUrl, { failOnStatusCode: false })
+      cy.findByText('404').should('be.visible')
+    })
   })
 
   const validatePageContents = () => {

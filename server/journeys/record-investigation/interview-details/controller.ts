@@ -7,8 +7,11 @@ export class InterviewDetailsController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
     const index = Number(req.params['index']) - 1
 
-    if (Number.isNaN(index)) {
-      return res.status(404).redirect('/pages/404')
+    if (Number.isNaN(index) || !req.journeyData.investigation?.interviews?.[index]) {
+      return res.render('pages/error', {
+        message: 'Interview not found',
+        status: 404,
+      })
     }
 
     const intervieweeRoleOptions = await this.getReferenceDataOptionsForRadios(
@@ -17,7 +20,7 @@ export class InterviewDetailsController extends BaseJourneyController {
       res.locals.formResponses?.['intervieweeRole'] ||
         req.journeyData.investigation!.interviews![index]!.intervieweeRole,
     )
-    res.render('record-investigation/interview-details/view', {
+    return res.render('record-investigation/interview-details/view', {
       interviewText:
         res.locals.formResponses?.['interviewText'] || req.journeyData.investigation?.interviews![index]?.interviewText,
       intervieweeRoleOptions,
@@ -37,14 +40,17 @@ export class InterviewDetailsController extends BaseJourneyController {
     const index = Number(req.params['index']) - 1
 
     if (Number.isNaN(index)) {
-      return res.status(404).redirect('/pages/404')
+      return res.render('pages/error', {
+        message: 'Interview not found',
+        status: 404,
+      })
     }
 
     req.journeyData.investigation!.interviews![index]!.interviewee = req.body.interviewee
     req.journeyData.investigation!.interviews![index]!.interviewDate = req.body.interviewDate
     req.journeyData.investigation!.interviews![index]!.intervieweeRole = req.body.intervieweeRole
     req.journeyData.investigation!.interviews![index]!.interviewText = req.body.interviewText
-    res.redirect('../interviews-summary')
+    return res.redirect('../interviews-summary')
   }
 
   NO_INDEX = async (req: Request, res: Response) => {
