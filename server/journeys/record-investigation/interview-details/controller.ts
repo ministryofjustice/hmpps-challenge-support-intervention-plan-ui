@@ -19,7 +19,8 @@ export class InterviewDetailsController extends BaseJourneyController {
     )
     return res.render('record-investigation/interview-details/view', {
       interviewText:
-        res.locals.formResponses?.['interviewText'] || req.journeyData.investigation?.interviews?.[index]?.interviewText,
+        res.locals.formResponses?.['interviewText'] ||
+        req.journeyData.investigation?.interviews?.[index]?.interviewText,
       intervieweeRoleOptions,
       interviewDate:
         res.locals.formResponses?.['interviewDate'] ||
@@ -36,18 +37,16 @@ export class InterviewDetailsController extends BaseJourneyController {
     if (Number.isNaN(index) || (req.journeyData.investigation!.interviews || []).length < index) {
       return res.status(404).redirect('/pages/404')
     }
-    
+
     if (!req.journeyData.investigation?.interviews) {
       req.journeyData.investigation!.interviews = []
     }
 
-req.journeyData.investigation!.interviews?.[index] = {
-  interviewee: req.body.interviewee
-  interviewDate: req.body.interviewDate
-  intervieweeRole: req.body.intervieweeRole
-  interviewText: req.body.interviewText
-}
-      req.journeyData.investigation!.interviews![index] = {}
+    req.journeyData.investigation!.interviews[index] = {
+      interviewee: req.body.interviewee,
+      interviewDate: req.body.interviewDate,
+      intervieweeRole: req.body.intervieweeRole,
+      interviewText: req.body.interviewText,
     }
 
     return res.redirect('../interviews-summary')
