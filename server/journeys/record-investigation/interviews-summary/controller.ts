@@ -3,7 +3,8 @@ import { Request, Response } from 'express'
 export class InterviewsSummaryController {
   GET = async (req: Request, res: Response) => {
     res.render('record-investigation/interviews-summary/view', {
-      interviews: req.journeyData.investigation!.interviews?.filter(o => o.interviewee) || [],
+      interviews: req.journeyData.investigation!.interviews || [],
+      newInterviewIndex: req.journeyData.investigation!.interviews ? req.journeyData.investigation!.interviews.length + 1 : 1,
     })
   }
 
