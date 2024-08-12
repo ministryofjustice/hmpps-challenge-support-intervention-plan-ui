@@ -37,9 +37,8 @@ context('test /record-investigation/delete-interview', () => {
     cy.findByRole('link', { name: /^back/i })
       .should('have.attr', 'href')
       .and('to.match', /\/interviews-summary$/)
-    cy.findByRole('button', { name: /^No, do not delete it/i })
-      .should('have.attr', 'href')
-      .and('to.match', /\/interviews-summary$/)
+
+    clickDoNotDeleteThenComeBack()
 
     proceedToDelete()
   })
@@ -53,6 +52,12 @@ context('test /record-investigation/delete-interview', () => {
 
     injectJourneyDataAndReload(uuid, journeyData)
 
+    cy.findByRole('link', { name: /delete interview with some person/i }).click()
+  }
+
+  const clickDoNotDeleteThenComeBack = () => {
+    cy.findByRole('button', { name: /^No, do not delete it/i }).click()
+    cy.url().should('to.match', /\/interviews-summary$/)
     cy.findByRole('link', { name: /delete interview with some person/i }).click()
   }
 
