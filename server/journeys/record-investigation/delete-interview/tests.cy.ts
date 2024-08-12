@@ -43,6 +43,23 @@ context('test /record-investigation/delete-interview', () => {
     proceedToDelete()
   })
 
+  it('should shows 404 for invalid interview index', () => {
+    navigateToTestPage({
+      investigation: {
+        interviews: [
+          {
+            interviewee: 'Some Person',
+            interviewDate: '2024-12-25',
+            intervieweeRole: { code: 'CODE', description: 'Witness' },
+            interviewText: 'some text',
+          },
+        ],
+      },
+    })
+    cy.visit(`${uuid}/record-investigation/delete-interview/99`, { failOnStatusCode: false })
+    cy.findByText('404').should('be.visible')
+  })
+
   const navigateToTestPage = (journeyData: object) => {
     cy.signIn()
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-investigation/start`)
