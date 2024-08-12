@@ -1,5 +1,6 @@
 import { RequestHandler, Request } from 'express'
 import z, { RefinementCtx } from 'zod'
+import { isValid, isBefore, parseISO } from 'date-fns'
 
 export type fieldErrors = {
   [field: string | number | symbol]: string[] | undefined
@@ -85,8 +86,7 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
 export const validateDateEarlierThanToday = (requiredErr: string, invalidErr: string, maxErr: string) => {
   return z
     .string({ message: requiredErr })
-    .min(8, { message: requiredErr })
-    .max(10, { message: requiredErr })
+    .min(1, { message: requiredErr })
     .transform(value => value.split(/[-/]/).reverse())
     .transform(value => {
       // Prefix month and date with a 0 if needed
@@ -94,17 +94,12 @@ export const validateDateEarlierThanToday = (requiredErr: string, invalidErr: st
       const date = value[2]?.length === 2 ? value[2] : `0${value[2]}`
       return `${value[0]}-${month}-${date}T00:00:00Z` // We put a full timestamp on it so it gets parsed as UTC time and the date doesn't get changed due to locale
     })
-    .pipe(
-      z.coerce
-        .date({
-          errorMap: (issue, ctx) => {
-            if (issue.code === 'invalid_date') {
-              return { message: invalidErr }
-            }
-            return { message: ctx.defaultError }
-          },
-        })
-        .max(new Date(), { message: maxErr }),
-    )
-    .transform(dateString => dateString.toISOString().substring(0, 10))
+    .transform(date => parseISO(date))
+    .superRefine((date, ctx) => {
+      return isValid(date) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: invalidErr })
+    })
+    .superRefine((date, ctx) => {
+      return isBefore(date, new Date()) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: maxErr })
+    })
+    .transform(date => date.toISOString().substring(0, 10))
 }

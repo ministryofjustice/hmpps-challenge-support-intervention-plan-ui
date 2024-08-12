@@ -43,7 +43,7 @@ context('test /record-investigation/interviews-summary', () => {
 
   const proceedToAddInterview = (buttonName: string) => {
     cy.findByRole('button', { name: buttonName }).click()
-    cy.url().should('to.match', /\/interview-details$/)
+    cy.url().should('to.match', /\/interview-details\/\d+$/)
   }
 
   const assertPageWithSubmittedInterview = () => {
