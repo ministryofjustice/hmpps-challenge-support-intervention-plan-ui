@@ -361,6 +361,7 @@ const stubCsipRecordGetSuccess = () => {
         createdAt: '2024-07-22T11:21:48',
         createdBy: 'AHUMAN_GEN',
         createdByDisplayName: 'A Human',
+        status: 'REFERRAL_SUBMITTED',
         referral: {
           isOnBehalfOfReferral: true,
           referredBy: '<script>alert("Test User")</script>',
