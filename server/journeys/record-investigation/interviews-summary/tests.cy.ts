@@ -11,6 +11,7 @@ context('test /record-investigation/interviews-summary', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
     cy.task('stubCsipRecordGetSuccess')
+    cy.task('stubIntervieweeRoles')
   })
 
   it('should try out all cases', () => {
@@ -42,7 +43,7 @@ context('test /record-investigation/interviews-summary', () => {
 
   const proceedToAddInterview = (buttonName: string) => {
     cy.findByRole('button', { name: buttonName }).click()
-    cy.url().should('to.match', /\/interview-details$/)
+    cy.url().should('to.match', /\/interview-details\/\d+$/)
   }
 
   const assertPageWithSubmittedInterview = () => {

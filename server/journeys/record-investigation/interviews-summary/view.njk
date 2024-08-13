@@ -104,7 +104,7 @@
 
     {{ govukButton({
         text: "Add another interview" if interviews.length else "Add interview",
-        href: "interview-details",
+        href: "interview-details/" + newInterviewIndex,
         classes: "govuk-button--secondary",
         preventDoubleClick: true
     }) }}

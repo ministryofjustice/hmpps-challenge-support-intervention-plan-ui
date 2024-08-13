@@ -105,6 +105,11 @@ Or run tests with the cypress UI:
 
 `npm run int-test-ui`
 
+## Helpful Scripts
+
+### Import types from API backend
+`npx openapi-typescript https://csip-api-dev.hmpps.service.justice.gov.uk/v3/api-docs > ./server/@types/csip/index.d.ts`
+
 ## Change log
 
 A changelog for the service is available [here](./CHANGELOG.md)

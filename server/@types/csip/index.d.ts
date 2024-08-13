@@ -21,7 +21,14 @@ export interface paths {
      *     * ROLE_NOMIS_CSIP
      */
     put: operations['upsertInvestigation']
-    post?: never
+    /**
+     * Add investigation and any interviews to the referral.
+     * @description Create the investigation and any interviews. Publishes person.csip.record.updated event with affected component Investigation and person.csip.interview.created event
+     *
+     *     Requires one of the following roles:
+     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     */
+    post: operations['createInvestigation']
     delete?: never
     options?: never
     head?: never
@@ -44,7 +51,7 @@ export interface paths {
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
      *     * ROLE_NOMIS_CSIP
      */
-    put: operations['createDecision']
+    put: operations['upsertDecision']
     post?: never
     delete?: never
     options?: never
@@ -68,8 +75,15 @@ export interface paths {
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
      *     * ROLE_NOMIS_CSIP
      */
-    put: operations['createPlan']
-    post?: never
+    put: operations['upsertPlan']
+    /**
+     * Create the CSIP plan
+     * @description Create the CSIP plan. Publishes person.csip.record.updated event with affected component of Plan and IdentifiedNeed
+     *
+     *     Requires one of the following roles:
+     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     */
+    post: operations['createPlan']
     delete?: never
     options?: never
     head?: never
@@ -194,6 +208,7 @@ export interface paths {
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     *     * ROLE_NOMIS_CSIP
      */
     post: operations['createReview']
     delete?: never
@@ -241,6 +256,7 @@ export interface paths {
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     *     * ROLE_NOMIS_CSIP
      */
     post: operations['createAttendee']
     delete?: never
@@ -482,7 +498,7 @@ export interface paths {
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
-    /** @description The request body to create an investigation on the incident that motivated the CSIP referral. */
+    /** @description The request body to update an investigation on the incident that motivated the CSIP referral. */
     UpsertInvestigationRequest: {
       /** @description The names of the staff involved in the investigation. */
       staffInvolved?: string
@@ -724,8 +740,8 @@ export interface components {
       identifiedNeedUuid: string
       /** @description Details of the need identified in the CSIP plan. */
       identifiedNeed: string
-      /** @description The name of the person who identified the need. */
-      needIdentifiedBy: string
+      /** @description The name of the person who is responsible for taking action on the intervention. */
+      responsiblePerson: string
       /**
        * Format: date
        * @description The date the need was identified.
@@ -826,16 +842,6 @@ export interface components {
        * @example 2021-09-27
        */
       nextReviewDate?: string
-      /** @description If an action following the review was to inform people responsible for the person in prison. */
-      isActionResponsiblePeopleInformed?: boolean
-      /** @description If an action following the review was to update the CSIP plan. */
-      isActionCsipUpdated?: boolean
-      /** @description If the outcome decision following the review was the person should remain on the CSIP plan. */
-      isActionRemainOnCsip?: boolean
-      /** @description If an action following the review was to add a CSIP case note. */
-      isActionCaseNote?: boolean
-      /** @description If the outcome decision following the review was closing the CSIP plan. */
-      isActionCloseCsip?: boolean
       /**
        * Format: date
        * @description The date the CSIP plan was closed following a review outcome decision to close it.
@@ -844,6 +850,8 @@ export interface components {
       csipClosedDate?: string
       /** @description Additional information about the review. */
       summary?: string
+      /** @description A list of actions following the review. */
+      actions: ('ResponsiblePeopleInformed' | 'CsipUpdated' | 'RemainOnCsip' | 'CaseNote' | 'CloseCsip')[]
       /**
        * Format: date-time
        * @description The date and time the Review was created
@@ -1033,6 +1041,22 @@ export interface components {
       lastModifiedByDisplayName?: string
       referral: components['schemas']['Referral']
       plan?: components['schemas']['Plan']
+      /**
+       * @description The current status of the CSIP record.
+       * @enum {string}
+       */
+      status:
+        | 'CSIP_CLOSED'
+        | 'CSIP_OPEN'
+        | 'AWAITING_DECISION'
+        | 'ACCT_SUPPORT'
+        | 'PLAN_PENDING'
+        | 'INVESTIGATION_PENDING'
+        | 'NO_FURTHER_ACTION'
+        | 'SUPPORT_OUTSIDE_CSIP'
+        | 'REFERRAL_SUBMITTED'
+        | 'REFERRAL_PENDING'
+        | 'UNKNOWN'
     }
     /** @description The referral of a CSIP record */
     Referral: {
@@ -1126,6 +1150,67 @@ export interface components {
       /** @description Information provided in interview. */
       interviewText?: string
     }
+    /** @description The request body to create an investigation on the incident that motivated the CSIP referral. */
+    CreateInvestigationRequest: {
+      /** @description The names of the staff involved in the investigation. */
+      staffInvolved?: string
+      /** @description Any evidence that was secured as part of the investigation. */
+      evidenceSecured?: string
+      /** @description The reasons why the incident occurred. */
+      occurrenceReason?: string
+      /** @description The normal behaviour of the person in prison. */
+      personsUsualBehaviour?: string
+      /** @description What triggers the person in prison has that could have motivated the incident. */
+      personsTrigger?: string
+      /** @description Any protective factors to reduce the person's risk factors and prevent triggers for instance of violence */
+      protectiveFactors?: string
+      /** @description The interviews in relation to the investigation */
+      interviews: components['schemas']['CreateInterviewRequest'][]
+    }
+    /** @description The request body to create an Identified Need in a CSIP Plan */
+    CreateIdentifiedNeedRequest: {
+      /** @description Details of the need identified in the CSIP plan. */
+      identifiedNeed: string
+      /** @description The name of the person who is responsible for taking action on the intervention. */
+      responsiblePerson: string
+      /**
+       * Format: date
+       * @description The date the need was identified.
+       * @example 2021-09-27
+       */
+      createdDate: string
+      /**
+       * Format: date
+       * @description The target date the need should be progressed or resolved.
+       * @example 2021-09-27
+       */
+      targetDate: string
+      /**
+       * Format: date
+       * @description The date the identified need was resolved or closed.
+       * @example 2021-09-27
+       */
+      closedDate?: string
+      /** @description The planned intervention for the identified need. */
+      intervention: string
+      /** @description How the plan to address the identified need is progressing. */
+      progression?: string
+    }
+    /** @description The request for creating a CSIP Plan for a CSIP record */
+    CreatePlanRequest: {
+      /** @description The case manager assigned to the CSIP plan. */
+      caseManager: string
+      /** @description The reasons motivating the creation of a CSIP plan. */
+      reasonForPlan: string
+      /**
+       * Format: date
+       * @description The first date the CSIP plan should be reviewed.
+       * @example 2021-09-27
+       */
+      firstCaseReviewDate: string
+      /** @description The needs identified in the CSIP plan. */
+      identifiedNeeds: components['schemas']['CreateIdentifiedNeedRequest'][]
+    }
     /** @description The request body to create a Attendee/Contributor to the review of a CSIP Plan */
     CreateAttendeeRequest: {
       /** @description Name of review attendee/contributor. */
@@ -1155,16 +1240,6 @@ export interface components {
        * @example 2021-09-27
        */
       nextReviewDate?: string
-      /** @description If an action following the review was to inform people responsible for the person in prison. */
-      isActionResponsiblePeopleInformed?: boolean
-      /** @description If an action following the review was to update the CSIP plan. */
-      isActionCsipUpdated?: boolean
-      /** @description If the outcome decision following the review was the person should remain on the CSIP plan. */
-      isActionRemainOnCsip?: boolean
-      /** @description If an action following the review was to add a CSIP case note. */
-      isActionCaseNote?: boolean
-      /** @description If the outcome decision following the review was closing the CSIP plan. */
-      isActionCloseCsip?: boolean
       /**
        * Format: date
        * @description The date the CSIP plan was closed following a review outcome decision to close it.
@@ -1173,37 +1248,10 @@ export interface components {
       csipClosedDate?: string
       /** @description Additional information about the review. */
       summary?: string
+      /** @description A list of actions following the review. */
+      actions?: ('ResponsiblePeopleInformed' | 'CsipUpdated' | 'RemainOnCsip' | 'CaseNote' | 'CloseCsip')[]
       /** @description The attendees/contributors to the review. */
       attendees?: components['schemas']['CreateAttendeeRequest'][]
-    }
-    /** @description The request body to create an Identified Need in a CSIP Plan */
-    CreateIdentifiedNeedRequest: {
-      /** @description Details of the need identified in the CSIP plan. */
-      identifiedNeed: string
-      /** @description The name of the person who identified the need. */
-      needIdentifiedBy: string
-      /**
-       * Format: date
-       * @description The date the need was identified.
-       * @example 2021-09-27
-       */
-      createdDate: string
-      /**
-       * Format: date
-       * @description The target date the need should be progressed or resolved.
-       * @example 2021-09-27
-       */
-      targetDate: string
-      /**
-       * Format: date
-       * @description The date the identified need was resolved or closed.
-       * @example 2021-09-27
-       */
-      closedDate?: string
-      /** @description The planned intervention for the identified need. */
-      intervention: string
-      /** @description How the plan to address the identified need is progressing. */
-      progression?: string
     }
     /** @description The request body for updating a CSIP Record */
     UpdateCsipRecordRequest: {
@@ -1338,8 +1386,8 @@ export interface components {
     UpdateIdentifiedNeedRequest: {
       /** @description Details of the need identified in the CSIP plan. */
       identifiedNeed: string
-      /** @description The name of the person who identified the need. */
-      needIdentifiedBy: string
+      /** @description The name of the person who is responsible for taking action on the intervention. */
+      responsiblePerson: string
       /**
        * Format: date
        * @description The date the need was identified.
@@ -1490,7 +1538,79 @@ export interface operations {
       }
     }
   }
-  createDecision: {
+  createInvestigation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description CSIP record unique identifier */
+        recordUuid: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateInvestigationRequest']
+      }
+    }
+    responses: {
+      /** @description Investigation and interviews added to CSIP referral */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['Investigation']
+        }
+      }
+      /** @description Bad request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The CSIP referral associated with this identifier was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Conflict. The CSIP referral already has an Investigation created. */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  upsertDecision: {
     parameters: {
       query?: never
       header?: never
@@ -1571,7 +1691,7 @@ export interface operations {
       }
     }
   }
-  createPlan: {
+  upsertPlan: {
     parameters: {
       query?: never
       header?: never
@@ -1596,6 +1716,69 @@ export interface operations {
           'application/json': components['schemas']['Plan']
         }
       }
+      /** @description CSIP plan created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['Plan']
+        }
+      }
+      /** @description Bad request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The CSIP referral associated with this identifier was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createPlan: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description CSIP record unique identifier */
+        recordUuid: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreatePlanRequest']
+      }
+    }
+    responses: {
       /** @description CSIP plan created */
       201: {
         headers: {

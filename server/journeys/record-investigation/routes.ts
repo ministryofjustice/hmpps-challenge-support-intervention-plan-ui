@@ -9,9 +9,10 @@ import { UsualBehaviourPresentationRoutes } from './usual-behaviour-presentation
 import { TriggersRoutes } from './triggers/routes'
 import { ProtectiveFactorsRoutes } from './protective-factors/routes'
 import { InterviewsSummaryRoutes } from './interviews-summary/routes'
+import { InterviewDetailsRoutes } from './interview-details/routes'
 import { DeleteInterviewRoutes } from './delete-interview/routes'
 
-function Routes(_services: Services) {
+function Routes(services: Services) {
   const { router, get } = JourneyRouter()
   const controller = new RecordInvestigationController()
 
@@ -23,6 +24,7 @@ function Routes(_services: Services) {
   router.use('/triggers', TriggersRoutes())
   router.use('/protective-factors', ProtectiveFactorsRoutes())
   router.use('/interviews-summary', InterviewsSummaryRoutes())
+  router.use('/interview-details', InterviewDetailsRoutes(services.csipApiService))
   router.use('/delete-interview/:index', DeleteInterviewRoutes())
 
   return router

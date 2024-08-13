@@ -23,6 +23,9 @@ const journeyDataMock = {
     outcomeType: MOCK_INPUT_RADIO,
     reasonForDecision: MOCK_INPUT_TEXT_MULTI,
   },
+  csipRecord: {
+    recordUuid: 'uuid',
+  },
 } as JourneyData
 
 const URL = `/${uuid}/screen/check-answers`
@@ -58,10 +61,12 @@ const createThrowMock = <T extends unknown[]>() => {
 }
 
 const mockCreateScreeningOutcome = createMock<Parameters<typeof CsipApiService.prototype.createScreeningOutcome>>()
+const mockGetCsipRecord = createMock<Parameters<typeof CsipApiService.prototype.getCsipRecord>>()
 
 const mockServices: Partial<PartialServices> = {
   csipApiService: {
     createScreeningOutcome: mockCreateScreeningOutcome.mock,
+    getCsipRecord: mockGetCsipRecord.mock,
   } as unknown as CsipApiService,
 }
 

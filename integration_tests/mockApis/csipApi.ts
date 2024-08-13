@@ -87,6 +87,35 @@ const stubIncidentType = () => {
   })
 }
 
+const stubIntervieweeRoles = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/reference-data/interviewee-role',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: [
+        {
+          code: 'A',
+          description: 'Role1',
+          createdAt: new Date().toISOString(),
+          createdBy: 'foobar',
+        },
+        {
+          code: 'B',
+          description: 'Role2',
+          createdAt: new Date().toISOString(),
+          createdBy: 'foobar',
+        },
+      ],
+    },
+  })
+}
+
 const stubContribFactors = () => {
   return stubFor({
     request: {
@@ -361,6 +390,7 @@ const stubCsipRecordGetSuccess = () => {
         createdAt: '2024-07-22T11:21:48',
         createdBy: 'AHUMAN_GEN',
         createdByDisplayName: 'A Human',
+        status: 'REFERRAL_SUBMITTED',
         referral: {
           isOnBehalfOfReferral: true,
           referredBy: '<script>alert("Test User")</script>',
@@ -466,6 +496,7 @@ export default {
   stubAreaOfWork,
   stubIncidentLocation,
   stubIncidentType,
+  stubIntervieweeRoles,
   stubIncidentInvolvement,
   stubContribFactors,
   stubCsipRecordPostSuccess,

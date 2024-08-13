@@ -2,11 +2,6 @@
 import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
-import {
-  firstNameSpaceLastName,
-  personDateOfBirth,
-  personProfileName,
-} from 'hmpps-court-cases-release-dates-design/hmpps/utils/utils'
 import fs from 'fs'
 import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
 import config from '../config'
@@ -14,6 +9,8 @@ import { buildErrorSummaryList, customErrorOrderBuilder, findError } from '../mi
 import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
 import { YES_NO_ANSWER } from '../journeys/referral/safer-custody/schemas'
 import logger from '../../logger'
+import { csipStatusDisplayText } from './csipDisplayTextUtils'
+import { firstNameSpaceLastName, personDateOfBirth, personProfileName } from './miniProfileUtils'
 
 export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')
@@ -48,8 +45,6 @@ export default function nunjucksSetup(app: express.Express): void {
       'node_modules/@ministryofjustice/frontend/',
       'node_modules/@ministryofjustice/frontend/moj/components/',
       'node_modules/@ministryofjustice/hmpps-connect-dps-components/dist/assets/',
-      'node_modules/hmpps-court-cases-release-dates-design/',
-      'node_modules/hmpps-court-cases-release-dates-design/hmpps/components/',
     ],
     {
       autoescape: true,
@@ -68,6 +63,7 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('customErrorOrderBuilder', customErrorOrderBuilder)
   njkEnv.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
   njkEnv.addFilter('possessiveComma', (name: string) => (name.endsWith('s') ? `${name}’` : `${name}’s`))
+  njkEnv.addFilter('csipStatusDisplayText', csipStatusDisplayText)
   njkEnv.addGlobal('todayStringGBFormat', todayStringGBFormat)
   njkEnv.addGlobal('YesNoDontKnow', YES_NO_ANSWER.enum)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
