@@ -21,18 +21,18 @@ export class DeleteInterviewController {
     const { index } = req.params
 
     if (this.isInvalidInterviewIndex(index, req)) {
-      res.redirect('back')
-    } else {
-      const interviews = req.journeyData.investigation!.interviews!.slice()
-      interviews.splice(Number(index) - 1, 1)
-      if (interviews.length) {
-        req.journeyData.investigation!.interviews = interviews
-      } else {
-        delete req.journeyData.investigation!.interviews
-      }
-
-      res.redirect('../interviews-summary')
+      return res.redirect('back')
     }
+
+    const interviews = req.journeyData.investigation!.interviews!.slice()
+    interviews.splice(Number(index) - 1, 1)
+    if (interviews.length) {
+      req.journeyData.investigation!.interviews = interviews
+    } else {
+      delete req.journeyData.investigation!.interviews
+    }
+
+    return res.redirect('../interviews-summary')
   }
 
   private isInvalidInterviewIndex = (index: string | undefined, req: Request) =>
