@@ -4,7 +4,7 @@ export class DeleteInterviewController {
   GET = async (req: Request, res: Response) => {
     const { index } = req.params
 
-    if (Number.isNaN(index) || (req.journeyData.investigation!.interviews?.length || 0) < Number(index)) {
+    if (this.isInvalidInterviewIndex(index, req)) {
       res.render('pages/error', {
         message: 'Interview not found',
         status: 404,
@@ -19,14 +19,22 @@ export class DeleteInterviewController {
 
   POST = async (req: Request, res: Response) => {
     const { index } = req.params
-    const interviews = req.journeyData.investigation!.interviews!.slice()
-    interviews.splice(Number(index) - 1, 1)
-    if (interviews.length) {
-      req.journeyData.investigation!.interviews = interviews
-    } else {
-      delete req.journeyData.investigation!.interviews
-    }
 
-    res.redirect('../interviews-summary')
+    if (this.isInvalidInterviewIndex(index, req)) {
+      res.redirect('back')
+    } else {
+      const interviews = req.journeyData.investigation!.interviews!.slice()
+      interviews.splice(Number(index) - 1, 1)
+      if (interviews.length) {
+        req.journeyData.investigation!.interviews = interviews
+      } else {
+        delete req.journeyData.investigation!.interviews
+      }
+
+      res.redirect('../interviews-summary')
+    }
   }
+
+  private isInvalidInterviewIndex = (index: string | undefined, req: Request) =>
+    Number.isNaN(index) || (req.journeyData.investigation!.interviews?.length || 0) < Number(index)
 }
