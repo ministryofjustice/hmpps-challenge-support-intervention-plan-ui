@@ -39,4 +39,11 @@ export default class CsipApiClient {
       data: payload,
     })
   }
+
+  async createInvestigation(csipRecordId: string, payload: components['schemas']['CreateInvestigationRequest']) {
+    return this.restClient.post<components['schemas']['Investigation']>({
+      path: `/csip-records/${csipRecordId}/referral/investigation`,
+      data: payload,
+    })
+  }
 }
