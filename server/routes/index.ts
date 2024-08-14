@@ -22,7 +22,16 @@ export default function routes(services: Services): Router {
   router.use('/csip-records/:recordUuid', CsipRecordRoutes(services.csipApiService, services.prisonerSearchService))
 
   router.use(insertJourneyIdentifier())
-  router.use(redirectCheckAnswersMiddleware([/on-behalf-of$/, /referrer$/, /area-of-work$/, /check-answers$/]))
+  router.use(
+    redirectCheckAnswersMiddleware([
+      /on-behalf-of$/,
+      /referrer$/,
+      /area-of-work$/,
+      /check-answers$/,
+      /interview-details\/\d+$/,
+      /delete-interview\/\d+$/,
+    ]),
+  )
   router.use(journeyStateMachine())
   router.use('/:journeyId', journeyRoutes(services))
 
