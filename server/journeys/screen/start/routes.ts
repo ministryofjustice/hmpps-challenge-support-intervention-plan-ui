@@ -6,7 +6,7 @@ export default function StartJourneyRoutes({ csipApiService, prisonerSearchServi
   const { router, get } = JourneyRouter()
   const controller = new StartJourneyController(csipApiService, prisonerSearchService)
 
-  get('/', controller.redirectWithCsipData('/screen/screen'))
+  get('/', controller.redirectWithCsipData('/screen'))
 
   return router
 }

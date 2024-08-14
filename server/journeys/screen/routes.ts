@@ -1,14 +1,19 @@
 import StartJourneyRoutes from './start/routes'
-import { ScreenRoutes } from './screen/routes'
 import { ScreenCheckAnswersRoutes } from './check-answers/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
 import { Services } from '../../services'
 import { JourneyRouter } from '../base/routes'
+import { ScreenController } from './controller'
+import { schemaFactory } from './schemas'
+import { validate } from '../../middleware/validationMiddleware'
 
 function Routes({ csipApiService }: Services) {
-  const { router } = JourneyRouter()
+  const { router, get, post } = JourneyRouter()
+  const controller = new ScreenController(csipApiService)
 
-  router.use('/screen', ScreenRoutes(csipApiService))
+  get('/', controller.GET)
+  post('/', validate(schemaFactory(csipApiService)), controller.POST)
+
   router.use('/check-answers', ScreenCheckAnswersRoutes(csipApiService))
   router.use('/confirmation', ConfirmationRoutes())
 

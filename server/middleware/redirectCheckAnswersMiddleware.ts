@@ -5,10 +5,13 @@ export default function redirectCheckAnswersMiddleware(excludePaths: RegExp[] = 
 
   router.use((req, res, next) => {
     if (req.originalUrl && !excludePaths.some(itm => req.originalUrl.match(itm))) {
+      const subPaths = req.originalUrl.split('/')
+      const checkAnswersUrl = subPaths.length === 3 ? `${subPaths[2]}/check-answers` : 'check-answers'
+
       const resRender = res.render
       res.render = (view: string, options?) => {
         if (options && 'backUrl' in options && req.journeyData.isCheckAnswers) {
-          resRender.call(res, view, { ...options, backUrl: 'check-answers' } as never)
+          resRender.call(res, view, { ...options, backUrl: checkAnswersUrl } as never)
         } else {
           resRender.call(res, view, options as never)
         }
@@ -23,7 +26,7 @@ export default function redirectCheckAnswersMiddleware(excludePaths: RegExp[] = 
         if (errors.length) {
           req.flash('validationErrors', errors[0]!)
         }
-        resRedirect.call(res, req.journeyData.isCheckAnswers && !errors.length ? 'check-answers' : url, status || 302)
+        resRedirect.call(res, req.journeyData.isCheckAnswers && !errors.length ? checkAnswersUrl : url, status || 302)
       }
     }
     next()

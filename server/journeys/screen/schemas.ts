@@ -1,7 +1,7 @@
 import z from 'zod'
 import { Request } from 'express'
-import type CsipApiService from '../../../services/csipApi/csipApiService'
-import { createSchema, validateAndTransformReferenceData } from '../../../middleware/validationMiddleware'
+import type CsipApiService from '../../services/csipApi/csipApiService'
+import { createSchema, validateAndTransformReferenceData } from '../../middleware/validationMiddleware'
 
 const OUTCOME_TYPE_ERROR_MSG = 'Select the outcome of Safer Custody screening'
 const REASONS_MSG = 'Enter a description of the reasons for this decision'

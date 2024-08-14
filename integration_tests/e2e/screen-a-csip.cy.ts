@@ -31,7 +31,7 @@ context('Screen a CSIP Referral Journey', () => {
 
     getScreenReferralButton().click()
 
-    cy.url().should('include', '/screen/screen')
+    cy.url().should('include', '/screen')
     getNfaRadio().click()
     checkAxeAccessibility()
     getDescribeTextbox().type('no action needed')
@@ -42,7 +42,7 @@ context('Screen a CSIP Referral Journey', () => {
     cy.findByText(/no action needed/i).should('be.visible')
     getChangeLink().click()
 
-    cy.url().should('include', '/screen/screen')
+    cy.url().should('include', '/screen')
     getDescribeTextbox().type('modified')
     getContinueButton().click()
 
@@ -63,11 +63,11 @@ context('Screen a CSIP Referral Journey', () => {
     cy.visit(START_URL)
     getScreenReferralButton().click()
 
-    cy.url().should('include', '/screen/screen')
+    cy.url().should('include', '/screen')
     getNfaRadio().click()
     cy.findByRole('button', { name: /continue/i }).click()
 
-    cy.url().should('include', '/screen/screen')
+    cy.url().should('include', '/screen')
     getNfaRadio().should('be.checked')
   })
 
@@ -76,12 +76,12 @@ context('Screen a CSIP Referral Journey', () => {
     cy.visit(START_URL)
     getScreenReferralButton().click()
 
-    cy.url().should('include', '/screen/screen')
+    cy.url().should('include', '/screen')
     getNfaRadio().should('not.be.checked')
     getDescribeTextbox().type('no action needed')
     cy.findByRole('button', { name: /continue/i }).click()
 
-    cy.url().should('include', '/screen/screen')
+    cy.url().should('include', '/screen')
     getDescribeTextbox().should('include.text', 'no action needed')
   })
 
@@ -90,7 +90,7 @@ context('Screen a CSIP Referral Journey', () => {
     cy.visit(START_URL)
     getScreenReferralButton().click()
 
-    cy.url().should('include', '/screen/screen')
+    cy.url().should('include', '/screen')
     getNfaRadio().click()
     checkAxeAccessibility()
     getDescribeTextbox().type('no action needed')
@@ -99,7 +99,7 @@ context('Screen a CSIP Referral Journey', () => {
     cy.url().should('include', '/screen/check-answers')
     cy.go('back')
 
-    cy.url().should('include', '/screen/screen')
+    cy.url().should('include', '/screen')
     getNfaRadio().should('be.checked')
     getDescribeTextbox().should('include.text', 'no action needed')
   })
