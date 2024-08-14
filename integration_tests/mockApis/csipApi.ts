@@ -503,9 +503,7 @@ const stubPostInvestigation = () => {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      jsonBody: {
-
-      },
+      jsonBody: {},
     },
   })
 }
@@ -522,5 +520,5 @@ export default {
   stubOutcomeType,
   stubCsipRecordGetSuccess,
   stubPostSaferCustodyScreening,
-  stubPostInvestigation
+  stubPostInvestigation,
 }
