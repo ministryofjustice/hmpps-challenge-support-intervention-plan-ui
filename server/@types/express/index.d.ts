@@ -64,7 +64,6 @@ type SaferCustodyScreening = Partial<{
 }>
 
 type Investigation = Partial<{
-  interviewsSubJourney: Interview
   interviews: Interview[]
   staffInvolved: string
   evidenceSecured: string
