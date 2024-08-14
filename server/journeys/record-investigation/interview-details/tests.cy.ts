@@ -1,4 +1,5 @@
 import { v4 as uuidV4 } from 'uuid'
+import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
 
 context('test /record-investigation/interview-details', () => {
   const uuid = uuidV4()
@@ -28,6 +29,7 @@ context('test /record-investigation/interview-details', () => {
 
   it('should try out all cases', () => {
     navigateToTestPage()
+    checkAxeAccessibility()
 
     cy.url().should('to.match', /\/interviews-summary$/)
 
