@@ -1,0 +1,190 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = true %}
+{% set pageTitle = "Check answers - Record a CSIP investigation" %}
+
+{% block innerContent %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Record a CSIP investigation</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check your answers before recording the investigation</h1>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-!-margin-bottom-6">
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-m">Investigation interviews</h2>
+        </div>
+        <div class="govuk-grid-column-one-third">
+            <a class="govuk-link govuk-summary-list govuk-summary-list__actions govuk-link--no-visited-state" href="interviews-summary">Add, change or delete</a>
+        </div>
+    </div>
+
+    {% for interview in investigation.interviews %}
+        {{ govukSummaryList({
+            classes: "govuk-!-margin-bottom-7" if loop.index === investigation.interviews.length else undefined,
+            card: {
+                title: { text: "Interview with " + interview.interviewee }
+            },
+            rows: [{
+                key: {
+                    text: 'Interviewee'
+                },
+                value: {
+                    text: interview.interviewee
+                }
+            }, {
+                key: {
+                    text: 'Interview date'
+                },
+                value: {
+                    text: interview.interviewDate | formatDisplayDate
+                }
+            }, {
+                key: {
+                    text: 'Role'
+                },
+                value: {
+                    text: interview.intervieweeRole.description
+                }
+            }, {
+                key: {
+                    text: 'Comments'
+                },
+                value: {
+                    html: (interview.interviewText or "Not provided") | escape | nl2br
+                }
+            }]
+        }) }}
+    {% endfor %}
+
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-6">Investigation findings</h2>
+    {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-7",
+        rows: [
+            {
+                key: {
+                text: "Staff involved in the investigation"
+            },
+                value: {
+                html: investigation.staffInvolved | escape | nl2br
+            },
+                actions: {
+                items: [
+                    {
+                        href: "staff-involved",
+                        text: "Change",
+                        visuallyHiddenText: "the staff involved in the investigation",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Why the behaviour occurred"
+            },
+                value: {
+                html: investigation.occurrenceReason | escape | nl2br
+            },
+                actions: {
+                items: [
+                    {
+                        href: "why-behaviour-occurred",
+                        text: "Change",
+                        visuallyHiddenText: "the description of why the behaviour occurred",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Evidence secured"
+            },
+                value: {
+                html: investigation.evidenceSecured | escape | nl2br
+            },
+                actions: {
+                items: [
+                    {
+                        href: "evidence-secured",
+                        text: "Change",
+                        visuallyHiddenText: "the description of the evidence secured",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Usual behaviour presentation"
+            },
+                value: {
+                html: investigation.personsUsualBehaviour | escape | nl2br
+            },
+                actions: {
+                items: [
+                    {
+                        href: "usual-behaviour-presentation",
+                        text: "Change",
+                        visuallyHiddenText: "the description of the prisoner’s usual behaviour presentation",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Triggers"
+            },
+                value: {
+                html: investigation.personsTrigger | escape | nl2br
+            },
+                actions: {
+                items: [
+                    {
+                        href: "triggers",
+                        text: "Change",
+                        visuallyHiddenText: "the description of the prisoner’s triggers",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Protective factors"
+            },
+                value: {
+                html: investigation.protectiveFactors | escape | nl2br
+            },
+                actions: {
+                items: [
+                    {
+                        href: "protective-factors",
+                        text: "Change",
+                        visuallyHiddenText: "the description of the prisoner’s protective factors",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            }
+        ]
+    }) }}
+
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        <div class="govuk-button-group">
+            {{ govukButton({
+                text: "Confirm and submit report",
+                preventDoubleClick: true
+            }) }}
+            <a class="govuk-link govuk-link--no-visited-state" href="{{ csipRecordUrl }}">Cancel</a>
+        </div>
+    </form>
+{% endblock %}

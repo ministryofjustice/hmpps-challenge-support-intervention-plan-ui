@@ -30,6 +30,7 @@ export class DeleteInterviewController {
       req.journeyData.investigation!.interviews = interviews
     } else {
       delete req.journeyData.investigation!.interviews
+      delete req.journeyData.isCheckAnswers
     }
 
     return res.redirect('../interviews-summary')
