@@ -13,6 +13,7 @@ context('test /record-investigation/check-answers', () => {
     cy.task('stubComponents')
     cy.task('stubCsipRecordGetSuccess')
     cy.task('stubIntervieweeRoles')
+    cy.task('stubPostInvestigation')
   })
 
   it('should be able to change answers and proceed to confirmation', () => {

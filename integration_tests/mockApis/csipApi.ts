@@ -492,6 +492,24 @@ const stubPostSaferCustodyScreening = () => {
   })
 }
 
+const stubPostInvestigation = () => {
+  return stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+
+      },
+    },
+  })
+}
+
 export default {
   stubAreaOfWork,
   stubIncidentLocation,
@@ -504,4 +522,5 @@ export default {
   stubOutcomeType,
   stubCsipRecordGetSuccess,
   stubPostSaferCustodyScreening,
+  stubPostInvestigation
 }
