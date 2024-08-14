@@ -67,7 +67,7 @@
     "@ministryofjustice/hmpps-connect-dps-components": "^1.2.0",
     "@opentelemetry/api": "~1.8.0",
     "@sentry/cli": "^2.33.1",
-    "@sentry/node": "^8.24.0",
+    "@sentry/node": "^8.25.0",
     "@types/express-serve-static-core": "^4.19.5",
     "agentkeepalive": "^4.5.0",
     "applicationinsights": "^2.9.5",
