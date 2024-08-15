@@ -25,6 +25,7 @@ export type JourneyData = {
   referral?: ReferralData
   saferCustodyScreening?: SaferCustodyScreening
   investigation?: Investigation
+  decisionAndActions?: DecisionAndActions
   plan?: Plan
   csipRecord?: CsipRecord
   hasValidationErrors?: boolean
@@ -78,6 +79,14 @@ type Interview = Partial<{
   interviewDate: string
   intervieweeRole: ReferenceData
   interviewText: string
+}>
+
+type DecisionAndActions = Partial<{
+  signedOffByRole: ReferenceData
+  outcome: ReferenceData
+  conclusion: string
+  nextSteps: string | null
+  actionOther: string | null
 }>
 
 type Plan = object

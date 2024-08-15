@@ -69,7 +69,7 @@ describe('tests', () => {
       .get(`/csip-record/${uuid}/${TEST_PATH}`)
       .expect(302)
       .redirects(1)
-      .expect('Location', /\/csip-record\/([0-9A-Fa-f]+-?)+/)
+      .expect('Location', /\/csip-records\/([0-9A-Fa-f]+-?)+/)
   })
 
   it('should redirect to home page if csip record not found', async () => {
