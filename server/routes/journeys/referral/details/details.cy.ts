@@ -1,4 +1,4 @@
-import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
 context('Make a Referral Journey', () => {
   beforeEach(() => {

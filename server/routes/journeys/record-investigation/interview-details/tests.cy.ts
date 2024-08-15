@@ -1,5 +1,5 @@
 import { v4 as uuidV4 } from 'uuid'
-import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
 context('test /record-investigation/interview-details', () => {
   const uuid = uuidV4()
