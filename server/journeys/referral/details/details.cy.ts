@@ -1,3 +1,5 @@
+import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+
 context('Make a Referral Journey', () => {
   beforeEach(() => {
     cy.task('reset')
@@ -15,6 +17,7 @@ context('Make a Referral Journey', () => {
 
   it('should try out all edge cases', () => {
     navigateToDetailsReactive()
+    checkAxeAccessibility()
 
     submitNoValues()
 

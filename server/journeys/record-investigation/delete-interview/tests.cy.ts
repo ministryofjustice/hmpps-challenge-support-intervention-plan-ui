@@ -1,5 +1,6 @@
 import { v4 as uuidV4 } from 'uuid'
 import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
+import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
 
 context('test /record-investigation/delete-interview', () => {
   const uuid = uuidV4()
@@ -26,6 +27,9 @@ context('test /record-investigation/delete-interview', () => {
         ],
       },
     })
+
+    checkAxeAccessibility()
+
     cy.url().should('to.match', /\/delete-interview\/1$/)
     cy.findByRole('heading', { name: /Are you sure you want to delete this interview\?/ }).should('be.visible')
 

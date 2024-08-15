@@ -1,5 +1,6 @@
 import { v4 as uuidV4 } from 'uuid'
 import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
+import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
 
 context('test /record-investigation/interviews-summary', () => {
   const uuid = uuidV4()
@@ -16,6 +17,8 @@ context('test /record-investigation/interviews-summary', () => {
 
   it('should try out all cases', () => {
     navigateToTestPage()
+    checkAxeAccessibility()
+
     cy.url().should('to.match', /\/interviews-summary$/)
     cy.findByRole('heading', { name: /Interviews summary/ }).should('be.visible')
     cy.findByText(/No interview details recorded./).should('be.visible')
