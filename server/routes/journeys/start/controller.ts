@@ -39,6 +39,7 @@ export class StartJourneyController {
       req.journeyData.csipRecord = csip
       req.journeyData.saferCustodyScreening = {}
       req.journeyData.investigation = {}
+      req.journeyData.decisionAndActions = {}
       req.journeyData.prisoner = await this.prisonerSearchService.getPrisonerDetails(req, csip.prisonNumber as string)
 
       return res.redirect(`/${journeyId}${url}`)
@@ -49,7 +50,7 @@ export class StartJourneyController {
           if (!req.journeyData.csipRecord) {
             return res.redirect('/')
           }
-          return res.redirect(`/csip-record/${csipRecordId}`)
+          return res.redirect(`/csip-records/${csipRecordId}`)
         }
       }
 

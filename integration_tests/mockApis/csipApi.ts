@@ -116,6 +116,35 @@ const stubIntervieweeRoles = () => {
   })
 }
 
+const stubDecisionSignerRoles = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/reference-data/role',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: [
+        {
+          code: 'A',
+          description: 'SignerRole1',
+          createdAt: new Date().toISOString(),
+          createdBy: 'foobar',
+        },
+        {
+          code: 'B',
+          description: 'SignerRole2',
+          createdAt: new Date().toISOString(),
+          createdBy: 'foobar',
+        },
+      ],
+    },
+  })
+}
+
 const stubContribFactors = () => {
   return stubFor({
     request: {
@@ -513,6 +542,7 @@ export default {
   stubIncidentLocation,
   stubIncidentType,
   stubIntervieweeRoles,
+  stubDecisionSignerRoles,
   stubIncidentInvolvement,
   stubContribFactors,
   stubCsipRecordPostSuccess,
