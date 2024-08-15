@@ -4,9 +4,9 @@ import asyncMiddleware from '../middleware/asyncMiddleware'
 import type { Services } from '../services'
 import { Page } from '../services/auditService'
 import insertJourneyIdentifier from '../middleware/insertJourneyIdentifier'
-import journeyRoutes from './journeyRoutes'
 import redirectCheckAnswersMiddleware from '../middleware/redirectCheckAnswersMiddleware'
 import journeyStateMachine from '../middleware/journeyStateMachine'
+import { JourneyRoutes } from './journeys/routes'
 import { CsipRecordRoutes } from './csip-records/routes'
 
 export default function routes(services: Services): Router {
@@ -33,7 +33,7 @@ export default function routes(services: Services): Router {
     ]),
   )
   router.use(journeyStateMachine())
-  router.use('/:journeyId', journeyRoutes(services))
+  router.use('/:journeyId', JourneyRoutes(services))
 
   return router
 }
