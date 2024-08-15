@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
-import { BaseJourneyController } from '../../base/controller'
+import { BaseJourneyController } from '../base/controller'
 
 export class ScreenController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
@@ -12,7 +12,7 @@ export class ScreenController extends BaseJourneyController {
       ),
     )
 
-    res.render('screen/screen/view', {
+    res.render('screen/view', {
       outcomeTypeItems,
       reasonForDecision:
         res.locals.formResponses?.['reasonForDecision'] || req.journeyData.saferCustodyScreening?.reasonForDecision,
@@ -22,7 +22,7 @@ export class ScreenController extends BaseJourneyController {
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
     req.journeyData.saferCustodyScreening!.outcomeType = req.body.outcomeType
     req.journeyData.saferCustodyScreening!.reasonForDecision = req.body.reasonForDecision
-    res.redirect('check-answers')
+    res.redirect('screen/check-answers')
   }
 
   /** Moves 'No further action' to the bottom of the list */

@@ -2,13 +2,13 @@ import { Locals, Request } from 'express'
 import { v4 as uuidV4 } from 'uuid'
 import request from 'supertest'
 import { getAllByRole, getAllByText, getByRole, getByText, queryByAttribute, queryByRole } from '@testing-library/dom'
-import { appWithAllRoutes } from '../../../routes/testutils/appSetup'
-import CsipApiService from '../../../services/csipApi/csipApiService'
-import testRequestCaptor, { TestRequestCaptured } from '../../../testutils/testRequestCaptor'
-import createTestHtmlElement from '../../../testutils/createTestHtmlElement'
-import { JourneyData } from '../../../@types/express'
-import { TEST_PRISONER } from '../../../testutils/testConstants'
-import { ReferenceData, ReferenceDataType } from '../../../@types/csip/csipApiTypes'
+import { appWithAllRoutes } from '../../routes/testutils/appSetup'
+import CsipApiService from '../../services/csipApi/csipApiService'
+import testRequestCaptor, { TestRequestCaptured } from '../../testutils/testRequestCaptor'
+import createTestHtmlElement from '../../testutils/createTestHtmlElement'
+import { JourneyData } from '../../@types/express'
+import { TEST_PRISONER } from '../../testutils/testConstants'
+import { ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
 
 const uuid = uuidV4()
 const csipApiService = {
@@ -70,7 +70,7 @@ const EXPECTED_REASON_ERROR_MSG_LENGTH = 'Description must be 4,000 characters o
 
 describe('tests', () => {
   it('render page', async () => {
-    const result = await request(app()).get(`/${uuid}/screen/screen`).expect(200).expect('Content-Type', /html/)
+    const result = await request(app()).get(`/${uuid}/screen`).expect(200).expect('Content-Type', /html/)
 
     const html = createTestHtmlElement(result.text)
 
@@ -99,7 +99,7 @@ describe('tests', () => {
       },
     }
 
-    const result = await request(app(data)).get(`/${uuid}/screen/screen`).expect(200).expect('Content-Type', /html/)
+    const result = await request(app(data)).get(`/${uuid}/screen`).expect(200).expect('Content-Type', /html/)
 
     const html = createTestHtmlElement(result.text)
 
@@ -114,12 +114,12 @@ describe('tests', () => {
   })
 
   it('should display errors on posting empty data', async () => {
-    await request(app()).post(`/${uuid}/screen/screen`).send({}).expect('Location', `/`)
+    await request(app()).post(`/${uuid}/screen`).send({}).expect('Location', `/`)
 
     const errors = reqCaptured.validationErrors()
 
     const result = await request(app({ journeyData: journeyDataProactive, validationErrors: errors }))
-      .get(`/${uuid}/screen/screen`)
+      .get(`/${uuid}/screen`)
       .expect(200)
       .expect('Content-Type', /html/)
 
@@ -136,7 +136,7 @@ describe('tests', () => {
 
   it('should display errors on posting invalid data', async () => {
     await request(app())
-      .post(`/${uuid}/screen/screen`)
+      .post(`/${uuid}/screen`)
       .send({
         outcomeType: 'INVALID',
         reasonForDecision: 'Posting a value for outcomeType that should not be accepted',
@@ -146,7 +146,7 @@ describe('tests', () => {
     const errors = reqCaptured.validationErrors()
 
     const result = await request(app({ journeyData: journeyDataProactive, validationErrors: errors }))
-      .get(`/${uuid}/screen/screen`)
+      .get(`/${uuid}/screen`)
       .expect(200)
       .expect('Content-Type', /html/)
 
@@ -163,7 +163,7 @@ describe('tests', () => {
 
   it('should display an error on posting over 4000 characters in reason', async () => {
     await request(app())
-      .post(`/${uuid}/screen/screen`)
+      .post(`/${uuid}/screen`)
       .send({
         reasonForDecision: 'o'.repeat(4001),
         outcomeType: 'NFA',
@@ -173,7 +173,7 @@ describe('tests', () => {
     const errors = reqCaptured.validationErrors()
 
     const result = await request(app({ journeyData: journeyDataProactive, validationErrors: errors }))
-      .get(`/${uuid}/screen/screen`)
+      .get(`/${uuid}/screen`)
       .expect(200)
       .expect('Content-Type', /html/)
 
@@ -187,9 +187,9 @@ describe('tests', () => {
 
   it('should return a 200 on posting valid data and redirect to check answers', async () => {
     await request(app())
-      .post(`/${uuid}/screen/screen`)
+      .post(`/${uuid}/screen`)
       .send({ outcomeType: 'NFA', reasonForDecision: 'no action needed' })
       .expect(302)
-      .expect('Location', 'check-answers')
+      .expect('Location', 'screen/check-answers')
   })
 })

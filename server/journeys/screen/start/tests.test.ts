@@ -46,7 +46,7 @@ describe('tests', () => {
       .get(`/csip-record/${uuid}/screen/start`)
       .expect(302)
       .redirects(1)
-      .expect('Location', /screen\/screen/)
+      .expect('Location', /screen/)
   })
 
   it('should redirect to CSIP overview page if prisoner not found', async () => {
