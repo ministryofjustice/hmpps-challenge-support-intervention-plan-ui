@@ -7,7 +7,7 @@ import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
 import config from '../config'
 import { buildErrorSummaryList, customErrorOrderBuilder, findError } from '../middleware/validationMiddleware'
 import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
-import { YES_NO_ANSWER } from '../journeys/referral/safer-custody/schemas'
+import { YES_NO_ANSWER } from '../routes/journeys/referral/safer-custody/schemas'
 import logger from '../../logger'
 import { csipStatusDisplayText } from './csipDisplayTextUtils'
 import { firstNameSpaceLastName, personDateOfBirth, personProfileName } from './miniProfileUtils'
@@ -39,7 +39,7 @@ export default function nunjucksSetup(app: express.Express): void {
   const njkEnv = nunjucks.configure(
     [
       path.join(__dirname, '../../server/views'),
-      path.join(__dirname, '../../server/journeys'),
+      path.join(__dirname, '../../server/routes/journeys'),
       path.join(__dirname, '../../server/routes'),
       'node_modules/govuk-frontend/dist/',
       'node_modules/@ministryofjustice/frontend/',

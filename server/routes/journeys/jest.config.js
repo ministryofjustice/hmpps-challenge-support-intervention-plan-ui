@@ -7,6 +7,8 @@ module.exports = {
       },
     ],
   },
+  rootDir: '../../../',
+  setupFilesAfterEnv: ['<rootDir>jest.setup.ts'],
   coveragePathIgnorePatterns: [
     '.*.test.ts',
     'node_modules',
@@ -16,9 +18,8 @@ module.exports = {
     'server/index.ts',
     '.*.cy.ts',
   ],
-  testMatch: ['<rootDir>/(server|job)/**/?(*.)(cy|test).{ts,js,jsx,mjs}'],
-  testPathIgnorePatterns: ['<rootDir>/server/routes/journeys', '<rootDir>/server/routes/csip-records', 'node_modules'],
-  testEnvironment: 'node',
-  rootDir: '../',
   moduleFileExtensions: ['web.js', 'js', 'json', 'node', 'ts'],
+  testMatch: ['<rootDir>/server/routes/**/*.test.ts'],
+  testPathIgnorePatterns: ['node_modules', '<rootDir>/server/routes/index.test.ts'],
+  testEnvironment: 'jest-fixed-jsdom',
 }

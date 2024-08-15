@@ -49,7 +49,7 @@
     ],
     "projects": [
       "./server",
-      "./server/journeys"
+      "./server/routes/journeys"
     ]
   },
   "lint-staged": {
