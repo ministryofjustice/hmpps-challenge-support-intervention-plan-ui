@@ -630,13 +630,13 @@ export interface components {
       actionOther?: string
       /** @description A list of recommended actions. */
       actions: (
-        | 'OpenCsipAlert'
-        | 'NonAssociationsUpdated'
-        | 'ObservationBook'
-        | 'UnitOrCellMove'
-        | 'CsraOrRsraReview'
-        | 'ServiceReferral'
-        | 'SimReferral'
+        | 'OPEN_CSIP_ALERT'
+        | 'NON_ASSOCIATIONS_UPDATED'
+        | 'OBSERVATION_BOOK'
+        | 'UNIT_OR_CELL_MOVE'
+        | 'CSRA_OR_RSRA_REVIEW'
+        | 'SERVICE_REFERRAL'
+        | 'SIM_REFERRAL'
       )[]
     }
     /** @description The Decision and Actions for the CSIP referral */
@@ -659,13 +659,13 @@ export interface components {
       nextSteps?: string
       /** @description A list of recommended actions. */
       actions: (
-        | 'OpenCsipAlert'
-        | 'NonAssociationsUpdated'
-        | 'ObservationBook'
-        | 'UnitOrCellMove'
-        | 'CsraOrRsraReview'
-        | 'ServiceReferral'
-        | 'SimReferral'
+        | 'OPEN_CSIP_ALERT'
+        | 'NON_ASSOCIATIONS_UPDATED'
+        | 'OBSERVATION_BOOK'
+        | 'UNIT_OR_CELL_MOVE'
+        | 'CSRA_OR_RSRA_REVIEW'
+        | 'SERVICE_REFERRAL'
+        | 'SIM_REFERRAL'
       )[]
       /** @description Any other actions that are recommended to be considered. */
       actionOther?: string
@@ -851,7 +851,7 @@ export interface components {
       /** @description Additional information about the review. */
       summary?: string
       /** @description A list of actions following the review. */
-      actions: ('ResponsiblePeopleInformed' | 'CsipUpdated' | 'RemainOnCsip' | 'CaseNote' | 'CloseCsip')[]
+      actions: ('RESPONSIBLE_PEOPLE_INFORMED' | 'CSIP_UPDATED' | 'REMAIN_ON_CSIP' | 'CASE_NOTE' | 'CLOSE_CSIP')[]
       /**
        * Format: date-time
        * @description The date and time the Review was created
@@ -1249,7 +1249,7 @@ export interface components {
       /** @description Additional information about the review. */
       summary?: string
       /** @description A list of actions following the review. */
-      actions?: ('ResponsiblePeopleInformed' | 'CsipUpdated' | 'RemainOnCsip' | 'CaseNote' | 'CloseCsip')[]
+      actions?: ('RESPONSIBLE_PEOPLE_INFORMED' | 'CSIP_UPDATED' | 'REMAIN_ON_CSIP' | 'CASE_NOTE' | 'CLOSE_CSIP')[]
       /** @description The attendees/contributors to the review. */
       attendees?: components['schemas']['CreateAttendeeRequest'][]
     }
@@ -1352,16 +1352,6 @@ export interface components {
        * @example 2021-09-27
        */
       nextReviewDate?: string
-      /** @description If an action following the review was to inform people responsible for the person in prison. */
-      isActionResponsiblePeopleInformed?: boolean
-      /** @description If an action following the review was to update the CSIP plan. */
-      isActionCsipUpdated?: boolean
-      /** @description If the outcome decision following the review was the person should remain on the CSIP plan. */
-      isActionRemainOnCsip?: boolean
-      /** @description If an action following the review was to add a CSIP case note. */
-      isActionCaseNote?: boolean
-      /** @description If the outcome decision following the review was closing the CSIP plan. */
-      isActionCloseCsip?: boolean
       /**
        * Format: date
        * @description The date the CSIP plan was closed following a review outcome decision to close it.
@@ -1370,6 +1360,8 @@ export interface components {
       csipClosedDate?: string
       /** @description Additional information about the review. */
       summary?: string
+      /** @description A list of actions following the review. */
+      actions?: ('RESPONSIBLE_PEOPLE_INFORMED' | 'CSIP_UPDATED' | 'REMAIN_ON_CSIP' | 'CASE_NOTE' | 'CLOSE_CSIP')[]
     }
     /** @description The request body to update a Attendee/Contributor to the review of a CSIP Plan */
     UpdateAttendeeRequest: {

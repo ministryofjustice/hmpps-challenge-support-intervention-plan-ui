@@ -31,4 +31,11 @@ export default class CsipApiService {
       payload,
     )
   }
+
+  createInvestigation(req: Request, payload: Parameters<CsipApiClient['createInvestigation']>[1]) {
+    return this.csipApiClientBuilder(req.systemClientToken).createInvestigation(
+      req.journeyData.csipRecord!.recordUuid,
+      payload,
+    )
+  }
 }

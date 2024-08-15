@@ -12,6 +12,7 @@ import { InterviewsSummaryRoutes } from './interviews-summary/routes'
 import { InterviewDetailsRoutes } from './interview-details/routes'
 import { DeleteInterviewRoutes } from './delete-interview/routes'
 import { InvestigationCheckAnswersRoutes } from './check-answers/routes'
+import { ConfirmationRoutes } from './confirmation/routes'
 
 function Routes(services: Services) {
   const { router, get } = JourneyRouter()
@@ -27,7 +28,8 @@ function Routes(services: Services) {
   router.use('/interviews-summary', InterviewsSummaryRoutes())
   router.use('/interview-details', InterviewDetailsRoutes(services.csipApiService))
   router.use('/delete-interview/:index', DeleteInterviewRoutes())
-  router.use('/check-answers', InvestigationCheckAnswersRoutes())
+  router.use('/check-answers', InvestigationCheckAnswersRoutes(services.csipApiService))
+  router.use('/confirmation', ConfirmationRoutes())
 
   return router
 }
