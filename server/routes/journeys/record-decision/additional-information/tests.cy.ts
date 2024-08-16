@@ -1,10 +1,10 @@
 import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
-context('test /record-decision/next-steps', () => {
+context('test /record-decision/additional-information', () => {
   const uuid = uuidV4()
 
-  const getInputTextbox = () => cy.findByRole('textbox', { name: 'Add any comments on next steps (optional)' })
+  const getInputTextbox = () => cy.findByRole('textbox', { name: 'Add additional information (optional)' })
   const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
 
   beforeEach(() => {
@@ -20,7 +20,7 @@ context('test /record-decision/next-steps', () => {
     navigateToTestPage()
     checkAxeAccessibility()
 
-    cy.url().should('to.match', /\/next-steps$/)
+    cy.url().should('to.match', /\/additional-information$/)
 
     validatePageContents()
     validateErrorMessage()
@@ -34,17 +34,19 @@ context('test /record-decision/next-steps', () => {
       failOnStatusCode: false,
     })
     cy.url().should('to.match', /\/record-decision$/)
-    cy.visit(`${uuid}/record-decision/next-steps`)
+    cy.visit(`${uuid}/record-decision/additional-information`)
   }
 
   const validatePageContents = () => {
-    cy.findByRole('heading', { name: /Add any comments on next steps \(optional\)/ }).should('be.visible')
-    cy.findByText('updating Testname User’s non-associations').should('be.visible')
+    cy.findByRole('heading', { name: /Add additional information \(optional\)/ }).should('be.visible')
+    cy.findByText(
+      'Any other information relating to the CSIP investigation decision, such as action already taken.',
+    ).should('be.visible')
     getInputTextbox().should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /^back/i })
       .should('have.attr', 'href')
-      .and('match', /conclusion$/)
+      .and('match', /next-steps$/)
   }
 
   const validateErrorMessage = () => {
@@ -53,7 +55,7 @@ context('test /record-decision/next-steps', () => {
     })
     getContinueButton().click()
 
-    cy.findByRole('link', { name: /Comments on next steps must be 4,000 characters or less/i })
+    cy.findByRole('link', { name: /Additional information must be 4,000 characters or less/i })
       .should('be.visible')
       .click()
 
@@ -65,7 +67,7 @@ context('test /record-decision/next-steps', () => {
   const proceedToNextScreen = () => {
     getInputTextbox().clear().type("<script>alert('xss');</script>")
     cy.findByRole('button', { name: 'Continue' }).click()
-    cy.url().should('to.match', /\/additional-information$/)
+    cy.url().should('to.match', /\/check-answers$/)
   }
 
   const verifySubmittedValueIsPersisted = () => {
