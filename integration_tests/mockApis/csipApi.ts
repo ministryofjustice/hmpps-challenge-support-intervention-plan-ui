@@ -413,10 +413,10 @@ const stubCsipRecordSuccessAwaitingDecision = () => {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       jsonBody: {
-        ...referralSubmittedCsip,
+        ...csip,
         status: 'AWAITING_DECISION',
         referral: {
-          ...referralSubmittedCsip.referral,
+          ...csip.referral,
           investigation: {
             interviews: [
               {
@@ -450,7 +450,7 @@ const stubCsipRecordGetSuccess = () => {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      jsonBody: referralSubmittedCsip,
+      jsonBody: csip,
     },
   })
 }
@@ -498,7 +498,7 @@ const stubPostInvestigation = () => {
   })
 }
 
-const referralSubmittedCsip = {
+const csip = {
   recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
   prisonNumber: 'A1111AA',
   prisonCodeWhenRecorded: 'LEI',
