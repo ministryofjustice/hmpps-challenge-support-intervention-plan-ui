@@ -7,6 +7,7 @@ import { schemaFactory } from './schemas'
 import { NextStepsRoutes } from './next-steps/routes'
 import { ConclusionRoutes } from './conclusion/routes'
 import { DecisionAdditionalInformationRoutes } from './additional-information/routes'
+import { DecisionCheckAnswersRoutes } from './check-answers/routes'
 
 function Routes({ csipApiService }: Services) {
   const { router, get, post } = JourneyRouter()
@@ -17,6 +18,7 @@ function Routes({ csipApiService }: Services) {
   router.use('/next-steps', NextStepsRoutes())
   router.use('/conclusion', ConclusionRoutes(csipApiService))
   router.use('/additional-information', DecisionAdditionalInformationRoutes())
+  router.use('/check-answers', DecisionCheckAnswersRoutes(csipApiService))
 
   return router
 }

@@ -33,6 +33,7 @@ export class ConclusionController extends BaseJourneyController {
   }
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
+    req.journeyData.decisionAndActions!.outcome = req.body.outcome
     req.journeyData.decisionAndActions!.conclusion = req.body.conclusion
     res.redirect('next-steps')
   }
