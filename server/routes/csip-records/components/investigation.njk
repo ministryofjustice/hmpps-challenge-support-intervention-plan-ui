@@ -20,7 +20,7 @@
           text: 'Staff involved'
         },
         value: {
-          text: investigation.staffInvolved
+          text: investigation.staffInvolved | escape | nl2br
         }
       },
       {
@@ -28,7 +28,7 @@
           text: 'Evidence secured'
         },
         value: {
-          text: investigation.evidenceSecured
+          text: investigation.evidenceSecured | escape | nl2br
         }
       },
       {
@@ -36,7 +36,7 @@
           text: 'Why this occurred'
         },
         value: {
-          text: investigation.occurrenceReason
+          text: investigation.occurrenceReason | escape | nl2br
         }
       },
       {
@@ -44,7 +44,7 @@
           text: 'Usual behaviour presentation'
         },
         value: {
-          text: investigation.personsUsualBehaviour
+          text: investigation.personsUsualBehaviour | escape | nl2br
         }
       },
       {
@@ -52,7 +52,7 @@
           text: 'Triggers'
         },
         value: {
-          text: investigation.personsTrigger
+          text: investigation.personsTrigger | escape | nl2br
         }
       },
       {
@@ -60,7 +60,7 @@
           text: 'Protective factors'
         },
         value: {
-          text: investigation.protectiveFactors
+          text: investigation.protectiveFactors | escape | nl2br
         }
       }
     ]
@@ -93,7 +93,7 @@
                 text: 'Role'
             },
             value: {
-                text: interview.intervieweeRole.description
+                text: interview.intervieweeRole.description | escape | nl2br
             }
         }, {
             key: {
@@ -105,8 +105,3 @@
         }]
     }) }}
 {% endfor %}
-
-{% if not investigation.interviews.length %}
-    <p class="govuk-!-margin-bottom-8">No interview details recorded.</p>
-    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-8">
-{% endif %}
