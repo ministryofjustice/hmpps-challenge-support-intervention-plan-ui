@@ -2,12 +2,24 @@ import { Request, Response } from 'express'
 
 import CsipApiService from '../../services/csipApi/csipApiService'
 import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
+import { components } from '../../@types/csip'
 
 export class CsipRecordController {
   constructor(
     private readonly csipApiService: CsipApiService,
     private readonly prisonerSearchService: PrisonerSearchService,
   ) {}
+
+  GET_BASE = async (req: Request, res: Response) => {
+    const { recordUuid } = req.params
+    const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
+
+    if (record.status === 'AWAITING_DECISION') {
+      res.redirect(`/csip-records/${recordUuid}/investigation`)
+      return
+    }
+    res.redirect(`/csip-records/${recordUuid}/referral`)
+  }
 
   GET = async (req: Request, res: Response) => {
     const { recordUuid } = req.params
@@ -31,6 +43,20 @@ export class CsipRecordController {
       staffAssaulted: record.referral!.isStaffAssaulted,
       assaultedStaffName: record.referral!.assaultedStaffName,
     }
+    const investigation: Partial<components['schemas']['Investigation']> = {
+      ...record.referral!.investigation,
+    }
+
+    const interviews = record.referral!.investigation?.interviews
+    if (interviews) {
+      investigation['interviews'] = interviews.sort((intA, intB) => {
+        const dif = new Date(intA.interviewDate).getTime() - new Date(intB.interviewDate).getTime()
+        if (dif !== 0) {
+          return dif
+        }
+        return intB.interviewText!.localeCompare(intA.interviewText!)
+      })
+    }
 
     const involvementFilter = (itm: { key: { text: string } }) =>
       referral.assaultedStaffName || itm.key.text !== 'Names of staff assaulted'
@@ -38,19 +64,58 @@ export class CsipRecordController {
     const screening = record.referral!.saferCustodyScreeningOutcome
 
     let actionButton
-    if (!screening) {
-      actionButton = {
-        label: 'Screen referral',
-        action: 'screen',
-      }
-    } else if (screening.outcome.code === 'OPE') {
-      actionButton = {
-        label: 'Record investigation',
-        action: 'investigation',
-      }
+    switch (record.status) {
+      case 'REFERRAL_PENDING':
+        break
+      case 'REFERRAL_SUBMITTED':
+        actionButton = {
+          label: 'Screen referral',
+          action: 'screen',
+        }
+        break
+      case 'PLAN_PENDING':
+        actionButton = {
+          label: 'Develop initial plan',
+          action: 'plan',
+        }
+        break
+      case 'INVESTIGATION_PENDING':
+        actionButton = {
+          label: 'Record investigation',
+          action: 'investigation',
+        }
+        break
+      case 'SUPPORT_OUTSIDE_CSIP':
+      case 'ACCT_SUPPORT':
+      case 'NO_FURTHER_ACTION':
+      case 'AWAITING_DECISION':
+        actionButton = {
+          label: 'Record decision',
+          action: 'decision',
+        }
+        break
+      case 'CSIP_OPEN':
+        actionButton = {
+          label: 'Record CSIP review',
+          action: 'review',
+        }
+        break
+      case 'CSIP_CLOSED':
+      case 'UNKNOWN':
+      default:
+        break
     }
 
+    const referralTabSelected = req.url.endsWith('referral')
+    const shouldShowTabs = !(
+      ['REFERRAL_PENDING', 'REFERRAL_SUBMITTED', 'PLAN_PENDING', 'INVESTIGATION_PENDING'] as (typeof record.status)[]
+    ).includes(record.status)
     res.render('csip-records/view', {
+      status: record.status,
+      shouldShowTabs,
+      investigation,
+      recordUuid,
+      referralTabSelected,
       actionButton,
       prisoner,
       referral,
@@ -70,6 +135,15 @@ export class CsipRecordController {
         break
       case 'investigation':
         res.redirect(`/csip-record/${recordUuid}/record-investigation/start`)
+        break
+      case 'plan':
+        res.redirect(`back`)
+        break
+      case 'decision':
+        res.redirect(`back`)
+        break
+      case 'review':
+        res.redirect(`back`)
         break
       default:
         res.redirect('back')

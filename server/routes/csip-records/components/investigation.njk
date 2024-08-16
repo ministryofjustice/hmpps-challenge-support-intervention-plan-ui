@@ -1,0 +1,107 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+<h1 class="govuk-heading-l govuk-!-margin-bottom-7">Investigation</h1>
+
+<h2 class="govuk-heading-m">Investigation information</h2>
+
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+      {
+        key: {
+          text: 'Investigation date'
+        },
+        value: {
+          text: referral.createdAt | formatDisplayDate
+        }
+      },
+      {
+        key: {
+          text: 'Staff involved'
+        },
+        value: {
+          html: investigation.staffInvolved | escape | nl2br
+        }
+      },
+      {
+        key: {
+          text: 'Evidence secured'
+        },
+        value: {
+          html: investigation.evidenceSecured | escape | nl2br
+        }
+      },
+      {
+        key: {
+          text: 'Why this occurred'
+        },
+        value: {
+          html: investigation.occurrenceReason | escape | nl2br
+        }
+      },
+      {
+        key: {
+          text: 'Usual behaviour presentation'
+        },
+        value: {
+          html: investigation.personsUsualBehaviour | escape | nl2br
+        }
+      },
+      {
+        key: {
+          text: 'Triggers'
+        },
+        value: {
+          html: investigation.personsTrigger | escape | nl2br
+        }
+      },
+      {
+        key: {
+          text: 'Protective factors'
+        },
+        value: {
+          html: investigation.protectiveFactors | escape | nl2br
+        }
+      }
+    ]
+}) }}
+
+<h2 class="govuk-heading-m govuk-!-margin-bottom-7">Interview details</h2>
+
+{% for interview in investigation.interviews %}
+    {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-7",
+        card: {
+            title: { text: "Interview with " + interview.interviewee }
+        },
+        rows: [{
+            key: {
+                text: 'Interviewee'
+            },
+            value: {
+                text: interview.interviewee
+            }
+        }, {
+            key: {
+                text: 'Interview date'
+            },
+            value: {
+                text: interview.interviewDate | formatDisplayDate
+            }
+        }, {
+            key: {
+                text: 'Role'
+            },
+            value: {
+                html: interview.intervieweeRole.description | escape | nl2br
+            }
+        }, {
+            key: {
+                text: 'Comments'
+            },
+            value: {
+                html: (interview.interviewText or "Not provided") | escape | nl2br
+            }
+        }]
+    }) }}
+{% endfor %}
