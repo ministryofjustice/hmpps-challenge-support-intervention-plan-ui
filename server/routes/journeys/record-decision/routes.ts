@@ -5,6 +5,7 @@ import { RecordDecisionController } from './controller'
 import { validate } from '../../../middleware/validationMiddleware'
 import { schemaFactory } from './schemas'
 import { NextStepsRoutes } from './next-steps/routes'
+import { DecisionAdditionalInformationRoutes } from './additional-information/routes'
 
 function Routes({ csipApiService }: Services) {
   const { router, get, post } = JourneyRouter()
@@ -13,6 +14,7 @@ function Routes({ csipApiService }: Services) {
   get('/', controller.GET)
   post('/', validate(schemaFactory(csipApiService)), controller.POST)
   router.use('/next-steps', NextStepsRoutes())
+  router.use('/additional-information', DecisionAdditionalInformationRoutes())
 
   return router
 }
