@@ -1,0 +1,44 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Next steps - Record a CSIP investigation decision" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Record a CSIP investigation decision</span>
+    <label for="nextSteps">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Add any comments on next steps (optional)</h1>
+    </label>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukCharacterCount({
+            maxlength: 4000,
+            rows: 5,
+            threshold: "75",
+            id: "nextSteps",
+            name: "nextSteps",
+            value: nextSteps,
+            hint: {
+                classes: 'govuk-!-margin-bottom-7',
+                html: '
+            <p>Actions to consider include: </p>
+            <ul class="govuk-body">
+                <li>opening a CSIP alert</li>
+                <li>updating ' + prisoner | firstNameSpaceLastName | possessiveComma + ' non-associations</li>
+                <li>making an entry in the observation book</li>
+                <li>a unit or cell move</li>
+                <li>a CSRA or RSRA (Room Sharing Risk Assessment) review</li>
+                <li>a service referral</li>
+                <li>a SIM referral</li>
+            </ul>
+            '
+            },
+            errorMessage: validationErrors | findError('nextSteps')
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}
