@@ -20,7 +20,7 @@
           text: 'Staff involved'
         },
         value: {
-          text: investigation.staffInvolved | escape | nl2br
+          html: investigation.staffInvolved | escape | nl2br
         }
       },
       {
@@ -28,7 +28,7 @@
           text: 'Evidence secured'
         },
         value: {
-          text: investigation.evidenceSecured | escape | nl2br
+          html: investigation.evidenceSecured | escape | nl2br
         }
       },
       {
@@ -36,7 +36,7 @@
           text: 'Why this occurred'
         },
         value: {
-          text: investigation.occurrenceReason | escape | nl2br
+          html: investigation.occurrenceReason | escape | nl2br
         }
       },
       {
@@ -44,7 +44,7 @@
           text: 'Usual behaviour presentation'
         },
         value: {
-          text: investigation.personsUsualBehaviour | escape | nl2br
+          html: investigation.personsUsualBehaviour | escape | nl2br
         }
       },
       {
@@ -52,7 +52,7 @@
           text: 'Triggers'
         },
         value: {
-          text: investigation.personsTrigger | escape | nl2br
+          html: investigation.personsTrigger | escape | nl2br
         }
       },
       {
@@ -60,7 +60,7 @@
           text: 'Protective factors'
         },
         value: {
-          text: investigation.protectiveFactors | escape | nl2br
+          html: investigation.protectiveFactors | escape | nl2br
         }
       }
     ]
@@ -93,7 +93,7 @@
                 text: 'Role'
             },
             value: {
-                text: interview.intervieweeRole.description | escape | nl2br
+                html: interview.intervieweeRole.description | escape | nl2br
             }
         }, {
             key: {
