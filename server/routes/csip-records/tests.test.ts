@@ -15,6 +15,7 @@ const csipRecordMock = {
   createdByDisplayName: 'User Name',
   prisonNumber: 'A1111AA',
   recordUuid: 'de643405-7bc9-4181-9677-db887a41f78d',
+  status: 'REFERRAL_SUBMITTED',
   referral: {
     referredBy: '<script>alert("Test User")</script>',
     refererArea: { code: 'A', description: '<script>alert("Area")</script>' },
@@ -105,7 +106,10 @@ afterEach(() => {
 
 describe('GET /csip-records/:recordUuid', () => {
   it('render page for CSIP record with proactive referral', async () => {
-    const result = await request(app(csipRecordMock)).get(TEST_PATH).expect(200).expect('Content-Type', /html/)
+    const result = await request(app(csipRecordMock))
+      .get(`${TEST_PATH}/referral`)
+      .expect(200)
+      .expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
     expect(getByRole(html, 'heading', { name: 'Behaviour details' })).toBeVisible()
     expect(getByRole(html, 'heading', { name: 'Behaviour involvement' })).toBeVisible()
@@ -147,7 +151,7 @@ describe('GET /csip-records/:recordUuid', () => {
         },
       }),
     )
-      .get(TEST_PATH)
+      .get(`${TEST_PATH}/referral`)
       .expect(200)
       .expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
@@ -185,6 +189,7 @@ describe('GET /csip-records/:recordUuid', () => {
     const result = await request(
       app({
         ...csipRecordMock,
+        status: 'INVESTIGATION_PENDING',
         referral: {
           ...csipRecordMock.referral,
           saferCustodyScreeningOutcome: {
@@ -200,7 +205,7 @@ describe('GET /csip-records/:recordUuid', () => {
         },
       }),
     )
-      .get(TEST_PATH)
+      .get(`${TEST_PATH}/referral`)
       .expect(200)
       .expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)
@@ -220,6 +225,7 @@ describe('GET /csip-records/:recordUuid', () => {
     const result = await request(
       app({
         ...csipRecordMock,
+        status: 'NO_FURTHER_ACTION',
         referral: {
           ...csipRecordMock.referral,
           saferCustodyScreeningOutcome: {
@@ -235,7 +241,7 @@ describe('GET /csip-records/:recordUuid', () => {
         },
       }),
     )
-      .get(TEST_PATH)
+      .get(`${TEST_PATH}/referral`)
       .expect(200)
       .expect('Content-Type', /html/)
     const html = createTestHtmlElement(result.text)

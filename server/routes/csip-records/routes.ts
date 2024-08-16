@@ -7,7 +7,9 @@ export const CsipRecordRoutes = (csipApiService: CsipApiService, prisonerSearchS
   const { router, get, post } = JourneyRouter()
   const controller = new CsipRecordController(csipApiService, prisonerSearchService)
 
-  get('/', controller.GET)
+  get('/', controller.GET_BASE)
+  get('/referral', controller.GET)
+  get('/investigation', controller.GET)
   post('/', controller.POST)
 
   return router

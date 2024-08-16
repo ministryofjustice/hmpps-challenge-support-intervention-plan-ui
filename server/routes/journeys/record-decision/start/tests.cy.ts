@@ -32,6 +32,6 @@ context('test /csip-record/:recordUuid/record-decision/start', () => {
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-decision/start`, {
       failOnStatusCode: false,
     })
-    cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550$/)
+    cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/referral$/)
   })
 })

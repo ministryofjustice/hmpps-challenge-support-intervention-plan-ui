@@ -401,7 +401,7 @@ const stubOutcomeType = () => {
   })
 }
 
-const stubCsipRecordGetSuccess = () => {
+const stubCsipRecordSuccessAwaitingDecision = () => {
   return stubFor({
     request: {
       method: 'GET',
@@ -413,83 +413,44 @@ const stubCsipRecordGetSuccess = () => {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       jsonBody: {
-        recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
-        prisonNumber: 'A1111AA',
-        prisonCodeWhenRecorded: 'LEI',
-        createdAt: '2024-07-22T11:21:48',
-        createdBy: 'AHUMAN_GEN',
-        createdByDisplayName: 'A Human',
-        status: 'REFERRAL_SUBMITTED',
+        ...referralSubmittedCsip,
+        status: 'AWAITING_DECISION',
         referral: {
-          isOnBehalfOfReferral: true,
-          referredBy: '<script>alert("Test User")</script>',
-          refererArea: { code: 'A', description: '<script>alert("Area")</script>' },
-          isProactiveReferral: true,
-          incidentLocation: { code: 'A', description: '<script>alert("Location")</script>' },
-          incidentType: { code: 'A', description: '<script>alert("IncidentType")</script>' },
-          incidentDate: '2024-12-25',
-          incidentTime: '23:59',
-          incidentInvolvement: { code: 'A', description: '<script>alert("Involvement")</script>' },
-          staffAssaulted: true,
-          assaultedStaffName: '<script>alert("Staff Name")</script>',
-          descriptionOfConcern: `Text
-      
-          • Bullet 1
-          • Bullet 2
-          • Bullet 3
-          
-          Paragraph
-          
-          <script>alert('concerns');</script>
-          
-          <button>this button should be escaped</button>`,
-          knownReasons: `Text
-      
-          • Bullet 1
-          • Bullet 2
-          • Bullet 3
-          
-          Paragraph
-          
-          <script>alert('xss');</script>
-          
-          <button>also should be escaped</button>`,
-          contributoryFactors: [
-            {
-              factorType: { code: 'A', description: 'Text' },
-            },
-            {
-              factorType: { code: 'B', description: '<script>alert("Text for type-B")</script>' },
-              comment: `Text
-      
-              • Bullet 1
-              • Bullet 2
-              • Bullet 3
-              
-              Paragraph
-              
-              <script>alert('xss');</script>
-              
-              <button>factor comment button should be escaped</button>`,
-            },
-            {
-              factorType: { code: 'C', description: 'Text with a TLA' },
-            },
-          ],
-          isSaferCustodyTeamInformed: 'Yes',
-          otherInformation: `Text
-      
-          • Bullet 1
-          • Bullet 2
-          • Bullet 3
-          
-          Paragraph
-          
-          <script>alert('xss');</script>
-          
-          <button>otherinfo button should be escaped</button>`,
+          ...referralSubmittedCsip.referral,
+          investigation: {
+            interviews: [
+              {
+                interviewee: 'Some Person',
+                interviewDate: '2024-12-25',
+                intervieweeRole: { code: 'CODE', description: 'Witness' },
+                interviewText: 'some text',
+              },
+            ],
+            staffInvolved: 'staff stafferson',
+            evidenceSecured: 'SomeVidence',
+            occurrenceReason: 'bananas',
+            personsUsualBehaviour: 'a great person',
+            personsTrigger: 'spiders',
+            protectiveFactors: 'SomeFactors',
+          },
         },
       },
+    },
+  })
+}
+
+const stubCsipRecordGetSuccess = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: referralSubmittedCsip,
     },
   })
 }
@@ -537,6 +498,85 @@ const stubPostInvestigation = () => {
   })
 }
 
+const referralSubmittedCsip = {
+  recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
+  prisonNumber: 'A1111AA',
+  prisonCodeWhenRecorded: 'LEI',
+  createdAt: '2024-07-22T11:21:48',
+  createdBy: 'AHUMAN_GEN',
+  createdByDisplayName: 'A Human',
+  status: 'REFERRAL_SUBMITTED',
+  referral: {
+    isOnBehalfOfReferral: true,
+    referredBy: '<script>alert("Test User")</script>',
+    refererArea: { code: 'A', description: '<script>alert("Area")</script>' },
+    isProactiveReferral: true,
+    incidentLocation: { code: 'A', description: '<script>alert("Location")</script>' },
+    incidentType: { code: 'A', description: '<script>alert("IncidentType")</script>' },
+    incidentDate: '2024-12-25',
+    incidentTime: '23:59',
+    incidentInvolvement: { code: 'A', description: '<script>alert("Involvement")</script>' },
+    staffAssaulted: true,
+    assaultedStaffName: '<script>alert("Staff Name")</script>',
+    descriptionOfConcern: `Text
+
+    • Bullet 1
+    • Bullet 2
+    • Bullet 3
+    
+    Paragraph
+    
+    <script>alert('concerns');</script>
+    
+    <button>this button should be escaped</button>`,
+    knownReasons: `Text
+
+    • Bullet 1
+    • Bullet 2
+    • Bullet 3
+    
+    Paragraph
+    
+    <script>alert('xss');</script>
+    
+    <button>also should be escaped</button>`,
+    contributoryFactors: [
+      {
+        factorType: { code: 'A', description: 'Text' },
+      },
+      {
+        factorType: { code: 'B', description: '<script>alert("Text for type-B")</script>' },
+        comment: `Text
+
+        • Bullet 1
+        • Bullet 2
+        • Bullet 3
+        
+        Paragraph
+        
+        <script>alert('xss');</script>
+        
+        <button>factor comment button should be escaped</button>`,
+      },
+      {
+        factorType: { code: 'C', description: 'Text with a TLA' },
+      },
+    ],
+    isSaferCustodyTeamInformed: 'Yes',
+    otherInformation: `Text
+
+    • Bullet 1
+    • Bullet 2
+    • Bullet 3
+    
+    Paragraph
+    
+    <script>alert('xss');</script>
+    
+    <button>otherinfo button should be escaped</button>`,
+  },
+}
+
 export default {
   stubAreaOfWork,
   stubIncidentLocation,
@@ -551,4 +591,5 @@ export default {
   stubCsipRecordGetSuccess,
   stubPostSaferCustodyScreening,
   stubPostInvestigation,
+  stubCsipRecordSuccessAwaitingDecision,
 }

@@ -1,12 +1,13 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "moj/components/page-header-actions/macro.njk" import mojPageHeaderActions %}
+{%- from "moj/components/sub-navigation/macro.njk" import mojSubNavigation -%}
 
 {% set fullWidth = true %}
 {% set pageTitle = "CSIP record - CSIP" %}
 {% extends "partials/layout.njk" %}
 
 {% set actionButtonHtml %}
-  <form method="post">
+  <form method="post" action="/csip-records/{{ recordUuid }}">
     <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
     <input type="hidden" name="action" value="{{ actionButton.action }}"/>
     {{ govukButton({
@@ -33,11 +34,32 @@
 {% endblock %}
 
 {% block innerContent %}
-  {% if screening %}
-    {% include './components/screening.njk' %}
+  {% if shouldShowTabs %}
+    {{ mojSubNavigation({
+      label: 'Sub navigation',
+      items: [{
+        text: 'Investigation',
+        href: 'investigation',
+        active: referralTabSelected == false
+      }, {
+        text: 'Referral',
+        href: 'referral',
+        active: referralTabSelected == true
+      }]
+    }) }}
   {% endif %}
 
-  {% include './components/referral.njk' %}
+  
+
+  {% if referralTabSelected %}
+    {% if screening %}
+      {% include './components/screening.njk' %}
+    {% endif %}
+
+    {% include './components/referral.njk' %}
+  {% else %}
+    {% include './components/investigation.njk' %}
+  {% endif %}
 
   <div class="govuk-body govuk-!-margin-bottom-6">
     {% if actionButton %}
