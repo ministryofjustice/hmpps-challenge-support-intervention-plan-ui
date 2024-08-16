@@ -20,13 +20,12 @@ context('test /record-decision/conclusion', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
     cy.task('stubCsipRecordGetSuccess')
-    cy.task('stubDecisionSignerRoles')
     cy.task('stubOutcomeType')
   })
 
   it('should try out all cases', () => {
     cy.signIn()
-    cy.visit(START_URL)
+    cy.visit(START_URL, { failOnStatusCode: false })
     cy.visit(PAGE_URL)
 
     validatePageContents()
@@ -54,6 +53,10 @@ context('test /record-decision/conclusion', () => {
     cy.findByText('Include the name and role of the staff member signing off on the decision.').should('be.visible')
 
     cy.findByRole('textbox', { name: 'Describe the reasons for the decision' }).should('be.visible')
+
+    cy.findByRole('link', { name: /^back/i })
+      .should('have.attr', 'href')
+      .and('match', /record-decision$/)
   }
 
   const validateErrorsMandatory = () => {
