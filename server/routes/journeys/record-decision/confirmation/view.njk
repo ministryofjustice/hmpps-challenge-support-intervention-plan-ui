@@ -1,0 +1,29 @@
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Confirmation - Record a CSIP investigation decision" %}
+
+{% block innerContent %}
+    {{ govukPanel({
+        titleText: "CSIP investigation decision recorded",
+        html: ("<div><strong>Decision: </strong>" + outcomeTypeDescription | escape + "</div>")
+    }) }}
+
+    <p class="govuk-body">We’ve updated the status of the referral to “{{ csipRecord | csipStatusDisplayText | sentenceCase(false) }}”.</p>
+
+    <h2 class="govuk-heading-m">Other actions to consider</h2>
+    <p class="govuk-body">These might include:</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        {% if outcomeTypeDescription == "Proogress to CSIP" %}
+            <li>opening a CSIP alert</li>
+        {% endif %}
+        <li>updating {{ prisoner | firstNameSpaceLastName | possessiveComma }} non-associations</li>
+        <li>making an entry in the observation book</li>
+        <li>a unit or cell move</li>
+        <li>a CSRA or RSRA (Room Sharing Risk Assessment) review</li>
+        <li>a service referral</li>
+        <li>a SIM referral</li>
+    </ul>
+{% endblock %}

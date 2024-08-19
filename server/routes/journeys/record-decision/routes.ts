@@ -8,6 +8,7 @@ import { NextStepsRoutes } from './next-steps/routes'
 import { ConclusionRoutes } from './conclusion/routes'
 import { DecisionAdditionalInformationRoutes } from './additional-information/routes'
 import { DecisionCheckAnswersRoutes } from './check-answers/routes'
+import { ConfirmationRoutes } from './confirmation/routes'
 
 function Routes({ csipApiService }: Services) {
   const { router, get, post } = JourneyRouter()
@@ -19,6 +20,7 @@ function Routes({ csipApiService }: Services) {
   router.use('/conclusion', ConclusionRoutes(csipApiService))
   router.use('/additional-information', DecisionAdditionalInformationRoutes())
   router.use('/check-answers', DecisionCheckAnswersRoutes(csipApiService))
+  router.use('/confirmation', ConfirmationRoutes())
 
   return router
 }
