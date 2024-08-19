@@ -115,6 +115,9 @@ export declare global {
       breadcrumbs: Breadcrumbs
       prisoner?: PrisonerSummary
       formResponses?: { [key: string]: string }
+      appInsightsConnectionString?: string
+      appInsightsApplicationName?: string
+      buildNumber?: string
     }
   }
 }

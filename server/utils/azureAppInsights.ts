@@ -26,6 +26,11 @@ export function buildAppInsightsClient(
     defaultClient.context.tags['ai.cloud.role'] = overrideName || applicationName
     defaultClient.context.tags['ai.application.ver'] = buildNumber
 
+    defaultClient.addTelemetryProcessor(({ data }) => {
+      const { url } = data.baseData!
+      return !url?.endsWith('/health') && !url?.endsWith('/ping') && !url?.endsWith('/metrics')
+    })
+
     defaultClient.addTelemetryProcessor(({ tags, data }, contextObjects) => {
       const operationNameOverride =
         contextObjects?.['correlationContext']?.customProperties?.getProperty('operationName')
