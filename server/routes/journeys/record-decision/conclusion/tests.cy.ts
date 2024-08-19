@@ -39,6 +39,7 @@ context('test /record-decision/conclusion', () => {
     getContinueButton().click()
     cy.url().should('to.match', /\/next-steps$/)
     cy.go('back')
+    cy.reload()
 
     verifyDetailsAreRestoredFromJourney()
   })

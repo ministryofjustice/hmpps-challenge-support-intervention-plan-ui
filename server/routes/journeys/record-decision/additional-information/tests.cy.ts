@@ -72,6 +72,7 @@ context('test /record-decision/additional-information', () => {
 
   const verifySubmittedValueIsPersisted = () => {
     cy.go('back')
+    cy.reload()
     getInputTextbox().should('have.value', "<script>alert('xss');</script>")
   }
 })
