@@ -1,3 +1,4 @@
+import { expect } from 'chai'
 import { checkAxeAccessibility } from '../support/accessibilityViolations'
 
 context('Make a Referral Journey', () => {
