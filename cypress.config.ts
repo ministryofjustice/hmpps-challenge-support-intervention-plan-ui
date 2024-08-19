@@ -35,6 +35,7 @@ export default defineConfig({
     excludeSpecPattern: ['dist', '**/!(*.cy).ts'],
     specPattern: '**/*.cy.{js,jsx,ts,tsx}',
     supportFile: 'integration_tests/support/index.ts',
+    experimentalRunAllSpecs: true,
   },
   redirectionLimit: 50,
 })
