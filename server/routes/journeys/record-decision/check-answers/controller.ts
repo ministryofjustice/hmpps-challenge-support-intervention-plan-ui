@@ -25,7 +25,8 @@ export class DecisionCheckAnswersController extends BaseJourneyController {
         outcomeTypeCode: decision.outcome!.code,
         signedOffByRoleCode: decision.signedOffByRole!.code,
         actions: [],
-        actionOther: decision.actionOther!,
+        actionOther: decision.actionOther || '',
+        nextSteps: decision.nextSteps || '',
       })
       req.journeyData.csipRecord = await this.csipApiService.getCsipRecord(req, req.journeyData.csipRecord!.recordUuid)
       req.journeyData.journeyCompleted = true

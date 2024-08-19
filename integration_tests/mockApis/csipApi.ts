@@ -498,6 +498,22 @@ const stubPostInvestigation = () => {
   })
 }
 
+const stubPutDecision = () => {
+  return stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/decision-and-actions',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {},
+    },
+  })
+}
+
 const csip = {
   recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
   prisonNumber: 'A1111AA',
@@ -592,4 +608,5 @@ export default {
   stubPostSaferCustodyScreening,
   stubPostInvestigation,
   stubCsipRecordSuccessAwaitingDecision,
+  stubPutDecision,
 }

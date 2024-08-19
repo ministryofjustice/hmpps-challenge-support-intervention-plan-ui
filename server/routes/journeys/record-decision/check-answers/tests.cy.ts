@@ -14,6 +14,7 @@ context('test /record-decision/check-answers', () => {
     cy.task('stubCsipRecordGetSuccess')
     cy.task('stubDecisionSignerRoles')
     cy.task('stubOutcomeType')
+    cy.task('stubPutDecision')
   })
 
   it('should be able to change answers and proceed to confirmation', () => {
