@@ -37,7 +37,7 @@ export class InvestigationCheckAnswersController extends BaseJourneyController {
         req.flash(
           'validationErrors',
           JSON.stringify({
-            saferCustodyScreening: [errorRespData?.['userMessage'] as string],
+            investigation: [errorRespData?.['userMessage'] as string],
           }),
         )
       }

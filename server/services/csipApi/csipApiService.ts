@@ -38,4 +38,11 @@ export default class CsipApiService {
       payload,
     )
   }
+
+  createDecision(req: Request, payload: Parameters<CsipApiClient['createDecision']>[1]) {
+    return this.csipApiClientBuilder(req.systemClientToken).createDecision(
+      req.journeyData.csipRecord!.recordUuid,
+      payload,
+    )
+  }
 }

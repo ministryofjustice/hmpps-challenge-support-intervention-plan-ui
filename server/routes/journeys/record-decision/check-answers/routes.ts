@@ -7,7 +7,7 @@ export const DecisionCheckAnswersRoutes = (csipApiService: CsipApiService) => {
   const controller = new DecisionCheckAnswersController(csipApiService)
 
   get('/', controller.GET)
-  post('/', controller.POST)
+  post('/', controller.checkSubmitToAPI, controller.POST)
 
   return router
 }
