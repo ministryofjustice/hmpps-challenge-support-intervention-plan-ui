@@ -59,6 +59,7 @@ context('test /record-decision', () => {
 
   const verifySubmittedValueIsPersisted = () => {
     cy.go('back')
+    cy.reload()
     getSignedOffByRole().should('be.checked')
   }
 })

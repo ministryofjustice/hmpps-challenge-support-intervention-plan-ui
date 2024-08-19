@@ -1,0 +1,124 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = true %}
+{% set pageTitle = "Check answers - Record a CSIP investigation decision" %}
+
+{% block innerContent %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Record a CSIP investigation decision</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check your answers before recording the investigation decision</h1>
+        </div>
+    </div>
+
+    {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-7",
+        rows: [
+            {
+                key: {
+                text: "Signed off by"
+            },
+                value: {
+                text: decisionAndActions.signedOffByRole.description
+            },
+                actions: {
+                items: [
+                    {
+                        href: "../record-decision",
+                        text: "Change",
+                        visuallyHiddenText: "who’s signing off on the decision",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Outcome"
+            },
+                value: {
+                text: decisionAndActions.outcome.description
+            },
+                actions: {
+                items: [
+                    {
+                        href: "conclusion#outcome",
+                        text: "Change",
+                        visuallyHiddenText: "the outcome of the investigation",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Reasons for decision"
+            },
+                value: {
+                html: decisionAndActions.conclusion | escape | nl2br
+            },
+                actions: {
+                items: [
+                    {
+                        href: "conclusion#conclusion",
+                        text: "Change",
+                        visuallyHiddenText: "the description of the reasons for the decision",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Comments on next steps"
+            },
+                value: {
+                html: (decisionAndActions.nextSteps or 'Not provided') | escape | nl2br
+            },
+                actions: {
+                items: [
+                    {
+                        href: "next-steps",
+                        text: "Change",
+                        visuallyHiddenText: "the comments on next steps",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Additional information"
+            },
+                value: {
+                html: (decisionAndActions.actionOther or 'Not provided') | escape | nl2br
+            },
+                actions: {
+                items: [
+                    {
+                        href: "additional-information",
+                        text: "Change",
+                        visuallyHiddenText: "the additional information",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            }
+        ]
+    }) }}
+
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        <div class="govuk-button-group">
+            {{ govukButton({
+                text: "Confirm and record decision",
+                preventDoubleClick: true
+            }) }}
+            <a class="govuk-link govuk-link--no-visited-state" href="{{ csipRecordUrl }}">Cancel</a>
+        </div>
+    </form>
+{% endblock %}
