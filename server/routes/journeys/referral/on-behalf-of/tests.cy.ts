@@ -6,11 +6,6 @@ context('Make a Referral Journey', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
     cy.task('stubAreaOfWork')
-    cy.task('stubIncidentLocation')
-    cy.task('stubIncidentType')
-    cy.task('stubIncidentInvolvement')
-    cy.task('stubContribFactors')
-    cy.task('stubCsipRecordPostSuccess')
   })
 
   it('test involvement, including all edge cases', () => {
