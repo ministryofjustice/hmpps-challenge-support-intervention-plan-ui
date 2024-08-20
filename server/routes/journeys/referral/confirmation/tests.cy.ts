@@ -1,5 +1,6 @@
 import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /referral/confirmation', () => {
   const uuid = uuidV4()
@@ -13,16 +14,52 @@ context('test /referral/confirmation', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
     cy.task('stubCsipRecordGetSuccess')
+    cy.task('stubAreaOfWork')
+    cy.task('stubIncidentLocation')
+    cy.task('stubIncidentType')
+    cy.task('stubContribFactors')
+    cy.task('stubIncidentInvolvement')
   })
 
   it('should display page correctly', () => {
     cy.signIn()
     cy.visit(START_URL, { failOnStatusCode: false })
 
+    injectJourneyDataAndReload(uuid, {
+      journeyCompleted: true,
+    })
+
     cy.visit(PAGE_URL)
 
     checkAxeAccessibility()
     validatePageContents()
+
+    cy.visit(`${uuid}/referral/additional-information`)
+    cy.url().should('match', /confirmation$/)
+    cy.visit(`${uuid}/referral/area-of-work`)
+    cy.url().should('match', /confirmation$/)
+    cy.visit(`${uuid}/referral/check-answers`)
+    cy.url().should('match', /confirmation$/)
+    cy.visit(`${uuid}/referral/contributory-factors`)
+    cy.url().should('match', /confirmation$/)
+    cy.visit(`${uuid}/referral/contributory-factors-comments`)
+    cy.url().should('match', /confirmation$/)
+    cy.visit(`${uuid}/referral/description`)
+    cy.url().should('match', /confirmation$/)
+    cy.visit(`${uuid}/referral/details`)
+    cy.url().should('match', /confirmation$/)
+    cy.visit(`${uuid}/referral/involvement`)
+    cy.url().should('match', /confirmation$/)
+    cy.visit(`${uuid}/referral/on-behalf-of`)
+    cy.url().should('match', /confirmation$/)
+    cy.visit(`${uuid}/referral/proactive-or-reactive`)
+    cy.url().should('match', /confirmation$/)
+    cy.visit(`${uuid}/referral/reasons`)
+    cy.url().should('match', /confirmation$/)
+    cy.visit(`${uuid}/referral/referrer`)
+    cy.url().should('match', /confirmation$/)
+    cy.visit(`${uuid}/referral/safer-custody`)
+    cy.url().should('match', /confirmation$/)
   })
 
   const validatePageContents = () => {
