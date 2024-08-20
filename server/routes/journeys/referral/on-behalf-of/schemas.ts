@@ -1,7 +1,7 @@
 import z from 'zod'
 import { createSchema, validateAndTransformReferenceData } from '../../../../middleware/validationMiddleware'
 
-const IS_ON_BEHALF_OF_REFERRAL_ERROR_MSG = `Select if you're making this referral on someone else's behalf or not`
+const IS_ON_BEHALF_OF_REFERRAL_ERROR_MSG = `Select if you’re making this referral on someone else’s behalf or not`
 
 const IS_ON_BEHALF_OF_REFERRAL_MAP = new Map([
   ['true', true],
