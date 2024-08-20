@@ -22,7 +22,7 @@ context('test /record-decision/confirmation', () => {
     cy.signIn()
     cy.visit(START_URL, { failOnStatusCode: false })
 
-    setupData('No further action') 
+    setupData('No further action')
     cy.visit(PAGE_URL)
 
     checkAxeAccessibility()
@@ -49,7 +49,7 @@ context('test /record-decision/confirmation', () => {
         conclusion: `<script>alert('xss-conclusion');</script>`,
         nextSteps: `<script>alert('xss-nextSteps');</script>`,
         actionOther: `<script>alert('xss-actionOther');</script>`,
-      }
+      },
     })
   }
 
