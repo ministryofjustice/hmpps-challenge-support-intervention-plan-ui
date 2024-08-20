@@ -24,7 +24,7 @@ context('Make a Referral Journey', () => {
   }
 
   const checkValidation = () => {
-    cy.findByRole('heading', { name: /referrer details/i }).should('be.visible')
+    cy.findByRole('heading', { name: /which area do you work in\?/i }).should('be.visible')
     cy.findByRole('button', { name: /continue/i }).click()
     cy.get('.govuk-error-summary a').should('have.length', 1)
     cy.findByRole('link', { name: /select your area of work/i }).should('be.visible')
