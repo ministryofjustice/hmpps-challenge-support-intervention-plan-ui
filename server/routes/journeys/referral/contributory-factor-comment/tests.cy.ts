@@ -31,7 +31,7 @@ context('test /referral/contributory-factor-comment', () => {
       referral: {
         contributoryFactors: [
           {
-            factorType: { code: `A<>"'&`, description: 'Type' },
+            factorType: { code: 'CODE1', description: 'Type' },
           },
         ],
       },
