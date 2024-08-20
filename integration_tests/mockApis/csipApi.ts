@@ -181,6 +181,12 @@ const stubContribFactors = () => {
           createdAt: new Date().toISOString(),
           createdBy: 'foobar',
         },
+        {
+          code: `A<>"'&`,
+          description: 'Factor5',
+          createdAt: new Date().toISOString(),
+          createdBy: 'foobar',
+        },
       ],
     },
   })
