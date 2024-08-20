@@ -3,8 +3,8 @@ import { Request } from 'express'
 import type CsipApiService from '../../../../services/csipApi/csipApiService'
 import { createSchema, validateAndTransformReferenceData } from '../../../../middleware/validationMiddleware'
 
-const EMPTY_STAFF_MEMBER_ERROR_MSG = `Enter the staff member's name`
-const TOO_LONG_STAFF_MEMBER_ERROR_MSG = `Staff member's name must be 240 characters or less`
+const EMPTY_STAFF_MEMBER_ERROR_MSG = `Enter the staff member’s name`
+const TOO_LONG_STAFF_MEMBER_ERROR_MSG = `Staff member’s name must be 240 characters or less`
 
 export const schemaFactory = (csipApiService: CsipApiService) => async (req: Request) => {
   const incidentInvolvementMap = new Map(
