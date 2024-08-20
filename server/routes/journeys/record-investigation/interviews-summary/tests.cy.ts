@@ -108,7 +108,6 @@ context('test /record-investigation/interviews-summary', () => {
             interviewee: 'Some Person',
             interviewDate: '2024-12-25',
             intervieweeRole: { code: 'CODE', description: 'Witness' },
-            interviewText: undefined,
           },
         ],
       },
