@@ -50,36 +50,6 @@ context('test /record-decision/confirmation', () => {
         nextSteps: `<script>alert('xss-nextSteps');</script>`,
         actionOther: `<script>alert('xss-actionOther');</script>`,
       },
-      csipRecord: {
-        status: 'PLAN_PENDING',
-        createdAt: '',
-        createdBy: '',
-        createdByDisplayName: '',
-        prisonNumber: '',
-        recordUuid: '',
-        referral: {
-          contributoryFactors: [],
-          incidentDate: '',
-          incidentLocation: {
-            code: 'A',
-          },
-          incidentType: {
-            code: 'A',
-          },
-          isSaferCustodyTeamInformed: 'DO_NOT_KNOW',
-          refererArea: {
-            code: 'A',
-          },
-          referredBy: '',
-        },
-      },
-      prisoner: {
-        firstName: 'John',
-        lastName: 'Smith',
-        cellLocation: '',
-        prisonerNumber: '',
-        prisonId: '',
-      },
     })
   }
 
