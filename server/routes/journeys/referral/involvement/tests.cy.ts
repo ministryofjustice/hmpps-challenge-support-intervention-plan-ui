@@ -148,39 +148,8 @@ context('Make a Referral Journey', () => {
 
   const setupDataSignInAndGo = () => {
     cy.signIn()
+    cy.visit('/prisoners/A1111AA/referral/start')
     injectJourneyDataAndReload(uuid, {
-      csipRecord: {
-        status: 'REFERRAL_PENDING',
-        createdAt: '',
-        createdBy: '',
-        createdByDisplayName: '',
-        prisonNumber: '',
-        recordUuid: '',
-        referral: {
-          contributoryFactors: [],
-          isSaferCustodyTeamInformed: 'DO_NOT_KNOW',
-          referredBy: '',
-          refererArea: {
-            code: 'A',
-            listSequence: 0,
-            description: 'AreaA',
-          },
-
-          isProactiveReferral: true,
-          incidentDate: '2024-08-01',
-          incidentTime: '23:23:00',
-          incidentLocation: {
-            code: 'A',
-            listSequence: 0,
-            description: 'LocationA',
-          },
-          incidentType: {
-            code: 'A',
-            listSequence: 0,
-            description: 'TypeA',
-          },
-        },
-      },
       prisoner: {
         firstName: 'Testname',
         lastName: 'User',
