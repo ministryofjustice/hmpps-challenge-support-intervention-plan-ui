@@ -54,15 +54,13 @@ context('test /record-decision/check-answers', () => {
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.contains('dt', 'Reasons for decision').next().should('include.text', 'new text')
 
-    cy.visit(`${uuid}/record-decision/check-answers`) // remove #conclusion from url for easier validation after this
-
     cy.contains('dt', 'Comments on next steps')
       .next()
       .should('include.text', `<script>alert('xss-nextSteps');</script>`)
     cy.findByRole('link', { name: /change the comments on next steps/i })
       .should('be.visible')
       .click()
-    cy.url().should('to.match', /next-steps$/)
+    cy.url().should('to.match', /next-steps(#[A-z]+)?$/)
     cy.findByRole('textbox').clear()
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.contains('dt', 'Comments on next steps').next().should('include.text', 'Not provided')
@@ -73,7 +71,7 @@ context('test /record-decision/check-answers', () => {
     cy.findByRole('link', { name: /change the additional information/i })
       .should('be.visible')
       .click()
-    cy.url().should('to.match', /additional-information$/)
+    cy.url().should('to.match', /additional-information(#[A-z]+)?$/)
     cy.findByRole('textbox').clear()
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.contains('dt', 'Additional information').next().should('include.text', 'Not provided')
@@ -101,6 +99,6 @@ context('test /record-decision/check-answers', () => {
 
   const continueToConfirmation = () => {
     cy.findByRole('button', { name: /Confirm and record decision/i }).click()
-    cy.url().should('to.match', /\/confirmation$/)
+    cy.url().should('to.match', /\/confirmation(#[A-z]+)?$/)
   }
 })
