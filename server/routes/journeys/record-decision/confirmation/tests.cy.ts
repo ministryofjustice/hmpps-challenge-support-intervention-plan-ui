@@ -4,7 +4,7 @@ import { injectJourneyDataAndReload } from '../../../../../integration_tests/uti
 
 context('test /record-decision/confirmation', () => {
   const uuid = uuidV4()
-  const START_URL = `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550record-decision/start`
+  const START_URL = `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-decision/start`
   const PAGE_URL = `${uuid}/record-decision/confirmation`
 
   beforeEach(() => {
@@ -13,16 +13,16 @@ context('test /record-decision/confirmation', () => {
     cy.task('stubGetPrisoner')
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
-    cy.task('stubComponents')
     cy.task('stubGetPrisonerImage')
     cy.task('stubGetPrisoner')
+    cy.task('stubCsipRecordGetSuccess')
   })
 
   it('should display page correctly when outcome type is "No further action"', () => {
     cy.signIn()
-    setupData('No further action')
-
     cy.visit(START_URL, { failOnStatusCode: false })
+
+    setupData('No further action')
     cy.visit(PAGE_URL)
 
     checkAxeAccessibility()
@@ -31,9 +31,9 @@ context('test /record-decision/confirmation', () => {
 
   it('should display page correctly when outcome type is "Progress to CSIP"', () => {
     cy.signIn()
-    setupData('Progress to CSIP')
-
     cy.visit(START_URL, { failOnStatusCode: false })
+
+    setupData('Progress to CSIP')
     cy.visit(PAGE_URL)
 
     checkAxeAccessibility()
@@ -50,13 +50,6 @@ context('test /record-decision/confirmation', () => {
         nextSteps: `<script>alert('xss-nextSteps');</script>`,
         actionOther: `<script>alert('xss-actionOther');</script>`,
       },
-      csipRecord: {
-        status: 'PLAN_PENDING',
-      },
-      prisoner: {
-        firstName: 'John',
-        lastName: 'Smith',
-      },
     })
   }
 
@@ -67,7 +60,7 @@ context('test /record-decision/confirmation', () => {
 
     cy.findByText('CSIP investigation decision recorded').should('be.visible')
 
-    cy.findByText('We’ve updated the status of the referral to “plan pending”.').should('be.visible')
+    cy.findByText('We’ve updated the status of the referral to “referral submitted”.').should('be.visible')
     cy.findByText('Other actions to consider').should('be.visible')
   }
 })
