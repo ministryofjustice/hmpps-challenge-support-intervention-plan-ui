@@ -67,6 +67,7 @@ context('test /referral/contributory-factor-comment', () => {
   }
 
   const verifyDetailsAreRestoredFromJourney = () => {
+    cy.reload()
     getFactor().should('be.checked')
   }
 })

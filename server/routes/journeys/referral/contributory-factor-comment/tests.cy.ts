@@ -81,6 +81,7 @@ context('test /referral/contributory-factor-comment', () => {
   }
 
   const verifyDetailsAreRestoredFromJourney = () => {
+    cy.reload()
     getComment().should('have.value', 'textarea input')
   }
 })
