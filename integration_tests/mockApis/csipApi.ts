@@ -518,6 +518,7 @@ const csip = {
   recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
   prisonNumber: 'A1111AA',
   prisonCodeWhenRecorded: 'LEI',
+  logCode: 'LEI123',
   createdAt: '2024-07-22T11:21:48',
   createdBy: 'AHUMAN_GEN',
   createdByDisplayName: 'A Human',
