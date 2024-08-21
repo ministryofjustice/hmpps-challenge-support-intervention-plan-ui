@@ -27,8 +27,11 @@ context('Make a Referral Journey', () => {
     cy.findByRole('heading', { name: /which area do you work in\?/i }).should('be.visible')
     cy.findByRole('button', { name: /continue/i }).click()
     cy.get('.govuk-error-summary a').should('have.length', 1)
-    cy.findByRole('link', { name: /select your area of work/i }).should('be.visible')
     cy.contains('p', /select your area of work/i).should('be.visible')
+    cy.findByRole('link', { name: /select your area of work/i })
+      .should('be.visible')
+      .click()
+    cy.findByRole('combobox', { name: /which area do you work in\?/i }).should('be.focused')
   }
 
   const setupDataSignInAndGo = () => {
