@@ -14,8 +14,6 @@ context('test /referral/proactive-or-reactive', () => {
     cy.task('stubComponents')
     cy.task('stubGetPrisonerImage')
     cy.task('stubGetPrisoner')
-
-    cy.task('stubIntervieweeRoles')
   })
 
   it('should try out all cases', () => {
