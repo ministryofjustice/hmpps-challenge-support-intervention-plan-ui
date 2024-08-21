@@ -3,9 +3,9 @@ import { Request } from 'express'
 import CsipApiService from '../../../../services/csipApi/csipApiService'
 import { createSchema, validateAndTransformReferenceData } from '../../../../middleware/validationMiddleware'
 
-const REFERRED_BY_ERROR_MESSAGE = "Enter the referrer's name"
-const REFERRED_BY_LENGTH_ERROR_MESSAGE = "Referrer's name must be 240 characters or less"
-const AREA_ERROR_MESSAGE = "Select the referrer's area of work"
+const REFERRED_BY_ERROR_MESSAGE = 'Enter the referrer’s name'
+const REFERRED_BY_LENGTH_ERROR_MESSAGE = 'Referrer’s name must be 240 characters or less'
+const AREA_ERROR_MESSAGE = 'Select the referrer’s area of work'
 
 export const schemaFactory = (csipApiService: CsipApiService) => async (req: Request) => {
   const areaRefDataMap = new Map(
