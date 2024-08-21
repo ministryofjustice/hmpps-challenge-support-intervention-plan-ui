@@ -13,6 +13,9 @@ context('test /record-investigation/interviews-summary', () => {
 
     navigateToTestPage()
 
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/investigation$/)
+    cy.findAllByRole('button', { name: /[\s\S]*record decision[\s\S]*/i }).should('be.visible')
+    cy.findByRole('heading', { name: /decision/i }).should('not.exist')
     checkInvestigationDetailsExist()
 
     checkTabsAndReferral()
@@ -29,15 +32,31 @@ context('test /record-investigation/interviews-summary', () => {
     cy.findAllByRole('button', { name: /screen referral/i }).should('be.visible')
   })
 
+  it('should render a post-decision, pre-plan csip record', () => {
+    cy.task('stubCsipRecordSuccessPlanPending')
+
+    navigateToTestPage()
+
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/investigation$/)
+    cy.findAllByRole('button', { name: /develop initial plan/i }).should('be.visible')
+    checkInvestigationDetailsExist()
+
+    checkDecision()
+
+    checkTabsAndReferral()
+
+    cy.findAllByRole('button', { name: /develop initial plan/i })
+      .first()
+      .click()
+    cy.url().should('include', 'develop-an-initial-plan/case-management')
+  })
+
   const navigateToTestPage = () => {
     cy.signIn()
     cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
   }
 
   const checkInvestigationDetailsExist = () => {
-    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/investigation$/)
-
-    cy.findAllByRole('button', { name: /[\s\S]*record decision[\s\S]*/i }).should('be.visible')
     cy.findByRole('heading', { name: /investigation$/i }).should('be.visible')
     cy.findByRole('heading', { name: /investigation information/i }).should('be.visible')
     cy.findByText('22 July 2024').should('be.visible')
@@ -64,5 +83,16 @@ context('test /record-investigation/interviews-summary', () => {
       .should('be.visible')
       .click()
     cy.findByRole('link', { name: /referral/i, current: 'page' }).should('be.visible')
+  }
+
+  const checkDecision = () => {
+    cy.findByRole('heading', { name: /decision/i }).should('be.visible')
+    cy.findByText('dec-conc').should('be.visible')
+    cy.findByText('Another option').should('be.visible')
+    cy.findByText('prison officer').should('be.visible')
+    cy.findByText('some person longer').should('be.visible')
+    cy.findByText('01 August 2024').should('be.visible')
+    cy.findByText(/stuff up[\s\S]*and there[\s\S]*whilst also being down here/i).should('be.visible')
+    cy.findByText(/some action[\s\S]*with another one[\s\S]*a final action/i).should('be.visible')
   }
 })

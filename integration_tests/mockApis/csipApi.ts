@@ -445,6 +445,64 @@ const stubCsipRecordSuccessAwaitingDecision = () => {
   })
 }
 
+const stubCsipRecordSuccessPlanPending = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        ...csip,
+        status: 'PLAN_PENDING',
+        referral: {
+          ...csip.referral,
+          investigation: {
+            interviews: [
+              {
+                interviewee: 'Some Person',
+                interviewDate: '2024-12-25',
+                intervieweeRole: { code: 'CODE', description: 'Witness' },
+                interviewText: 'some text',
+              },
+            ],
+            staffInvolved: 'staff stafferson',
+            evidenceSecured: 'SomeVidence',
+            occurrenceReason: 'bananas',
+            personsUsualBehaviour: 'a great person',
+            personsTrigger: 'spiders',
+            protectiveFactors: 'SomeFactors',
+          },
+          decisionAndActions: {
+            conclusion: 'dec-conc',
+            outcome: { code: 'ACC', description: 'Another option' },
+            signedOffByRole: {
+              code: 'A',
+              description: 'prison officer',
+            },
+            recordedBy: 'some person',
+            recordedByDisplayName: 'some person longer',
+            date: '2024-08-01',
+            nextSteps: `stuff up
+            and there
+            
+            whilst also being down here`,
+            actions: ['OPEN_CSIP_ALERT'],
+            actionOther: `some action
+            with another one
+            
+            a final action`,
+          },
+        },
+      },
+    },
+  })
+}
+
 const stubCsipRecordGetSuccess = () => {
   return stubFor({
     request: {
@@ -615,5 +673,6 @@ export default {
   stubPostSaferCustodyScreening,
   stubPostInvestigation,
   stubCsipRecordSuccessAwaitingDecision,
+  stubCsipRecordSuccessPlanPending,
   stubPutDecision,
 }

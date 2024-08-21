@@ -58,6 +58,10 @@
 
     {% include './components/referral.njk' %}
   {% else %}
+    {% if decision %}
+      {% include './components/decision.njk' %}
+      <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
+    {% endif %}
     {% include './components/investigation.njk' %}
   {% endif %}
 
