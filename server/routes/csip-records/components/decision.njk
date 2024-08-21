@@ -1,0 +1,65 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+<h1 class="govuk-heading-l govuk-!-margin-bottom-7">Decision</h1>
+
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-9",
+    rows: [
+      {
+        key: {
+          text: 'Decision date'
+        },
+        value: {
+          text: decision.date | formatDisplayDate
+        }
+      },
+      {
+        key: {
+          text: 'Decision outcome'
+        },
+        value: {
+          text: decision.outcome.description
+        }
+      },
+      {
+        key: {
+          text: 'Signed off by'
+        },
+        value: {
+          text: decision.signedOffByRole.description
+        }
+      },
+      {
+        key: {
+          text: 'Reason for decision'
+        },
+        value: {
+          html: decision.conclusion | escape | nl2br
+        }
+      },
+      {
+        key: {
+          text: 'Comments on next steps'
+        },
+        value: {
+          html: decision.nextSteps | escape | nl2br
+        }
+      },
+      {
+        key: {
+          text: 'Additional information'
+        },
+        value: {
+          html: decision.actionOther | escape | nl2br
+        }
+      },
+      {
+        key: {
+          text: 'Recorded by'
+        },
+        value: {
+          text: decision.recordedByDisplayName
+        }
+      }
+    ]
+}) }}

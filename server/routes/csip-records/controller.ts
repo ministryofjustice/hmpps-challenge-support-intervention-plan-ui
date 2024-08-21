@@ -4,6 +4,10 @@ import CsipApiService from '../../services/csipApi/csipApiService'
 import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
 import { components } from '../../@types/csip'
 
+const hasInvestigation = (status: components['schemas']['CsipRecord']['status']) => {
+  return !(['REFERRAL_PENDING', 'REFERRAL_SUBMITTED', 'INVESTIGATION_PENDING'] as (typeof status)[]).includes(status)
+}
+
 export class CsipRecordController {
   constructor(
     private readonly csipApiService: CsipApiService,
@@ -14,7 +18,7 @@ export class CsipRecordController {
     const { recordUuid } = req.params
     const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
 
-    if (record.status === 'AWAITING_DECISION') {
+    if (hasInvestigation(record.status)) {
       res.redirect(`/csip-records/${recordUuid}/investigation`)
       return
     }
@@ -57,6 +61,8 @@ export class CsipRecordController {
         return intB.interviewText!.localeCompare(intA.interviewText!)
       })
     }
+
+    const decision = record.referral!.decisionAndActions
 
     const involvementFilter = (itm: { key: { text: string } }) =>
       referral.assaultedStaffName || itm.key.text !== 'Names of staff assaulted'
@@ -107,12 +113,11 @@ export class CsipRecordController {
     }
 
     const referralTabSelected = req.url.endsWith('referral')
-    const shouldShowTabs = !(
-      ['REFERRAL_PENDING', 'REFERRAL_SUBMITTED', 'PLAN_PENDING', 'INVESTIGATION_PENDING'] as (typeof record.status)[]
-    ).includes(record.status)
+
     res.render('csip-records/view', {
       status: record.status,
-      shouldShowTabs,
+      shouldShowTabs: hasInvestigation(record.status),
+      decision,
       investigation,
       recordUuid,
       referralTabSelected,
@@ -137,7 +142,7 @@ export class CsipRecordController {
         res.redirect(`/csip-record/${recordUuid}/record-investigation/start`)
         break
       case 'plan':
-        res.redirect(`back`)
+        res.redirect(`/csip-record/${recordUuid}/develop-an-initial-plan/case-management`)
         break
       case 'decision':
         res.redirect(`back`)
