@@ -18,7 +18,7 @@ export const schema = createSchema({
     .max(240, { message: TOO_LONG_REASON_ERROR_MSG })
     .refine(val => val?.trim().length > 0, { message: REASON_ERROR_MSG }),
 })
-  .refine(val => val.isCaseManager === 'true' || val.caseManager?.trim().length > 0, {
+  .refine(val => val.isCaseManager !== 'false' || val.caseManager?.trim().length > 0, {
     message: CASE_MANAGER_ERROR_MSG,
     path: ['caseManager'],
   })
