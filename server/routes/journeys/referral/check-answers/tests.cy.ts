@@ -114,12 +114,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /on-behalf-of/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-
-    cy.findByRole('link', { name: /Change if the referral is being made on behalf of someone else or not/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('radio', { name: /Yes/i }).should('be.focused').click()
     getContinueButton().click()
@@ -135,12 +130,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /referrer/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-
-    cy.findByRole('link', { name: /Change name of referrer/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('textbox').should('be.focused').clear().type(ESCAPE_LITTLE, { delay: 0 })
     getContinueButton().click()
@@ -155,12 +145,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /referrer/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-
-    cy.findByRole('link', { name: /Change area of work/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('combobox', { name: 'Which area do they work in?' }).should('be.focused').select('AreaB')
     getContinueButton().click()
@@ -175,12 +160,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /proactive-or-reactive/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-
-    cy.findByRole('link', { name: /Change if the referral is proactive or reactive/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('radio', { name: /Proactive/i })
       .should('be.focused')
@@ -197,11 +177,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /details/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-    cy.findByRole('link', { name: /Change date of incident/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('textbox', { name: 'Date of incident' }).should('be.focused').clear().type('21/08/2024', { delay: 0 })
     getContinueButton().click()
@@ -216,11 +192,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /details/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-    cy.findByRole('link', { name: /Change time of incident/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('textbox', { name: 'Hour' }).should('be.focused').clear().type('2', { delay: 0 })
     getContinueButton().click()
@@ -235,11 +207,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /details/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-    cy.findByRole('link', { name: /Change location of incident/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('combobox', { name: 'Where did the incident occur?' }).should('be.focused').select('LocationB')
     getContinueButton().click()
@@ -254,11 +222,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /details/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-    cy.findByRole('link', { name: /Change incident type/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('combobox', { name: 'What was the incident type?' }).should('be.focused').select('TypeB')
     getContinueButton().click()
@@ -273,11 +237,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /involvement/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-    cy.findByRole('link', { name: /Change how the prisoner was involved/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('radio', { name: /Factor1/i }).should('be.focused')
     cy.findByRole('radio', { name: /Factor2/i }).click()
@@ -293,11 +253,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /involvement/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-    cy.findByRole('link', { name: /Change if a staff member was assaulted or not/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('radio', { name: /No/i })
     cy.findByRole('radio', { name: /Yes/i }).should('be.focused').click()
@@ -317,11 +273,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /description/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-    cy.findByRole('link', { name: /Change the description of the incident and concerns/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('textbox').should('be.focused').clear().type(ESCAPE_AND_FORMAT, { delay: 0 })
     getContinueButton().click()
@@ -336,11 +288,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /reasons/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-    cy.findByRole('link', { name: /Change the reasons given for the incident/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('textbox').should('be.focused').clear().type(ESCAPE_AND_FORMAT, { delay: 0 })
     getContinueButton().click()
@@ -355,11 +303,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /contributory-factors/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-    cy.findByRole('link', { name: /Change the contributory factors/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('checkbox', { name: /Factor1/i }).should('be.focused')
     cy.findByRole('checkbox', { name: /Factor2/i }).click()
@@ -375,11 +319,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /code2-comment/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-    cy.findByRole('link', { name: /Change the comment on factor2 factors/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('textbox').should('be.focused').clear().type(ESCAPE_AND_FORMAT, { delay: 0 })
     getContinueButton().click()
@@ -394,11 +334,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /safer-custody/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-    cy.findByRole('link', { name: /Change if Safer Custody are aware of the referral or not/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('radio', { name: /Yes/i }).should('be.focused').click()
     getContinueButton().click()
@@ -413,11 +349,7 @@ context('test /record-investigation/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /additional-information/)
-    cy.go('back')
-    cy.url().should('to.match', /check-answers/)
-    cy.findByRole('link', { name: /Change the additional information relating to the referral/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('match', /check-answers/)
 
     cy.findByRole('textbox').should('be.focused').clear().type(ESCAPE_AND_FORMAT, { delay: 0 })
     getContinueButton().click()
