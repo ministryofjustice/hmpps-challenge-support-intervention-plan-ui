@@ -48,7 +48,7 @@ context('test /record-investigation/interviews-summary', () => {
     cy.findAllByRole('button', { name: /develop initial plan/i })
       .first()
       .click()
-    cy.url().should('include', 'develop-an-initial-plan/case-management')
+    cy.url().should('include', 'develop-an-initial-plan/start')
   })
 
   const navigateToTestPage = () => {
