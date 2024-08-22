@@ -18,7 +18,7 @@ export class DevelopPlanController {
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
     req.journeyData.plan!.isCaseManager = req.body.isCaseManager
-    if (req.body.isCaseManager && req.body.caseManager) {
+    if (!req.body.isCaseManager && req.body.caseManager) {
       req.journeyData.plan!.caseManager = req.body.caseManager
     } else {
       req.journeyData.plan!.caseManager = res.locals.user.displayName.substring(0, 100)

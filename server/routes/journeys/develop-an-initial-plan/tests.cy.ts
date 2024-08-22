@@ -61,7 +61,7 @@ context('test /develop-an-initial-plan', () => {
       .click()
     getReasonsTextField().should('be.focused')
 
-    getIsCaseManagerRadio().click()
+    getIsNotCaseManagerRadio().click()
     getCaseManagerTextField().should('be.visible')
     getContinueButton().click()
 
@@ -97,13 +97,13 @@ context('test /develop-an-initial-plan', () => {
   const verifySubmittedValueIsPersisted = () => {
     cy.go('back')
     cy.reload()
-    getIsCaseManagerRadio().should('be.checked')
+    getIsNotCaseManagerRadio().should('be.checked')
     getCaseManagerTextField().should('have.value', `<script>alert('xss-getCaseManagerTextfield');</script>`)
     getReasonsTextField().should('have.value', `<script>alert('xss-getReasonsTextfield');</script>`)
   }
 
   const validateOptionalInput = () => {
-    getIsNotCaseManagerRadio().click()
+    getIsCaseManagerRadio().click()
     getCaseManagerTextField().should('not.exist')
     getContinueButton().click()
     cy.url().should('to.match', /\/identified-needs$/)

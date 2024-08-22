@@ -41,15 +41,15 @@
                 {
                     value: true,
                     text: "Yes",
-                    checked: isCaseManager === true,
-                    conditional: {
-                    html: caseManagerHtml
-                }
+                    checked: isCaseManager === true
                 },
                 {
                     value: false,
                     text: "No",
-                    checked: isCaseManager === false
+                    checked: isCaseManager === false,
+                    conditional: {
+                    html: caseManagerHtml
+                }
                 }
             ],
             errorMessage: validationErrors | findError('isCaseManager')
