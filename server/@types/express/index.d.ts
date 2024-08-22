@@ -89,7 +89,24 @@ type DecisionAndActions = Partial<{
   actionOther: string | null
 }>
 
-type Plan = object
+type Plan = Partial<{
+  identifiedNeedSubJourney: Partial<IdentifiedNeed>
+  isCaseManager: boolean
+  caseManager: string
+  reasonForPlan: string
+  firstCaseReviewDate: string
+  identifiedNeeds: IdentifiedNeed[]
+}>
+
+type IdentifiedNeed = {
+  identifiedNeed: string
+  responsiblePerson: string
+  createdDate: string
+  targetDate: string
+  closedDate: string | null
+  intervention: string
+  progression: string | null
+}
 
 export declare global {
   namespace Express {
