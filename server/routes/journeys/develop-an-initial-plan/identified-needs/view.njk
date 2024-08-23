@@ -9,7 +9,7 @@
 
 {% block innerContent %}
     <span class="govuk-caption-l">Develop an initial plan</span>
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Identified needs for {{ (prisoner.firstName + " " + prisoner.lastName) | convertToTitleCase }}</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Identified needs for {{ prisoner | firstNameSpaceLastName }}</h1>
 
     {{ govukDetails({
             summaryText: "Help with developing an initial plan",
@@ -58,7 +58,7 @@
                 actions: {
                     items: [
                         {
-                            href: 'intervention-details/' + loop.index + '#identifiedNeed',
+                            href: 'summarise-identified-need/' + loop.index + '#identifiedNeed',
                             text: "Change",
                             visuallyHiddenText: "the summary of identified need " + loop.index,
                             classes: "govuk-link--no-visited-state"
@@ -126,7 +126,7 @@
                 actions: {
                     items: [
                         {
-                            href: 'intervention-details/' + loop.index + '#progression',
+                            href: 'record-actions-progress/' + loop.index + '#progression',
                             text: "Change",
                             visuallyHiddenText: "the actions and progress " + loop.index,
                             classes: "govuk-link--no-visited-state"

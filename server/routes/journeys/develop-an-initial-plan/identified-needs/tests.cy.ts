@@ -3,13 +3,12 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 import { Plan } from '../../../../@types/express'
 
-context('test /record-decision/additional-information', () => {
+context('test /develop-an-initial-plan/identified-needs', () => {
   const uuid = uuidV4()
 
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
-    cy.task('stubGetPrisoner')
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
     cy.task('stubCsipRecordSuccessPlanPending')
