@@ -4,6 +4,7 @@ import { JourneyRouter } from '../base/routes'
 import { DevelopPlanController } from './controller'
 import { validate } from '../../../middleware/validationMiddleware'
 import { schema } from './schemas'
+import { IdentifiedNeedsRoutes } from './identified-needs/routes'
 
 function Routes(_services: Services) {
   const { router, get, post } = JourneyRouter()
@@ -11,6 +12,8 @@ function Routes(_services: Services) {
 
   get('/', controller.GET)
   post('/', validate(schema), controller.POST)
+
+  router.use('/identified-needs', IdentifiedNeedsRoutes())
 
   return router
 }

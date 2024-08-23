@@ -69,12 +69,12 @@ context('test /record-decision/additional-information', () => {
 
     if (!withIdentifiedNeeds) {
       cy.findByText(/no identified needs recorded/i).should('be.visible')
-      cy.findByRole('button', { name: /add an identified need/i }).should('be.visible')
+      cy.findByRole('button', { name: /add identified need/i }).should('be.visible')
       cy.findByRole('button', { name: /add another identified need/i }).should('not.exist')
       cy.findByRole('button', { name: /continue/i }).should('not.exist')
     } else {
       cy.findByText(/no identified needs recorded/i).should('not.exist')
-      cy.findByRole('button', { name: /add an identified need/i }).should('not.exist')
+      cy.findByRole('button', { name: /add identified need/i }).should('not.exist')
       cy.findByRole('button', { name: /add another identified need/i }).should('be.visible')
       cy.findByRole('button', { name: /continue/i }).should('be.visible')
       cy.findByRole('heading', { name: /a need goes here/i }).should('be.visible')
