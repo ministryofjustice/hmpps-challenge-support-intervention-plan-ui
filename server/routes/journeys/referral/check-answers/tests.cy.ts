@@ -34,7 +34,6 @@ context('test /record-investigation/check-answers', () => {
     cy.task('stubDecisionSignerRoles')
     cy.task('stubContribFactors')
     cy.task('stubIncidentInvolvement')
-    cy.task('stubOutcomeType')
     cy.task('stubGetPrisonerImage')
     cy.task('stubGetPrisoner')
 
