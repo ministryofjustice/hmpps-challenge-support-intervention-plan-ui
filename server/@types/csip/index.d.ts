@@ -3013,12 +3013,13 @@ export interface operations {
         domain:
           | 'area-of-work'
           | 'contributory-factor-type'
+          | 'decision-outcome-type'
           | 'role'
           | 'incident-involvement'
           | 'incident-location'
           | 'incident-type'
           | 'interviewee-role'
-          | 'outcome-type'
+          | 'screening-outcome-type'
       }
       cookie?: never
     }

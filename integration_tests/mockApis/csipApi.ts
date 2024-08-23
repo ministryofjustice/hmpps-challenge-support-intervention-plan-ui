@@ -388,11 +388,30 @@ const stubCsipRecordPostSuccess = () => {
   })
 }
 
-const stubOutcomeType = () => {
+const stubDecisionOutcomeType = () => {
   return stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/csip-api/reference-data/outcome-type',
+      urlPattern: '/csip-api/reference-data/decision-outcome-type',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: [
+        { code: 'NFA', description: 'No further action' },
+        { code: 'ACC', description: 'Another option' },
+      ],
+    },
+  })
+}
+
+const stubScreeningOutcomeType = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/reference-data/screening-outcome-type',
     },
     response: {
       status: 200,
@@ -668,7 +687,8 @@ export default {
   stubContribFactors,
   stubCsipRecordPostSuccess,
   stubCsipRecordPostFailure,
-  stubOutcomeType,
+  stubDecisionOutcomeType,
+  stubScreeningOutcomeType,
   stubCsipRecordGetSuccess,
   stubPostSaferCustodyScreening,
   stubPostInvestigation,

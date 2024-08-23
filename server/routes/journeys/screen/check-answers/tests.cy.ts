@@ -12,7 +12,7 @@ context('test /screen/check-answers', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
     cy.task('stubCsipRecordGetSuccess')
-    cy.task('stubOutcomeType')
+    cy.task('stubScreeningOutcomeType')
     cy.task('stubPostSaferCustodyScreening')
   })
 

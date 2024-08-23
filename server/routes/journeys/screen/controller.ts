@@ -7,7 +7,7 @@ export class ScreenController extends BaseJourneyController {
     const outcomeTypeItems = this.customOrderRadios(
       await this.getReferenceDataOptionsForRadios(
         req,
-        'outcome-type',
+        'screening-outcome-type',
         res.locals.formResponses?.['outcomeType'] || req.journeyData.saferCustodyScreening?.outcomeType,
       ),
     )

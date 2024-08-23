@@ -13,7 +13,7 @@ context('test /record-decision/check-answers', () => {
     cy.task('stubComponents')
     cy.task('stubCsipRecordGetSuccess')
     cy.task('stubDecisionSignerRoles')
-    cy.task('stubOutcomeType')
+    cy.task('stubDecisionOutcomeType')
     cy.task('stubPutDecision')
   })
 

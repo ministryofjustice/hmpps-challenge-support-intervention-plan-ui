@@ -10,7 +10,7 @@ const OUTCOME_REQUIRED_MSG = 'Select the conclusion of the CSIP investigation'
 
 export const schemaFactory = (csipApiService: CsipApiService) => async (req: Request) => {
   const outcomeTypeMap = new Map(
-    (await csipApiService.getReferenceData(req, 'outcome-type')).map(itm => [itm.code, itm]),
+    (await csipApiService.getReferenceData(req, 'decision-outcome-type')).map(itm => [itm.code, itm]),
   )
 
   return createSchema({

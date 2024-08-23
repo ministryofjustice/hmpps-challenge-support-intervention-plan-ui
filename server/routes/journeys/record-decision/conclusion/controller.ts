@@ -7,7 +7,7 @@ export class ConclusionController extends BaseJourneyController {
     const outcomeTypeOptions = this.customRadios(
       await this.getReferenceDataOptionsForRadios(
         req,
-        'outcome-type',
+        'decision-outcome-type',
         res.locals.formResponses?.['outcome'] || req.journeyData.decisionAndActions!.outcome,
       ),
     )

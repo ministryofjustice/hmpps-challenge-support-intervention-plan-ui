@@ -20,7 +20,7 @@ context('test /record-decision/conclusion', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
     cy.task('stubCsipRecordGetSuccess')
-    cy.task('stubOutcomeType')
+    cy.task('stubDecisionOutcomeType')
   })
 
   it('should try out all cases', () => {
