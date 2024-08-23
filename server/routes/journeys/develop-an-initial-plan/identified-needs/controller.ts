@@ -5,7 +5,7 @@ export class IdentifiedNeedsController {
     const { identifiedNeeds, reasonForPlan } = req.journeyData.plan!
 
     res.render('develop-an-initial-plan/identified-needs/view', {
-      backUrl: '../develop-an-initial-plan',
+      backUrl: false,
       newNeedIndex: (identifiedNeeds || []).length + 1,
       identifiedNeeds,
       reasonForPlan,

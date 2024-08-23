@@ -60,6 +60,7 @@ context('test /develop-an-initial-plan/identified-needs', () => {
   }
 
   const validatePageContents = (withIdentifiedNeeds: boolean) => {
+    cy.findByRole('link', { name: /^back/i }).should('not.exist')
     cy.findByRole('heading', { name: /Identified needs for Testname User/ }).should('be.visible')
 
     cy.get('details').invoke('attr', 'open').should('not.exist')
