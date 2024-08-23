@@ -1,0 +1,160 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = identifiedNeeds.length %}
+{% set pageTitle = "Identified Need - Develop an initial plan" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Develop an initial plan</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Identified needs for {{ (prisoner.firstName + " " + prisoner.lastName) | convertToTitleCase }}</h1>
+
+    {{ govukDetails({
+            summaryText: "Help with developing an initial plan",
+            html: '
+            <p>The plan should:</p>
+            <ul>
+            <li>respond to the needs identified in within the referral, investigation and other records</li>
+            <li>include achievable targets, developed and agreed with the prisoner</li>
+            <li>detail ’small steps’ to behaviour change, including the ’how’ and ’what it looks like’</li>
+            <li>be based on a multi-disciplinary approach and communicated with all appropriate staff members</li>
+            </ul>
+            <p>Plans can include a range of activities, such as:</p>
+            <ul>
+            <li>support to cope better and manage their triggers</li>
+            <li>support to learn about acceptable behaviour</li>
+            <li>other types of support - for example, helping the prisoner improve their contact with family or engage more with activities</li>
+            <li>intervention programmes - for example, behavioural programmes and other specialist services (if these match the prisoner’s needs)</li>
+            <li>lighter touch initiatives - for example, peer support schemes</li>
+            </ul>
+            <p>You can find out what support and interventions are available using your establishment’s Multi-Agency Provision guidance sheet</p>
+            '
+        }) }}
+
+    {% for identifiedNeed in identifiedNeeds %}
+        {{ govukSummaryList({
+            card: {
+                title: { text: identifiedNeed.identifiedNeed },
+                actions: {
+                    items: [
+                        {
+                            href: 'delete-identified-need/' + loop.index,
+                            text: "Delete",
+                            visuallyHiddenText: "the identified need " + reasonForPlan,
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            },
+            rows: [{
+                key: {
+                    text: 'Identified need summary'
+                },
+                value: {
+                    text: identifiedNeed.identifiedNeed
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'intervention-details/' + loop.index + '#identifiedNeed',
+                            text: "Change",
+                            visuallyHiddenText: "the summary of identified need " + loop.index,
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            }, {
+                key: {
+                    text: 'Planned intervention'
+                },
+                value: {
+                    html: identifiedNeed.intervention | escape | nl2br
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'intervention-details/' + loop.index + '#intervention',
+                            text: "Change",
+                            visuallyHiddenText: "the planned intervention " + loop.index,
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            }, {
+                key: {
+                    text: 'Person responsible'
+                },
+                value: {
+                    text: identifiedNeed.responsiblePerson
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'intervention-details/' + loop.index + '#responsiblePerson',
+                            text: "Change",
+                            visuallyHiddenText: "the person responsible " + loop.index,
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            }, {
+                key: {
+                    text: 'Target date'
+                },
+                value: {
+                    text: identifiedNeed.targetDate | formatDisplayDate
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'intervention-details/' + loop.index + '#targetDate',
+                            text: "Change",
+                            visuallyHiddenText: "the target date " + loop.index,
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            }, {
+                key: {
+                    text: 'Actions and progress'
+                },
+                value: {
+                    html: identifiedNeed.progression | escape | nl2br
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'intervention-details/' + loop.index + '#progression',
+                            text: "Change",
+                            visuallyHiddenText: "the actions and progress " + loop.index,
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            }]
+        }) }}
+    {% endfor %}
+
+    {% if not identifiedNeeds.length %}
+        <p class="govuk-!-margin-bottom-8">No identified needs recorded.</p>
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-8">
+    {% endif %}
+
+    {{ govukButton({
+        text: "Add another identified need" if identifiedNeeds.length else "Add an identified need",
+        href: "interview-details/" + newNeedIndex,
+        classes: "govuk-button--secondary",
+        preventDoubleClick: true
+    }) }}
+    {% if identifiedNeeds.length %}
+        <form method="post">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+            {{ govukButton({
+                text: "Continue",
+                preventDoubleClick: true
+            }) }}
+        </form>
+    {% endif %}
+{% endblock %}
