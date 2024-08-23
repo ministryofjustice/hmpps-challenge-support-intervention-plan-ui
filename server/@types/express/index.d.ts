@@ -89,7 +89,7 @@ type DecisionAndActions = Partial<{
   actionOther: string | null
 }>
 
-type Plan = Partial<{
+export type Plan = Partial<{
   identifiedNeedSubJourney: Partial<IdentifiedNeed>
   isCaseManager: boolean
   caseManager: string
