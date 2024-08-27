@@ -400,8 +400,8 @@ const stubDecisionOutcomeType = () => {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       jsonBody: [
-        { code: 'NFA', description: 'No further action' },
         { code: 'ACC', description: 'Another option' },
+        { code: 'NFA', description: 'No further action' },
       ],
     },
   })
@@ -419,8 +419,8 @@ const stubScreeningOutcomeType = () => {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       jsonBody: [
-        { code: 'NFA', description: 'No further action' },
         { code: 'ACC', description: 'Another option' },
+        { code: 'NFA', description: 'No further action' },
       ],
     },
   })
