@@ -30,7 +30,7 @@ export class SummariseIdentifiedNeedController {
     if (isNew) {
       req.journeyData.plan!.identifiedNeedSubJourney ??= {}
       req.journeyData.plan!.identifiedNeedSubJourney.identifiedNeed = req.body.identifiedNeed
-      return res.redirect(`intervention-details/${index + 1}`)
+      return res.redirect(`../intervention-details/${index + 1}`)
     }
 
     req.journeyData.plan!.identifiedNeeds![index]!.identifiedNeed = req.body.identifiedNeed

@@ -6,6 +6,7 @@ import { validate } from '../../../middleware/validationMiddleware'
 import { schema } from './schemas'
 import { IdentifiedNeedsRoutes } from './identified-needs/routes'
 import { SummariseIdentifiedNeedRoutes } from './summarise-identified-need/routes'
+import { RecordActionsProgressRoutes } from './record-actions-progress/routes'
 import { DeleteIdentifiedNeedRoutes } from './delete-identified-need/routes'
 
 function Routes(_services: Services) {
@@ -17,6 +18,7 @@ function Routes(_services: Services) {
 
   router.use('/identified-needs', IdentifiedNeedsRoutes())
   router.use('/summarise-identified-need', SummariseIdentifiedNeedRoutes())
+  router.use('/record-actions-progress', RecordActionsProgressRoutes())
   router.use('/delete-identified-need/:index', DeleteIdentifiedNeedRoutes())
 
   return router

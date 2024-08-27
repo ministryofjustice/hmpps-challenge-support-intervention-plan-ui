@@ -1,0 +1,46 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Record any actions or progress - Develop an initial plan" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Develop an initial plan</span>
+    <label for="progression">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Record any actions or progress (optional)</h1>
+    </label>
+
+    <div class="govuk-!-margin-bottom-6">
+        <h1 class="govuk-heading-s govuk-!-margin-0">Identified need summary:</h1>
+        <p>{{ identifiedNeed }}</p>
+    </div>
+
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukDetails({
+            summaryText: "Help with recording actions and progress",
+            html: '
+            <p>You might include notes on:</p>
+            <ul>
+              <li>expectations and targets</li>
+              <li>planned actions or actions already taken</li>
+              <li>progress or barriers to progress</li>
+            </ul>'
+        }) }}
+        {{ govukCharacterCount({
+            maxlength: 4000,
+            rows: 12,
+            threshold: "75",
+            id: "progression",
+            name: "progression",
+            value: progression,
+            errorMessage: validationErrors | findError('progression')
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}

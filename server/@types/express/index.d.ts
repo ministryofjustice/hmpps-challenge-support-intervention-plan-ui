@@ -98,7 +98,7 @@ export type Plan = Partial<{
   identifiedNeeds: IdentifiedNeed[]
 }>
 
-type IdentifiedNeed = {
+export type IdentifiedNeed = {
   identifiedNeed: string
   responsiblePerson: string
   createdDate: string
