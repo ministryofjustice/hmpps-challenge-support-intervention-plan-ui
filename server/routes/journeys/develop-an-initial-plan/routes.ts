@@ -17,7 +17,6 @@ function Routes(_services: Services) {
 
   router.use('/identified-needs', IdentifiedNeedsRoutes())
   router.use('/summarise-identified-need', SummariseIdentifiedNeedRoutes())
-  router.use('/delete-identified-need', DeleteIdentifiedNeedRoutes())
   router.use('/delete-identified-need/:index', DeleteIdentifiedNeedRoutes())
 
   return router
