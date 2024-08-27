@@ -1,6 +1,6 @@
 import { RequestHandler, Request } from 'express'
 import z, { RefinementCtx } from 'zod'
-import { isValid, isBefore, parseISO, isAfter } from 'date-fns'
+import { isValid, isBefore, parseISO, isAfter, isEqual } from 'date-fns'
 
 export type fieldErrors = {
   [field: string | number | symbol]: string[] | undefined
@@ -115,7 +115,9 @@ export const validateDate = (
       today.setMinutes(0)
       today.setSeconds(0)
       today.setMilliseconds(0)
-      return isAfter(date, today) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: maxErr })
+      return (
+        isAfter(date, today) || isEqual(date, today) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: maxErr })
+      )
     })
     .transform(date => date.toISOString().substring(0, 10))
 }
