@@ -3,7 +3,7 @@ import { Request } from 'express'
 import {
   createSchema,
   validateAndTransformReferenceData,
-  validateDateEarlierThanToday,
+  validateDate,
 } from '../../../../middleware/validationMiddleware'
 import CsipApiService from '../../../../services/csipApi/csipApiService'
 
@@ -29,10 +29,11 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
       .max(100, INTERVIEWEE_TOO_LONG_ERROR_MSG)
       .refine(val => val?.trim().length > 0, { message: INTERVIEWEE_REQUIRED_MSG }),
 
-    interviewDate: validateDateEarlierThanToday(
+    interviewDate: validateDate(
       INTERVIEW_DATE_REQUIRED_MSG,
       INTERVIEW_DATE_INVALID_ERROR_MSG,
       INTERVIEW_DATE_FUTURE_ERROR_MSG,
+      'PAST',
     ),
 
     intervieweeRole: z

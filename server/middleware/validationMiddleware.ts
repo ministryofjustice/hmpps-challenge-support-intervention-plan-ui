@@ -1,6 +1,6 @@
 import { RequestHandler, Request } from 'express'
 import z, { RefinementCtx } from 'zod'
-import { isValid, isBefore, parseISO } from 'date-fns'
+import { isValid, isBefore, parseISO, isAfter } from 'date-fns'
 
 export type fieldErrors = {
   [field: string | number | symbol]: string[] | undefined
@@ -83,7 +83,12 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
   }
 }
 
-export const validateDateEarlierThanToday = (requiredErr: string, invalidErr: string, maxErr: string) => {
+export const validateDate = (
+  requiredErr: string,
+  invalidErr: string,
+  maxErr: string,
+  allowedValues: 'PAST' | 'FUTURE' | 'ALL',
+) => {
   return z
     .string({ message: requiredErr })
     .min(1, { message: requiredErr })
@@ -99,7 +104,18 @@ export const validateDateEarlierThanToday = (requiredErr: string, invalidErr: st
       return isValid(date) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: invalidErr })
     })
     .superRefine((date, ctx) => {
-      return isBefore(date, new Date()) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: maxErr })
+      if (allowedValues === 'ALL') {
+        return true
+      }
+      if (allowedValues === 'PAST') {
+        return isBefore(date, new Date()) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: maxErr })
+      }
+      const today = new Date()
+      today.setHours(0)
+      today.setMinutes(0)
+      today.setSeconds(0)
+      today.setMilliseconds(0)
+      return isAfter(date, today) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: maxErr })
     })
     .transform(date => date.toISOString().substring(0, 10))
 }

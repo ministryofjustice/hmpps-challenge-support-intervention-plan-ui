@@ -5,7 +5,7 @@ import { parse24Hour, parseMinute } from '../../../../utils/datetimeUtils'
 import {
   createSchema,
   validateAndTransformReferenceData,
-  validateDateEarlierThanToday,
+  validateDate,
 } from '../../../../middleware/validationMiddleware'
 
 export const schemaFactory = (csipApiService: CsipApiService) => async (req: Request) => {
@@ -37,7 +37,7 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
   )
 
   return createSchema({
-    incidentDate: validateDateEarlierThanToday(INCIDENT_DATE_MSG, INCIDENT_DATE_INVALID_MSG, INCIDENT_DATE_FUTURE_MSG),
+    incidentDate: validateDate(INCIDENT_DATE_MSG, INCIDENT_DATE_INVALID_MSG, INCIDENT_DATE_FUTURE_MSG, 'PAST'),
     hour: z.string(),
     minute: z.string(),
     incidentLocation: z
