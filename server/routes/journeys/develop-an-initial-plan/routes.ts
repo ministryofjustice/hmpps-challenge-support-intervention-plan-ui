@@ -6,6 +6,7 @@ import { validate } from '../../../middleware/validationMiddleware'
 import { schema } from './schemas'
 import { IdentifiedNeedsRoutes } from './identified-needs/routes'
 import { SummariseIdentifiedNeedRoutes } from './summarise-identified-need/routes'
+import { DeleteIdentifiedNeedRoutes } from './delete-identified-need/routes'
 
 function Routes(_services: Services) {
   const { router, get, post } = JourneyRouter()
@@ -16,6 +17,8 @@ function Routes(_services: Services) {
 
   router.use('/identified-needs', IdentifiedNeedsRoutes())
   router.use('/summarise-identified-need', SummariseIdentifiedNeedRoutes())
+  router.use('/delete-identified-need', DeleteIdentifiedNeedRoutes())
+  router.use('/delete-identified-need/:index', DeleteIdentifiedNeedRoutes())
 
   return router
 }
