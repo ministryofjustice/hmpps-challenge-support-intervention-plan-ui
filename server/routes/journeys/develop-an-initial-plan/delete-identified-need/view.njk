@@ -1,0 +1,76 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = identifiedNeeds.length %}
+{% set pageTitle = "Delete identified need - Develop an initial plan" %}
+
+{% block innerContent %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Develop an initial plan</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Are you sure you want to delete this identified need?</h1>
+        </div>
+    </div>
+
+    {{ govukSummaryList({
+        card: {
+            title: { text: identifiedNeed.identifiedNeed }
+        },
+        rows: [{
+            key: {
+                text: 'Identified need summary'
+            },
+            value: {
+                text: identifiedNeed.identifiedNeed
+            }
+        }, {
+            key: {
+                text: 'Planned intervention'
+            },
+            value: {
+                html: identifiedNeed.intervention | escape | nl2br
+            }
+        }, {
+            key: {
+                text: 'Person responsible'
+            },
+            value: {
+                text: identifiedNeed.responsiblePerson
+            }
+        }, {
+            key: {
+                text: 'Target date'
+            },
+            value: {
+                text: identifiedNeed.targetDate | formatDisplayDate
+            }
+        }, {
+            key: {
+                text: 'Actions and progress'
+            },
+            value: {
+                html: identifiedNeed.progression | escape | nl2br
+            }
+        }]
+    }) }}
+
+    <div class="govuk-button-group">
+        <form method="post">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+            {{ govukButton({
+                text: "Yes, delete it",
+                preventDoubleClick: true,
+                classes: "govuk-button--warning"
+            }) }}
+        </form>
+        {{ govukButton({
+            text: "No, do not delete it",
+            href: "../identified-needs",
+            classes: "govuk-button--secondary",
+            preventDoubleClick: true
+        }) }}
+    </div>
+    
+{% endblock %}
