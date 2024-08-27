@@ -1,0 +1,33 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Summarise the identified need - Develop an initial plan " %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Develop an initial plan</span>
+    <label for="identifiedNeed">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Summarise the identified need</h1>
+    </label>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukCharacterCount({
+            hint: {
+                text: "This is a short description for your records."
+            },
+            maxlength: 1000,
+            rows: 1,
+            threshold: "100",
+            id: "identifiedNeed",
+            name: "identifiedNeed",
+            value: identifiedNeed,
+            classes: "single-row-textarea",
+            errorMessage: validationErrors | findError('identifiedNeed')
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}
