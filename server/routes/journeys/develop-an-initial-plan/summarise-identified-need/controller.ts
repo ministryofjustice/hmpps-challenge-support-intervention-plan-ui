@@ -17,13 +17,12 @@ export class SummariseIdentifiedNeedController {
 
     return res.render('develop-an-initial-plan/summarise-identified-need/view', {
       identifiedNeed,
-      backUrl: 'identified-needs',
+      backUrl: '../identified-needs',
     })
   }
 
   POST = async (req: Request<Record<string, string>, unknown, SchemaType>, res: Response) => {
     const { success, isNew, index } = this.parseIndex(req)
-
     if (!success) {
       return res.status(404).redirect('/pages/404')
     }
@@ -35,7 +34,7 @@ export class SummariseIdentifiedNeedController {
     }
 
     req.journeyData.plan!.identifiedNeeds![index]!.identifiedNeed = req.body.identifiedNeed
-    return res.redirect('identified-needs')
+    return res.redirect('../identified-needs')
   }
 
   private parseIndex = (req: Request) => {
