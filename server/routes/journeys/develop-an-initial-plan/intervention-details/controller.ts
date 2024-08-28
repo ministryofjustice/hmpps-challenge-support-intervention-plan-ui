@@ -12,7 +12,7 @@ export class InterventionDetailsController {
       return res.status(404).redirect('/pages/404')
     }
 
-    res.render('develop-an-initial-plan/intervention-details/view', {
+    return res.render('develop-an-initial-plan/intervention-details/view', {
       identifiedNeeds: this.getData(req, res, 'identifiedNeed', isNew, index),
       targetDate: this.getData<string | undefined>(req, res, 'targetDate', isNew, index, formatInputDate),
       responsiblePerson: this.getData(req, res, 'responsiblePerson', isNew, index),
@@ -21,7 +21,7 @@ export class InterventionDetailsController {
     })
   }
 
-  private getData = <T>(req: Request, res: Response, key: keyof IdentifiedNeed, isNew: boolean, index: number, transform: (o?: T) => T = o => o as T) => {
+  private getData = <T>(req: Request, res: Response, key: keyof IdentifiedNeed, isNew: boolean, index: number, transform: (val?: T) => T = val => val as T) => {
     if (res.locals.formResponses?.[key]) {
       return res.locals.formResponses?.[key] as T
     }
@@ -49,6 +49,6 @@ export class InterventionDetailsController {
     req.journeyData.plan!.identifiedNeeds![index]!.intervention = req.body.intervention
     req.journeyData.plan!.identifiedNeeds![index]!.responsiblePerson = req.body.responsiblePerson
     req.journeyData.plan!.identifiedNeeds![index]!.targetDate = req.body.targetDate
-    res.redirect(`../record-actions-progress/${index + 1}`)
+    return res.redirect(`../record-actions-progress/${index + 1}`)
   }
 }
