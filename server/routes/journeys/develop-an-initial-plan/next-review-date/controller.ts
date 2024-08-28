@@ -14,6 +14,7 @@ export class NextReviewDateController {
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
     req.journeyData.plan!.firstCaseReviewDate = req.body.firstCaseReviewDate
+    req.journeyData.plan!.isComplete = true
     res.redirect('check-answers')
   }
 }

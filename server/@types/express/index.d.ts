@@ -96,6 +96,7 @@ export type Plan = Partial<{
   reasonForPlan: string
   firstCaseReviewDate: string
   identifiedNeeds: IdentifiedNeed[]
+  isComplete: boolean
 }>
 
 export type IdentifiedNeed = {
