@@ -50,9 +50,3 @@ export const sentenceCase = (val: string, startsWithUppercase: boolean = true): 
   const sentence = words.map(lowercaseExceptAcronym).join(' ')
   return startsWithUppercase ? sentence.charAt(0).toUpperCase() + sentence.slice(1) : sentence
 }
-
-/** Use with array.sort to sort strings in alphabetical order */
-export const sortAscending = (a: string | number | undefined, b: string | number | undefined) => {
-  if ((a || 0) < (b || 0)) return -1
-  return a === b ? 0 : 1
-}

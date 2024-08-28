@@ -1,7 +1,7 @@
 import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
 
-context('test /screen/screen', () => {
+context('test /screen', () => {
   const uuid = uuidV4()
   const START_URL = `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/screen/start`
   const PAGE_URL = `${uuid}/screen`

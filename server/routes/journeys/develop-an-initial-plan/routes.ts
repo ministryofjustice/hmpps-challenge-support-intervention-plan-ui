@@ -6,8 +6,11 @@ import { validate } from '../../../middleware/validationMiddleware'
 import { schema } from './schemas'
 import { IdentifiedNeedsRoutes } from './identified-needs/routes'
 import { SummariseIdentifiedNeedRoutes } from './summarise-identified-need/routes'
+import { RecordActionsProgressRoutes } from './record-actions-progress/routes'
+import { DeleteIdentifiedNeedRoutes } from './delete-identified-need/routes'
+import { NextReviewDateRoutes } from './next-review-date/routes'
 
-  import { InterventionDetailsRoutes } from './intervention-details/routes'
+import { InterventionDetailsRoutes } from './intervention-details/routes'
 
 function Routes(_services: Services) {
   const { router, get, post } = JourneyRouter()
@@ -18,10 +21,12 @@ function Routes(_services: Services) {
 
   router.use('/identified-needs', IdentifiedNeedsRoutes())
   router.use('/summarise-identified-need', SummariseIdentifiedNeedRoutes())
+  router.use('/record-actions-progress', RecordActionsProgressRoutes())
+  router.use('/delete-identified-need/:index', DeleteIdentifiedNeedRoutes())
+  router.use('/next-review-date', NextReviewDateRoutes())
 
-  
   router.use('/intervention-details', InterventionDetailsRoutes())
-return router
+  return router
 }
 
 export const DevelopPlanRoutes = ({ services, path }: { services: Services; path: string }) => {
