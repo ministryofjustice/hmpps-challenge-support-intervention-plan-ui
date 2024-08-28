@@ -68,7 +68,7 @@ context('test /develop-an-initial-plan/intervention-details', () => {
   it('should show 404 error on invalid index', () => {
     cy.signIn()
     cy.visit(START_URL, { failOnStatusCode: false })
-    cy.visit(PAGE_URL + '1', { failOnStatusCode: false })
+    cy.visit(`${PAGE_URL}1`, { failOnStatusCode: false })
 
     cy.findByText('404').should('be.visible')
   })
@@ -79,9 +79,9 @@ context('test /develop-an-initial-plan/intervention-details', () => {
     injectJourneyDataAndReload(uuid, {
       plan: {
         identifiedNeedSubJourney: {
-          identifiedNeed: 'Help to manage alcohol issues'
-        }
-      }
+          identifiedNeed: 'Help to manage alcohol issues',
+        },
+      },
     })
 
     cy.visit(PAGE_URL)

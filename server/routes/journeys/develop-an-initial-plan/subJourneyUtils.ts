@@ -1,4 +1,4 @@
-import { Request } from "express"
+import { Request } from 'express'
 
 export const parseIndex = (req: Request) => {
   const index = Number(req.params['index']) - 1

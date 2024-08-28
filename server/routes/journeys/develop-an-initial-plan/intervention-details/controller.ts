@@ -21,14 +21,23 @@ export class InterventionDetailsController {
     })
   }
 
-  private getData = <T>(req: Request, res: Response, key: keyof IdentifiedNeed, isNew: boolean, index: number, transform: (val?: T) => T = val => val as T) => {
+  private getData = <T>(
+    req: Request,
+    res: Response,
+    key: keyof IdentifiedNeed,
+    isNew: boolean,
+    index: number,
+    transform: (val?: T) => T = val => val as T,
+  ) => {
     if (res.locals.formResponses?.[key]) {
       return res.locals.formResponses?.[key] as T
     }
 
-    return transform((isNew
-      ? req.journeyData.plan!.identifiedNeedSubJourney?.[key]
-      : req.journeyData.plan!.identifiedNeeds![index]![key]) as T)
+    return transform(
+      (isNew
+        ? req.journeyData.plan!.identifiedNeedSubJourney?.[key]
+        : req.journeyData.plan!.identifiedNeeds![index]![key]) as T,
+    )
   }
 
   POST = async (req: Request<Record<string, string>, unknown, SchemaType>, res: Response) => {
