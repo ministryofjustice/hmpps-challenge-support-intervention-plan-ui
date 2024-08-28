@@ -83,7 +83,7 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
   }
 }
 
-export const validateDateEarlierThanToday = (requiredErr: string, invalidErr: string, maxErr: string) => {
+const validateDateNoTransform = (requiredErr: string, invalidErr: string) => {
   return z
     .string({ message: requiredErr })
     .min(1, { message: requiredErr })
@@ -98,8 +98,17 @@ export const validateDateEarlierThanToday = (requiredErr: string, invalidErr: st
     .superRefine((date, ctx) => {
       return isValid(date) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: invalidErr })
     })
+}
+
+export const validateDateEarlierThanToday = (requiredErr: string, invalidErr: string, maxErr: string) => {
+  return validateDateNoTransform(requiredErr, invalidErr)
     .superRefine((date, ctx) => {
       return isBefore(date, new Date()) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: maxErr })
     })
+    .transform(date => date.toISOString().substring(0, 10))
+}
+
+export const validateDate = (requiredErr: string, invalidErr: string) => {
+  return validateDateNoTransform(requiredErr, invalidErr)
     .transform(date => date.toISOString().substring(0, 10))
 }

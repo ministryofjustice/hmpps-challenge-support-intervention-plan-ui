@@ -7,6 +7,8 @@ import { schema } from './schemas'
 import { IdentifiedNeedsRoutes } from './identified-needs/routes'
 import { SummariseIdentifiedNeedRoutes } from './summarise-identified-need/routes'
 
+  import { InterventionDetailsRoutes } from './intervention-details/routes'
+
 function Routes(_services: Services) {
   const { router, get, post } = JourneyRouter()
   const controller = new DevelopPlanController()
@@ -17,7 +19,9 @@ function Routes(_services: Services) {
   router.use('/identified-needs', IdentifiedNeedsRoutes())
   router.use('/summarise-identified-need', SummariseIdentifiedNeedRoutes())
 
-  return router
+  
+  router.use('/intervention-details', InterventionDetailsRoutes())
+return router
 }
 
 export const DevelopPlanRoutes = ({ services, path }: { services: Services; path: string }) => {
