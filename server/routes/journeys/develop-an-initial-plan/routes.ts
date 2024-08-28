@@ -8,6 +8,7 @@ import { IdentifiedNeedsRoutes } from './identified-needs/routes'
 import { SummariseIdentifiedNeedRoutes } from './summarise-identified-need/routes'
 import { RecordActionsProgressRoutes } from './record-actions-progress/routes'
 import { DeleteIdentifiedNeedRoutes } from './delete-identified-need/routes'
+import { NextReviewDateRoutes } from './next-review-date/routes'
 
 function Routes(_services: Services) {
   const { router, get, post } = JourneyRouter()
@@ -20,6 +21,7 @@ function Routes(_services: Services) {
   router.use('/summarise-identified-need', SummariseIdentifiedNeedRoutes())
   router.use('/record-actions-progress', RecordActionsProgressRoutes())
   router.use('/delete-identified-need/:index', DeleteIdentifiedNeedRoutes())
+  router.use('/next-review-date', NextReviewDateRoutes())
 
   return router
 }

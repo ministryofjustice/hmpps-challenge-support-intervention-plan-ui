@@ -1,0 +1,46 @@
+{% from "moj/components/date-picker/macro.njk" import mojDatePicker %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = identifiedNeeds.length %}
+{% set pageTitle = "Set a date for the next CSIP review - Develop an initial plan" %}
+
+{% block innerContent %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Develop an initial plan</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Set a date for the next CSIP review</h1>
+        </div>
+    </div>
+
+    {{ govukDetails({
+        summaryText: "Help with setting a review date",
+        html: '
+        <p>Choose a plan that’s consistent with the targets and dates in ' + (prisoner | firstNameSpaceLastName | possessiveComma | escape) + ' plan</p>
+        <p>If there’s anything upcoming that could be triggering for ' + (prisoner | firstNameSpaceLastName | escape) + ', it might be useful to set the review date before this.</p>
+        '
+    }) }}
+
+    
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ mojDatePicker({
+            id: "firstCaseReviewDate",
+            name: "firstCaseReviewDate",
+            label: {
+                html: '<h2 class="govuk-heading-m">When will you next review the plan with ' + (prisoner | firstNameSpaceLastName | escape) + '?</h2>'
+            },
+            hint: "For example, 24/9/2024",
+            value: firstCaseReviewDate,
+            errorMessage: validationErrors | findError('firstCaseReviewDate'),
+            classes: 'hmpps-datepicker--fixed-width govuk-body',
+            maxDate: todayStringGBFormat()
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>    
+{% endblock %}

@@ -1,0 +1,19 @@
+import { Request, Response } from 'express'
+import { SchemaType } from './schemas'
+
+export class NextReviewDateController {
+  GET = async (req: Request, res: Response) => {
+    const backUrl = req.journeyData.isCheckAnswers ? 'check-answers' : 'identified-needs'
+
+    res.render('develop-an-initial-plan/next-review-date/view', {
+      backUrl,
+      firstCaseReviewDate:
+        res.locals.formResponses?.['firstCaseReviewDate'] || req.journeyData.plan!.firstCaseReviewDate,
+    })
+  }
+
+  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
+    req.journeyData.plan!.firstCaseReviewDate = req.body.firstCaseReviewDate
+    res.redirect('check-answers')
+  }
+}

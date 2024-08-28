@@ -1,6 +1,6 @@
 import { RequestHandler, Request } from 'express'
 import z, { RefinementCtx } from 'zod'
-import { isValid, isBefore, parseISO } from 'date-fns'
+import { isValid, isBefore, parseISO, isAfter, isEqual } from 'date-fns'
 
 export type fieldErrors = {
   [field: string | number | symbol]: string[] | undefined
@@ -83,7 +83,7 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
   }
 }
 
-export const validateDateEarlierThanToday = (requiredErr: string, invalidErr: string, maxErr: string) => {
+const validateDateBase = (requiredErr: string, invalidErr: string) => {
   return z
     .string({ message: requiredErr })
     .min(1, { message: requiredErr })
@@ -98,8 +98,31 @@ export const validateDateEarlierThanToday = (requiredErr: string, invalidErr: st
     .superRefine((date, ctx) => {
       return isValid(date) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: invalidErr })
     })
+}
+
+export const validateTransformDate = (requiredErr: string, invalidErr: string) => {
+  return validateDateBase(requiredErr, invalidErr).transform(date => date.toISOString().substring(0, 10))
+}
+
+export const validateTransformPastDate = (requiredErr: string, invalidErr: string, maxErr: string) => {
+  return validateDateBase(requiredErr, invalidErr)
+    .superRefine(
+      (date, ctx) => isBefore(date, new Date()) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: maxErr }),
+    )
+    .transform(date => date.toISOString().substring(0, 10))
+}
+
+export const validateTransformFutureDate = (requiredErr: string, invalidErr: string, maxErr: string) => {
+  return validateDateBase(requiredErr, invalidErr)
     .superRefine((date, ctx) => {
-      return isBefore(date, new Date()) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: maxErr })
+      const today = new Date()
+      today.setHours(0)
+      today.setMinutes(0)
+      today.setSeconds(0)
+      today.setMilliseconds(0)
+      return (
+        isAfter(date, today) || isEqual(date, today) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: maxErr })
+      )
     })
     .transform(date => date.toISOString().substring(0, 10))
 }
