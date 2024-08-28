@@ -83,12 +83,7 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
   }
 }
 
-export const validateDate = (
-  requiredErr: string,
-  invalidErr: string,
-  maxErr: string,
-  allowedValues: 'PAST' | 'FUTURE' | 'ALL',
-) => {
+const validateDateBase = (requiredErr: string, invalidErr: string) => {
   return z
     .string({ message: requiredErr })
     .min(1, { message: requiredErr })
@@ -103,13 +98,23 @@ export const validateDate = (
     .superRefine((date, ctx) => {
       return isValid(date) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: invalidErr })
     })
+}
+
+export const validateTransformDate = (requiredErr: string, invalidErr: string) => {
+  return validateDateBase(requiredErr, invalidErr).transform(date => date.toISOString().substring(0, 10))
+}
+
+export const validateTransformPastDate = (requiredErr: string, invalidErr: string, maxErr: string) => {
+  return validateDateBase(requiredErr, invalidErr)
+    .superRefine(
+      (date, ctx) => isBefore(date, new Date()) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: maxErr }),
+    )
+    .transform(date => date.toISOString().substring(0, 10))
+}
+
+export const validateTransformFutureDate = (requiredErr: string, invalidErr: string, maxErr: string) => {
+  return validateDateBase(requiredErr, invalidErr)
     .superRefine((date, ctx) => {
-      if (allowedValues === 'ALL') {
-        return true
-      }
-      if (allowedValues === 'PAST') {
-        return isBefore(date, new Date()) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: maxErr })
-      }
       const today = new Date()
       today.setHours(0)
       today.setMinutes(0)
