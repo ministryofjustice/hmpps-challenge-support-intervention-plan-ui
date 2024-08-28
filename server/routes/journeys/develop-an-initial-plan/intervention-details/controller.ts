@@ -36,7 +36,7 @@ export class InterventionDetailsController {
     return transform(
       (isNew
         ? req.journeyData.plan!.identifiedNeedSubJourney?.[key]
-        : req.journeyData.plan!.identifiedNeeds![index]![key]) as T,
+        : req.journeyData.plan!.identifiedNeeds?.[index]?.[key]) as T,
     )
   }
 
