@@ -1,6 +1,6 @@
 import RestClient from '../../data/restClient'
 import config from '../../config'
-import { CsipRecord, ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
+import { CsipRecord, CsipSummaries, ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
 import { components } from '../../@types/csip'
 
 export default class CsipApiClient {
@@ -18,6 +18,12 @@ export default class CsipApiClient {
 
   async getCsipRecord(id: string): Promise<CsipRecord> {
     return this.restClient.get<CsipRecord>({ path: `/csip-records/${id}` })
+  }
+
+  async getPrisonerCsipRecords(prisonNumber: string, page: number, size: number): Promise<CsipSummaries> {
+    return this.restClient.get<CsipSummaries>({
+      path: `/prisoners/${prisonNumber}/csip-records?page=${page}&size=${size}`,
+    })
   }
 
   async createReferral(

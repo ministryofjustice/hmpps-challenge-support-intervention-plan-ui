@@ -4,6 +4,26 @@
  */
 
 export interface paths {
+  '/sync/csip-records': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /** @description
+     *
+     *     Requires one of the following roles:
+     *     * ROLE_NOMIS_CSIP */
+    put: operations['syncCsipRecord']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/csip-records/{recordUuid}/referral/investigation': {
     parameters: {
       query?: never
@@ -104,7 +124,7 @@ export interface paths {
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
      */
-    get: operations['getCsipRecordsByPrisonNumber']
+    get: operations['getCsipRecordsByPrisonNumbers']
     put?: never
     /**
      * Create a CSIP record for a prisoner.
@@ -291,7 +311,7 @@ export interface paths {
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
      *     * ROLE_NOMIS_CSIP
      */
-    delete: operations['deleteCsipRecord']
+    delete: operations['deleteCsipRecord_1']
     options?: never
     head?: never
     /**
@@ -471,24 +491,21 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/prisons/{prisonCode}/csip-records': {
+  '/sync/csip-records/{id}': {
     parameters: {
       query?: never
       header?: never
       path?: never
       cookie?: never
     }
-    /**
-     * Retrieve and filter all CSIP records for prisoners resident in the prison.
-     * @description Returns the CSIP records for prisoners resident in the prison. Supports log code filtering.
-     *
-     *     Requires one of the following roles:
-     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
-     */
-    get: operations['getCsipRecordsByPrisonCode']
+    get?: never
     put?: never
     post?: never
-    delete?: never
+    /** @description
+     *
+     *     Requires one of the following roles:
+     *     * ROLE_NOMIS_CSIP */
+    delete: operations['deleteCsipRecord']
     options?: never
     head?: never
     patch?: never
@@ -498,6 +515,235 @@ export interface paths {
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
+    SyncAttendeeRequest: {
+      name?: string
+      role?: string
+      isAttended?: boolean
+      contribution?: string
+      /** Format: int64 */
+      legacyId: number
+      /** Format: uuid */
+      id?: string
+      /** Format: date-time */
+      createdAt: string
+      createdBy: string
+      createdByDisplayName: string
+      /** Format: date-time */
+      lastModifiedAt?: string
+      lastModifiedBy?: string
+      lastModifiedByDisplayName?: string
+    }
+    SyncContributoryFactorRequest: {
+      factorTypeCode: string
+      comment?: string
+      /** Format: int64 */
+      legacyId: number
+      /** Format: uuid */
+      id?: string
+      /** Format: date-time */
+      createdAt: string
+      createdBy: string
+      createdByDisplayName: string
+      /** Format: date-time */
+      lastModifiedAt?: string
+      lastModifiedBy?: string
+      lastModifiedByDisplayName?: string
+    }
+    SyncCsipRequest: {
+      prisonNumber: string
+      logCode?: string
+      referral?: components['schemas']['SyncReferralRequest']
+      plan?: components['schemas']['SyncPlanRequest']
+      prisonCodeWhenRecorded?: string
+      /** Format: date-time */
+      actionedAt: string
+      actionedBy: string
+      actionedByDisplayName: string
+      activeCaseloadId?: string
+      /** Format: int64 */
+      legacyId: number
+      /** Format: uuid */
+      id?: string
+      /** Format: date-time */
+      createdAt: string
+      createdBy: string
+      createdByDisplayName: string
+      /** Format: date-time */
+      lastModifiedAt?: string
+      lastModifiedBy?: string
+      lastModifiedByDisplayName?: string
+    }
+    SyncDecisionAndActionsRequest: {
+      conclusion?: string
+      outcomeTypeCode: string
+      signedOffByRoleCode?: string
+      /** Format: date */
+      date?: string
+      recordedBy?: string
+      recordedByDisplayName?: string
+      nextSteps?: string
+      actionOther?: string
+      actions: (
+        | 'OPEN_CSIP_ALERT'
+        | 'NON_ASSOCIATIONS_UPDATED'
+        | 'OBSERVATION_BOOK'
+        | 'UNIT_OR_CELL_MOVE'
+        | 'CSRA_OR_RSRA_REVIEW'
+        | 'SERVICE_REFERRAL'
+        | 'SIM_REFERRAL'
+      )[]
+    }
+    SyncInterviewRequest: {
+      interviewee: string
+      /** Format: date */
+      interviewDate: string
+      intervieweeRoleCode: string
+      interviewText?: string
+      /** Format: int64 */
+      legacyId: number
+      /** Format: uuid */
+      id?: string
+      /** Format: date-time */
+      createdAt: string
+      createdBy: string
+      createdByDisplayName: string
+      /** Format: date-time */
+      lastModifiedAt?: string
+      lastModifiedBy?: string
+      lastModifiedByDisplayName?: string
+    }
+    SyncInvestigationRequest: {
+      staffInvolved?: string
+      evidenceSecured?: string
+      occurrenceReason?: string
+      personsUsualBehaviour?: string
+      personsTrigger?: string
+      protectiveFactors?: string
+      interviews: components['schemas']['SyncInterviewRequest'][]
+    }
+    SyncNeedRequest: {
+      identifiedNeed: string
+      responsiblePerson: string
+      /** Format: date */
+      createdDate: string
+      /** Format: date */
+      targetDate: string
+      /** Format: date */
+      closedDate?: string
+      intervention: string
+      progression?: string
+      /** Format: int64 */
+      legacyId: number
+      /** Format: uuid */
+      id?: string
+      /** Format: date-time */
+      createdAt: string
+      createdBy: string
+      createdByDisplayName: string
+      /** Format: date-time */
+      lastModifiedAt?: string
+      lastModifiedBy?: string
+      lastModifiedByDisplayName?: string
+    }
+    SyncPlanRequest: {
+      caseManager: string
+      reasonForPlan: string
+      /** Format: date */
+      firstCaseReviewDate: string
+      identifiedNeeds: components['schemas']['SyncNeedRequest'][]
+      reviews: components['schemas']['SyncReviewRequest'][]
+    }
+    SyncReferralRequest: {
+      /** Format: date */
+      incidentDate: string
+      /** Format: partial-time */
+      incidentTime?: string
+      incidentTypeCode: string
+      incidentLocationCode: string
+      referredBy: string
+      refererAreaCode: string
+      isProactiveReferral?: boolean
+      isStaffAssaulted?: boolean
+      assaultedStaffName?: string
+      incidentInvolvementCode?: string
+      descriptionOfConcern?: string
+      knownReasons?: string
+      otherInformation?: string
+      /** @enum {string} */
+      isSaferCustodyTeamInformed: 'YES' | 'NO' | 'DO_NOT_KNOW'
+      isReferralComplete?: boolean
+      /** Format: date */
+      completedDate?: string
+      completedBy?: string
+      completedByDisplayName?: string
+      contributoryFactors: components['schemas']['SyncContributoryFactorRequest'][]
+      saferCustodyScreeningOutcome?: components['schemas']['SyncScreeningOutcomeRequest']
+      investigation?: components['schemas']['SyncInvestigationRequest']
+      decisionAndActions?: components['schemas']['SyncDecisionAndActionsRequest']
+    }
+    SyncReviewRequest: {
+      /** Format: date */
+      reviewDate?: string
+      recordedBy: string
+      recordedByDisplayName: string
+      /** Format: date */
+      nextReviewDate?: string
+      /** Format: date */
+      csipClosedDate?: string
+      summary?: string
+      actions: ('RESPONSIBLE_PEOPLE_INFORMED' | 'CSIP_UPDATED' | 'REMAIN_ON_CSIP' | 'CASE_NOTE' | 'CLOSE_CSIP')[]
+      attendees: components['schemas']['SyncAttendeeRequest'][]
+      /** Format: int64 */
+      legacyId: number
+      /** Format: uuid */
+      id?: string
+      /** Format: date-time */
+      createdAt: string
+      createdBy: string
+      createdByDisplayName: string
+      /** Format: date-time */
+      lastModifiedAt?: string
+      lastModifiedBy?: string
+      lastModifiedByDisplayName?: string
+    }
+    SyncScreeningOutcomeRequest: {
+      outcomeTypeCode: string
+      reasonForDecision: string
+      /** Format: date */
+      date: string
+      recordedBy: string
+      recordedByDisplayName: string
+    }
+    ErrorResponse: {
+      /** Format: int32 */
+      status: number
+      errorCode?: string
+      userMessage?: string
+      developerMessage?: string
+      moreInfo?: string
+    }
+    ResponseMapping: {
+      /** @enum {string} */
+      component:
+        | 'RECORD'
+        | 'REFERRAL'
+        | 'CONTRIBUTORY_FACTOR'
+        | 'SAFER_CUSTODY_SCREENING_OUTCOME'
+        | 'INVESTIGATION'
+        | 'INTERVIEW'
+        | 'DECISION_AND_ACTIONS'
+        | 'PLAN'
+        | 'IDENTIFIED_NEED'
+        | 'REVIEW'
+        | 'ATTENDEE'
+      /** Format: int64 */
+      id: number
+      /** Format: uuid */
+      uuid: string
+    }
+    SyncResponse: {
+      mappings: components['schemas']['ResponseMapping'][]
+    }
     /** @description The request body to update an investigation on the incident that motivated the CSIP referral. */
     UpsertInvestigationRequest: {
       /** @description The names of the staff involved in the investigation. */
@@ -512,14 +758,6 @@ export interface components {
       personsTrigger?: string
       /** @description Any protective factors to reduce the person's risk factors and prevent triggers for instance of violence */
       protectiveFactors?: string
-    }
-    ErrorResponse: {
-      /** Format: int32 */
-      status: number
-      errorCode?: string
-      userMessage?: string
-      developerMessage?: string
-      moreInfo?: string
     }
     /** @description An interview in relation to the investigation on the incident that motivated the CSIP referral */
     Interview: {
@@ -613,7 +851,7 @@ export interface components {
       /** @description The outcome decision for the referral. */
       outcomeTypeCode: string
       /** @description The role of the person making the outcome decision. */
-      signedOffByRoleCode?: string
+      signedOffByRoleCode: string
       /** @description The username of the user who recorded the outcome decision. */
       recordedBy?: string
       /** @description The displayable name of the user who recorded the outcome decision. */
@@ -907,6 +1145,7 @@ export interface components {
        */
       incidentDate: string
       /**
+       * Format: partial-time
        * @description The time the incident that motivated the CSIP referral occurred
        * @example 14:19:25
        */
@@ -1067,6 +1306,7 @@ export interface components {
        */
       incidentDate: string
       /**
+       * Format: partial-time
        * @description The time the incident that motivated the CSIP referral occurred
        * @example 14:19:25
        */
@@ -1249,9 +1489,9 @@ export interface components {
       /** @description Additional information about the review. */
       summary?: string
       /** @description A list of actions following the review. */
-      actions?: ('RESPONSIBLE_PEOPLE_INFORMED' | 'CSIP_UPDATED' | 'REMAIN_ON_CSIP' | 'CASE_NOTE' | 'CLOSE_CSIP')[]
+      actions: ('RESPONSIBLE_PEOPLE_INFORMED' | 'CSIP_UPDATED' | 'REMAIN_ON_CSIP' | 'CASE_NOTE' | 'CLOSE_CSIP')[]
       /** @description The attendees/contributors to the review. */
-      attendees?: components['schemas']['CreateAttendeeRequest'][]
+      attendees: components['schemas']['CreateAttendeeRequest'][]
     }
     /** @description The request body for updating a CSIP Record */
     UpdateCsipRecordRequest: {
@@ -1268,6 +1508,7 @@ export interface components {
        */
       incidentDate: string
       /**
+       * Format: partial-time
        * @description The time the incident that motivated the CSIP referral occurred
        * @example 14:19:25
        */
@@ -1361,7 +1602,7 @@ export interface components {
       /** @description Additional information about the review. */
       summary?: string
       /** @description A list of actions following the review. */
-      actions?: ('RESPONSIBLE_PEOPLE_INFORMED' | 'CSIP_UPDATED' | 'REMAIN_ON_CSIP' | 'CASE_NOTE' | 'CLOSE_CSIP')[]
+      actions: ('RESPONSIBLE_PEOPLE_INFORMED' | 'CSIP_UPDATED' | 'REMAIN_ON_CSIP' | 'CASE_NOTE' | 'CLOSE_CSIP')[]
     }
     /** @description The request body to update a Attendee/Contributor to the review of a CSIP Plan */
     UpdateAttendeeRequest: {
@@ -1403,41 +1644,45 @@ export interface components {
       /** @description How the plan to address the identified need is progressing. */
       progression?: string
     }
-    PageCsipRecord: {
-      /** Format: int64 */
-      totalElements?: number
-      /** Format: int32 */
-      totalPages?: number
-      first?: boolean
-      last?: boolean
-      /** Format: int32 */
-      size?: number
-      content?: components['schemas']['CsipRecord'][]
-      /** Format: int32 */
-      number?: number
-      sort?: components['schemas']['SortObject'][]
-      /** Format: int32 */
-      numberOfElements?: number
-      pageable?: components['schemas']['PageableObject']
-      empty?: boolean
+    CsipSummaries: {
+      content: components['schemas']['CsipSummary'][]
+      metadata: components['schemas']['PageMeta']
     }
-    PageableObject: {
-      /** Format: int64 */
-      offset?: number
-      sort?: components['schemas']['SortObject'][]
-      /** Format: int32 */
-      pageSize?: number
-      paged?: boolean
-      /** Format: int32 */
-      pageNumber?: number
-      unpaged?: boolean
+    CsipSummary: {
+      /** Format: uuid */
+      id: string
+      prisonNumber: string
+      logCode?: string
+      /** Format: date */
+      referralDate: string
+      /** Format: date */
+      nextReviewDate?: string
+      incidentType: components['schemas']['ReferenceData']
+      caseManager?: string
+      /** @enum {string} */
+      status:
+        | 'CSIP_CLOSED'
+        | 'CSIP_OPEN'
+        | 'AWAITING_DECISION'
+        | 'ACCT_SUPPORT'
+        | 'PLAN_PENDING'
+        | 'INVESTIGATION_PENDING'
+        | 'NO_FURTHER_ACTION'
+        | 'SUPPORT_OUTSIDE_CSIP'
+        | 'REFERRAL_SUBMITTED'
+        | 'REFERRAL_PENDING'
+        | 'UNKNOWN'
     }
-    SortObject: {
-      direction?: string
-      nullHandling?: string
-      ascending?: boolean
-      property?: string
-      ignoreCase?: boolean
+    PageMeta: {
+      /** Format: int64 */
+      totalElements: number
+    }
+    DefaultLegacyActioned: {
+      /** Format: date-time */
+      actionedAt: string
+      actionedBy: string
+      actionedByDisplayName: string
+      activeCaseloadId?: string
     }
     Unit: Record<string, never>
   }
@@ -1449,6 +1694,57 @@ export interface components {
 }
 export type $defs = Record<string, never>
 export interface operations {
+  syncCsipRecord: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SyncCsipRequest']
+      }
+    }
+    responses: {
+      /** @description CSIP record merged */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SyncResponse']
+        }
+      }
+      /** @description Bad request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   upsertInvestigation: {
     parameters: {
       query?: never
@@ -1818,34 +2114,18 @@ export interface operations {
       }
     }
   }
-  getCsipRecordsByPrisonNumber: {
+  getCsipRecordsByPrisonNumbers: {
     parameters: {
       query?: {
-        /**
-         * @description Filter CSIP records that contain the search text in their Log Code. The search is case insensitive.
-         * @example Search text
-         */
         logCode?: string
-        /**
-         * @description Filter CSIP records that have a created timestamp at or after the supplied time.
-         * @example 2021-09-27T14:19:25
-         */
         createdAtStart?: string
-        /**
-         * @description Filter CSIP records that have a created timestamp at or before the supplied time.
-         * @example 2021-09-27T14:19:25
-         */
         createdAtEnd?: string
-        /** @description Zero-based page index (0..N) */
         page?: number
-        /** @description The size of the page to be returned */
         size?: number
-        /** @description Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
-        sort?: string[]
+        sort?: string
       }
       header?: never
       path: {
-        /** @description Prison Number of the prisoner */
         prisonNumber: string
       }
       cookie?: never
@@ -1858,7 +2138,16 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['PageCsipRecord']
+          'application/json': components['schemas']['CsipSummaries']
+        }
+      }
+      /** @description Bad Request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
@@ -2372,7 +2661,7 @@ export interface operations {
       }
     }
   }
-  deleteCsipRecord: {
+  deleteCsipRecord_1: {
     parameters: {
       query?: never
       header?: never
@@ -3063,48 +3352,34 @@ export interface operations {
       }
     }
   }
-  getCsipRecordsByPrisonCode: {
+  deleteCsipRecord: {
     parameters: {
-      query?: {
-        /**
-         * @description Filter CSIP records that contain the search text in their Log Code. The search is case insensitive.
-         * @example Search text
-         */
-        logCode?: string
-        /**
-         * @description Filter CSIP records that have a created timestamp at or after the supplied time.
-         * @example 2021-09-27T14:19:25
-         */
-        createdAtStart?: string
-        /**
-         * @description Filter CSIP records that have a created timestamp at or before the supplied time.
-         * @example 2021-09-27T14:19:25
-         */
-        createdAtEnd?: string
-        /** @description Zero-based page index (0..N) */
-        page?: number
-        /** @description The size of the page to be returned */
-        size?: number
-        /** @description Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
-        sort?: string[]
-      }
+      query?: never
       header?: never
       path: {
-        /** @description Prison Code of the prison */
-        prisonCode: string
+        id: string
       }
       cookie?: never
     }
-    requestBody?: never
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['DefaultLegacyActioned']
+      }
+    }
     responses: {
-      /** @description CSIP records found */
+      /** @description CSIP record merged */
       200: {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['PageCsipRecord']
+        content?: never
+      }
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown
         }
+        content?: never
       }
       /** @description Unauthorised, requires a valid Oauth2 token */
       401: {

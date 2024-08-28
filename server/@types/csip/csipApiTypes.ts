@@ -5,3 +5,5 @@ export type ReferenceDataType = operations['getReferenceData']['parameters']['pa
 
 export type YesNoAnswer = components['schemas']['CreateReferralRequest']['isSaferCustodyTeamInformed']
 export type CsipRecord = components['schemas']['CsipRecord']
+
+export type CsipSummaries = components['schemas']['CsipSummaries']

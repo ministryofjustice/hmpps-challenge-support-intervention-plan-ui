@@ -24,6 +24,6 @@ export const csipStatusDisplayText = (csipRecord: CsipRecord) => {
       return 'Support to be provided outside CSIP'
     case 'UNKNOWN':
     default:
-      throw new Error('Unrecognised CSIP status')
+      throw new Error(`Unrecognised CSIP status: ${csipRecord.status}`)
   }
 }
