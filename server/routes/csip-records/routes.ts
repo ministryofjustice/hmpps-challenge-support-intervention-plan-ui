@@ -1,9 +1,8 @@
 import { CsipRecordController } from './controller'
-import CsipApiService from '../../services/csipApi/csipApiService'
-import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
 import { JourneyRouter } from '../journeys/base/routes'
+import type { Services } from '../../services'
 
-export const CsipRecordRoutes = (csipApiService: CsipApiService, prisonerSearchService: PrisonerSearchService) => {
+export const CsipRecordRoutes = ({ csipApiService, prisonerSearchService }: Services) => {
   const { router, get, post } = JourneyRouter()
   const controller = new CsipRecordController(csipApiService, prisonerSearchService)
 
