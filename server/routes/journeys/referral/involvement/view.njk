@@ -14,7 +14,7 @@
       <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
       {% set involvementTypeLabel -%}
-        How was {{ (prisoner.firstName + ' ' + prisoner.lastName) | convertToTitleCase }} involved in the {{ "behaviour" if isProactiveReferral else "incident" }}?
+        How was {{ prisoner | firstNameSpaceLastName }} involved in the {{ "behaviour" if isProactiveReferral else "incident" }}?
       {%- endset %}
 
       {% set staffAssaultedLabel -%}

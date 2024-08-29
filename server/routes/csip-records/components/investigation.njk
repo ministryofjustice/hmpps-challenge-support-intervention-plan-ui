@@ -70,8 +70,8 @@
 
 {% for interview in investigation.interviews %}
     {{ govukSummaryList({
-        classes: "govuk-!-margin-bottom-7",
         card: {
+            classes: "govuk-!-margin-bottom-7" if loop.index === investigation.interviews.length else undefined,
             title: { text: "Interview with " + interview.interviewee }
         },
         rows: [{
