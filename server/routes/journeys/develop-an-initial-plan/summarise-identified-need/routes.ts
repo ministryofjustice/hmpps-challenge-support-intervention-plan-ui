@@ -7,8 +7,8 @@ export const SummariseIdentifiedNeedRoutes = () => {
   const { router, get, post } = JourneyRouter()
   const controller = new SummariseIdentifiedNeedController()
 
-  get('/:index', controller.GET)
-  post('/:index', validate(schema), controller.POST)
+  get('/', controller.GET)
+  post('/', validate(schema), controller.POST)
 
   return router
 }

@@ -9,6 +9,7 @@ import { SummariseIdentifiedNeedRoutes } from './summarise-identified-need/route
 import { RecordActionsProgressRoutes } from './record-actions-progress/routes'
 import { DeleteIdentifiedNeedRoutes } from './delete-identified-need/routes'
 import { NextReviewDateRoutes } from './next-review-date/routes'
+import { InterventionDetailsRoutes } from './intervention-details/routes'
 
 function Routes(_services: Services) {
   const { router, get, post } = JourneyRouter()
@@ -18,10 +19,11 @@ function Routes(_services: Services) {
   post('/', validate(schema), controller.POST)
 
   router.use('/identified-needs', IdentifiedNeedsRoutes())
-  router.use('/summarise-identified-need', SummariseIdentifiedNeedRoutes())
-  router.use('/record-actions-progress', RecordActionsProgressRoutes())
+  router.use('/summarise-identified-need/:index', SummariseIdentifiedNeedRoutes())
+  router.use('/record-actions-progress/:index', RecordActionsProgressRoutes())
   router.use('/delete-identified-need/:index', DeleteIdentifiedNeedRoutes())
   router.use('/next-review-date', NextReviewDateRoutes())
+  router.use('/intervention-details/:index', InterventionDetailsRoutes())
 
   return router
 }

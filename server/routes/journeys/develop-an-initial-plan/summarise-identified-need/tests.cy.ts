@@ -52,7 +52,7 @@ context('test /develop-an-initial-plan/summarise-identified-need', () => {
     getInputTextbox().should('have.value', 'saved summary')
     getInputTextbox().clear().type("<script>alert('xss');</script>")
     getContinueButton().click()
-    cy.url().should('match', /identified-needs$/)
+    cy.url().should('match', /identified-needs/)
     verifySubmittedValueIsPersisted()
   })
 

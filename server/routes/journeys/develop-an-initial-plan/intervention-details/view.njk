@@ -1,0 +1,75 @@
+{% from "moj/components/date-picker/macro.njk" import mojDatePicker %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Intervention details - Develop an initial plan" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Develop an initial plan</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Intervention details</h1>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+        <h2 class="govuk-heading-s">Identified need summary</h2>
+        <p class="govuk-body">{{ identifiedNeeds | escape }}</p>
+
+        {{ govukCharacterCount({
+            label: {
+              text: "What’s the planned intervention for this identified need?",
+              classes: "govuk-label--m",
+              isPageHeading: true
+            },
+            maxlength: 4000,
+            rows: 5,
+            threshold: "75",
+            id: "intervention",
+            name: "intervention",
+            value: intervention,
+            errorMessage: validationErrors | findError('intervention')
+        }) }}
+
+        {{ govukCharacterCount({
+            label: {
+              text: "Who’s responsible for taking action?",
+              classes: "govuk-label--m",
+              isPageHeading: true
+            },
+            maxlength: 100,
+            rows: 1,
+            threshold: "75",
+            id: "responsiblePerson",
+            name: "responsiblePerson",
+            hint: {
+              text: "For example, the prisoner or a staff member supporting the prisoner."
+            },
+            value: responsiblePerson,
+            classes: "govuk-input--width-30 single-row-textarea",
+            errorMessage: validationErrors | findError('responsiblePerson'),
+            hint: {
+                text: "For example, the prisoner or a staff member supporting the prisoner."
+            }
+        }) }}
+
+        {{ mojDatePicker({
+            label: {
+              text: "What’s the target date for progress?",
+              classes: "govuk-label--m",
+              isPageHeading: true
+            },
+            classes: "hmpps-datepicker--fixed-width govuk-body",
+            id: "targetDate",
+            name: "targetDate",
+            value: targetDate,
+            hint: {
+              text: "For example, 31/8/2024."
+            },
+            errorMessage: validationErrors | findError('targetDate')
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}

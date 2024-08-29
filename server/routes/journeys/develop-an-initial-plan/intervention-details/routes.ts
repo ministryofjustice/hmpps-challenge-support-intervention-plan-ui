@@ -1,11 +1,11 @@
-import { RecordActionsProgressController } from './controller'
+import { InterventionDetailsController } from './controller'
 import { validate } from '../../../../middleware/validationMiddleware'
 import { schema } from './schemas'
 import { JourneyRouter } from '../../base/routes'
 
-export const RecordActionsProgressRoutes = () => {
+export const InterventionDetailsRoutes = () => {
   const { router, get, post } = JourneyRouter()
-  const controller = new RecordActionsProgressController()
+  const controller = new InterventionDetailsController()
 
   get('/', controller.GET)
   post('/', validate(schema), controller.POST)
