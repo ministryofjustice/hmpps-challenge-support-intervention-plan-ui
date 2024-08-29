@@ -49,4 +49,8 @@ export default class CsipApiService {
       payload,
     )
   }
+
+  createPlan(req: Request, payload: Parameters<CsipApiClient['createPlan']>[1]) {
+    return this.csipApiClientBuilder(req.systemClientToken).createPlan(req.journeyData.csipRecord!.recordUuid, payload)
+  }
 }

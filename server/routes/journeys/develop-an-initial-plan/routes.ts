@@ -10,8 +10,9 @@ import { RecordActionsProgressRoutes } from './record-actions-progress/routes'
 import { DeleteIdentifiedNeedRoutes } from './delete-identified-need/routes'
 import { NextReviewDateRoutes } from './next-review-date/routes'
 import { InterventionDetailsRoutes } from './intervention-details/routes'
+import { PlanCheckAnswersRoutes } from './check-answers/routes'
 
-function Routes(_services: Services) {
+function Routes(services: Services) {
   const { router, get, post } = JourneyRouter()
   const controller = new DevelopPlanController()
 
@@ -24,6 +25,7 @@ function Routes(_services: Services) {
   router.use('/delete-identified-need/:index', DeleteIdentifiedNeedRoutes())
   router.use('/next-review-date', NextReviewDateRoutes())
   router.use('/intervention-details/:index', InterventionDetailsRoutes())
+  router.use('/check-answers', PlanCheckAnswersRoutes(services.csipApiService))
 
   return router
 }
