@@ -113,7 +113,7 @@ context('test /develop-an-initial-plan/intervention-details', () => {
 
     cy.findByRole('link', { name: /^back/i })
       .should('have.attr', 'href')
-      .and('match', /summarise-identified-need$/)
+      .and('match', /summarise-identified-need\/1$/)
 
     getIntervention().should('be.visible')
 

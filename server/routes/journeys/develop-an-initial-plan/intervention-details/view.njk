@@ -4,7 +4,7 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = " Intervention details - Develop an initial plan" %}
+{% set pageTitle = "Intervention details - Develop an initial plan" %}
 
 {% block innerContent %}
     <span class="govuk-caption-l">Develop an initial plan</span>
@@ -12,7 +12,7 @@
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 
-        <h2 class="govuk-body govuk-!-font-weight-bold">Identified need summary</h2>
+        <h2 class="govuk-heading-s">Identified need summary</h2>
         <p class="govuk-body">{{ identifiedNeeds | escape }}</p>
 
         {{ govukCharacterCount({

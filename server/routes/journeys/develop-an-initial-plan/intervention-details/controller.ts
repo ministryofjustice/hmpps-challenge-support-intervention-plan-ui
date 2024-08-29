@@ -17,7 +17,7 @@ export class InterventionDetailsController {
       targetDate: this.getData<string | undefined>(req, res, 'targetDate', isNew, index, formatInputDate),
       responsiblePerson: this.getData(req, res, 'responsiblePerson', isNew, index),
       intervention: this.getData(req, res, 'intervention', isNew, index),
-      backUrl: 'summarise-identified-need',
+      backUrl: isNew ? `../summarise-identified-need/${index + 1}` : `../identified-needs`,
     })
   }
 
@@ -48,16 +48,15 @@ export class InterventionDetailsController {
     }
 
     if (isNew) {
-      req.journeyData.plan!.identifiedNeedSubJourney ??= {}
-      req.journeyData.plan!.identifiedNeedSubJourney.intervention = req.body.intervention
-      req.journeyData.plan!.identifiedNeedSubJourney.responsiblePerson = req.body.responsiblePerson
-      req.journeyData.plan!.identifiedNeedSubJourney.targetDate = req.body.targetDate
+      req.journeyData.plan!.identifiedNeedSubJourney!.intervention = req.body.intervention
+      req.journeyData.plan!.identifiedNeedSubJourney!.responsiblePerson = req.body.responsiblePerson
+      req.journeyData.plan!.identifiedNeedSubJourney!.targetDate = req.body.targetDate
       return res.redirect(`../record-actions-progress/${index + 1}`)
     }
 
     req.journeyData.plan!.identifiedNeeds![index]!.intervention = req.body.intervention
     req.journeyData.plan!.identifiedNeeds![index]!.responsiblePerson = req.body.responsiblePerson
     req.journeyData.plan!.identifiedNeeds![index]!.targetDate = req.body.targetDate
-    return res.redirect(`../record-actions-progress/${index + 1}`)
+    return res.redirect(`../identified-needs`)
   }
 }

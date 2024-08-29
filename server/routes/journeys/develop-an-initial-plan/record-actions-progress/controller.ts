@@ -1,10 +1,11 @@
 import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
 import { IdentifiedNeed } from '../../../../@types/express'
+import { parseIndex } from '../subJourneyUtils'
 
 export class RecordActionsProgressController {
   GET = async (req: Request, res: Response) => {
-    const { success, isNew, index } = this.parseIndex(req)
+    const { success, isNew, index } = parseIndex(req)
 
     if (!success) {
       return res.status(404).redirect('/pages/404')
@@ -28,7 +29,7 @@ export class RecordActionsProgressController {
   }
 
   POST = async (req: Request<Record<string, string>, unknown, SchemaType>, res: Response) => {
-    const { success, isNew, index } = this.parseIndex(req)
+    const { success, isNew, index } = parseIndex(req)
     if (!success) {
       return res.status(404).redirect('/pages/404')
     }
@@ -45,14 +46,5 @@ export class RecordActionsProgressController {
     }
 
     return res.redirect('../identified-needs')
-  }
-
-  private parseIndex = (req: Request) => {
-    const index = Number(req.params['index']) - 1
-    return {
-      success: !Number.isNaN(index) && (req.journeyData.plan!.identifiedNeeds || []).length >= index,
-      isNew: (req.journeyData.plan!.identifiedNeeds || []).length === index,
-      index,
-    }
   }
 }
