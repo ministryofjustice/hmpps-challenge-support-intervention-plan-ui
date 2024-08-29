@@ -157,11 +157,11 @@ context('test /record-investigation/check-answers', () => {
       },
     })
 
-    cy.findByRole('link', { name: /Check and submit report/i }).click()
+    cy.findByRole('link', { name: /Check and save report/i }).click()
   }
 
   const continueToConfirmation = () => {
-    cy.findByRole('button', { name: /Confirm and submit report/i }).click()
+    cy.findByRole('button', { name: /Confirm and save report/i }).click()
     cy.url().should('to.match', /\/confirmation(#[A-z]+)?$/)
   }
 })

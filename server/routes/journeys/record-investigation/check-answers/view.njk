@@ -26,8 +26,8 @@
 
     {% for interview in investigation.interviews %}
         {{ govukSummaryList({
-            classes: "govuk-!-margin-bottom-7" if loop.index === investigation.interviews.length else undefined,
             card: {
+                classes: "govuk-!-margin-bottom-8" if loop.index === investigation.interviews.length else undefined,
                 title: { text: "Interview with " + interview.interviewee }
             },
             rows: [{
@@ -61,6 +61,8 @@
             }]
         }) }}
     {% endfor %}
+
+    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-7">
 
     <h2 class="govuk-heading-m govuk-!-margin-bottom-6">Investigation findings</h2>
     {{ govukSummaryList({
@@ -181,7 +183,7 @@
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         <div class="govuk-button-group">
             {{ govukButton({
-                text: "Confirm and submit report",
+                text: "Confirm and save report",
                 preventDoubleClick: true
             }) }}
             <a class="govuk-link govuk-link--no-visited-state" href="{{ csipRecordUrl }}">Cancel</a>

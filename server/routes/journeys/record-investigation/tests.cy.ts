@@ -64,7 +64,7 @@ context('test /record-investigation', () => {
       .should('have.attr', 'href')
       .and('match', /record-investigation\/protective-factors$/)
 
-    cy.findByRole('link', { name: 'Check and submit report' }).should('not.exist')
+    cy.findByRole('link', { name: 'Check and save report' }).should('not.exist')
     cy.findAllByText('Incomplete').should('have.length', 7)
     cy.findByText('Cannot start yet').should('be.visible')
   }
@@ -94,7 +94,7 @@ context('test /record-investigation', () => {
   }
 
   const proceedToNextScreen = () => {
-    cy.findByRole('link', { name: 'Check and submit report' }).click()
+    cy.findByRole('link', { name: 'Check and save report' }).click()
     cy.url().should('to.match', /\/check-answers$/)
   }
 })

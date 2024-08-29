@@ -86,14 +86,14 @@
         ]
     }) }}
 
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-7">3. Submit report</h2>
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-7">3. Save report</h2>
     {{ govukTaskList({
         classes: "govuk-!-margin-bottom-7",
         items: [
             {
                 classes: "custom-task-list-first-row",
                 title: {
-                text: "Check and submit report",
+                text: "Check and save report",
                 classes: "govuk-link--no-visited-state" if formCompleted else undefined
             },
                 href: "record-investigation/check-answers" if formCompleted else undefined,
