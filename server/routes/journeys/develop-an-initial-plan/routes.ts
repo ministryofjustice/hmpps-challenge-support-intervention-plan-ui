@@ -19,11 +19,11 @@ function Routes(_services: Services) {
   post('/', validate(schema), controller.POST)
 
   router.use('/identified-needs', IdentifiedNeedsRoutes())
-  router.use('/summarise-identified-need', SummariseIdentifiedNeedRoutes())
-  router.use('/record-actions-progress', RecordActionsProgressRoutes())
+  router.use('/summarise-identified-need/:index', SummariseIdentifiedNeedRoutes())
+  router.use('/record-actions-progress/:index', RecordActionsProgressRoutes())
   router.use('/delete-identified-need/:index', DeleteIdentifiedNeedRoutes())
   router.use('/next-review-date', NextReviewDateRoutes())
-  router.use('/intervention-details', InterventionDetailsRoutes())
+  router.use('/intervention-details/:index', InterventionDetailsRoutes())
 
   return router
 }
