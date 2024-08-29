@@ -1,0 +1,19 @@
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Confirmation - Develop an initial plan" %}
+
+{% block innerContent %}
+    {{ govukPanel({
+        titleText: "Initial plan recorded and CSIP opened for " + prisoner | firstNameSpaceLastName
+    }) }}
+    <p>We’ve updated the status to ‘CSIP open’.</p>
+    <p>The next review date is {{nextReviewDate | formatDisplayDate}}</p>
+    <h2 class="govuk-heading-m">How to keep this plan up to date</h2>
+    <p>Use this service to:</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>record actions and progress on the interventions</li>
+        <li>add, edit and close identified needs as targets change or are met</li>
+        <li>change the Case Manager, reason for the plan and next review date</li>
+{% endblock %}

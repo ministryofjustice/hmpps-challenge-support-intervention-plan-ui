@@ -10,6 +10,9 @@ import { RecordActionsProgressRoutes } from './record-actions-progress/routes'
 import { DeleteIdentifiedNeedRoutes } from './delete-identified-need/routes'
 import { NextReviewDateRoutes } from './next-review-date/routes'
 import { InterventionDetailsRoutes } from './intervention-details/routes'
+import { ConfirmationRoutes } from './confirmation/routes'
+
+  import { CheckAnswersRoutes } from './check-answers/routes'
 
 function Routes(_services: Services) {
   const { router, get, post } = JourneyRouter()
@@ -24,8 +27,11 @@ function Routes(_services: Services) {
   router.use('/delete-identified-need/:index', DeleteIdentifiedNeedRoutes())
   router.use('/next-review-date', NextReviewDateRoutes())
   router.use('/intervention-details/:index', InterventionDetailsRoutes())
+  router.use('/confirmation', ConfirmationRoutes())
 
-  return router
+  
+  router.use('/check-answers', CheckAnswersRoutes(_services.csipApiService))
+return router
 }
 
 export const DevelopPlanRoutes = ({ services, path }: { services: Services; path: string }) => {
