@@ -26,16 +26,10 @@ export class PlanCheckAnswersController extends BaseJourneyController {
         caseManager: plan.caseManager!,
         firstCaseReviewDate: plan.firstCaseReviewDate!,
         reasonForPlan: plan.reasonForPlan!,
-        identifiedNeeds: plan.identifiedNeeds!.map(
-          ({ createdDate, identifiedNeed, intervention, progression, responsiblePerson, targetDate }) => ({
-            createdDate,
-            identifiedNeed,
-            intervention,
-            responsiblePerson,
-            targetDate,
-            ...(progression ? { progression } : {}),
-          }),
-        ),
+        identifiedNeeds: plan.identifiedNeeds!.map(({ progression, closedDate, ...identifiedNeed }) => ({
+          ...identifiedNeed,
+          ...(progression ? { progression } : {}),
+        })),
       })
       req.journeyData.journeyCompleted = true
     } catch (e) {
