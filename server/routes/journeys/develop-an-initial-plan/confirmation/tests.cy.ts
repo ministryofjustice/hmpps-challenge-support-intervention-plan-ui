@@ -1,5 +1,5 @@
 import { v4 as uuidV4 } from 'uuid'
-  import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /develop-an-initial-plan/confirmation', () => {
@@ -21,7 +21,7 @@ context('test /develop-an-initial-plan/confirmation', () => {
     cy.visit(START_URL, { failOnStatusCode: false })
     injectJourneyDataAndReload(uuid, {
       plan: {
-        firstCaseReviewDate: "2023-12-25",
+        firstCaseReviewDate: '2023-12-25',
       },
     })
     cy.visit(PAGE_URL)
@@ -41,4 +41,4 @@ context('test /develop-an-initial-plan/confirmation', () => {
     cy.findByText('add, edit and close identified needs as targets change or are met').should('be.visible')
     cy.findByText('change the Case Manager, reason for the plan and next review date').should('be.visible')
   }
-})  
+})
