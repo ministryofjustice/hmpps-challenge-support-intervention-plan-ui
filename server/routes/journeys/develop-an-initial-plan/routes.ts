@@ -10,6 +10,7 @@ import { RecordActionsProgressRoutes } from './record-actions-progress/routes'
 import { DeleteIdentifiedNeedRoutes } from './delete-identified-need/routes'
 import { NextReviewDateRoutes } from './next-review-date/routes'
 import { InterventionDetailsRoutes } from './intervention-details/routes'
+import { ConfirmationRoutes } from './confirmation/routes'
 import { PlanCheckAnswersRoutes } from './check-answers/routes'
 
 function Routes({ csipApiService }: Services) {
@@ -25,6 +26,7 @@ function Routes({ csipApiService }: Services) {
   router.use('/delete-identified-need/:index', DeleteIdentifiedNeedRoutes())
   router.use('/next-review-date', NextReviewDateRoutes())
   router.use('/intervention-details/:index', InterventionDetailsRoutes())
+  router.use('/confirmation', ConfirmationRoutes())
   router.use('/check-answers', PlanCheckAnswersRoutes(csipApiService))
 
   return router
