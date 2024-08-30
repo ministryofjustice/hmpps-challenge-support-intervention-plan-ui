@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { format } from 'date-fns'
 import { SchemaType } from './schemas'
 import { IdentifiedNeed } from '../../../../@types/express'
 import { parseIndex } from '../subJourneyUtils'
@@ -38,6 +39,7 @@ export class RecordActionsProgressController {
       req.journeyData.plan!.identifiedNeeds ??= []
       req.journeyData.plan!.identifiedNeeds!.push({
         ...req.journeyData.plan!.identifiedNeedSubJourney,
+        createdDate: format(new Date(), 'yyyy-MM-dd'),
         progression: req.body.progression,
       } as IdentifiedNeed)
       delete req.journeyData.plan!.identifiedNeedSubJourney
