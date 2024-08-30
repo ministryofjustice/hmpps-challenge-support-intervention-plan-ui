@@ -1,6 +1,5 @@
 import express from 'express'
 
-import createError from 'http-errors'
 import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
 
 import * as Sentry from '@sentry/node'
@@ -66,9 +65,13 @@ export default function createApp(services: Services): express.Application {
     }),
   )
   app.use(breadcrumbs())
+  app.use((_req, res, next) => {
+    res.notFound = () => res.render('pages/not-found')
+    next()
+  })
   app.use(routes(services))
   if (config.sentry.dsn) Sentry.setupExpressErrorHandler(app)
-  app.use((_req, _res, next) => next(createError(404, 'Not found')))
+  app.use((_req, res) => res.notFound())
   app.use(errorHandler(process.env.NODE_ENV === 'production'))
 
   return app

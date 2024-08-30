@@ -53,7 +53,7 @@ context('test /record-investigation/interview-details', () => {
     verifyDetailsAreRestoredFromJourney()
 
     cy.visit(`${uuid}/record-investigation/interview-details/10`, { failOnStatusCode: false })
-    cy.findByText('404').should('be.visible')
+    cy.findByText('Page not found').should('be.visible')
   })
 
   const validatePageContents = () => {

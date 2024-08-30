@@ -24,7 +24,7 @@ context('test /record-investigation/confirmation', () => {
 
   const validatePageContents = () => {
     cy.findByRole('link', { name: /Digital Prison Services/ }).should('be.visible')
-    cy.findByRole('link', { name: /CSIPs/ }).should('be.visible')
+    cy.findByRole('link', { name: /CSIP/ }).should('be.visible')
 
     cy.findByText('CSIP investigation recorded').should('be.visible')
     cy.findByText('We’ve updated the status of the referral to “awaiting decision”.').should('be.visible')

@@ -9,7 +9,7 @@ export class InterventionDetailsController {
     const { success, isNew, index } = parseIndex(req)
 
     if (!success) {
-      return res.status(404).redirect('/pages/404')
+      return res.notFound()
     }
 
     return res.render('develop-an-initial-plan/intervention-details/view', {
@@ -44,7 +44,7 @@ export class InterventionDetailsController {
     const { success, isNew, index } = parseIndex(req)
 
     if (!success) {
-      return res.status(404).redirect('/pages/404')
+      return res.redirect('back')
     }
 
     if (isNew) {

@@ -62,7 +62,7 @@ context('test /develop-an-initial-plan/summarise-identified-need', () => {
     cy.url().should('to.match', /\/summarise-identified-need\/1$/)
 
     cy.visit(`${uuid}/develop-an-initial-plan/summarise-identified-need/99`, { failOnStatusCode: false })
-    cy.findByText('404').should('be.visible')
+    cy.findByText('Page not found').should('be.visible')
   })
 
   const navigateToTestPage = () => {

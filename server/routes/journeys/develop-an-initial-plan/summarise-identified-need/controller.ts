@@ -7,7 +7,7 @@ export class SummariseIdentifiedNeedController {
     const { success, isNew, index } = parseIndex(req)
 
     if (!success) {
-      return res.status(404).redirect('/pages/404')
+      return res.notFound()
     }
 
     const identifiedNeed =
@@ -25,7 +25,7 @@ export class SummariseIdentifiedNeedController {
   POST = async (req: Request<Record<string, string>, unknown, SchemaType>, res: Response) => {
     const { success, isNew, index } = parseIndex(req)
     if (!success) {
-      return res.status(404).redirect('/pages/404')
+      return res.redirect('back')
     }
 
     if (isNew) {
