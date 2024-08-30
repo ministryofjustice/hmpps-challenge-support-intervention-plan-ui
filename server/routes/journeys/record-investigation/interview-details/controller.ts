@@ -8,7 +8,7 @@ export class InterviewDetailsController extends BaseJourneyController {
     const index = Number(req.params['index']) - 1
 
     if (Number.isNaN(index) || (req.journeyData.investigation!.interviews || []).length < index) {
-      return res.status(404).redirect('/pages/404')
+      return res.notFound()
     }
 
     const intervieweeRoleOptions = await this.getReferenceDataOptionsForRadios(
@@ -35,7 +35,7 @@ export class InterviewDetailsController extends BaseJourneyController {
     const index = Number(req.params['index']) - 1
 
     if (Number.isNaN(index) || (req.journeyData.investigation!.interviews || []).length < index) {
-      return res.status(404).redirect('/pages/404')
+      return res.notFound()
     }
 
     if (!req.journeyData.investigation?.interviews) {

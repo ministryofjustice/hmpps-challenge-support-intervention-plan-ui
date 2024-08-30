@@ -5,10 +5,7 @@ export class DeleteInterviewController {
     const { index } = req.params
 
     if (this.isInvalidInterviewIndex(index, req)) {
-      res.render('pages/error', {
-        message: 'Interview not found',
-        status: 404,
-      })
+      res.notFound()
     } else {
       res.render('record-investigation/delete-interview/view', {
         interview: req.journeyData.investigation!.interviews![Number(index) - 1],

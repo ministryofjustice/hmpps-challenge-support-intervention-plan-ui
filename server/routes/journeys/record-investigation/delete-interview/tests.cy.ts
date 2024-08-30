@@ -61,7 +61,7 @@ context('test /record-investigation/delete-interview', () => {
       },
     })
     cy.visit(`${uuid}/record-investigation/delete-interview/99`, { failOnStatusCode: false })
-    cy.findByText('404').should('be.visible')
+    cy.findByText('Page not found').should('be.visible')
   })
 
   const navigateToTestPage = (journeyData: object) => {

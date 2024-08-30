@@ -126,6 +126,10 @@ export declare global {
       systemClientToken: string
     }
 
+    interface Response {
+      notFound(): void
+    }
+
     interface Locals {
       user: HmppsUser
       validationErrors?: fieldErrors

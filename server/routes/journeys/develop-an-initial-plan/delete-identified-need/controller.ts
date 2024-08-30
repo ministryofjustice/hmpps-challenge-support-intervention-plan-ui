@@ -5,10 +5,7 @@ export class DeleteIdentifiedNeedController {
     const { index } = req.params
 
     if (isInvalidNeedIndex(index, req)) {
-      res.render('pages/error', {
-        message: 'Identified need not found',
-        status: 404,
-      })
+      res.notFound()
     } else {
       res.render('develop-an-initial-plan/delete-identified-need/view', {
         identifiedNeed: req.journeyData.plan!.identifiedNeeds![Number(index) - 1],

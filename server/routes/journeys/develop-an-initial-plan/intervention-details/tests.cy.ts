@@ -70,7 +70,7 @@ context('test /develop-an-initial-plan/intervention-details', () => {
     cy.visit(START_URL, { failOnStatusCode: false })
     cy.visit(`${PAGE_URL}1`, { failOnStatusCode: false })
 
-    cy.findByText('404').should('be.visible')
+    cy.findByText('Page not found').should('be.visible')
   })
 
   it('should try out all cases', () => {
