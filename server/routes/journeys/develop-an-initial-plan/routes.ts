@@ -11,10 +11,9 @@ import { DeleteIdentifiedNeedRoutes } from './delete-identified-need/routes'
 import { NextReviewDateRoutes } from './next-review-date/routes'
 import { InterventionDetailsRoutes } from './intervention-details/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
+import { PlanCheckAnswersRoutes } from './check-answers/routes'
 
-  import { CheckAnswersRoutes } from './check-answers/routes'
-
-function Routes(_services: Services) {
+function Routes({ csipApiService }: Services) {
   const { router, get, post } = JourneyRouter()
   const controller = new DevelopPlanController()
 
@@ -28,10 +27,9 @@ function Routes(_services: Services) {
   router.use('/next-review-date', NextReviewDateRoutes())
   router.use('/intervention-details/:index', InterventionDetailsRoutes())
   router.use('/confirmation', ConfirmationRoutes())
+  router.use('/check-answers', PlanCheckAnswersRoutes(csipApiService))
 
-  
-  router.use('/check-answers', CheckAnswersRoutes(_services.csipApiService))
-return router
+  return router
 }
 
 export const DevelopPlanRoutes = ({ services, path }: { services: Services; path: string }) => {

@@ -1,11 +1,13 @@
-import { CheckAnswersController } from './controller'
+import { PlanCheckAnswersController } from './controller'
 import { JourneyRouter } from '../../base/routes'
 import CsipApiService from '../../../../services/csipApi/csipApiService'
 
-export const CheckAnswersRoutes = (csipApiService: CsipApiService) => {
-  const { router, get } = JourneyRouter()
-  const controller = new CheckAnswersController(csipApiService)
+export const PlanCheckAnswersRoutes = (csipApiService: CsipApiService) => {
+  const { router, get, post } = JourneyRouter()
+  const controller = new PlanCheckAnswersController(csipApiService)
 
-  get('/', controller.checkSubmitToAPI)
+  get('/', controller.GET)
+  post('/', controller.checkSubmitToAPI, controller.POST)
+
   return router
 }

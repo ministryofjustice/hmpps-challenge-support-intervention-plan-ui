@@ -1,0 +1,144 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = true %}
+{% set pageTitle = "Check answers - Develop an initial plan" %}
+
+{% block innerContent %}
+
+    <div class="govuk-grid-row govuk-!-margin-bottom-7">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Develop an initial plan</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check your answers before opening a CSIP for {{ prisoner | firstNameSpaceLastName }}</h1>
+        </div>
+    </div>
+
+     <div class="govuk-grid-row govuk-!-margin-bottom-7">
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-m">Case management</h2>
+        </div>
+    </div>
+
+    {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-7",
+        rows: [{
+            key: {
+                text: 'Case Manager'
+            },
+            value: {
+                text: plan.caseManager
+            },
+            actions: {
+                items: [
+                    {
+                        href: "./#caseManager",
+                        text: "Change",
+                        visuallyHiddenText: "the Case Manager",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+        }, {
+            key: {
+                text: 'Reason for the plan'
+            },
+            value: {
+                text: plan.reasonForPlan
+            },
+            actions: {
+                items: [
+                    {
+                        href: "./#reasonForPlan",
+                        text: "Change",
+                        visuallyHiddenText: "the reason for the plan",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+        }, {
+            key: {
+                text: 'Next review date'
+            },
+            value: {
+                text: plan.firstCaseReviewDate | formatDisplayDate
+            },
+            actions: {
+                items: [
+                    {
+                        href: "next-review-date#firstCaseReviewDate",
+                        text: "Change",
+                        visuallyHiddenText: "the next review date",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+        }]
+    }) }}
+
+    <div class="govuk-grid-row govuk-!-margin-bottom-7">
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-m">Identified needs</h2>
+        </div>
+        <div class="govuk-grid-column-one-third">
+            <a class="govuk-link govuk-summary-list govuk-summary-list__actions govuk-link--no-visited-state" href="identified-needs">Add, change or delete<span class="govuk-visually-hidden"> identified needs</span></a>
+        </div>
+    </div>
+
+    {% for need in plan.identifiedNeeds %}
+        {{ govukSummaryList({
+            classes: "govuk-!-margin-bottom-7" if loop.index === plan.identifiedNeeds.length else undefined,
+            card: {
+                title: { text: need.identifiedNeed }
+            },
+            rows: [{
+                key: {
+                    text: 'Identified need summary'
+                },
+                value: {
+                    text: need.identifiedNeed
+                }
+            }, {
+                key: {
+                    text: 'Planned intervention'
+                },
+                value: {
+                    html: need.intervention | escape | nl2br
+                }
+            }, {
+                key: {
+                    text: 'Person responsible'
+                },
+                value: {
+                    text: need.responsiblePerson
+                }
+            }, {
+                key: {
+                    text: 'Target date'
+                },
+                value: {
+                    text: need.targetDate | formatDisplayDate
+                }
+            }, {
+                key: {
+                    text: 'Actions and progress'
+                },
+                value: {
+                    html: (need.progression or "Not provided") | escape | nl2br
+                }
+            }]
+        }) }}
+    {% endfor %}
+
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        <div class="govuk-button-group">
+            {{ govukButton({
+                text: "Confirm and open CSIP",
+                preventDoubleClick: true
+            }) }}
+            <a class="govuk-link govuk-link--no-visited-state" href="{{ csipRecordUrl }}">Cancel</a>
+        </div>
+    </form>
+{% endblock %}

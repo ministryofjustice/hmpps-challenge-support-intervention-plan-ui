@@ -60,8 +60,8 @@ export default class CsipApiClient {
     })
   }
 
-  async createInitialPlan(csipRecordId: string, payload: components['schemas']['CreatePlanRequest']) {
-    return this.restClient.post<components['schemas']['CreatePlanRequest']>({
+  async createPlan(csipRecordId: string, payload: components['schemas']['CreatePlanRequest']) {
+    return this.restClient.post<components['schemas']['Plan']>({
       path: `/csip-records/${csipRecordId}/plan`,
       data: payload,
     })

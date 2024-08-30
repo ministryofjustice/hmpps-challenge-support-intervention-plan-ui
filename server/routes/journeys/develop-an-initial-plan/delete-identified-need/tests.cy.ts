@@ -29,7 +29,7 @@ context('test /develop-an-initial-plan/delete-identified-need', () => {
         firstName: 'TestName',
         lastName: 'User',
         cellLocation: '',
-        prisonerNumber: '',
+        prisonerNumber: 'A1111AA',
         prisonId: '',
       },
       plan: {
