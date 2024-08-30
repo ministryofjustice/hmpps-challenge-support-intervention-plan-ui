@@ -4,7 +4,7 @@ const stubGetPrisonerImage = () => {
   return stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/prison-api/api/bookings/offenderNo/A1111AA/image/data',
+      urlPattern: '/prison-api/api/bookings/offenderNo/([a-zA-Z0-9]*)/image/data',
     },
     response: {
       status: 200,

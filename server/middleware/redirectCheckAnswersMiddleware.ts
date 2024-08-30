@@ -10,7 +10,7 @@ export default function redirectCheckAnswersMiddleware(excludePaths: RegExp[] = 
 
       const resRender = res.render
       res.render = (view: string, options?) => {
-        if (options && 'backUrl' in options && req.journeyData.isCheckAnswers) {
+        if (options && 'backUrl' in options && options.backUrl && req.journeyData.isCheckAnswers) {
           resRender.call(res, view, { ...options, backUrl: checkAnswersUrl } as never)
         } else {
           resRender.call(res, view, options as never)

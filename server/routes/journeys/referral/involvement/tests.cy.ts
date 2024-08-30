@@ -154,7 +154,7 @@ context('Make a Referral Journey', () => {
         firstName: 'Testname',
         lastName: 'User',
         cellLocation: '',
-        prisonerNumber: '',
+        prisonerNumber: 'A1111AA',
         prisonId: '',
       },
       referral: {

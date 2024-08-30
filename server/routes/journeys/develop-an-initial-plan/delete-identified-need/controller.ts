@@ -29,6 +29,7 @@ export class DeleteIdentifiedNeedController {
       req.journeyData.plan!.identifiedNeeds = identifiedNeeds
     } else {
       delete req.journeyData.plan!.identifiedNeeds
+      delete req.journeyData.isCheckAnswers
     }
 
     res.redirect('../identified-needs')
