@@ -36,7 +36,7 @@
             value: firstCaseReviewDate,
             errorMessage: validationErrors | findError('firstCaseReviewDate'),
             classes: 'hmpps-datepicker--fixed-width govuk-body',
-            maxDate: todayStringGBFormat()
+            minDate: todayStringGBFormat()
         }) }}
         {{ govukButton({
             text: "Continue",

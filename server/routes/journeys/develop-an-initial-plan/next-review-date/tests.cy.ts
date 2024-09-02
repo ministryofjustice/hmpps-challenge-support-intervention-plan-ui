@@ -59,6 +59,14 @@ context('Make a Referral Journey', () => {
       .click()
     cy.findByRole('textbox', { name: /When will you next review the plan with Test Testersons\?/ }).should('be.focused')
 
+    // Get the datepicker set to the current date then check previous dates are not selectable
+    const today = new Date()
+    cy.findByRole('textbox', { name: /When will you next review the plan with Test Testersons\?/ })
+      .clear()
+      .type(`${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`)
+    cy.findByRole('button', { name: /choose date/i }).click()
+    cy.findAllByRole('button', { name: /Excluded date.*September.*/i, hidden: true }).should('have.length', 1)
+
     cy.get('details').invoke('attr', 'open').should('not.exist')
     cy.get('summary').click()
     cy.get('details').invoke('attr', 'open').should('exist')
