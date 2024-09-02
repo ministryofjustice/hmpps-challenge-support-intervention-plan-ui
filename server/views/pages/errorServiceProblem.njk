@@ -1,0 +1,15 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = "Sorry, there is a problem - CSIP" %}
+{% set mainClasses = "app-container govuk-body" %}
+
+{% block content %}
+
+  <h1>Sorry, there is a problem with the service</h1>
+  <p>The problem has been reported to the service team.</p>
+  <p>Try again later.</p>
+  <h2>Get help</h2>
+  <p>Contact the helpdesk on 0800 917 5148 or #6598 from inside an establishment.</p>
+  <p><a href="{{ digitalPrisonServicesUrl }}">Go to the digital services home page</a></p>
+
+{% endblock %}

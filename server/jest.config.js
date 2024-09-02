@@ -16,7 +16,7 @@ module.exports = {
     'server/index.ts',
     '.*.cy.ts',
   ],
-  testMatch: ['<rootDir>/(server|job)/**/?(*.)(cy|test).{ts,js,jsx,mjs}'],
+  testMatch: ['<rootDir>/(server|job)/**/?(*.)(test).{ts,js,jsx,mjs}'],
   testPathIgnorePatterns: ['<rootDir>/server/routes/journeys', '<rootDir>/server/routes/csip-records', 'node_modules'],
   testEnvironment: 'node',
   rootDir: '../',
