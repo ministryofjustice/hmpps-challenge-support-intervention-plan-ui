@@ -64,13 +64,13 @@
                 preventDoubleClick: true,
                 classes: "govuk-button--warning"
             }) }}
+            {{ govukButton({
+                text: "No, do not delete it",
+                href: "../identified-needs",
+                classes: "govuk-button--secondary",
+                preventDoubleClick: true
+            }) }}
         </form>
-        {{ govukButton({
-            text: "No, do not delete it",
-            href: "../identified-needs",
-            classes: "govuk-button--secondary",
-            preventDoubleClick: true
-        }) }}
     </div>
     
 {% endblock %}
