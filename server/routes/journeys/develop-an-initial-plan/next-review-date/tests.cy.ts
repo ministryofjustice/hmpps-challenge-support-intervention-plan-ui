@@ -20,16 +20,13 @@ context('Make a Referral Journey', () => {
   })
 
   const checkValuesPersist = () => {
-    const today = new Date()
     cy.findByRole('textbox', { name: /When will you next review the plan with Test Testersons\?/ })
       .clear()
-      .type(`${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`)
+      .type(`25/12/2034`)
     cy.findByRole('button', { name: /continue/i }).click()
     cy.url().should('to.match', /\/check-answers$/)
     cy.go('back')
-    const currentMonth = today.getMonth() + 1
-    const monthString = currentMonth > 9 ? currentMonth : `0${currentMonth}`
-    cy.findByDisplayValue(`${today.getFullYear()}-${monthString}-${today.getDate()}`).should('be.visible')
+    cy.findByDisplayValue(`25/12/2034`).should('be.visible')
   }
 
   const checkValidation = () => {

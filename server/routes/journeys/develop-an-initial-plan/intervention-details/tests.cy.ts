@@ -53,7 +53,7 @@ context('test /develop-an-initial-plan/intervention-details', () => {
     cy.visit(PAGE_URL)
     checkAxeAccessibility()
 
-    cy.findByRole('heading', { name: 'Identified need summary' }).next().should('have.text', 'saved summary')
+    cy.findByText('Identified need summary:').next().should('have.text', 'saved summary')
     getIntervention().should('have.value', 'Intervention')
     getResponsiblePerson().should('have.value', 'Person Name')
     getTargetDate().should('have.value', '01/08/2024')
@@ -107,7 +107,7 @@ context('test /develop-an-initial-plan/intervention-details', () => {
   const validatePageContents = () => {
     cy.findByRole('heading', { name: 'Intervention details' }).should('be.visible')
 
-    cy.findByRole('heading', { name: 'Identified need summary' }).should('be.visible')
+    cy.findByText('Identified need summary:').should('be.visible')
 
     cy.findByText('Develop an initial plan').should('be.visible')
 

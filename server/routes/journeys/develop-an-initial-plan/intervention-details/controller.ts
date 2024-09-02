@@ -13,7 +13,7 @@ export class InterventionDetailsController {
     }
 
     return res.render('develop-an-initial-plan/intervention-details/view', {
-      identifiedNeeds: this.getData(req, res, 'identifiedNeed', isNew, index),
+      identifiedNeed: this.getData(req, res, 'identifiedNeed', isNew, index),
       targetDate: this.getData<string | undefined>(req, res, 'targetDate', isNew, index, formatInputDate),
       responsiblePerson: this.getData(req, res, 'responsiblePerson', isNew, index),
       intervention: this.getData(req, res, 'intervention', isNew, index),
