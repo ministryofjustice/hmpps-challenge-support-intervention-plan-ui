@@ -11,10 +11,7 @@ export default function createErrorHandler(production: boolean) {
       return res.redirect('/sign-out')
     }
 
-    if (
-      production &&
-      ((error.status >= 500 && error.status < 600) || ['TypeError', 'RangeError', 'URIError'].includes(error.name))
-    ) {
+    if (production && ((error.status >= 500 && error.status < 600) || error.name?.includes('Error'))) {
       return res.render('pages/errorServiceProblem', {
         showBreadcrumbs: true,
       })

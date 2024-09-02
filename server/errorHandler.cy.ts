@@ -10,7 +10,7 @@ context('test errorHandler', () => {
     cy.task('stubComponents')
   })
 
-  it('should redirect to /referral', () => {
+  it('should go to the custom error page when an API 500s', () => {
     cy.task('stubGetPrisoner500')
     cy.task('stubGetPrisonerImage')
     cy.signIn()
@@ -18,7 +18,7 @@ context('test errorHandler', () => {
     cy.findByText(/sorry, there is a problem with the service/i).should('be.visible')
   })
 
-  it('should stuff', () => {
+  it('should go to the custom error page when invalid data causes an error', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubAreaOfWork')
     cy.task('stubIncidentLocation')
