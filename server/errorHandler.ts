@@ -11,6 +11,12 @@ export default function createErrorHandler(production: boolean) {
       return res.redirect('/sign-out')
     }
 
+    if (production && ((error.status >= 500 && error.status < 600) || error.name?.includes('Error'))) {
+      return res.render('pages/errorServiceProblem', {
+        showBreadcrumbs: true,
+      })
+    }
+
     res.locals['message'] = production
       ? 'Something went wrong. The error has been logged. Please try again'
       : error.message

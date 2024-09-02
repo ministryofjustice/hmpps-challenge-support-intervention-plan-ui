@@ -24,6 +24,23 @@ const stubGetPrisoner = () => {
   })
 }
 
+const stubGetPrisoner500 = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/prisoner-search-api/prisoner/A1111AA',
+    },
+    response: {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {},
+    },
+  })
+}
+
 export default {
   stubGetPrisoner,
+  stubGetPrisoner500,
 }

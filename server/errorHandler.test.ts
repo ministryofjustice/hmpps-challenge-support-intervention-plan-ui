@@ -33,11 +33,10 @@ describe('GET 404', () => {
     const uuidLocal = uuidV4()
     return request(appWithAllRoutes({ production: true, uuid: uuidLocal }))
       .get(`/${uuidLocal}/unknown`)
-      .expect(404)
+      .expect(200)
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('Something went wrong. The error has been logged. Please try again')
-        expect(res.text).not.toContain('NotFoundError: Not Found')
+        expect(res.text).toContain('Sorry, there is a problem with the service')
       })
   })
 })

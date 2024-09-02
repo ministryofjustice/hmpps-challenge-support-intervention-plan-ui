@@ -72,7 +72,7 @@ export default function createApp(services: Services): express.Application {
   app.use(routes(services))
   if (config.sentry.dsn) Sentry.setupExpressErrorHandler(app)
   app.use((_req, res) => res.notFound())
-  app.use(errorHandler(process.env.NODE_ENV === 'production'))
+  app.use(errorHandler(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'e2e-test'))
 
   return app
 }
