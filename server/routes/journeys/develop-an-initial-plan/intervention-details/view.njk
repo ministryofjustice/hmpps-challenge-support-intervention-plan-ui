@@ -12,8 +12,10 @@
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 
-        <h2 class="govuk-heading-s">Identified need summary</h2>
-        <p class="govuk-body">{{ identifiedNeeds | escape }}</p>
+    <div class="govuk-!-margin-bottom-6">
+        <h1 class="govuk-heading-s govuk-!-margin-0">Identified need summary:</h1>
+        <p>{{ identifiedNeed }}</p>
+    </div>
 
         {{ govukCharacterCount({
             label: {
