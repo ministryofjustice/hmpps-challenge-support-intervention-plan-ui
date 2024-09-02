@@ -40,7 +40,7 @@ context('test /screen/confirmation', () => {
     validatePageContents()
     cy.findByText('What needs to happen next').should('be.visible')
     cy.findByText(
-      'An investigation must now be carried out. This should include interviewing Testname User about the behaviour that led to the referral',
+      'An investigation must now be carried out. This should include interviewing Testname User about the behaviour that led to the referral.',
     ).should('be.visible')
   })
 
