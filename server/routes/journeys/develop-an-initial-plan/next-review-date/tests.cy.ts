@@ -65,11 +65,8 @@ context('Make a Referral Journey', () => {
       .clear()
       .type(`${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`)
     cy.findByRole('button', { name: /choose date/i }).click()
-    const currentMonthLong = new Intl.DateTimeFormat('en-GB', { month: 'long' }).format(today)
-    cy.findAllByRole('button', { name: new RegExp(`Excluded date.*${currentMonthLong}.*`, 'i'), hidden: true }).should(
-      'have.length',
-      1,
-    )
+    cy.findByRole('button', { name: /Previous month/i }).click()
+    cy.findAllByRole('button', { name: /Excluded date.*/i, hidden: true }).should('have.length.greaterThan', 27)
 
     cy.get('details').invoke('attr', 'open').should('not.exist')
     cy.get('summary').click()
