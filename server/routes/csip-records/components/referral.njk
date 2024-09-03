@@ -4,9 +4,11 @@
     <div class="govuk-grid-column-two-thirds">
         <h2 class="govuk-heading-l">Referral</h2>
     </div>
-    <div class="govuk-grid-column-one-third">
-        <a class="govuk-link govuk-summary-list govuk-summary-list__actions govuk-link--no-visited-state" href="update-referral">Update referral</a>
-    </div>
+    {% if status == 'REFERRAL_SUBMITTED' %}
+        <div class="govuk-grid-column-one-third">
+            <a class="govuk-link govuk-summary-list govuk-summary-list__actions govuk-link--no-visited-state" href="update-referral">Update referral</a>
+        </div>
+    {% endif %}
 </div>
 
 <h1 class="govuk-heading-m">Referral details</h1>
