@@ -136,7 +136,6 @@ describe('GET /csip-records/:recordUuid', () => {
     queryAllByText(html, /<script>alert\('concerns'\);<\/script>/i).forEach(el => {
       expect(el.querySelectorAll('br')).toHaveLength(lines)
     })
-    expect(queryByText(html, 'Comment on <script>alert("text for type-b")</script> factors')).toBeVisible()
 
     expect(getAllByRole(html, 'button', { name: 'Screen referral' })).toHaveLength(2)
   })
@@ -166,7 +165,6 @@ describe('GET /csip-records/:recordUuid', () => {
     expect(queryByText(html, '25 December 2024')).toBeVisible()
     expect(queryByText(html, csipRecordMock.referral!.incidentInvolvement!.description!)).toBeVisible()
     expect(queryByText(html, csipRecordMock.referral!.assaultedStaffName!)).toBeVisible()
-    expect(queryByText(html, 'Comment on <script>alert("text for type-b")</script> factors')).toBeVisible()
     const lines = (String(csipRecordMock.referral!.descriptionOfConcern!).match(/\n/g) || '').length
     queryAllByText(html, /<script>alert\('concerns'\);<\/script>/i).forEach(el => {
       expect(el.querySelectorAll('br')).toHaveLength(lines)

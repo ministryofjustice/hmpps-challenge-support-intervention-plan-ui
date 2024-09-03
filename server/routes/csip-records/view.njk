@@ -10,11 +10,11 @@
   <form method="post" action="/csip-records/{{ recordUuid }}">
     <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
     <input type="hidden" name="action" value="{{ actionButton.action }}"/>
-    {{ govukButton({
-      text: actionButton.label,
-      preventDoubleClick: true,
-      classes: 'govuk-body govuk-!-margin-bottom-0'
-    }) }}
+      {{ govukButton({
+        text: actionButton.label,
+        preventDoubleClick: true,
+        classes: 'govuk-body govuk-!-margin-bottom-0'
+      }) }}
   </form>
 {% endset %}
 
@@ -65,9 +65,18 @@
     {% include './components/investigation.njk' %}
   {% endif %}
 
-  <div class="govuk-body govuk-!-margin-bottom-6">
-    {% if actionButton %}
-      {{ actionButtonHtml | safe }}
+  <form method="post" action="/csip-records/{{ recordUuid }}">
+  <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+  <input type="hidden" name="action" value="{{ actionButton.action }}"/>
+  <div class="govuk-button-group">
+    {{ govukButton({
+      text: actionButton.label,
+      preventDoubleClick: true,
+      classes: 'govuk-body govuk-!-margin-bottom-0'
+    }) }}
+    {% if secondaryButton %}
+      <a class="govuk-link govuk-body" href="{{ secondaryButton.link }}">{{ secondaryButton.label }}</a>
     {% endif %}
   </div>
+  </form>
 {% endblock %}
