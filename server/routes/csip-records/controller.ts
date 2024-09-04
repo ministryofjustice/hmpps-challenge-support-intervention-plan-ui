@@ -81,7 +81,7 @@ export class CsipRecordController {
         }
         secondaryButton = {
           label: 'Update referral',
-          link: 'update-referral',
+          link: `/csip-record/${recordUuid}/update-referral/start`,
         }
         break
       case 'PLAN_PENDING':

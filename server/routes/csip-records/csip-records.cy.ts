@@ -32,6 +32,11 @@ context('test /csip-records', () => {
     cy.findByRole('heading', { name: /referral details/i }).should('be.visible')
     cy.findAllByRole('button', { name: /screen referral/i }).should('be.visible')
     cy.findAllByRole('link', { name: /update referral/i }).should('have.length', 2)
+    cy.findAllByRole('link', { name: /update referral/i }).should(
+      'have.attr',
+      'href',
+      '/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start',
+    )
 
     checkContributoryFactors()
   })
