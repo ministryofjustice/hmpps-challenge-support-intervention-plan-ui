@@ -70,6 +70,7 @@ export class CsipRecordController {
     const screening = record.referral!.saferCustodyScreeningOutcome
 
     let actionButton
+    let secondaryButton
     switch (record.status) {
       case 'REFERRAL_PENDING':
         break
@@ -77,6 +78,10 @@ export class CsipRecordController {
         actionButton = {
           label: 'Screen referral',
           action: 'screen',
+        }
+        secondaryButton = {
+          label: 'Update referral',
+          link: `/csip-record/${recordUuid}/update-referral/start`,
         }
         break
       case 'PLAN_PENDING':
@@ -127,6 +132,7 @@ export class CsipRecordController {
       screening,
       involvementFilter,
       showBreadcrumbs: true,
+      secondaryButton,
     })
   }
 

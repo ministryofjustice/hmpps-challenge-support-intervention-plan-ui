@@ -1,6 +1,15 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
-<h1 class="govuk-heading-l govuk-!-margin-bottom-7">Referral</h1>
+<div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-l">Referral</h2>
+    </div>
+    {% if status == 'REFERRAL_SUBMITTED' and secondaryButton %}
+        <div class="govuk-grid-column-one-third">
+            <a class="govuk-link govuk-summary-list govuk-summary-list__actions govuk-link--no-visited-state" href="{{secondaryButton.link}}">Update referral</a>
+        </div>
+    {% endif %}
+</div>
 
 <h1 class="govuk-heading-m">Referral details</h1>
 {{ govukSummaryList({
@@ -47,32 +56,31 @@
     {% include './reactive.njk' %}
 {% endif %}
 
-
-  {% set factors = [] %}
-  {% for factor in referral.contributoryFactors %}
-      {% set factors = (factors.push(factor.factorType.description | escape), factors) %}
-  {% endfor %}
-
-  {% set contributoryFactorRows = [{
-      key: {
-          text: "Contributory factors"
-      },
-      value: {
-          html: factors | join('<br/>')
-      }
-  }] %}
-  {% for factor in referral.contributoryFactors %}
-      {% set contributoryFactorRows = (contributoryFactorRows.push({
-          key: {
-              text: 'Comment on ' + (factor.factorType.description | sentenceCase(false)) + ' factors'
-          },
-          value: {
-              html: (factor.comment or 'Not provided') | escape | nl2br
-          }
-      }), contributoryFactorRows) %}
-  {% endfor %}
-
 <h1 class="govuk-heading-m">Contributory factors</h1>
+
+{% for factor in referral.contributoryFactors %}
+    {{ govukSummaryList({
+        card: {
+            title: { text: factor.factorType.description }
+        },
+        rows: [{
+            key: {
+                text: 'Contributory factor'
+            },
+            value: {
+                text: factor.factorType.description
+            }
+        }, {
+            key: {
+                text: 'Comment'
+            },
+            value: {
+                html: (factor.comment or 'Not provided') | escape | nl2br
+            }
+        }]
+    }) }}
+{% endfor %}
+
 {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
     rows: contributoryFactorRows

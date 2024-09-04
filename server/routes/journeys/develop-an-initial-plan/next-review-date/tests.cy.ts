@@ -1,4 +1,5 @@
 import { v4 } from 'uuid'
+import { getDaysInMonth } from 'date-fns'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 
 const uuid = v4()
@@ -65,10 +66,11 @@ context('Make a Referral Journey', () => {
       .clear()
       .type(`${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`)
     cy.findByRole('button', { name: /choose date/i }).click()
-    const currentMonthLong = new Intl.DateTimeFormat('en-GB', { month: 'long' }).format(today)
-    cy.findAllByRole('button', { name: new RegExp(`Excluded date.*${currentMonthLong}.*`, 'i'), hidden: true }).should(
+    cy.findAllByRole('button', { name: /Excluded date.*/i, hidden: true }).should('have.length', today.getDate() - 1)
+    cy.findByRole('button', { name: /previous month/i }).click()
+    cy.findAllByRole('button', { name: /Excluded date.*/i, hidden: true }).should(
       'have.length',
-      1,
+      getDaysInMonth(new Date(today.getFullYear(), today.getMonth() - 1, 1)),
     )
 
     cy.get('details').invoke('attr', 'open').should('not.exist')
