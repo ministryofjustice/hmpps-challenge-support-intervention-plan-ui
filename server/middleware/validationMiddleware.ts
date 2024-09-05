@@ -58,7 +58,7 @@ export type SchemaFactory = (request: Request) => Promise<z.ZodTypeAny>
 
 const normaliseNewLines = (body: Record<string, unknown>) => {
   return Object.fromEntries(
-    Object.entries(body).map(([key, value]) => [key, typeof value === 'string' ? value.replace(/\r\n/g, '\n') : value]),
+    Object.entries(body).map(([k, v]) => [k, typeof v === 'string' ? v.replace(/\r\n/g, '\n') : v]),
   )
 }
 
