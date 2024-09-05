@@ -26,6 +26,7 @@ context('test /record-decision/additional-information', () => {
     validateErrorMessage()
     proceedToNextScreen()
     verifySubmittedValueIsPersisted()
+    verifyCarriageReturnsAreStripped()
   })
 
   const navigateToTestPage = () => {
@@ -74,5 +75,11 @@ context('test /record-decision/additional-information', () => {
     cy.go('back')
     cy.reload()
     getInputTextbox().should('have.value', "<script>alert('xss');</script>")
+  }
+
+  const verifyCarriageReturnsAreStripped = () => {
+    getInputTextbox().clear().type('a\n'.repeat(2000), { delay: 0, force: true })
+    getContinueButton().click()
+    cy.url().should('to.match', /\/check-answers$/)
   }
 })
