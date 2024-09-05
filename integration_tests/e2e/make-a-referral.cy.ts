@@ -120,7 +120,9 @@ const changeInformationProactiveOnBehalf = () => {
   cy.findByRole('button', { name: /continue/i }).click()
 
   cy.url().should('include', '/description')
-  cy.findByRole('heading', { name: /describe the behaviour and concerns/i }).should('be.visible')
+  cy.findByRole('heading', { name: /Describe the behaviour and the concerns relating to the behaviour/i }).should(
+    'be.visible',
+  )
   cy.findByDisplayValue('incident concerns foobar123').should('be.visible')
   checkAxeAccessibility()
   cy.findByRole('button', { name: /continue/i }).click()
@@ -214,7 +216,7 @@ const fillInformationReactiveNotOnBehalf = () => {
 
   cy.url().should('include', '/details')
   cy.findByRole('heading', { name: /incident details/i }).should('be.visible')
-  cy.findByRole('heading', { name: /when did the incident occur\?/i }).should('be.visible')
+  cy.findByRole('heading', { name: /When was the incident\?/i }).should('be.visible')
   cy.findByRole('textbox', { name: /date of incident/i }).type('06/07/2024')
   cy.findByRole('textbox', { name: /hour/i }).type('12')
   cy.findByRole('textbox', { name: /minute/i }).type('24')
@@ -232,7 +234,9 @@ const fillInformationReactiveNotOnBehalf = () => {
   cy.findByRole('button', { name: /continue/i }).click()
 
   cy.url().should('include', '/description')
-  cy.findByRole('heading', { name: /describe the incident and concerns/i }).should('be.visible')
+  cy.findByRole('heading', { name: /Describe the incident and the concerns relating to the incident/i }).should(
+    'be.visible',
+  )
   // Cypress does not check the visibility of elements inside <details> elements properly, so use browser builtins instead
   cy.findByText(/the description could include/i).then(el => {
     expect(el.get(0).checkVisibility()).to.eq(false)
@@ -241,19 +245,14 @@ const fillInformationReactiveNotOnBehalf = () => {
   cy.findByText(/the description could include/i).then(el => {
     expect(el.get(0).checkVisibility()).to.eq(true)
   })
-  cy.findByRole('textbox', { name: /describe the incident and concerns/i }).type('incident concerns foobar123')
+  cy.findByRole('textbox', { name: /Describe the incident and the concerns relating to the incident/i }).type(
+    'incident concerns foobar123',
+  )
   checkAxeAccessibility()
   cy.findByRole('button', { name: /continue/i }).click()
 
   cy.url().should('include', '/reasons')
   cy.findByRole('heading', { name: /what reasons have been given for the incident\?/i }).should('be.visible')
-  cy.findByText(/include any reasons given/i).then(el => {
-    expect(el.get(0).checkVisibility()).to.eq(false)
-  })
-  cy.findByText(/what type of information to include/i).click()
-  cy.findByText(/include any reasons given/i).then(el => {
-    expect(el.get(0).checkVisibility()).to.eq(true)
-  })
   cy.findByRole('textbox', { name: /what reasons have been given for the incident/i }).type(
     'incident reasons foobar123',
   )
@@ -384,7 +383,7 @@ const changeAnswersOnCYAPage = () => {
     .should('be.visible')
     .click()
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
-  cy.findByRole('radio', { name: /^no/i }).click()
+  cy.findByRole('radio', { name: /^no$/i }).click()
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Safer Custody aware of referral').next().should('include.text', 'No')
 
@@ -477,8 +476,10 @@ const changeAnswersOnCYAProactiveSection = () => {
     .should('be.visible')
     .click()
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
-  cy.findByRole('textbox', { name: /describe the behaviour and concerns/i }).clear()
-  cy.findByRole('textbox', { name: /describe the behaviour and concerns/i }).type('incident concerns foobar456')
+  cy.findByRole('textbox', { name: /Describe the behaviour and the concerns relating to the behaviour/i }).clear()
+  cy.findByRole('textbox', { name: /Describe the behaviour and the concerns relating to the behaviour/i }).type(
+    'incident concerns foobar456',
+  )
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Description of behaviour and concerns')
     .next()
@@ -571,8 +572,10 @@ const changeAnswersOnCYAReactiveSection = () => {
     .should('be.visible')
     .click()
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
-  cy.findByRole('textbox', { name: /describe the incident and concerns/i }).clear()
-  cy.findByRole('textbox', { name: /describe the incident and concerns/i }).type('incident concerns foobar789')
+  cy.findByRole('textbox', { name: /Describe the incident and the concerns relating to the incident/i }).clear()
+  cy.findByRole('textbox', { name: /Describe the incident and the concerns relating to the incident/i }).type(
+    'incident concerns foobar789',
+  )
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Description of incident and concerns').next().should('include.text', 'incident concerns foobar789')
 

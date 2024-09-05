@@ -2,7 +2,7 @@ import z from 'zod'
 import { Request } from 'express'
 import { createSchema } from '../../../../middleware/validationMiddleware'
 
-const REASONS_TOO_LONG_MSG = 'Description must be 4,000 characters or less'
+const REASONS_TOO_LONG_MSG = 'Reasons must be 4,000 characters or less'
 
 export const schemaFactory = async (req: Request) => {
   const REASONS_MSG = req.journeyData.referral!.isProactiveReferral

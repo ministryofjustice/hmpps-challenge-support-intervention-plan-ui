@@ -1,7 +1,7 @@
 import z from 'zod'
 import { createSchema } from '../../../../middleware/validationMiddleware'
 
-const TOO_LONG_ERROR_MSG = 'Description must be 4,000 characters or less'
+const TOO_LONG_ERROR_MSG = 'Comment must be 4,000 characters or less'
 
 export const schema = createSchema({
   comment: z

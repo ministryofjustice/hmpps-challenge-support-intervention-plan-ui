@@ -69,7 +69,9 @@ const checkApostrophesMakeAReferral = (proactive: boolean) => {
   cy.findByRole('button', { name: /continue/i }).click()
   checkNoUnCurlyApostrophesInText()
   cy.findByRole('textbox', {
-    name: proactive ? /describe the behaviour and concerns/i : /describe the incident and concerns/i,
+    name: proactive
+      ? /Describe the behaviour and the concerns relating to the behaviour/i
+      : /Describe the incident and the concerns relating to the incident/i,
   }).type('incident concerns foobar123')
   cy.findByRole('button', { name: /continue/i }).click()
 

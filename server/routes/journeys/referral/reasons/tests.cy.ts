@@ -10,7 +10,14 @@ context('test /referral/reasons', () => {
   const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
   const getKnownReasons = (type: string) =>
     cy.findByRole('textbox', { name: `What reasons have been given for the ${type}?` })
-  const getKnownReasonsDetails = () => cy.findByText('What type of information to include')
+  const getKnownReasonsDetails = (type: string) =>
+    type === 'behaviour'
+      ? cy.findByText(
+          'Include any reasons the prisoner has given about why the behaviour has occurred. You can also include reasons reported by other people.',
+        )
+      : cy.findByText(
+          'Include any reasons the prisoner has given about why the incident occurred. You can also include reasons reported by other people.',
+        )
 
   const resetInputs = (type: string) => {
     getKnownReasons(type).clear()
@@ -77,7 +84,7 @@ context('test /referral/reasons', () => {
 
     cy.findByRole('heading', { name: `What reasons have been given for the ${type}?` })
 
-    getKnownReasonsDetails().should('be.visible')
+    getKnownReasonsDetails(type).should('be.visible')
 
     cy.findByRole('link', { name: /^back/i })
       .should('have.attr', 'href')
@@ -101,7 +108,7 @@ context('test /referral/reasons', () => {
     getKnownReasons(type).type('a'.repeat(4001), { delay: 0 })
     getContinueButton().click()
 
-    cy.findByRole('link', { name: /Description must be 4,000 characters or less/i })
+    cy.findByRole('link', { name: /Reasons must be 4,000 characters or less/i })
       .should('be.visible')
       .click()
     getKnownReasons(type).should('be.focused')
