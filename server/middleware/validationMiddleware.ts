@@ -56,13 +56,19 @@ export const validateAndTransformReferenceData =
 
 export type SchemaFactory = (request: Request) => Promise<z.ZodTypeAny>
 
+const normaliseNewLines = (body: Record<string, unknown>) => {
+  return Object.fromEntries(
+    Object.entries(body).map(([k, v]) => [k, typeof v === 'string' ? v.replace(/\r\n/g, '\n') : v]),
+  )
+}
+
 export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler => {
   return async (req, res, next) => {
     if (!schema) {
       return next()
     }
     const resolvedSchema = typeof schema === 'function' ? await schema(req) : schema
-    const result = resolvedSchema.safeParse(req.body)
+    const result = resolvedSchema.safeParse(normaliseNewLines(req.body))
     if (result.success) {
       req.body = result.data
       return next()
