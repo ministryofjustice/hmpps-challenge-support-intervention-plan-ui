@@ -42,7 +42,7 @@
           text: 'Comments on next steps'
         },
         value: {
-          html: decision.nextSteps | escape | nl2br
+          html: (decision.nextSteps or 'Not provided') | escape | nl2br
         }
       },
       {
@@ -50,7 +50,7 @@
           text: 'Additional information'
         },
         value: {
-          html: decision.actionOther | escape | nl2br
+          html: (decision.actionOther or 'Not provided') | escape | nl2br
         }
       },
       {
