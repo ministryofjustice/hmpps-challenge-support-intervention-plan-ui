@@ -57,12 +57,9 @@ export const validateAndTransformReferenceData =
 export type SchemaFactory = (request: Request) => Promise<z.ZodTypeAny>
 
 const normaliseNewLines = (body: Record<string, unknown>) => {
-  Object.keys(body).forEach(key => {
-    if (typeof body[key] === 'string') {
-      body[key] = body[key].replace(/\r\n/g, '\n') // eslint-disable-line no-param-reassign
-    }
-  })
-  return body
+  return Object.fromEntries(
+    Object.entries(body).map(([key, value]) => [key, typeof value === 'string' ? value.replace(/\r\n/g, '\n') : value]),
+  )
 }
 
 export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler => {
