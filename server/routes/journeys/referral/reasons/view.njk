@@ -1,5 +1,4 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
-{% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% extends "partials/layout.njk" %}
@@ -7,19 +6,6 @@
 {% set pageTitle = "Reasons - Make a CSIP referral" %}
 
 {% set headerText = 'What reasons have been given for the behaviour?' if isProactiveReferral else 'What reasons have been given for the incident?' %}
-{% set detailsHtml = '
-            <p>Include any reasons given: </p>
-            <ul>
-              <li>by the prisoner during conversations with staff members</li>
-              <li>in information received from other people</li>
-            </ul>
-            ' if isProactiveReferral else '
-            <p>Include any reasons given: </p>
-            <ul>
-                <li>by the prisoner during conversations after the incident</li>
-                <li>in information received from other people after the incident</li>
-            </ul>
-            ' %}
 
 {% block innerContent %}
     <span class="govuk-caption-l">Make a CSIP referral</span>
@@ -28,11 +14,10 @@
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        {{ govukDetails({
-            summaryText: "What type of information to include",
-            html: detailsHtml
-        }) }}
         {{ govukCharacterCount({
+            hint: {
+                text: 'Include any reasons the prisoner has given about why the behaviour has occurred. You can also include reasons reported by other people.' if isProactiveReferral else 'Include any reasons the prisoner has given about why the incident occurred. You can also include reasons reported by other people.'
+            },
             maxlength: 4000,
             rows: 5,
             threshold: "75",

@@ -67,7 +67,7 @@ context('test /referral/contributory-factor-comment', () => {
     getComment().type('a'.repeat(4001), { delay: 0 })
     getContinueButton().click()
 
-    cy.findByRole('link', { name: /Description must be 4,000 characters or less/i })
+    cy.findByRole('link', { name: /Comment must be 4,000 characters or less/i })
       .should('be.visible')
       .click()
     getComment().should('be.focused')

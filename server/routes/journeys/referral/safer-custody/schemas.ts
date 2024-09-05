@@ -1,7 +1,7 @@
 import z from 'zod'
 import { createSchema } from '../../../../middleware/validationMiddleware'
 
-const ERROR_MSG = 'Select if the Safer Custody team is already aware of this referral or not, or select ‘I don’t know’'
+const ERROR_MSG = 'Select if the Safer Custody team is already aware of this referral or not, or select ‘Not known’'
 
 export const YES_NO_ANSWER = z.enum(['YES', 'NO', 'DO_NOT_KNOW'] as const, {
   message: ERROR_MSG,

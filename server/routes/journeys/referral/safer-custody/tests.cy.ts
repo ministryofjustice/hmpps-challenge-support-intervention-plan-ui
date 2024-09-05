@@ -43,7 +43,7 @@ context('test /referral/safer-custody', () => {
 
     cy.findByRole('radio', { name: 'Yes' }).should('exist')
     cy.findByRole('radio', { name: 'No' }).should('exist')
-    cy.findByRole('radio', { name: 'I don’t know' }).should('exist')
+    cy.findByRole('radio', { name: 'Not known' }).should('exist')
 
     cy.findByRole('link', { name: /^back/i })
       .should('have.attr', 'href')
@@ -54,13 +54,13 @@ context('test /referral/safer-custody', () => {
     getContinueButton().click()
 
     cy.findByRole('link', {
-      name: /Select if the Safer Custody team is already aware of this referral or not, or select ‘I don’t know’/i,
+      name: /Select if the Safer Custody team is already aware of this referral or not, or select ‘Not known’/i,
     })
       .should('be.visible')
       .click()
     getIsSaferCustodyTeamInformed().should('be.focused')
     cy.findAllByText(
-      'Select if the Safer Custody team is already aware of this referral or not, or select ‘I don’t know’',
+      'Select if the Safer Custody team is already aware of this referral or not, or select ‘Not known’',
     ).should('have.length', 2)
   }
 

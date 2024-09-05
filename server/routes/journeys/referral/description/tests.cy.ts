@@ -1,8 +1,8 @@
 import { v4 } from 'uuid'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 
-const proactiveTitle = /describe the behaviour and concerns/i
-const reactiveTitle = /describe the incident and concerns/i
+const proactiveTitle = /Describe the behaviour and the concerns relating to the behaviour/i
+const reactiveTitle = /Describe the incident and the concerns relating to the incident/i
 
 const proactiveErrorMsg = /enter a description of the behaviour and concerns/i
 const reactiveErrorMsg = /enter a description of the incident and concerns/i

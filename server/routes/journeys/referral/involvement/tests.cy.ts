@@ -51,17 +51,17 @@ context('Make a Referral Journey', () => {
     cy.findByRole('radio', { name: /factor1/i }).should('be.checked')
     cy.get('.govuk-error-summary a').should('have.length', 1)
     cy.get('p')
-      .contains(/enter the staff member’s name/i)
+      .contains(/Enter the names of staff assaulted/i)
       .should('be.visible')
-    cy.findByRole('link', { name: /enter the staff member’s name/i }).should('be.visible')
+    cy.findByRole('link', { name: /Enter the names of staff assaulted/i }).should('be.visible')
   }
 
   const checkValidationMessagesDisappearProperly = () => {
     cy.findByRole('radio', { name: /yes/i }).click()
     cy.get('p')
-      .contains(/enter the staff member’s name/i)
+      .contains(/Enter the names of staff assaulted/i)
       .should('be.visible')
-    cy.findByRole('link', { name: /enter the staff member’s name/i }).should('be.visible')
+    cy.findByRole('link', { name: /Enter the names of staff assaulted/i }).should('be.visible')
 
     cy.get('.govuk-error-summary a').should('have.length', 3)
 
@@ -73,7 +73,7 @@ context('Make a Referral Journey', () => {
       .contains(/select if any staff were assaulted during the incident or not/i)
       .should('be.visible')
     cy.get('.govuk-error-summary li:nth-of-type(3) a')
-      .contains(/enter the staff member’s name/i)
+      .contains(/Enter the names of staff assaulted/i)
       .should('be.visible')
 
     cy.findByRole('button', { name: /continue/i }).click()
@@ -88,9 +88,9 @@ context('Make a Referral Journey', () => {
     cy.findByRole('radio', { name: /no/i }).click()
     cy.findByRole('button', { name: /continue/i }).click()
     cy.get('p')
-      .contains(/enter the staff member’s name/i)
+      .contains(/Enter the names of staff assaulted/i)
       .should('not.exist')
-    cy.findByRole('link', { name: /enter the staff member’s name/i }).should('not.exist')
+    cy.findByRole('link', { name: /Enter the names of staff assaulted/i }).should('not.exist')
     cy.get('.govuk-error-summary a').should('have.length', 1)
 
     cy.findByRole('radio', { name: /yes/i }).click()
@@ -98,9 +98,9 @@ context('Make a Referral Journey', () => {
     cy.findByRole('textbox', { name: /names of staff assaulted/i }).type('staff stafferson')
     cy.findByRole('button', { name: /continue/i }).click()
     cy.get('p')
-      .contains(/enter the staff member’s name/i)
+      .contains(/Enter the names of staff assaulted/i)
       .should('not.exist')
-    cy.findByRole('link', { name: /enter the staff member’s name/i }).should('not.exist')
+    cy.findByRole('link', { name: /Enter the names of staff assaulted/i }).should('not.exist')
     cy.get('.govuk-error-summary a').should('have.length', 1)
   }
 
