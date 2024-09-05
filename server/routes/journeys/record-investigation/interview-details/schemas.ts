@@ -39,7 +39,10 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
       .string({ message: INTERVIEWEE_ROLE_REQUIRED_MSG })
       .transform(validateAndTransformReferenceData(intervieweeRoleMap, INTERVIEWEE_ROLE_REQUIRED_MSG)),
 
-    interviewText: z.string().max(4000, INTERVIEW_TEXT_TOO_LONG_ERROR_MSG),
+    interviewText: z
+      .string()
+      .max(4000, INTERVIEW_TEXT_TOO_LONG_ERROR_MSG)
+      .transform(val => (val?.trim().length ? val : null)),
   })
 }
 

@@ -78,7 +78,7 @@ type Interview = Partial<{
   interviewee: string
   interviewDate: string
   intervieweeRole: ReferenceData
-  interviewText: string
+  interviewText: string | null
 }>
 
 type DecisionAndActions = Partial<{
