@@ -39,8 +39,9 @@ context('test /record-investigation/why-behaviour-occurred', () => {
 
   const validatePageContents = () => {
     cy.findByRole('heading', { name: /Why did the behaviour occur\?/ }).should('be.visible')
-    cy.findByText(/What type of information to include/).should('be.visible')
-    cy.findByText(/given by the prisoner during conversations or interviews/).should('be.visible')
+    cy.findByText(
+      /Include any reasons the prisoner has given about why the behaviour occured\.\s*You can also include reasons reported by other people\./,
+    ).should('be.visible')
     getInputTextbox().should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /^back/i })

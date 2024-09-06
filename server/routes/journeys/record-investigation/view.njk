@@ -6,7 +6,7 @@
 
 {% set completedStatus = { text: "Completed" } %}
 {% set incompleteStatus = { tag: { text: "Incomplete", classes: "govuk-tag--blue" } } %}
-{% set notReadyStatus = { text: "Cannot start yet", classes: "govuk-task-list__status--cannot-start-yet" } %}
+{% set notReadyStatus = { text: "Cannot save yet", classes: "govuk-task-list__status--cannot-start-yet" } %}
 {% set formCompleted = investigation.interviews and investigation.staffInvolved and investigation.occurrenceReason and investigation.evidenceSecured and investigation.personsUsualBehaviour and investigation.personsTrigger and investigation.protectiveFactors %}
 
 {% block innerContent %}

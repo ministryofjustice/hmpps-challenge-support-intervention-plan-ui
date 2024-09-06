@@ -66,7 +66,7 @@ context('test /record-investigation', () => {
 
     cy.findByRole('link', { name: 'Check and save report' }).should('not.exist')
     cy.findAllByText('Incomplete').should('have.length', 7)
-    cy.findByText('Cannot start yet').should('be.visible')
+    cy.findByText('Cannot save yet').should('be.visible')
   }
 
   const validatePageContentsWithInjectedJourneyData = () => {

@@ -9,12 +9,12 @@
 {% block innerContent %}
     <span class="govuk-caption-l">Record a CSIP investigation</span>
     <label for="personsUsualBehaviour">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">What’s {{prisoner | firstNameSpaceLastName | possessiveComma}} usual behaviour presentation?</h1>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">What is {{prisoner | firstNameSpaceLastName | possessiveComma}} usual behaviour presentation?</h1>
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {{ govukDetails({
-            summaryText: "Where to find this information",
+            summaryText: "Where to find information on a prisoner’s usual behaviour presentation",
             html: '
             <p>You might find relevant information in: </p>
             <ul>

@@ -66,7 +66,6 @@ context('test /csip-records', () => {
 
   const checkInvestigationDetailsExist = () => {
     cy.findByRole('heading', { name: /investigation$/i }).should('be.visible')
-    cy.findByRole('heading', { name: /investigation information/i }).should('be.visible')
     cy.findByText('22 July 2024').should('be.visible')
     cy.findByText('staff stafferson').should('be.visible')
     cy.findByText('SomeVidence').should('be.visible')
@@ -75,7 +74,7 @@ context('test /csip-records', () => {
     cy.findByText('spiders').should('be.visible')
     cy.findByText('SomeFactors').should('be.visible')
 
-    cy.findByRole('heading', { name: /interview details/i }).should('be.visible')
+    cy.findByRole('heading', { name: /interviews/i }).should('be.visible')
     cy.findByRole('heading', { name: /Interview with Some Person/ }).should('be.visible')
     cy.findByText('Some Person').should('be.visible')
     cy.findByText('25 December 2024').should('be.visible')
@@ -94,7 +93,7 @@ context('test /csip-records', () => {
   }
 
   const checkDecision = () => {
-    cy.findByRole('heading', { name: /decision/i }).should('be.visible')
+    cy.findByRole('heading', { name: /investigation decision/i }).should('be.visible')
     cy.findByText('dec-conc').should('be.visible')
     cy.findByText('Another option').should('be.visible')
     cy.findByText('prison officer').should('be.visible')
