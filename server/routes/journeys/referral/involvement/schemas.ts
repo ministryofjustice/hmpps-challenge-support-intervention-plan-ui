@@ -23,11 +23,24 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
       .string({ message: IS_STAFF_ASSAULTED_ERROR_MSG })
       .trim()
       .refine(val => ['false', 'true'].includes(val), { message: IS_STAFF_ASSAULTED_ERROR_MSG }),
-    assaultedStaffName: z.string().max(240, { message: TOO_LONG_STAFF_MEMBER_ERROR_MSG }),
+    assaultedStaffName: z.string(),
   })
-    .refine(val => val.staffAssaulted === 'false' || val.assaultedStaffName?.trim().length > 0, {
-      message: EMPTY_STAFF_MEMBER_ERROR_MSG,
-      path: ['assaultedStaffName'],
+    .superRefine((val, ctx) => {
+      if (val.staffAssaulted === 'true') {
+        if (!val.assaultedStaffName?.trim().length) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: EMPTY_STAFF_MEMBER_ERROR_MSG,
+            path: ['assaultedStaffName'],
+          })
+        } else if (val.assaultedStaffName?.length > 240) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: TOO_LONG_STAFF_MEMBER_ERROR_MSG,
+            path: ['assaultedStaffName'],
+          })
+        }
+      }
     })
     .transform(val => ({
       ...val,
