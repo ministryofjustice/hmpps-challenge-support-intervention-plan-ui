@@ -58,12 +58,9 @@ context('Make a Referral Journey', () => {
 
   const checkValidationMessagesDisappearProperly = () => {
     cy.findByRole('radio', { name: /yes/i }).click()
-    cy.get('p')
-      .contains(/Enter the names of staff assaulted/i)
-      .should('be.visible')
-    cy.findByRole('link', { name: /Enter the names of staff assaulted/i }).should('be.visible')
+    cy.findByText('Names of staff assaulted').should('be.visible')
 
-    cy.get('.govuk-error-summary a').should('have.length', 3)
+    cy.get('.govuk-error-summary a').should('have.length', 2)
 
     // Check they're in the right order
     cy.get('.govuk-error-summary li:nth-of-type(1) a')
@@ -71,9 +68,6 @@ context('Make a Referral Journey', () => {
       .should('be.visible')
     cy.get('.govuk-error-summary li:nth-of-type(2) a')
       .contains(/select if any staff were assaulted during the incident or not/i)
-      .should('be.visible')
-    cy.get('.govuk-error-summary li:nth-of-type(3) a')
-      .contains(/Enter the names of staff assaulted/i)
       .should('be.visible')
 
     cy.findByRole('button', { name: /continue/i }).click()
