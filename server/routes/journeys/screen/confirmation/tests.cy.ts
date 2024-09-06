@@ -40,7 +40,7 @@ context('test /screen/confirmation', () => {
     validatePageContents()
     cy.findByText('What needs to happen next').should('be.visible')
     cy.findByText(
-      'An investigation must now be carried out. This should include interviewing Testname User about the behaviour that led to the referral.',
+      'This should include interviewing Testname User about the behaviour that led to the referral.',
     ).should('be.visible')
   })
 
@@ -55,8 +55,8 @@ context('test /screen/confirmation', () => {
   const validatePageContents = () => {
     cy.findByRole('link', { name: /^CSIP/i }).should('have.attr', 'href').and('match', /\//)
 
-    cy.findByText('CSIP referral screening outcome recorded').should('be.visible')
+    cy.findByText('Screening outcome recorded').should('be.visible')
 
-    cy.findByText('We’ve updated the status of the referral to “referral submitted”.').should('be.visible')
+    cy.findByText('We’ve updated the status of the CSIP referral to ‘referral submitted’.').should('be.visible')
   }
 })
