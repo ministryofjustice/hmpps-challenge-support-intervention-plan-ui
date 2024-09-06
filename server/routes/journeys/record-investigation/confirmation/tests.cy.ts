@@ -27,14 +27,14 @@ context('test /record-investigation/confirmation', () => {
     cy.findByRole('link', { name: /CSIP/ }).should('be.visible')
 
     cy.findByText('CSIP investigation recorded').should('be.visible')
-    cy.findByText('We’ve updated the status of the referral to “awaiting decision”.').should('be.visible')
+    cy.findByText('We’ve updated the status of the referral to ‘awaiting decision’.').should('be.visible')
 
     cy.findByRole('heading', { name: /What needs to happen next/ }).should('be.visible')
     cy.findByText(
       'The Custodial Manager should assess the findings of the investigation and make a decision about whether Testname User needs to be placed on a CSIP.',
     ).should('be.visible')
     cy.findByText(
-      'If the Custodial Manager is not available then another authorised person can do this, such as the Residential Governor or a Safer Custody team member.',
+      'If the Custodial Manager is not available then another appropriate person can do this, such as the Residential Governor or a Safer Custody team member.',
     ).should('be.visible')
   }
 })

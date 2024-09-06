@@ -39,7 +39,7 @@ context('test /record-investigation/protective-factors', () => {
 
   const validatePageContents = () => {
     cy.findByRole('heading', { name: /What are the protective factors for Testname User\?/ }).should('be.visible')
-    cy.findByText(/What type of information to include/).should('be.visible')
+    cy.findByText(/Help with understanding protective factors/).should('be.visible')
     getInputTextbox().should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /^back/i })

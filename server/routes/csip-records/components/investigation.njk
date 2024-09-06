@@ -2,8 +2,6 @@
 
 <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Investigation</h1>
 
-<h2 class="govuk-heading-m">Investigation information</h2>
-
 {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
     rows: [
@@ -66,7 +64,7 @@
     ]
 }) }}
 
-<h2 class="govuk-heading-m govuk-!-margin-bottom-7">Interview details</h2>
+<h2 class="govuk-heading-m govuk-!-margin-bottom-7">Interviews</h2>
 
 {% for interview in investigation.interviews %}
     {{ govukSummaryList({

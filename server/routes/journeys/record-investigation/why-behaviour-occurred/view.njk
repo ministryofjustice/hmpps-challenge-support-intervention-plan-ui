@@ -1,5 +1,4 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
-{% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% extends "partials/layout.njk" %}
@@ -13,16 +12,6 @@
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        {{ govukDetails({
-            summaryText: "What type of information to include",
-            html: '
-            <p>Include reasons:</p>
-            <ul>
-              <li>given by the prisoner during conversations or interviews</li>
-              <li>available in any other known data</li>
-            </ul>
-            '
-        }) }}
         {{ govukCharacterCount({
             maxlength: 4000,
             rows: 5,
@@ -30,7 +19,10 @@
             id: "occurrenceReason",
             name: "occurrenceReason",
             value: occurrenceReason,
-            errorMessage: validationErrors | findError('occurrenceReason')
+            errorMessage: validationErrors | findError('occurrenceReason'),
+            hint: {
+                html: "Include any reasons the prisoner has given about why the behaviour occured.</br>You can also include reasons reported by other people."
+            }
         }) }}
         {{ govukButton({
             text: "Continue",
