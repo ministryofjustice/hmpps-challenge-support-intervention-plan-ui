@@ -3,7 +3,8 @@
 {%- from "moj/components/sub-navigation/macro.njk" import mojSubNavigation -%}
 
 {% set fullWidth = true %}
-{% set pageTitle = "CSIP record - CSIP" %}
+
+{% set pageTitle = ("Update a " if isUpdate else "") + "CSIP record - CSIP" %}
 {% extends "partials/layout.njk" %}
 
 {% if actionButton %}
