@@ -37,7 +37,8 @@
     "coverage",
     "codecov_reports",
     "esbuild",
-    "server/@types/csip/index.d.ts"
+    "server/@types/csip/index.d.ts",
+    "test_results"
   ],
   "include": ["**/*.js", "**/*.ts"]
 }

@@ -18,10 +18,12 @@
     "test": "jest --detectOpenHandles --forceExit",
     "test:ci": "jest --detectOpenHandles --runInBand",
     "security_audit": "npx audit-ci --config audit-ci.json",
-    "int-test": "cypress run --config video=false",
+    "int-test": "cypress run --config video=false && npm run merge-coverage && npm run generate-report",
     "int-test-ui": "cypress open --e2e --browser chrome",
     "clean": "rm -rf dist node_modules",
-    "rebuild": "npm run clean && npm i && npm run build"
+    "rebuild": "npm run clean && npm i && npm run build",
+    "merge-coverage": "cp test_results/jest/coverage-final.json .nyc_output/jest.json && mv .nyc_output/out.json .nyc_output/cypress.json && npx nyc merge ./.nyc_output",
+    "generate-report": "nyc report --reporter=html --reporter=text --reporter=lcov --report-dir=coverage && rm coverage.json"
   },
   "engines": {
     "node": "^20",
@@ -32,6 +34,7 @@
     "collectCoverageFrom": [
       "server/**/*.{ts,js,jsx,mjs}"
     ],
+    "coverageDirectory": "test_results/jest/",
     "reporters": [
       "default",
       [
