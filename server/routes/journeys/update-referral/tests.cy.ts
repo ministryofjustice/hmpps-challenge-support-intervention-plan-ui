@@ -45,7 +45,7 @@ context('test /csip-records', () => {
       .first()
       .click()
     cy.url().should('to.match', /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-referral$/)
-    cy.title().should('to.match', /Update a CSIP record - CSIP - DPS/)
+    cy.title().should('to.match', /Update a CSIP referral - DPS/)
     cy.findAllByRole('button', { name: /[\s\S]*screen referral[\s\S]*/i }).should('not.exist')
     cy.findByRole('heading', { name: /Update CSIP referral for Testname User/ }).should('be.visible')
     cy.findByRole('link', { name: /cancel/i }).should('be.visible')
