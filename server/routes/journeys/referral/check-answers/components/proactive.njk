@@ -1,17 +1,17 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
-    <h1 class="govuk-heading-m">Behaviour details</h1>
-    {{ govukSummaryList({
-        classes: "govuk-!-margin-bottom-7",
-        rows: [
-            {
-                key: {
+<h1 class="govuk-heading-m">Behaviour details</h1>
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
                 text: "Date of occurrence"
             },
-                value: {
+            value: {
                 text: referral.incidentDate | formatDisplayDate
             },
-                actions: {
+            actions: {
                 items: [
                     {
                         href: "details#incidentDate",
@@ -21,164 +21,164 @@
                     }
                 ]
             }
-            },
-            {
-                key: {
+        },
+        {
+            key: {
                 text: "Time of occurrence"
             },
-                value: {
+            value: {
                 text: referral.incidentTime or "Not provided"
             },
-                actions: {
-                items: [
-                    {
-                        href: "details#incidentTime-hour",
-                        text: "Change",
-                        visuallyHiddenText: "time of occurrence",
-                        classes: "govuk-link--no-visited-state"
-                    }
-                ]
-            }
-            },
-            {
-                key: {
-                text: "Location of occurrence"
-            },
-                value: {
-                text: referral.incidentLocation.description
-            },
-                actions: {
-                items: [
-                    {
-                        href: "details#incidentLocation",
-                        text: "Change",
-                        visuallyHiddenText: "location of occurrence",
-                        classes: "govuk-link--no-visited-state"
-                    }
-                ]
-            }
-            },
-            {
-                key: {
-                text: "Main concern"
-            },
-                value: {
-                text: referral.incidentType.description
-            },
-                actions: {
-                items: [
-                    {
-                        href: "details#incidentType",
-                        text: "Change",
-                        visuallyHiddenText: "main concern",
-                        classes: "govuk-link--no-visited-state"
-                    }
-                ]
-            }
-            }
-        ]
-    }) }}
+            actions: {
+            items: [
+                {
+                    href: "details#incidentTime-hour",
+                    text: "Change",
+                    visuallyHiddenText: "time of occurrence",
+                    classes: "govuk-link--no-visited-state"
+                }
+            ]
+        }
+        },
+        {
+            key: {
+            text: "Location of occurrence"
+        },
+            value: {
+            text: referral.incidentLocation.description
+        },
+            actions: {
+            items: [
+                {
+                    href: "details#incidentLocation",
+                    text: "Change",
+                    visuallyHiddenText: "location of occurrence",
+                    classes: "govuk-link--no-visited-state"
+                }
+            ]
+        }
+        },
+        {
+            key: {
+            text: "Main concern"
+        },
+            value: {
+            text: referral.incidentType.description
+        },
+            actions: {
+            items: [
+                {
+                    href: "details#incidentType",
+                    text: "Change",
+                    visuallyHiddenText: "main concern",
+                    classes: "govuk-link--no-visited-state"
+                }
+            ]
+        }
+        }
+    ]
+}) }}
 
-    <h1 class="govuk-heading-m">Behaviour involvement</h1>
-    {{ govukSummaryList({
-        classes: "govuk-!-margin-bottom-7",
-        rows: [
-            {
-                key: {
-                text: "Prisoner involvement"
-            },
-                value: {
-                text: referral.incidentInvolvement.description
-            },
-                actions: {
-                items: [
-                    {
-                        href: "involvement#involvementType",
-                        text: "Change",
-                        visuallyHiddenText: "how the prisoner was involved",
-                        classes: "govuk-link--no-visited-state"
-                    }
-                ]
-            }
-            },
-            {
-                key: {
-                text: "Staff assaulted"
-            },
-                value: {
-                text: 'Yes' if referral.staffAssaulted else 'No'
-            },
-                actions: {
-                items: [
-                    {
-                        href: "involvement#staffAssaulted",
-                        text: "Change",
-                        visuallyHiddenText: "if a staff member was assaulted or not",
-                        classes: "govuk-link--no-visited-state"
-                    }
-                ]
-            }
-            },
-            {
-                key: {
-                text: "Names of staff assaulted"
-            },
-                value: {
-                text: referral.assaultedStaffName or ''
-            },
-                actions: {
-                items: [
-                    {
-                        href: "involvement#assaultedStaffName",
-                        text: "Change",
-                        visuallyHiddenText: "the name of the staff members assaulted",
-                        classes: "govuk-link--no-visited-state"
-                    }
-                ]
-            }
-            }
-        ] | filterBy(involvementFilter)
-    }) }}
+<h1 class="govuk-heading-m">Behaviour involvement</h1>
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
+            text: "Prisoner involvement"
+        },
+            value: {
+            text: referral.incidentInvolvement.description
+        },
+            actions: {
+            items: [
+                {
+                    href: "involvement#involvementType",
+                    text: "Change",
+                    visuallyHiddenText: "how the prisoner was involved",
+                    classes: "govuk-link--no-visited-state"
+                }
+            ]
+        }
+        },
+        {
+            key: {
+            text: "Staff assaulted"
+        },
+            value: {
+            text: 'Yes' if referral.staffAssaulted else 'No'
+        },
+            actions: {
+            items: [
+                {
+                    href: "involvement#staffAssaulted",
+                    text: "Change",
+                    visuallyHiddenText: "if a staff member was assaulted or not",
+                    classes: "govuk-link--no-visited-state"
+                }
+            ]
+        }
+        },
+        {
+            key: {
+            text: "Names of staff assaulted"
+        },
+            value: {
+            text: referral.assaultedStaffName or ''
+        },
+            actions: {
+            items: [
+                {
+                    href: "involvement#assaultedStaffName",
+                    text: "Change",
+                    visuallyHiddenText: "the name of the staff members assaulted",
+                    classes: "govuk-link--no-visited-state"
+                }
+            ]
+        }
+        }
+    ] | filterBy(involvementFilter)
+}) }}
 
-    <h1 class="govuk-heading-m">Behaviour description</h1>
-    {{ govukSummaryList({
-        classes: "govuk-!-margin-bottom-7",
-        rows: [
-            {
-                key: {
-                text: "Description of behaviour and concerns"
-            },
-                value: {
-                html: referral.descriptionOfConcern | escape | nl2br
-            },
-                actions: {
-                items: [
-                    {
-                        href: "description#descriptionOfConcern",
-                        text: "Change",
-                        visuallyHiddenText: "the description of the behaviour and concerns",
-                        classes: "govuk-link--no-visited-state"
-                    }
-                ]
-            }
-            },
-            {
-                key: {
-                text: "Reasons given for the behaviour"
-            },
-                value: {
-                html: referral.knownReasons | escape | nl2br
-            },
-                actions: {
-                items: [
-                    {
-                        href: "reasons#knownReasons",
-                        text: "Change",
-                        visuallyHiddenText: "the reasons given for the behaviour",
-                        classes: "govuk-link--no-visited-state"
-                    }
-                ]
-            }
-            }
-        ]
-    }) }}
+<h1 class="govuk-heading-m">Behaviour description</h1>
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
+            text: "Description of behaviour and concerns"
+        },
+            value: {
+            html: referral.descriptionOfConcern | escape | nl2br
+        },
+            actions: {
+            items: [
+                {
+                    href: "description#descriptionOfConcern",
+                    text: "Change",
+                    visuallyHiddenText: "the description of the behaviour and concerns",
+                    classes: "govuk-link--no-visited-state"
+                }
+            ]
+        }
+        },
+        {
+            key: {
+            text: "Reasons given for the behaviour"
+        },
+            value: {
+            html: referral.knownReasons | escape | nl2br
+        },
+            actions: {
+            items: [
+                {
+                    href: "reasons#knownReasons",
+                    text: "Change",
+                    visuallyHiddenText: "the reasons given for the behaviour",
+                    classes: "govuk-link--no-visited-state"
+                }
+            ]
+        }
+        }
+    ]
+}) }}

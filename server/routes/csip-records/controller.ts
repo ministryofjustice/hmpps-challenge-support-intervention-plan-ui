@@ -14,18 +14,7 @@ export class CsipRecordController {
     private readonly prisonerSearchService: PrisonerSearchService,
   ) {}
 
-  GET_BASE = async (req: Request, res: Response) => {
-    const { recordUuid } = req.params
-    const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
-
-    if (hasInvestigation(record.status)) {
-      res.redirect(`/csip-records/${recordUuid}/investigation`)
-      return
-    }
-    res.redirect(`/csip-records/${recordUuid}/referral`)
-  }
-
-  GET = async (req: Request, res: Response) => {
+  private getRecordInfo = async (req: Request) => {
     const { recordUuid } = req.params
     const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
     const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
@@ -68,6 +57,75 @@ export class CsipRecordController {
       referral.assaultedStaffName || itm.key.text !== 'Names of staff assaulted'
 
     const screening = record.referral!.saferCustodyScreeningOutcome
+
+    const referralTabSelected = req.url.endsWith('referral')
+
+    return {
+      record,
+      prisoner,
+      decision,
+      screening,
+      involvementFilter,
+      investigation,
+      referral,
+      recordUuid,
+      referralTabSelected,
+    }
+  }
+
+  GET_BASE = async (req: Request, res: Response) => {
+    const { recordUuid } = req.params
+    const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
+
+    if (hasInvestigation(record.status)) {
+      res.redirect(`/csip-records/${recordUuid}/investigation`)
+      return
+    }
+    res.redirect(`/csip-records/${recordUuid}/referral`)
+  }
+
+  UPDATE = async (req: Request, res: Response) => {
+    const {
+      record,
+      prisoner,
+      decision,
+      screening,
+      involvementFilter,
+      investigation,
+      referral,
+      recordUuid,
+      referralTabSelected,
+    } = await this.getRecordInfo(req)
+
+    res.render('csip-records/view', {
+      isUpdate: true,
+      status: record.status,
+      shouldShowTabs: hasInvestigation(record.status),
+      decision,
+      investigation,
+      recordUuid,
+      referralTabSelected,
+      prisoner,
+      referral,
+      screening,
+      involvementFilter,
+      showBreadcrumbs: true,
+    })
+  }
+
+  GET = async (req: Request, res: Response) => {
+    req.journeyData.isUpdate = false
+    const {
+      record,
+      prisoner,
+      decision,
+      screening,
+      involvementFilter,
+      investigation,
+      referral,
+      recordUuid,
+      referralTabSelected,
+    } = await this.getRecordInfo(req)
 
     let actionButton
     let secondaryButton
@@ -116,8 +174,6 @@ export class CsipRecordController {
       default:
         break
     }
-
-    const referralTabSelected = req.url.endsWith('referral')
 
     res.render('csip-records/view', {
       status: record.status,
