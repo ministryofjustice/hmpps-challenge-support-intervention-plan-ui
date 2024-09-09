@@ -125,7 +125,7 @@
                     text: 'Actions and progress'
                 },
                 value: {
-                    html: identifiedNeed.progression | escape | nl2br
+                    html: (identifiedNeed.progression or 'Not provided') | escape | nl2br
                 },
                 actions: {
                     items: [

@@ -7,7 +7,7 @@ export const schema = createSchema({
   actionOther: z
     .string()
     .max(4000, TOO_LONG_ERROR_MSG)
-    .transform(val => (val?.length ? val : null)),
+    .transform(val => (val?.trim().length ? val : null)),
 })
 
 export type SchemaType = z.infer<typeof schema>
