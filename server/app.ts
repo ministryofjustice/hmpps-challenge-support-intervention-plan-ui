@@ -3,6 +3,8 @@ import express from 'express'
 import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
 
 import * as Sentry from '@sentry/node'
+// @ts-expect-error eslint doesn't like require statements
+import cypressCoverage from '@cypress/code-coverage/middleware/express'
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import { appInsightsMiddleware } from './utils/azureAppInsights'
@@ -31,6 +33,10 @@ import sentryMiddleware from './middleware/sentryMiddleware'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
+
+  if (process.env.NODE_ENV === 'e2e-test') {
+    cypressCoverage(app)
+  }
 
   app.set('json spaces', 2)
   app.set('trust proxy', true)
