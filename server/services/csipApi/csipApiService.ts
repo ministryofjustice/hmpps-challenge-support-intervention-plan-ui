@@ -29,6 +29,16 @@ export default class CsipApiService {
     )
   }
 
+  updateCsipRecord(
+    req: Request,
+    updateCsipRecordRequest: components['schemas']['UpdateCsipRecordRequest'],
+  ): Promise<components['schemas']['CsipRecord']> {
+    return this.csipApiClientBuilder(req.systemClientToken).updateCsipRecord(
+      req.journeyData.csipRecord!.recordUuid,
+      updateCsipRecordRequest,
+    )
+  }
+
   createScreeningOutcome(req: Request, payload: Parameters<CsipApiClient['createScreeningOutcome']>[1]) {
     return this.csipApiClientBuilder(req.systemClientToken).createScreeningOutcome(
       req.journeyData.csipRecord!.recordUuid,

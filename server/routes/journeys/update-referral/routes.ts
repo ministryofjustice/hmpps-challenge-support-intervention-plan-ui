@@ -5,12 +5,15 @@ import { JourneyRouter } from '../base/routes'
 import type PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
 import { UpdateReferralController } from './controller'
 import type CsipApiService from '../../../services/csipApi/csipApiService'
+import { UpdateInvolvementRoutes } from './involvement/routes'
 
 const UpdateRoutes = (csipApiService: CsipApiService, prisonerSearchService: PrisonerSearchService) => {
   const { router, get } = JourneyRouter()
   const updateController = new UpdateReferralController(csipApiService, prisonerSearchService)
 
   get('/', updateController.UPDATE)
+
+  router.use('/involvement', UpdateInvolvementRoutes(csipApiService))
 
   return router
 }
