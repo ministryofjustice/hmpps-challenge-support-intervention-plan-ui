@@ -30,6 +30,7 @@ export type JourneyData = {
   csipRecord?: CsipRecord
   hasValidationErrors?: boolean
   journeyCompleted?: boolean
+  isUpdate?: boolean
 }
 
 export type PrisonerSummary = Prisoner

@@ -6,23 +6,27 @@
 {% set pageTitle = "CSIP record - CSIP" %}
 {% extends "partials/layout.njk" %}
 
-{% set actionButtonHtml %}
-  <form method="post" action="/csip-records/{{ recordUuid }}">
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-    <input type="hidden" name="action" value="{{ actionButton.action }}"/>
-    {{ govukButton({
-      text: actionButton.label,
-      preventDoubleClick: true,
-      classes: 'govuk-body govuk-!-margin-bottom-0'
-    }) }}
-  </form>
-{% endset %}
+{% if actionButton %}
+  {% set actionButtonHtml %}
+    <form method="post" action="/csip-records/{{ recordUuid }}">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+      <input type="hidden" name="action" value="{{ actionButton.action }}"/>
+      {{ govukButton({
+        text: actionButton.label,
+        preventDoubleClick: true,
+        classes: 'govuk-body govuk-!-margin-bottom-0'
+      }) }}
+    </form>
+  {% endset %}
+{% endif %}
+
+{% set basePageHeader = 'CSIP referral for ' + (prisoner | firstNameSpaceLastName) %}
 
 {% block pageHeader %}
   {{ mojPageHeaderActions({
     classes: 'govuk-!-margin-bottom-3',
     heading: {
-      text: 'CSIP referral for ' + (prisoner | firstNameSpaceLastName),
+      text: 'Update ' + basePageHeader if isUpdate else basePageHeader,
       classes: 'govuk-heading-xl'
     },
     items: [{
@@ -69,11 +73,13 @@
   <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
   <input type="hidden" name="action" value="{{ actionButton.action }}"/>
   <div class="govuk-button-group">
-    {{ govukButton({
-      text: actionButton.label,
-      preventDoubleClick: true,
-      classes: 'govuk-body govuk-!-margin-bottom-0'
-    }) }}
+    {% if actionButton %}
+      {{ govukButton({
+        text: actionButton.label,
+        preventDoubleClick: true,
+        classes: 'govuk-body govuk-!-margin-bottom-0'
+      }) }}
+    {% endif %}
     {% if secondaryButton %}
       <a class="govuk-link govuk-body" href="{{ secondaryButton.link }}">{{ secondaryButton.label }}</a>
     {% endif %}
