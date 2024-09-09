@@ -35,7 +35,7 @@
             actions: {
                 items: [
                     {
-                        href: "referrer#referredBy",
+                        href: "update-referral/referrer#referredBy",
                         text: "Change",
                         visuallyHiddenText: "name of referrer",
                         classes: "govuk-link--no-visited-state"
@@ -53,7 +53,7 @@
             actions: {
                 items: [
                     {
-                        href: "referrer#areaOfWork" if referral.isOnBehalfOfReferral else "area-of-work#areaOfWork",
+                        href: "update-referral/referrer#areaOfWork" if referral.isOnBehalfOfReferral else "area-of-work#areaOfWork",
                         text: "Change",
                         visuallyHiddenText: "area of work",
                         classes: "govuk-link--no-visited-state"
@@ -71,7 +71,7 @@
             actions: {
                 items: [
                     {
-                        href: "proactive-or-reactive#isProactiveReferral",
+                        href: "update-referral/proactive-or-reactive#isProactiveReferral",
                         text: "Change",
                         visuallyHiddenText: "if the referral is proactive or reactive",
                         classes: "govuk-link--no-visited-state"
@@ -117,7 +117,7 @@
     {{ govukButton ({
         classes: "govuk-!-margin-bottom-7 govuk-button--secondary",
         text: "Add another contributory factor",
-        href: "TODO#TODO"
+        href: "update-referral/TODO#TODO"
     }) }}
 {% endif %}
 
@@ -140,7 +140,7 @@
             actions: {
                 items: [
                     {
-                        href: "safer-custody#isSaferCustodyTeamInformed",
+                        href: "update-referral/safer-custody#isSaferCustodyTeamInformed",
                         text: "Change",
                         visuallyHiddenText: "if Safer Custody are aware of the referral or not",
                         classes: "govuk-link--no-visited-state"
@@ -158,7 +158,7 @@
             actions: {
                 items: [
                     {
-                        href: "additional-information#otherInformation",
+                        href: "update-referral/additional-information#otherInformation",
                         text: "Change",
                         visuallyHiddenText: "the additional information relating to the referral",
                         classes: "govuk-link--no-visited-state"
