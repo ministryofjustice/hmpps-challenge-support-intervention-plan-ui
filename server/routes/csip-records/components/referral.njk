@@ -1,15 +1,17 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
-<div class="govuk-grid-row govuk-!-margin-bottom-6">
-    <div class="govuk-grid-column-two-thirds">
-        <h2 class="govuk-heading-l">Referral</h2>
-    </div>
-    {% if status == 'REFERRAL_SUBMITTED' and secondaryButton %}
-        <div class="govuk-grid-column-one-third">
-            <a class="govuk-link govuk-summary-list govuk-summary-list__actions govuk-link--no-visited-state" href="{{secondaryButton.link}}">Update referral</a>
+{% if not isUpdate %}
+    <div class="govuk-grid-row govuk-!-margin-bottom-6">
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-l">Referral</h2>
         </div>
-    {% endif %}
-</div>
+        {% if status == 'REFERRAL_SUBMITTED' and secondaryButton %}
+            <div class="govuk-grid-column-one-third">
+                <a class="govuk-link govuk-summary-list govuk-summary-list__actions govuk-link--no-visited-state" href="{{secondaryButton.link}}">Update referral</a>
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
 
 <h1 class="govuk-heading-m">Referral details</h1>
 {{ govukSummaryList({
@@ -17,35 +19,65 @@
     rows: [
         {
             key: {
-            text: "Referral date"
-        },
+                text: "Referral date"
+            },
             value: {
-            text: referral.createdAt | formatDisplayDate
-        }
+                text: referral.createdAt | formatDisplayDate
+            }
         },
         {
             key: {
-            text: "Referrer name"
-        },
+                text: "Referrer name"
+            },
             value: {
-            text: referral.referredBy
-        }
+                text: referral.referredBy
+            },
+            actions: {
+                items: [
+                    {
+                        href: "update-referral/referrer#referredBy",
+                        text: "Change",
+                        visuallyHiddenText: "name of referrer",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            } if isUpdate else undefined
         },
         {
             key: {
-            text: "Area of work"
-        },
+                text: "Area of work"
+            },
             value: {
-            text: referral.refererArea.description
-        }
+                text: referral.refererArea.description
+            },
+            actions: {
+                items: [
+                    {
+                        href: "update-referral/referrer#areaOfWork" if referral.isOnBehalfOfReferral else "area-of-work#areaOfWork",
+                        text: "Change",
+                        visuallyHiddenText: "area of work",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            } if isUpdate else undefined
         },
         {
             key: {
-            text: "Proactive or reactive referral"
-        },
+                text: "Proactive or reactive referral"
+            },
             value: {
-            text: "Proactive" if referral.isProactiveReferral else "Reactive"
-        }
+                text: "Proactive" if referral.isProactiveReferral else "Reactive"
+            },
+            actions: {
+                items: [
+                    {
+                        href: "update-referral/proactive-or-reactive#isProactiveReferral",
+                        text: "Change",
+                        visuallyHiddenText: "if the referral is proactive or reactive",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            } if isUpdate else undefined
         }
     ]
 }) }}
@@ -81,6 +113,14 @@
     }) }}
 {% endfor %}
 
+{% if isUpdate and canAddMoreContributoryFactors %}
+    {{ govukButton ({
+        classes: "govuk-!-margin-bottom-7 govuk-button--secondary",
+        text: "Add another contributory factor",
+        href: "update-referral/TODO#TODO"
+    }) }}
+{% endif %}
+
 {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
     rows: contributoryFactorRows
@@ -92,19 +132,39 @@
     rows: [
         {
             key: {
-            text: "Safer Custody aware of referral"
-        },
+                text: "Safer Custody aware of referral"
+            },
             value: {
-            text: "Yes" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.YES else ("No" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.NO else "I don’t know")
-        }
+                text: "Yes" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.YES else ("No" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.NO else "I don’t know")
+            },
+            actions: {
+                items: [
+                    {
+                        href: "update-referral/safer-custody#isSaferCustodyTeamInformed",
+                        text: "Change",
+                        visuallyHiddenText: "if Safer Custody are aware of the referral or not",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            } if isUpdate else undefined
         },
         {
             key: {
-            text: "Other information relating to this referral"
-        },
+                text: "Other information relating to this referral"
+            },
             value: {
-            html: (referral.otherInformation or 'Not provided') | escape | nl2br
-        }
+                html: (referral.otherInformation or 'Not provided') | escape | nl2br
+            },
+            actions: {
+                items: [
+                    {
+                        href: "update-referral/additional-information#otherInformation",
+                        text: "Change",
+                        visuallyHiddenText: "the additional information relating to the referral",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            } if isUpdate else undefined
         }
     ]
 }) }}

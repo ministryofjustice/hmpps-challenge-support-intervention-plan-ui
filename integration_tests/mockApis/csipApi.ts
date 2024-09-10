@@ -145,6 +145,29 @@ const stubDecisionSignerRoles = () => {
   })
 }
 
+const stubOneContribFactor = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/reference-data/contributory-factor-type',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: [
+        {
+          code: 'A',
+          description: 'text',
+          createdAt: new Date().toISOString(),
+          createdBy: 'foobar',
+        },
+      ],
+    },
+  })
+}
+
 const stubContribFactors = () => {
   return stubFor({
     request: {
@@ -701,6 +724,7 @@ export default {
   stubDecisionSignerRoles,
   stubIncidentInvolvement,
   stubContribFactors,
+  stubOneContribFactor,
   stubCsipRecordPostSuccess,
   stubCsipRecordPostFailure,
   stubDecisionOutcomeType,

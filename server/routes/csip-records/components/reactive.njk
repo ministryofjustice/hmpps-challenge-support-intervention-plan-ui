@@ -6,35 +6,75 @@
     rows: [
         {
             key: {
-            text: "Date of incident"
-        },
+                text: "Date of incident"
+            },
             value: {
-            text: referral.incidentDate | formatDisplayDate
-        }
+                text: referral.incidentDate | formatDisplayDate
+            },
+            actions: {
+                items: [
+                    {
+                        href: "update-referral/details#incidentDate",
+                        text: "Change",
+                        visuallyHiddenText: "date of incident",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            } if isUpdate else undefined
         },
         {
             key: {
-            text: "Time of incident"
-        },
+                text: "Time of incident"
+            },
             value: {
-            text: referral.incidentTime or "Not provided"
-        }
+                text: referral.incidentTime or "Not provided"
+            },
+            actions: {
+                items: [
+                    {
+                        href: "update-referral/details#incidentTime",
+                        text: "Change",
+                        visuallyHiddenText: "time of incident",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            } if isUpdate else undefined
         },
         {
             key: {
-            text: "Location of incident"
-        },
+                text: "Location of incident"
+            },
             value: {
-            text: referral.incidentLocation.description
-        }
+                text: referral.incidentLocation.description
+            },
+            actions: {
+                items: [
+                    {
+                        href: "update-referral/details#incidentLocation",
+                        text: "Change",
+                        visuallyHiddenText: "location of incident",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            } if isUpdate else undefined
         },
         {
             key: {
-            text: "Incident type"
-        },
+                text: "Incident type"
+            },
             value: {
-            text: referral.incidentType.description
-        }
+                text: referral.incidentType.description
+            },
+            actions: {
+                items: [
+                    {
+                        href: "update-referral/details#incidentType",
+                        text: "Change",
+                        visuallyHiddenText: "incident type",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            } if isUpdate else undefined
         }
     ]
 }) }}
@@ -45,27 +85,57 @@
     rows: [
         {
             key: {
-            text: "Prisoner involvement"
-        },
+                text: "Prisoner involvement"
+            },
             value: {
-            text: referral.incidentInvolvement.description
-        }
+                text: referral.incidentInvolvement.description
+            },
+            actions: {
+                items: [
+                    {
+                        href: "update-referral/involvement#involvementType",
+                        text: "Change",
+                        visuallyHiddenText: "how the prisoner was involved",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            } if isUpdate else undefined
         },
         {
             key: {
-            text: "Staff assaulted"
-        },
+                text: "Staff assaulted"
+            },
             value: {
-            text: 'Yes' if referral.staffAssaulted else 'No'
-        }
+                text: 'Yes' if referral.staffAssaulted else 'No'
+            },
+            actions: {
+                items: [
+                    {
+                        href: "update-referral/involvement#staffAssaulted",
+                        text: "Change",
+                        visuallyHiddenText: "if a staff member was assaulted or not",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            } if isUpdate else undefined
         },
         {
             key: {
-            text: "Names of staff assaulted"
-        },
+                text: "Names of staff assaulted"
+            },
             value: {
-            text: referral.assaultedStaffName or ''
-        }
+                text: referral.assaultedStaffName or ''
+            },
+            actions: {
+                items: [
+                    {
+                        href: "update-referral/involvement#assaultedStaffName",
+                        text: "Change",
+                        visuallyHiddenText: "the name of the staff members assaulted",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            } if isUpdate else undefined
         }
     ] | filterBy(involvementFilter)
 }) }}
@@ -76,19 +146,39 @@
     rows: [
         {
             key: {
-            text: "Description of incident and concerns"
-        },
+                text: "Description of incident and concerns"
+            },
             value: {
-            html: referral.descriptionOfConcern | escape | nl2br
-        }
+                html: referral.descriptionOfConcern | escape | nl2br
+            },
+            actions: {
+                items: [
+                    {
+                        href: "update-referral/description#descriptionOfConcern",
+                        text: "Change",
+                        visuallyHiddenText: "the description of the incident and concerns",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            } if isUpdate else undefined
         },
         {
             key: {
-            text: "Reasons given for the incident"
-        },
+                text: "Reasons given for the incident"
+            },
             value: {
-            html: referral.knownReasons | escape | nl2br
-        }
+                html: referral.knownReasons | escape | nl2br
+            },
+            actions: {
+                items: [
+                    {
+                        href: "reasons#knownReasons",
+                        text: "Change",
+                        visuallyHiddenText: "the reasons given for the incident",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            } if isUpdate else undefined
         }
     ]
 }) }}
