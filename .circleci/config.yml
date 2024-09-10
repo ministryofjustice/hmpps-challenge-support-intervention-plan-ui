@@ -4,6 +4,7 @@ orbs:
   hmpps: ministryofjustice/hmpps@8
   slack: circleci/slack@4.12.5
   codecov: codecov/codecov@3 # v4 doesnt upload coverage, complaining about a lack of token
+  cypress: cypress-io/cypress@3
 
 parameters:
   alerts-slack-channel:
@@ -59,6 +60,8 @@ jobs:
       name: hmpps/node_redis
       node_tag: << pipeline.parameters.node-version >>
       redis_tag: "6.2"
+    parallelism: 4
+    resource_class: large
     steps:
       - checkout
       - attach_workspace:
@@ -87,7 +90,10 @@ jobs:
           command: sleep 5
       - run:
           name: integration tests
-          command: npm run int-test
+          command: circleci tests glob "**/*.cy.js" | circleci tests run --command="xargs npx cypress run --reporter cypress-circleci-reporter --spec" --verbose --split-by=timings
+      - run:
+          name: Merge coverage
+          command: npm run merge-coverage && npm run generate-report
       - store_test_results:
           path: test_results
       - store_artifacts:
@@ -107,6 +113,17 @@ workflows:
       - tests:
           requires:
             - build
+      - cypress/run:
+          start-command: 'npm ci && npm run start-e2e'
+          cypress-command: 'npx cypress run --parallel --record --group all tests'
+          parallelism: 4
+          store_artifacts: true
+          store_failures: true
+          requires:
+            - build_and_test
+          filters:
+            branches:
+              ignore: /.*/
       - hmpps/helm_lint:
           name: helm_lint
       - hmpps/build_docker:
