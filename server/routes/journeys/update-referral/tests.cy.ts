@@ -11,6 +11,7 @@ context('test /update-referral', () => {
 
   it('should render the update referral screen with more contrib factors available', () => {
     cy.task('stubContribFactors')
+    cy.task('stubCsipRecordGetSuccess')
 
     navigateToTestPage()
 
@@ -23,12 +24,29 @@ context('test /update-referral', () => {
 
   it('should render the update referral screen with no more contrib factors available', () => {
     cy.task('stubOneContribFactor')
+    cy.task('stubCsipRecordGetSuccess')
 
     navigateToTestPage()
 
     goToUpdatePage()
 
     cy.findByRole('button', { name: /add another contributory factor/i }).should('not.exist')
+  })
+
+  it('should render contributory factors properly with duplicates and all edge cases', () => {
+    cy.task('stubContribFactors')
+    cy.task('stubCsipRecordGetSuccessCFEdgeCases')
+
+    navigateToTestPage()
+
+    goToUpdatePage()
+
+    cy.get('.govuk-summary-card').should('have.length', 5)
+    cy.get('.govuk-summary-card')
+      .eq(0)
+      .within(() => {
+        cy.findByRole('heading', { name: 'TextA' }).should('be.visible')
+      })
   })
 
   const navigateToTestPage = () => {

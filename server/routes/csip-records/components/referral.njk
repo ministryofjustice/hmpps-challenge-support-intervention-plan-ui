@@ -90,28 +90,56 @@
 
 <h1 class="govuk-heading-m">Contributory factors</h1>
 
-{% for factor in referral.contributoryFactors %}
-    {{ govukSummaryList({
-        card: {
-            title: { text: factor.factorType.description }
-        },
-        rows: [{
-            key: {
-                text: 'Contributory factor'
+{% if not isUpdate %}
+    {% for factor in referral.contributoryFactors %}
+        {{ govukSummaryList({
+            card: {
+                title: { text: factor.factorType.description }
             },
-            value: {
-                text: factor.factorType.description
-            }
-        }, {
-            key: {
-                text: 'Comment'
-            },
-            value: {
-                html: (factor.comment or 'Not provided') | escape | nl2br
-            }
-        }]
-    }) }}
-{% endfor %}
+            rows: [{
+                key: {
+                    text: 'Contributory factor'
+                },
+                value: {
+                    text: factor.factorType.description
+                },
+                actions: {
+                    items: [
+                        {
+                            href: "update-referral/" + factor.factorUuid + "-factorType#comment",
+                            text: "Change",
+                            visuallyHiddenText: "the factor type on " + (factor.factorType.description | sentenceCase(false)) + " factors",
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                } if isUpdate else undefined
+            }, {
+                key: {
+                    text: 'Comment'
+                },
+                value: {
+                    html: (factor.comment or 'Not provided') | escape | nl2br
+                },
+                actions: {
+                    items: [
+                        {
+                            href: "update-referral/" + factor.factorUuid + "-comment#comment",
+                            text: "Change",
+                            visuallyHiddenText: "the comment on " + (factor.factorType.description | sentenceCase(false)) + " factors",
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                } if isUpdate else undefined
+            }]
+        }) }}
+    {% endfor %}
+{% endif %}
+
+{% if isUpdate %}
+    {% for factor in contributoryFactors %}
+        {{ govukSummaryList(factor) }}
+    {% endfor %}
+{% endif %}
 
 {% if isUpdate and canAddMoreContributoryFactors %}
     {{ govukButton ({
