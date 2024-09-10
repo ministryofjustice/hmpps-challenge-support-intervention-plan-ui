@@ -4,7 +4,6 @@ orbs:
   hmpps: ministryofjustice/hmpps@8
   slack: circleci/slack@4.12.5
   codecov: codecov/codecov@3 # v4 doesnt upload coverage, complaining about a lack of token
-  cypress: cypress-io/cypress@3
 
 parameters:
   alerts-slack-channel:
@@ -113,17 +112,6 @@ workflows:
       - tests:
           requires:
             - build
-      - cypress/run:
-          start-command: 'npm ci && npm run start-e2e'
-          cypress-command: 'npx cypress run --parallel --record --group all tests'
-          parallelism: 4
-          store_artifacts: true
-          store_failures: true
-          requires:
-            - build_and_test
-          filters:
-            branches:
-              ignore: /.*/
       - hmpps/helm_lint:
           name: helm_lint
       - hmpps/build_docker:
