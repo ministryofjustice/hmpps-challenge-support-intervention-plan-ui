@@ -60,5 +60,6 @@ context('test /update-referral/involvement', () => {
     cy.findByRole('radio', { name: /no/i }).click()
     cy.findByRole('button', { name: /Confirm and save/i }).click()
     cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
+    cy.findByText('You’ve updated the behaviour involvement information.').should('be.visible')
   }
 })

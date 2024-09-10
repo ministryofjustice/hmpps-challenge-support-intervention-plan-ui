@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import CsipApiService from '../../services/csipApi/csipApiService'
 import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
 import { components } from '../../@types/csip'
+import { CSIP_SUCCESS_MESSAGE } from '../../utils/constants'
 
 const hasInvestigation = (status: components['schemas']['CsipRecord']['status']) => {
   return !(['REFERRAL_PENDING', 'REFERRAL_SUBMITTED', 'INVESTIGATION_PENDING'] as (typeof status)[]).includes(status)
@@ -189,6 +190,7 @@ export class CsipRecordController {
       involvementFilter,
       showBreadcrumbs: true,
       secondaryButton,
+      successMessage: req.flash(CSIP_SUCCESS_MESSAGE)[0],
     })
   }
 
