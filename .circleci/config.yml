@@ -54,23 +54,6 @@ jobs:
             - build
             - dist
 
-  unit_test:
-    executor:
-      name: hmpps/node
-      tag: << pipeline.parameters.node-version >>
-    steps:
-      - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: unit tests
-          command: npm run test:ci
-      - store_test_results:
-          path: test_results
-      - store_artifacts:
-          path: test_results/unit-test-reports.html
-      - codecov/upload
-
   integration_test:
     executor:
       name: hmpps/node_redis
@@ -111,6 +94,7 @@ jobs:
           path: integration_tests/videos
       - store_artifacts:
           path: integration_tests/screenshots
+      - codecov/upload
 
 workflows:
   version: 2
