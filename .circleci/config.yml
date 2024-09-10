@@ -80,6 +80,9 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/app
+      - run: 
+          name: Unit tests (again)
+          command: npm run test:ci
       - run:
           name: Install missing OS dependency
           command: sudo apt-get install libxss1
