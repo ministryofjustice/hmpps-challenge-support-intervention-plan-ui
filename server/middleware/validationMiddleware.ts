@@ -1,6 +1,7 @@
 import { RequestHandler, Request } from 'express'
 import z, { RefinementCtx } from 'zod'
 import { isValid, isBefore, parseISO, isAfter, isEqual } from 'date-fns'
+import { FLASH_KEY__FORM_RESPONSES, FLASH_KEY__VALIDATION_ERRORS } from '../utils/constants'
 
 export type fieldErrors = {
   [field: string | number | symbol]: string[] | undefined
@@ -73,7 +74,7 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
       req.body = result.data
       return next()
     }
-    req.flash('formResponses', JSON.stringify(req.body))
+    req.flash(FLASH_KEY__FORM_RESPONSES, JSON.stringify(req.body))
 
     const deduplicatedFieldErrors = Object.fromEntries(
       Object.entries(result.error.flatten().fieldErrors).map(([key, value]) => [key, [...new Set(value || [])]]),
@@ -84,7 +85,7 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
         `There were validation errors: ${JSON.stringify(result.error.format())} || body was: ${JSON.stringify(req.body)}`,
       )
     }
-    req.flash('validationErrors', JSON.stringify(deduplicatedFieldErrors))
+    req.flash(FLASH_KEY__VALIDATION_ERRORS, JSON.stringify(deduplicatedFieldErrors))
     return res.redirect('back')
   }
 }

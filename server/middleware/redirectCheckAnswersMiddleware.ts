@@ -1,4 +1,5 @@
 import express, { Router } from 'express'
+import { FLASH_KEY__VALIDATION_ERRORS } from '../utils/constants'
 
 export default function redirectCheckAnswersMiddleware(excludePaths: RegExp[] = []): Router {
   const router = express.Router({ mergeParams: true })
@@ -22,9 +23,9 @@ export default function redirectCheckAnswersMiddleware(excludePaths: RegExp[] = 
         const url = (typeof param1 === 'string' ? param1 : param2) as string
         // eslint-disable-next-line no-nested-ternary
         const status = typeof param1 === 'number' ? param1 : typeof param2 === 'number' ? param2 : undefined
-        const errors = req.flash('validationErrors')
+        const errors = req.flash(FLASH_KEY__VALIDATION_ERRORS)
         if (errors.length) {
-          req.flash('validationErrors', errors[0]!)
+          req.flash(FLASH_KEY__VALIDATION_ERRORS, errors[0]!)
         }
         resRedirect.call(res, req.journeyData.isCheckAnswers && !errors.length ? checkAnswersUrl : url, status || 302)
       }

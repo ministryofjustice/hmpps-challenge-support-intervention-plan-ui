@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
 import { SanitisedError } from '../../../../sanitisedError'
+import { FLASH_KEY__VALIDATION_ERRORS } from '../../../../utils/constants'
 
 export class PlanCheckAnswersController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
@@ -36,7 +37,7 @@ export class PlanCheckAnswersController extends BaseJourneyController {
       if ((e as SanitisedError).data) {
         const errorRespData = (e as SanitisedError).data as Record<string, string | unknown>
         req.flash(
-          'validationErrors',
+          FLASH_KEY__VALIDATION_ERRORS,
           JSON.stringify({
             plan: [errorRespData?.['userMessage'] as string],
           }),

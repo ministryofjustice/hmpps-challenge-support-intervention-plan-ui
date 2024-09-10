@@ -3,7 +3,7 @@ import { BaseJourneyController } from './controller'
 import { SanitisedError } from '../../../sanitisedError'
 import { getNonUndefinedProp } from '../../../utils/utils'
 import { components } from '../../../@types/csip'
-import { CSIP_SUCCESS_MESSAGE } from '../../../utils/constants'
+import { FLASH_KEY__CSIP_SUCCESS_MESSAGE, FLASH_KEY__VALIDATION_ERRORS } from '../../../utils/constants'
 
 export const MESSAGE_REFERRAL_DETAILS_UPDATED = 'You’ve updated the referral details.'
 export const MESSAGE_REACTIVE_DETAILS_UPDATED = 'You’ve updated the incident details.'
@@ -71,7 +71,7 @@ export class PatchReferralController extends BaseJourneyController {
       if ((e as SanitisedError).data) {
         const errorRespData = (e as SanitisedError).data as Record<string, string | unknown>
         req.flash(
-          'validationErrors',
+          FLASH_KEY__VALIDATION_ERRORS,
           JSON.stringify({
             referral: [errorRespData?.['userMessage'] as string],
           }),
@@ -80,7 +80,7 @@ export class PatchReferralController extends BaseJourneyController {
       res.redirect('back')
       return
     }
-    req.flash(CSIP_SUCCESS_MESSAGE, successMessage)
+    req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, successMessage)
     next()
   }
 }
