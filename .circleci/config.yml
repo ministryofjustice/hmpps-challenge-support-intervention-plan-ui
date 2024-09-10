@@ -64,7 +64,7 @@ jobs:
       - attach_workspace:
           at: ~/app
       - run: 
-          name: Unit tests (again)
+          name: Unit tests
           command: npm run test:ci
       - run:
           name: Install missing OS dependency
