@@ -46,6 +46,43 @@ context('test /update-referral', () => {
       .eq(0)
       .within(() => {
         cy.findByRole('heading', { name: 'TextA' }).should('be.visible')
+        cy.findByText('commentA').should('be.visible')
+        cy.findByRole('link', { name: /add information to the comment on TextA factor/i }).should('be.visible')
+        cy.findByRole('link', { name: /Change the contributory factor/i }).should('be.visible')
+      })
+    cy.get('.govuk-summary-card')
+      .eq(1)
+      .within(() => {
+        cy.findByRole('heading', { name: 'TextB' }).should('be.visible')
+        cy.findByText('commentB').should('be.visible')
+        cy.findByRole('link', { name: /add information to the comment on TextB factor/i }).should('be.visible')
+        cy.findByRole('link', { name: /Change the contributory factor/i }).should('be.visible')
+      })
+    cy.get('.govuk-summary-card')
+      .eq(2)
+      .within(() => {
+        cy.findByRole('heading', { name: 'TextC1' }).should('be.visible')
+        cy.findByText('AcommentC').should('be.visible')
+        cy.findByRole('link', {
+          name: /add information to the first comment on TextC1 factor. This contributory factor is listed 2 times in this referral./i,
+        }).should('be.visible')
+        cy.findByRole('link', { name: /Change the contributory factor/i }).should('be.visible')
+      })
+    cy.get('.govuk-summary-card')
+      .eq(3)
+      .within(() => {
+        cy.findByRole('heading', { name: 'TextC1' }).should('be.visible')
+        cy.findByText('commentC').should('be.visible')
+        cy.findByRole('link', {
+          name: /add information to the second comment on TextC1 factor. This contributory factor is listed 2 times in this referral./i,
+        }).should('be.visible')
+        cy.findByRole('link', { name: /Change the contributory factor/i }).should('be.visible')
+      })
+    cy.get('.govuk-summary-card')
+      .eq(4)
+      .within(() => {
+        cy.findByRole('heading', { name: 'TextD1' }).should('be.visible')
+        cy.findByRole('link', { name: /add information to the comment on TextD1 factor/i }).should('be.visible')
       })
   })
 

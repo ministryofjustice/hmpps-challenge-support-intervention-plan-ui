@@ -713,7 +713,7 @@ const stubCsipRecordGetSuccessCFEdgeCases = () => {
             {
               factorType: { code: 'B', description: 'TextB' },
               factorUuid: '111-bbb',
-              comment: 'commentB',
+              comment: `commentB`,
             },
             {
               factorType: { code: 'A', description: 'TextA' },
@@ -726,7 +726,7 @@ const stubCsipRecordGetSuccessCFEdgeCases = () => {
               comment: 'commentC',
             },
             {
-              factorType: { code: 'C', description: 'TextC2' },
+              factorType: { code: 'C', description: 'TextC1' },
               factorUuid: '111-ccc',
               comment: 'AcommentC',
             },

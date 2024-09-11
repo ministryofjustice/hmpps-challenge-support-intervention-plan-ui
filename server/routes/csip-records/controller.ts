@@ -62,6 +62,7 @@ export class CsipRecordController {
     const referralTabSelected = req.url.endsWith('referral')
 
     return {
+      contributoryFactors: referral.contributoryFactors,
       record,
       prisoner,
       decision,
