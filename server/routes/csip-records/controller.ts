@@ -127,6 +127,7 @@ export class CsipRecordController {
       referral,
       recordUuid,
       referralTabSelected,
+      contributoryFactors,
     } = await this.getRecordInfo(req)
 
     let actionButton
@@ -188,6 +189,7 @@ export class CsipRecordController {
       prisoner,
       referral,
       screening,
+      contributoryFactors,
       involvementFilter,
       showBreadcrumbs: true,
       secondaryButton,

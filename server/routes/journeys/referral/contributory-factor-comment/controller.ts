@@ -5,10 +5,13 @@ import { ContributoryFactor } from '../../../../@types/express'
 
 const findFactor = (req: Request) => {
   const { factorUuid, factorTypeCode } = req.params // One of these will be undefined depending on if we're editing or not
+  const contributoryFactors = factorUuid
+    ? req.journeyData.csipRecord!.referral.contributoryFactors
+    : req.journeyData.referral!.contributoryFactors
   const findFunction = req.journeyData.isUpdate
     ? (itm: ContributoryFactor) => itm.factorUuid === factorUuid
-    : (itm: ContributoryFactor) => itm.factorType.code === factorTypeCode
-  return req.journeyData.referral!.contributoryFactors!.find(findFunction)!
+    : (itm: ContributoryFactor) => itm.factorType.code.toLowerCase() === factorTypeCode
+  return contributoryFactors!.find(findFunction)!
 }
 
 export class ReferralContributoryFactorCommentController {

@@ -30,7 +30,6 @@ function Routes({ csipApiService }: Services) {
   router.use('/contributory-factors', ReferralContributoryFactorsRoutes(csipApiService))
   router.use('/contributory-factors-comments', ReferralContributoryFactorsCommentsRoutes())
   router.use('/:factorTypeCode-comment', ReferralContributoryFactorCommentRoutes())
-  router.use('/:factorUuid-comment', ReferralContributoryFactorCommentRoutes())
   router.use('/safer-custody', ReferralSaferCustodyRoutes())
   router.use('/additional-information', ReferralAdditionalInformationRoutes())
   router.use('/involvement', InvolvementRoutes(csipApiService))
