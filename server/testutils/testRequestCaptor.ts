@@ -1,5 +1,6 @@
 import { Request } from 'express'
 import { JourneyData } from '../@types/express'
+import { FLASH_KEY__VALIDATION_ERRORS } from '../utils/constants'
 
 export class TestRequestCaptured {
   private req = {} as Request
@@ -9,7 +10,7 @@ export class TestRequestCaptured {
   }
 
   validationErrors() {
-    return JSON.parse(this.req.flash('validationErrors')[0] || '{}')
+    return JSON.parse(this.req.flash(FLASH_KEY__VALIDATION_ERRORS)[0] || '{}')
   }
 
   journeyData() {

@@ -1,6 +1,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "moj/components/page-header-actions/macro.njk" import mojPageHeaderActions %}
 {%- from "moj/components/sub-navigation/macro.njk" import mojSubNavigation -%}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
 {% set fullWidth = true %}
 
@@ -24,6 +25,13 @@
 {% set basePageHeader = 'CSIP referral for ' + (prisoner | firstNameSpaceLastName) %}
 
 {% block pageHeader %}
+  {% if successMessage %}
+    {{ govukNotificationBanner({
+      text: successMessage,
+      type: "success"
+    }) }}
+  {% endif %}
+
   {{ mojPageHeaderActions({
     classes: 'govuk-!-margin-bottom-3',
     heading: {

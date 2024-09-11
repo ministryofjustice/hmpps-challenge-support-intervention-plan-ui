@@ -16,8 +16,8 @@ export default class CsipApiClient {
     })
   }
 
-  async getCsipRecord(id: string): Promise<CsipRecord> {
-    return this.restClient.get<CsipRecord>({ path: `/csip-records/${id}` })
+  async getCsipRecord(recordUuid: string): Promise<CsipRecord> {
+    return this.restClient.get<CsipRecord>({ path: `/csip-records/${recordUuid}` })
   }
 
   async getPrisonerCsipRecords(prisonNumber: string, page: number, size: number): Promise<CsipSummaries> {
@@ -36,33 +36,43 @@ export default class CsipApiClient {
     })
   }
 
+  async updateCsipRecord(
+    recordUuid: string,
+    updateCsipRecordRequest: components['schemas']['UpdateCsipRecordRequest'],
+  ): Promise<components['schemas']['CsipRecord']> {
+    return this.restClient.patch<components['schemas']['CsipRecord']>({
+      path: `/csip-records/${recordUuid}`,
+      data: updateCsipRecordRequest,
+    })
+  }
+
   async createScreeningOutcome(
-    csipRecordId: string,
+    recordUuid: string,
     payload: components['schemas']['CreateSaferCustodyScreeningOutcomeRequest'],
   ) {
     return this.restClient.post<components['schemas']['SaferCustodyScreeningOutcome']>({
-      path: `/csip-records/${csipRecordId}/referral/safer-custody-screening`,
+      path: `/csip-records/${recordUuid}/referral/safer-custody-screening`,
       data: payload,
     })
   }
 
-  async createInvestigation(csipRecordId: string, payload: components['schemas']['CreateInvestigationRequest']) {
+  async createInvestigation(recordUuid: string, payload: components['schemas']['CreateInvestigationRequest']) {
     return this.restClient.post<components['schemas']['Investigation']>({
-      path: `/csip-records/${csipRecordId}/referral/investigation`,
+      path: `/csip-records/${recordUuid}/referral/investigation`,
       data: payload,
     })
   }
 
-  async createDecision(csipRecordId: string, payload: components['schemas']['UpsertDecisionAndActionsRequest']) {
+  async createDecision(recordUuid: string, payload: components['schemas']['UpsertDecisionAndActionsRequest']) {
     return this.restClient.put<components['schemas']['DecisionAndActions']>({
-      path: `/csip-records/${csipRecordId}/referral/decision-and-actions`,
+      path: `/csip-records/${recordUuid}/referral/decision-and-actions`,
       data: payload,
     })
   }
 
-  async createPlan(csipRecordId: string, payload: components['schemas']['CreatePlanRequest']) {
+  async createPlan(recordUuid: string, payload: components['schemas']['CreatePlanRequest']) {
     return this.restClient.post<components['schemas']['Plan']>({
-      path: `/csip-records/${csipRecordId}/plan`,
+      path: `/csip-records/${recordUuid}/plan`,
       data: payload,
     })
   }

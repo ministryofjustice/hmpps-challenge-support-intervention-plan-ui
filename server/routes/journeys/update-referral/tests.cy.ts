@@ -1,4 +1,4 @@
-context('test /csip-records', () => {
+context('test /update-referral', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')

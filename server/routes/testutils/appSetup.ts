@@ -17,6 +17,7 @@ import populateValidationErrors from '../../middleware/populateValidationErrors'
 import setUpAuth from '../../middleware/setUpAuthentication'
 import { JourneyData } from '../../@types/express'
 import breadcrumbs from '../../middleware/breadcrumbs'
+import { FLASH_KEY__VALIDATION_ERRORS } from '../../utils/constants'
 
 jest.mock('../../services/auditService')
 jest.mock('../../data/hmppsAuditClient')
@@ -60,7 +61,7 @@ function appSetup(
   })
   if (validationErrors) {
     app.use((req, _res, next) => {
-      req.flash('validationErrors', JSON.stringify(validationErrors))
+      req.flash(FLASH_KEY__VALIDATION_ERRORS, JSON.stringify(validationErrors))
       next()
     })
   }

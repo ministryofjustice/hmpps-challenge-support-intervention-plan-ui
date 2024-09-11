@@ -6,10 +6,10 @@ import { JourneyRouter } from '../../base/routes'
 
 export const InvolvementRoutes = (csipApiService: CsipApiService) => {
   const { router, get, post } = JourneyRouter()
-  const referralOnBehalfOfController = new InvolvementController(csipApiService)
+  const controller = new InvolvementController(csipApiService)
 
-  get('/', referralOnBehalfOfController.GET)
-  post('/', validate(schemaFactory(csipApiService)), referralOnBehalfOfController.POST)
+  get('/', controller.GET)
+  post('/', validate(schemaFactory(csipApiService)), controller.POST)
 
   return router
 }

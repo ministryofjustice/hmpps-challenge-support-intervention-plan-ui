@@ -50,3 +50,10 @@ export const sentenceCase = (val: string, startsWithUppercase: boolean = true): 
   const sentence = words.map(lowercaseExceptAcronym).join(' ')
   return startsWithUppercase ? sentence.charAt(0).toUpperCase() + sentence.slice(1) : sentence
 }
+
+export const getNonUndefinedProp = <T>(referral: T, key: keyof T) => {
+  if (referral[key] !== undefined) {
+    return { [key]: referral[key] }
+  }
+  return {}
+}

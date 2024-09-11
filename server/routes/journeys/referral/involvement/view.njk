@@ -1,13 +1,12 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Involvement - Make a CSIP referral" %}
+{% set pageTitle = "Involvement - Update a CSIP referral" if isUpdate else "Involvement - Make a CSIP referral" %}
 
 {% block content %}
-
-    <span class="govuk-caption-l">Make a CSIP referral</span>
+    {% include 'base/components/referral-caption.njk' %}
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ "Behaviour involvement" if isProactiveReferral else "Incident involvement" }}</h1>
 
     <form method="post">
@@ -33,18 +32,19 @@
           errorMessage: validationErrors | findError('involvementType')
       }) }}
       {% set staffMemberAssaultedHtml %}
-        {{ govukInput({
-          id: "assaultedStaffName",
-          name: "assaultedStaffName",
-          type: "text",
-          spellcheck: false,
-          classes: "govuk-!-width-one-half",
-          label: {
-            text: "Names of staff assaulted"
-          },
-          value: assaultedStaffName,
-          errorMessage: validationErrors | findError('assaultedStaffName')
-        }) }}
+          {{ govukCharacterCount({
+              label: {
+                  text: "Names of staff assaulted"
+              },
+              maxlength: 240,
+              rows: 1,
+              threshold: "100",
+              classes: "govuk-input--width-10 single-row-textarea",
+              id: "assaultedStaffName",
+              name: "assaultedStaffName",
+              value: assaultedStaffName,
+              errorMessage: validationErrors | findError('assaultedStaffName')
+          }) }}
       {% endset -%}
       {{ govukRadios({
           name: "staffAssaulted",
@@ -71,9 +71,9 @@
           ],
           errorMessage: validationErrors | findError('staffAssaulted')
       }) }}
-      {{ govukButton({
-          text: "Continue",
-          preventDoubleClick: true
+      {{ submitButton({
+          text: "Confirm and save" if isUpdate else "Continue",
+          alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
       }) }}
     </form>
 {% endblock %}
