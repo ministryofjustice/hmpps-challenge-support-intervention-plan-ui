@@ -73,7 +73,7 @@ jobs:
           root: workspace
           paths: test_results
 
-  tests:
+  integration_tests:
     executor:
       name: hmpps/node_redis
       node_tag: << pipeline.parameters.node-version >>
@@ -122,7 +122,10 @@ workflows:
           filters:
             tags:
               ignore: /.*/
-      - tests:
+      - unit_test:
+          requires:
+            - build
+      - integration_tests:
           requires:
             - build
       - hmpps/helm_lint:
@@ -147,7 +150,7 @@ workflows:
                 - main
           requires:
             - helm_lint
-            - tests
+            - integration_tests
             - build_docker
           helm_timeout: 5m
 #      - request-preprod-approval:
