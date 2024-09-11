@@ -4,13 +4,6 @@ import { SchemaType } from './schemas'
 
 export class ReferralReferrerController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
-    const refDataMap = new Map(
-      (await this.csipApiService.getReferenceData(req, 'contributory-factor-type')).map(itm => [itm.code, itm]),
-    )
-    console.log('foo')
-    for (const [key, value] of refDataMap.entries()) {
-      console.log(`item: ${key} -- ${JSON.stringify(value)}`)
-    }
     const areaOfWorkOptions = await this.getReferenceDataOptionsForSelect(
       req,
       'area-of-work',
