@@ -88,8 +88,11 @@ jobs:
           name: Wait for node app to start
           command: sleep 5
       - run:
-          name: Integration tests
+          name: integration tests
           command: circleci tests glob "**/*.cy.ts" | circleci tests run --command="xargs npx cypress run --reporter cypress-circleci-reporter --spec" --verbose --split-by=timings
+      - run:
+          name: Merge coverage
+          command: npm run merge-coverage && npm run generate-report
       - store_test_results:
           path: test_results
       - store_artifacts:
