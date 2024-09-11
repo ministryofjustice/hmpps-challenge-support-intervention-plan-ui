@@ -134,7 +134,7 @@
             actions: {
                 items: [
                     {
-                        href: (factor.factorUuid | lower | escape)  + '-comment#comment',
+                        href: (factor.factorType.code | lower | escape)  + '-comment#comment',
                         text: "Change",
                         visuallyHiddenText: "the comment on " + (factor.factorType.description | sentenceCase(false)) + " factors",
                         classes: "govuk-link--no-visited-state"
