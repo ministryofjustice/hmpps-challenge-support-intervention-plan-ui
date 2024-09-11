@@ -89,7 +89,7 @@ jobs:
           command: sleep 5
       - run:
           name: integration tests
-          command: circleci tests glob "**/*.cy.js" | circleci tests run --command="xargs npx cypress run --reporter cypress-circleci-reporter --spec" --verbose --split-by=timings
+          command: circleci tests glob "**/*.cy.ts" | circleci tests run --command="xargs npx cypress run --reporter cypress-circleci-reporter --spec" --verbose --split-by=timings
       - run:
           name: Merge coverage
           command: npm run merge-coverage && npm run generate-report
