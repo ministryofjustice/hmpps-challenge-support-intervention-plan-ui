@@ -1,4 +1,4 @@
-context('test /update-referral/involvement', () => {
+context('test /update-referral/proactive-or-reactive', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
@@ -15,7 +15,7 @@ context('test /update-referral/involvement', () => {
   it('should try out different cases', () => {
     navigateToTestPage()
 
-    cy.url().should('to.match', /\/update-referral\/involvement#involvementType$/)
+    cy.url().should('to.match', /\/update-referral\/proactive-or-reactive#isProactiveReferral$/)
 
     cy.findByRole('link', { name: /Cancel/i })
       .should('be.visible')
@@ -23,8 +23,6 @@ context('test /update-referral/involvement', () => {
       .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
 
     checkInputsArePrepopulated()
-
-    checkValidationError()
 
     proceedToNextPage()
   })
@@ -35,31 +33,17 @@ context('test /update-referral/involvement', () => {
     cy.findAllByRole('link', { name: /update referral/i })
       .first()
       .click()
-    cy.findByRole('link', { name: /Change how the prisoner was involved/i }).click()
+    cy.findByRole('link', { name: /Change if the referral is proactive or reactive/i }).click()
   }
 
   const checkInputsArePrepopulated = () => {
-    cy.findByRole('radio', { name: /yes/i }).should('be.checked')
-    cy.findByRole('textbox', { name: /names of staff assaulted/i }).should(
-      'have.value',
-      '<script>alert("Staff Name")</script>',
-    )
-    cy.findByRole('radio', { name: /factor1/i }).should('be.checked')
-  }
-
-  const checkValidationError = () => {
-    cy.findByRole('textbox', { name: /names of staff assaulted/i }).clear()
-    cy.findByRole('button', { name: /Confirm and save/i })
-      .should('be.visible')
-      .click()
-
-    cy.findByRole('link', { name: /Enter the names of staff assaulted/i }).should('be.visible')
+    cy.findByRole('radio', { name: /Proactive/i }).should('be.checked')
   }
 
   const proceedToNextPage = () => {
-    cy.findByRole('radio', { name: /no/i }).click()
+    cy.findByRole('radio', { name: /Reactive/i }).click()
     cy.findByRole('button', { name: /Confirm and save/i }).click()
     cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
-    cy.findByText('You’ve updated the behaviour involvement information.').should('be.visible')
+    cy.findByText('You’ve updated the referral details.').should('be.visible')
   }
 })

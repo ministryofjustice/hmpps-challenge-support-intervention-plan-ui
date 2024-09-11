@@ -1,27 +1,18 @@
 import StartJourneyRoutes from './start/routes'
-
 import { Services } from '../../../services'
 import { JourneyRouter } from '../base/routes'
-import type PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
 import { UpdateReferralController } from './controller'
-import type CsipApiService from '../../../services/csipApi/csipApiService'
 import { UpdateInvolvementRoutes } from './involvement/routes'
+import { UpdateProactiveOrReactiveRoutes } from './proactive-or-reactive/routes'
 
-const UpdateRoutes = (csipApiService: CsipApiService, prisonerSearchService: PrisonerSearchService) => {
+function Routes({ csipApiService, prisonerSearchService }: Services) {
   const { router, get } = JourneyRouter()
   const updateController = new UpdateReferralController(csipApiService, prisonerSearchService)
 
   get('/', updateController.UPDATE)
 
   router.use('/involvement', UpdateInvolvementRoutes(csipApiService))
-
-  return router
-}
-
-function Routes({ csipApiService, prisonerSearchService }: Services) {
-  const { router } = JourneyRouter()
-
-  router.use('/', UpdateRoutes(csipApiService, prisonerSearchService))
+  router.use('/proactive-or-reactive', UpdateProactiveOrReactiveRoutes(csipApiService))
 
   return router
 }
