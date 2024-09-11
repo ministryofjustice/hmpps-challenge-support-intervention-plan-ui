@@ -44,6 +44,9 @@ export default defineConfig({
         url: 'http://localhost:3007/__coverage__',
       },
     },
+    retries: {
+      runMode: 2,
+    },
   },
   redirectionLimit: 50,
 })
