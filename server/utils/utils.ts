@@ -60,3 +60,13 @@ export const getNonUndefinedProp = <T>(referral: T, key: keyof T, mapper?: (obj:
 
 export const getNonUndefinedNonNullOrDefault = <T>(val: T | null | undefined, defaultVal: T | null | undefined) =>
   val !== null && val !== undefined ? val : defaultVal
+
+export const ordinalNumber = (number: number) => {
+  if (!Number.isInteger(number)) throw new Error('Not available')
+  if (number < 0) throw new Error('Should not be used with negative numbers')
+  if (number < 10) {
+    return ['zeroth', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth'][number]
+  }
+  const ordinal = ['st', 'nd', 'rd'][((((number + 90) % 100) - 10) % 10) - 1] || 'th'
+  return number + ordinal
+}

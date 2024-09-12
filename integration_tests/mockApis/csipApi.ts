@@ -694,6 +694,61 @@ const stubCsipRecordGetSuccess = () => {
   })
 }
 
+const stubCsipRecordGetSuccessCFEdgeCases = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        ...csip,
+        referral: {
+          ...csip.referral,
+          contributoryFactors: [
+            {
+              factorType: { code: 'B', description: 'TextB' },
+              factorUuid: '111-bbb',
+              comment: `commentB`,
+            },
+            {
+              factorType: { code: 'A', description: 'TextA' },
+              factorUuid: '111-aaa',
+              comment: 'commentA',
+            },
+            {
+              factorType: { code: 'C', description: 'TextC1' },
+              factorUuid: '111-ccc',
+              comment: 'commentC',
+            },
+            {
+              factorType: { code: 'C', description: 'TextC1' },
+              factorUuid: '111-ccc',
+              comment: 'AcommentC',
+            },
+            {
+              factorType: { code: 'C', description: 'TextC3' },
+              factorUuid: '111-ccc',
+            },
+            {
+              factorType: { code: 'D', description: 'TextD1' },
+              factorUuid: '111-ccc',
+            },
+            {
+              factorType: { code: 'D', description: 'TextD2' },
+              factorUuid: '111-ccc',
+            },
+          ],
+        },
+      },
+    },
+  })
+}
+
 const stubPostSaferCustodyScreening = () => {
   return stubFor({
     request: {
@@ -769,7 +824,7 @@ const stubPutDecision = () => {
   })
 }
 
-const csip = {
+export const csip = {
   recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
   prisonNumber: 'A1111AA',
   prisonCodeWhenRecorded: 'LEI',
@@ -870,4 +925,5 @@ export default {
   stubCsipRecordSuccessPlanPending,
   stubPutDecision,
   stubCsipRecordPatchSuccess,
+  stubCsipRecordGetSuccessCFEdgeCases,
 }

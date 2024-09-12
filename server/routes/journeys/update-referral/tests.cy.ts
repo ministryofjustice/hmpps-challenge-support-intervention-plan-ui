@@ -11,6 +11,7 @@ context('test /update-referral', () => {
 
   it('should render the update referral screen with more contrib factors available', () => {
     cy.task('stubContribFactors')
+    cy.task('stubCsipRecordGetSuccess')
 
     navigateToTestPage()
 
@@ -23,6 +24,7 @@ context('test /update-referral', () => {
 
   it('should render the update referral screen with no more contrib factors available', () => {
     cy.task('stubOneContribFactor')
+    cy.task('stubCsipRecordGetSuccess')
 
     navigateToTestPage()
 
@@ -30,6 +32,63 @@ context('test /update-referral', () => {
 
     cy.findByRole('button', { name: /add another contributory factor/i }).should('not.exist')
   })
+
+  it('should render contributory factors properly with duplicates and all edge cases', () => {
+    cy.task('stubContribFactors')
+    cy.task('stubCsipRecordGetSuccessCFEdgeCases')
+
+    navigateToTestPage()
+
+    goToUpdatePage()
+
+    checkCfs()
+  })
+
+  const checkCfs = () => {
+    cy.get('.govuk-summary-card').should('have.length', 5)
+    cy.get('.govuk-summary-card')
+      .eq(0)
+      .within(() => {
+        cy.findByRole('heading', { name: 'TextA' }).should('be.visible')
+        cy.findByText('commentA').should('be.visible')
+        cy.findByRole('link', { name: /add information to the comment on TextA factor/i }).should('be.visible')
+        cy.findByRole('link', { name: /Change the contributory factor/i }).should('be.visible')
+      })
+    cy.get('.govuk-summary-card')
+      .eq(1)
+      .within(() => {
+        cy.findByRole('heading', { name: 'TextB' }).should('be.visible')
+        cy.findByText('commentB').should('be.visible')
+        cy.findByRole('link', { name: /add information to the comment on TextB factor/i }).should('be.visible')
+        cy.findByRole('link', { name: /Change the contributory factor/i }).should('be.visible')
+      })
+    cy.get('.govuk-summary-card')
+      .eq(2)
+      .within(() => {
+        cy.findByRole('heading', { name: 'TextC1' }).should('be.visible')
+        cy.findByText('AcommentC').should('be.visible')
+        cy.findByRole('link', {
+          name: /add information to the first comment on TextC1 factor. This contributory factor is listed 2 times in this referral./i,
+        }).should('be.visible')
+        cy.findByRole('link', { name: /Change the contributory factor/i }).should('be.visible')
+      })
+    cy.get('.govuk-summary-card')
+      .eq(3)
+      .within(() => {
+        cy.findByRole('heading', { name: 'TextC1' }).should('be.visible')
+        cy.findByText('commentC').should('be.visible')
+        cy.findByRole('link', {
+          name: /add information to the second comment on TextC1 factor. This contributory factor is listed 2 times in this referral./i,
+        }).should('be.visible')
+        cy.findByRole('link', { name: /Change the contributory factor/i }).should('be.visible')
+      })
+    cy.get('.govuk-summary-card')
+      .eq(4)
+      .within(() => {
+        cy.findByRole('heading', { name: 'TextD1' }).should('be.visible')
+        cy.findByRole('link', { name: /add information to the comment on TextD1 factor/i }).should('be.visible')
+      })
+  }
 
   const navigateToTestPage = () => {
     cy.signIn()
