@@ -9,64 +9,51 @@ const hasInvestigation = (status: components['schemas']['CsipRecord']['status'])
   return !(['REFERRAL_PENDING', 'REFERRAL_SUBMITTED', 'INVESTIGATION_PENDING'] as (typeof status)[]).includes(status)
 }
 
+type APIContributoryFactor = components['schemas']['ContributoryFactor']
+
 const convertCfsToSummaryRows = (record: typeof request.journeyData.csipRecord) => {
-  const { referral } = record!
-  const multipleCfs: Record<string, number> = {}
-  referral.contributoryFactors.forEach(cf => {
-    if (multipleCfs[cf.factorType.code] && cf.comment) {
-      multipleCfs[cf.factorType.code]! += 1
-    }
-    if (!multipleCfs[cf.factorType.code]) {
-      multipleCfs[cf.factorType.code] = 1
-    }
-  })
-  let previousCf = ''
-  let cfCount = 0
-  const contributoryFactors = referral.contributoryFactors
-    .sort((cf1, cf2) => {
-      const sortingField1 = cf1.factorType.description || cf1.factorType.code
-      const sortingField2 = cf2.factorType.description || cf2.factorType.code
-      if (sortingField1 > sortingField2) {
-        return 1
-      }
-      if (sortingField1 < sortingField2) {
-        return -1
-      }
-      // We're ok to assume comment exists here as there should be max 1 CF type with no comment, and therefore it should have been sorted by description/code
-      if (cf1.comment! > cf2.comment!) {
-        return 1
-      }
-      if (cf1.comment! < cf2.comment!) {
-        return -1
-      }
-      return new Date(cf1.createdAt).getTime() - new Date(cf2.createdAt).getTime()
+  const groupedFactors = Object.groupBy(record!.referral.contributoryFactors, itm => itm.factorType.code) as Record<
+    APIContributoryFactor['factorType']['code'],
+    APIContributoryFactor[]
+  > // Un-partial the result as there isn't a chance we would end up with undefined keys or values
+  return Object.entries(groupedFactors)
+    .sort(([_codeA, factorsA], [_codeB, factorsB]) =>
+      (factorsA[0]!.factorType.description || factorsA[0]!.factorType.code).localeCompare(
+        factorsB[0]!.factorType.description || factorsB[0]!.factorType.code,
+      ),
+    )
+    .map(([_factorCode, cfList]) => {
+      const filteredNoComments = cfList.filter(cf => cf.comment)
+      const listToOperateOn = filteredNoComments.length > 0 ? filteredNoComments : [cfList[0]!]
+      return listToOperateOn
+        .sort((a, b) => {
+          if (a.comment && (b.comment === undefined || b.comment === null)) {
+            return 1
+          }
+          if ((a.comment === undefined || a.comment === null) && b.comment) {
+            return -1
+          }
+
+          return (
+            (a.comment && b.comment && a.comment.localeCompare(b.comment)) ||
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          )
+        })
+        .map((cf, idx) => {
+          const visuallyHiddenCommentText =
+            listToOperateOn.length === 1
+              ? `to the comment on ${sentenceCase(cf.factorType.description!, false)} factor`
+              : `to the ${ordinalNumber(idx + 1)} comment on ${sentenceCase(cf.factorType.description!, false)} factor. This contributory factor is listed ${listToOperateOn.length} times in this referral.`
+          return {
+            ...cf,
+            visuallyHiddenCommentText,
+          }
+        })
     })
-    .map(cf => {
-      if (previousCf === cf.factorType.code && !cf.comment) {
-        return undefined
-      }
-
-      if (previousCf === cf.factorType.code) {
-        cfCount += 1
-      } else {
-        cfCount = 1
-      }
-
-      previousCf = cf.factorType.code
-
-      const visuallyHiddenCommentText =
-        multipleCfs[cf.factorType.code] === 1 || !cf.comment
-          ? `to the comment on ${sentenceCase(cf.factorType.description!, false)} factor`
-          : `to the ${ordinalNumber(cfCount)} comment on ${sentenceCase(cf.factorType.description!, false)} factor. This contributory factor is listed ${multipleCfs[cf.factorType.code]} times in this referral.`
-      return {
-        ...cf,
-        visuallyHiddenCommentText,
-      }
-    })
+    .flat()
     .filter(cf => cf !== undefined)
-
-  return contributoryFactors
 }
+
 export class UpdateReferralController extends BaseJourneyController {
   constructor(
     override readonly csipApiService: CsipApiService,
