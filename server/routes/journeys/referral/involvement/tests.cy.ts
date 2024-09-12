@@ -27,6 +27,8 @@ context('Make a Referral Journey', () => {
     checkValuesPersisted()
 
     goBackCheckValuesSaved()
+
+    checkEmptyInputNotOverriddenByJourneyData()
   })
 
   const goBackCheckValuesSaved = () => {
@@ -39,6 +41,12 @@ context('Make a Referral Journey', () => {
     cy.findByRole('textbox', { name: /names of staff assaulted/i }).should('have.value', 'staff stafferson')
     cy.findByRole('radio', { name: /factor1/i }).should('be.checked')
     cy.findByRole('radio', { name: /yes/i }).should('be.checked')
+  }
+
+  const checkEmptyInputNotOverriddenByJourneyData = () => {
+    cy.findByRole('textbox', { name: /names of staff assaulted/i }).clear()
+    cy.findByRole('button', { name: /continue/i }).click()
+    cy.findByRole('textbox', { name: /names of staff assaulted/i }).should('have.value', '')
   }
 
   const checkValuesPersisted = () => {

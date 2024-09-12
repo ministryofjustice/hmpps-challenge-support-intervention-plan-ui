@@ -1,6 +1,7 @@
 # hmpps-challenge-support-intervention-plan-ui
 [![repo standards badge](https://img.shields.io/badge/endpoint.svg?&style=flat&logo=github&url=https%3A%2F%2Foperations-engineering-reports.cloud-platform.service.justice.gov.uk%2Fapi%2Fv1%2Fcompliant_public_repositories%2Fhmpps-challenge-support-intervention-plan-ui)](https://operations-engineering-reports.cloud-platform.service.justice.gov.uk/public-github-repositories.html#hmpps-challenge-support-intervention-plan-ui "Link to report")
 [![CircleCI](https://circleci.com/gh/ministryofjustice/hmpps-challenge-support-intervention-plan-ui/tree/main.svg?style=svg)](https://circleci.com/gh/ministryofjustice/hmpps-challenge-support-intervention-plan-ui)
+[![codecov](https://codecov.io/github/ministryofjustice/hmpps-challenge-support-intervention-plan-ui/branch/main/graph/badge.svg)](https://codecov.io/github/ministryofjustice/hmpps-challenge-support-intervention-plan-ui)
 
 Template github repo used for new Typescript based projects.
 
