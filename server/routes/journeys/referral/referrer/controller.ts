@@ -16,7 +16,7 @@ export class ReferralReferrerController extends BaseJourneyController {
         ? 'check-answers'
         : 'on-behalf-of'
 
-    res.render('referral/referrer/view', { areaOfWorkOptions, referredBy, backUrl })
+    res.render('referral/referrer/view', { areaOfWorkOptions, referredBy, backUrl, flowName: 'Make a CSIP referral' })
   }
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
