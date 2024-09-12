@@ -6,7 +6,7 @@ import {
   PatchReferralController,
 } from '../../base/patchReferralController'
 import { formatInputDate, formatInputTime } from '../../../../utils/datetimeUtils'
-import { getNonUndefinedNonNullOrDefault, getNonUndefinedProp } from '../../../../utils/utils'
+import { getNonUndefinedProp } from '../../../../utils/utils'
 
 export class UpdateReferralDetailsController extends PatchReferralController {
   GET = async (req: Request, res: Response) => {
@@ -17,24 +17,22 @@ export class UpdateReferralDetailsController extends PatchReferralController {
       req,
       'incident-location',
       'Select location',
-      res.locals.formResponses?.['incidentLocation'] || req.journeyData.csipRecord!.referral.incidentLocation,
+      res.locals.formResponses?.['incidentLocation'] ?? req.journeyData.csipRecord!.referral.incidentLocation,
     )
     const incidentTypeOptions = await this.getReferenceDataOptionsForSelect(
       req,
       'incident-type',
       isProactiveReferral ? 'Select main concern' : 'Select incident type',
-      res.locals.formResponses?.['incidentType'] || req.journeyData.csipRecord!.referral.incidentType,
+      res.locals.formResponses?.['incidentType'] ?? req.journeyData.csipRecord!.referral.incidentType,
     )
-    const incidentDate = getNonUndefinedNonNullOrDefault(
-      res.locals.formResponses?.['incidentDate'],
-      formatInputDate(req.journeyData.csipRecord!.referral.incidentDate),
-    )
+    const incidentDate =
+      res.locals.formResponses?.['incidentDate'] ?? formatInputDate(req.journeyData.csipRecord!.referral.incidentDate)
 
     const [journeyDataHour, journeyDataMinute] = formatInputTime(
       req.journeyData.csipRecord!.referral.incidentTime?.substring(0, 5),
     )
-    const hour = getNonUndefinedNonNullOrDefault(res.locals.formResponses?.['hour'], journeyDataHour)
-    const minute = getNonUndefinedNonNullOrDefault(res.locals.formResponses?.['minute'], journeyDataMinute)
+    const hour = res.locals.formResponses?.['hour'] ?? journeyDataHour
+    const minute = res.locals.formResponses?.['minute'] ?? journeyDataMinute
 
     res.render('referral/details/view', {
       isProactiveReferral,

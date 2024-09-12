@@ -7,7 +7,7 @@ export class InvolvementController extends BaseJourneyController {
     const items = await this.getReferenceDataOptionsForRadios(
       req,
       'incident-involvement',
-      res.locals.formResponses?.['involvementType'] || req.journeyData.referral!.incidentInvolvement,
+      res.locals.formResponses?.['involvementType'] ?? req.journeyData.referral!.incidentInvolvement,
     )
     // Differentiate between not set, false and true
     const formResponsesStaffAssaulted =
@@ -20,7 +20,7 @@ export class InvolvementController extends BaseJourneyController {
       isProactiveReferral: Boolean(req.journeyData.referral!.isProactiveReferral),
       staffAssaulted: formResponsesStaffAssaulted ?? req.journeyData.referral!.staffAssaulted,
       assaultedStaffName:
-        res.locals.formResponses?.['assaultedStaffName'] || req.journeyData.referral!.assaultedStaffName,
+        res.locals.formResponses?.['assaultedStaffName'] ?? req.journeyData.referral!.assaultedStaffName,
       backUrl: 'details',
     })
   }

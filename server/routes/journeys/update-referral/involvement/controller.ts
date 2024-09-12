@@ -15,7 +15,7 @@ export class UpdateInvolvementController extends PatchReferralController {
     const items = await this.getReferenceDataOptionsForRadios(
       req,
       'incident-involvement',
-      res.locals.formResponses?.['involvementType'] || req.journeyData.csipRecord!.referral.incidentInvolvement,
+      res.locals.formResponses?.['involvementType'] ?? req.journeyData.csipRecord!.referral.incidentInvolvement,
     )
     // Differentiate between not set, false and true
     const formResponsesStaffAssaulted =
@@ -28,7 +28,7 @@ export class UpdateInvolvementController extends PatchReferralController {
       isProactiveReferral,
       staffAssaulted: formResponsesStaffAssaulted ?? req.journeyData.csipRecord!.referral.isStaffAssaulted,
       assaultedStaffName:
-        res.locals.formResponses?.['assaultedStaffName'] || req.journeyData.csipRecord!.referral.assaultedStaffName,
+        res.locals.formResponses?.['assaultedStaffName'] ?? req.journeyData.csipRecord!.referral.assaultedStaffName,
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
     })

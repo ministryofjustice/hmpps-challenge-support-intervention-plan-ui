@@ -58,9 +58,6 @@ export const getNonUndefinedProp = <T>(referral: T, key: keyof T, mapper?: (obj:
   return {}
 }
 
-export const getNonUndefinedNonNullOrDefault = <T>(val: T | null | undefined, defaultVal: T | null | undefined) =>
-  val !== null && val !== undefined ? val : defaultVal
-
 export const ordinalNumber = (number: number) => {
   if (!Number.isInteger(number)) throw new Error('Not available')
   if (number < 0) throw new Error('Should not be used with negative numbers')

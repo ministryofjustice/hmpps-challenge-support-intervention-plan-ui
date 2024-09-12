@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
 import { formatInputDate, formatInputTime } from '../../../../utils/datetimeUtils'
 import { SchemaType } from './schemas'
-import { getNonUndefinedNonNullOrDefault } from '../../../../utils/utils'
 
 export class ReferralDetailsController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
@@ -10,22 +9,20 @@ export class ReferralDetailsController extends BaseJourneyController {
       req,
       'incident-location',
       'Select location',
-      res.locals.formResponses?.['incidentLocation'] || req.journeyData.referral!.incidentLocation,
+      res.locals.formResponses?.['incidentLocation'] ?? req.journeyData.referral!.incidentLocation,
     )
     const incidentTypeOptions = await this.getReferenceDataOptionsForSelect(
       req,
       'incident-type',
       req.journeyData.referral!.isProactiveReferral ? 'Select main concern' : 'Select incident type',
-      res.locals.formResponses?.['incidentType'] || req.journeyData.referral!.incidentType,
+      res.locals.formResponses?.['incidentType'] ?? req.journeyData.referral!.incidentType,
     )
-    const incidentDate = getNonUndefinedNonNullOrDefault(
-      res.locals.formResponses?.['incidentDate'],
-      formatInputDate(req.journeyData.referral!.incidentDate),
-    )
+    const incidentDate =
+      res.locals.formResponses?.['incidentDate'] ?? formatInputDate(req.journeyData.referral!.incidentDate)
 
     const [journeyDataHour, journeyDataMinute] = formatInputTime(req.journeyData.referral!.incidentTime)
-    const hour = getNonUndefinedNonNullOrDefault(res.locals.formResponses?.['hour'], journeyDataHour)
-    const minute = getNonUndefinedNonNullOrDefault(res.locals.formResponses?.['minute'], journeyDataMinute)
+    const hour = res.locals.formResponses?.['hour'] ?? journeyDataHour
+    const minute = res.locals.formResponses?.['minute'] ?? journeyDataMinute
 
     res.render('referral/details/view', {
       isProactiveReferral: req.journeyData.referral!.isProactiveReferral,
