@@ -57,6 +57,7 @@ type ReferralData = Partial<{
 
 export type ContributoryFactor = {
   factorType: ReferenceData
+  factorUuid?: string // This is optional because when we're creating a referral, we don't have these uuids yet, but we do on edit
   comment?: string
 }
 

@@ -4,6 +4,7 @@ import { JourneyRouter } from '../base/routes'
 import { UpdateReferralController } from './controller'
 import { UpdateInvolvementRoutes } from './involvement/routes'
 import { UpdateProactiveOrReactiveRoutes } from './proactive-or-reactive/routes'
+import { ReferralContributoryFactorCommentRoutes } from '../referral/contributory-factor-comment/routes'
 
 function Routes({ csipApiService, prisonerSearchService }: Services) {
   const { router, get } = JourneyRouter()
@@ -13,6 +14,7 @@ function Routes({ csipApiService, prisonerSearchService }: Services) {
 
   router.use('/involvement', UpdateInvolvementRoutes(csipApiService))
   router.use('/proactive-or-reactive', UpdateProactiveOrReactiveRoutes(csipApiService))
+  router.use('/:factorUuid-comment', ReferralContributoryFactorCommentRoutes())
 
   return router
 }
