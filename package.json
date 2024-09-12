@@ -21,8 +21,7 @@
     "int-test": "cypress run --config video=false",
     "int-test-ui": "cypress open --e2e --browser chrome",
     "clean": "rm -rf dist node_modules",
-    "rebuild": "npm run clean && npm i && npm run build",
-    "clean-clover": "rm ./test_results/jest/clover.xml"
+    "rebuild": "npm run clean && npm i && npm run build"
   },
   "engines": {
     "node": "^20",
@@ -34,6 +33,7 @@
       "server/**/*.{ts,js,jsx,mjs}"
     ],
     "coverageDirectory": "test_results/jest/",
+    "coverageReporters": ["json", "lcov"],
     "reporters": [
       "default",
       [
