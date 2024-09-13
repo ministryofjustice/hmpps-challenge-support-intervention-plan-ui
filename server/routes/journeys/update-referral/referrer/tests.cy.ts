@@ -4,7 +4,7 @@ context('test /update-referral/referrer', () => {
   const START_URL = `csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`
 
   const getContinueButton = () => cy.findByRole('button', { name: /Confirm and save/ })
-  const getReferredBy = () => cy.findByRole('textbox', { name: 'What’s their name?' })
+  const getReferredBy = () => cy.findByRole('textbox', { name: 'What is the referrer’s name?' })
   const getAreaOfWork = () => cy.findByRole('combobox', { name: 'Which area do they work in?' })
 
   const resetInputs = () => {
@@ -73,7 +73,7 @@ context('test /update-referral/referrer', () => {
     cy.findByRole('link', { name: /Enter the referrer’s name/i })
       .should('be.visible')
       .click()
-    getReferredBy().should('be.focused')
+    getReferredBy().should('be.focused').should('have.value', '')
     cy.findAllByText('Enter the referrer’s name').should('have.length', 2)
 
     cy.findByRole('link', { name: /Select the referrer’s area of work/i })
