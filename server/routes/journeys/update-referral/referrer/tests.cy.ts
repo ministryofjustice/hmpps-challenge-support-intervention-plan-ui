@@ -54,7 +54,7 @@ context('test /update-referral/referrer', () => {
 
     cy.findByText('Update a CSIP referral').should('be.visible')
 
-    cy.findByRole('textbox', { name: 'What’s their name?' }).should('be.visible')
+    cy.findByRole('textbox', { name: 'What is the referrer’s name?' }).should('be.visible')
 
     cy.findByText('If the referrer is a prisoner, select ‘Other’.').should('be.visible')
 

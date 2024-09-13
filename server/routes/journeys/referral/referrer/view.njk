@@ -13,7 +13,7 @@
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {{ govukCharacterCount({
             label: {
-                text: "What’s their name?",
+                text: "What is the referrer’s name?" if isUpdate else "What’s their name?",
                 classes: "govuk-label--m",
                 isPageHeading: true
             },
