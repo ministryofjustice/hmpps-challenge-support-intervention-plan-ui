@@ -70,7 +70,7 @@ context('test /referral/referrer', () => {
     cy.findByRole('link', { name: /Enter the referrer’s name/i })
       .should('be.visible')
       .click()
-    getReferredBy().should('be.focused')
+    getReferredBy().should('be.focused').should('have.text', '')
     cy.findAllByText('Enter the referrer’s name').should('have.length', 2)
 
     cy.findByRole('link', { name: /Select the referrer’s area of work/i })

@@ -47,6 +47,7 @@ context('test /update-referral/referrer', () => {
 
     getContinueButton().click()
     cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
+    cy.findByText('You’ve updated the behaviour details.').should('be.visible')
   })
 
   const validatePageContents = () => {
