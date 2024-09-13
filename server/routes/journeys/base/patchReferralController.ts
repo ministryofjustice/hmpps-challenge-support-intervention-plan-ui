@@ -61,9 +61,11 @@ export class PatchReferralController extends BaseJourneyController {
           ...getNonUndefinedProp(csipRecord.referral, 'knownReasons'),
           ...getNonUndefinedProp(csipRecord.referral, 'otherInformation'),
           ...getNonUndefinedProp(csipRecord.referral, 'isReferralComplete'),
-          ...(csipRecord.referral.incidentInvolvement
-            ? { incidentInvolvementCode: csipRecord.referral.incidentInvolvement?.code }
-            : {}),
+          ...getNonUndefinedProp(
+            csipRecord.referral,
+            'incidentInvolvement',
+            incidentInvolvement => (incidentInvolvement as { code: string })?.code,
+          ),
           ...changes,
         },
       })

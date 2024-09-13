@@ -9,10 +9,13 @@ import { getNonUndefinedProp } from '../../../../utils/utils'
 
 export class UpdateInvolvementController extends PatchReferralController {
   GET = async (req: Request, res: Response) => {
+    const isProactiveReferral = Boolean(req.journeyData.csipRecord!.referral.isProactiveReferral)
+    req.journeyData.referral = { isProactiveReferral } // populated to be used by schemas
+
     const items = await this.getReferenceDataOptionsForRadios(
       req,
       'incident-involvement',
-      res.locals.formResponses?.['involvementType'] || req.journeyData.csipRecord!.referral.incidentInvolvement,
+      res.locals.formResponses?.['involvementType'] ?? req.journeyData.csipRecord!.referral.incidentInvolvement,
     )
     // Differentiate between not set, false and true
     const formResponsesStaffAssaulted =
@@ -22,10 +25,10 @@ export class UpdateInvolvementController extends PatchReferralController {
 
     res.render('referral/involvement/view', {
       involvementTypeItems: items,
-      isProactiveReferral: Boolean(req.journeyData.csipRecord!.referral.isProactiveReferral),
+      isProactiveReferral,
       staffAssaulted: formResponsesStaffAssaulted ?? req.journeyData.csipRecord!.referral.isStaffAssaulted,
       assaultedStaffName:
-        res.locals.formResponses?.['assaultedStaffName'] || req.journeyData.csipRecord!.referral.assaultedStaffName,
+        res.locals.formResponses?.['assaultedStaffName'] ?? req.journeyData.csipRecord!.referral.assaultedStaffName,
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
     })
