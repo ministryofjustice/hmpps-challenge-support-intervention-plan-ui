@@ -23,7 +23,7 @@
             classes: "govuk-input--width-30 single-row-textarea",
             id: "referredBy",
             name: "referredBy",
-            value: formResponses.referredBy or referredBy,
+            value: referredBy,
             errorMessage: validationErrors | findError('referredBy')
         }) }}
         {{ govukSelect({

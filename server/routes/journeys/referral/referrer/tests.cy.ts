@@ -9,12 +9,12 @@ context('test /referral/referrer', () => {
 
   const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
   const getReferredBy = () => cy.findByRole('textbox', { name: 'What’s their name?' })
+  const getAreaOfWork = () => cy.findByRole('combobox', { name: 'Which area do they work in?' })
 
   const resetInputs = () => {
     getReferredBy().clear()
   }
 
-  const getAreaOfWork = () => cy.findByRole('combobox', { name: 'Which area do they work in?' })
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')

@@ -13,7 +13,7 @@ export class UpdateReferrerController extends PatchReferralController {
 
     res.render('referral/referrer/view', {
       areaOfWorkOptions,
-      referredBy: res.locals.formResponses?.['referredBy'] || req.journeyData.csipRecord!.referral.referredBy,
+      referredBy: res.locals.formResponses?.['referredBy'] ?? req.journeyData.csipRecord!.referral.referredBy,
       flowName: 'Update a CSIP referral',
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,

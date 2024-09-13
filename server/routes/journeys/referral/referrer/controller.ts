@@ -10,13 +10,18 @@ export class ReferralReferrerController extends BaseJourneyController {
       'Select area',
       res.locals.formResponses?.['areaOfWork'] || req.journeyData.referral!.refererArea,
     )
-    const { referredBy } = req.journeyData.referral!
+
     const backUrl =
       req.journeyData.isCheckAnswers && !req.journeyData.referral!.onBehalfOfSubJourney
         ? 'check-answers'
         : 'on-behalf-of'
 
-    res.render('referral/referrer/view', { areaOfWorkOptions, referredBy, backUrl, flowName: 'Make a CSIP referral' })
+    res.render('referral/referrer/view', {
+      areaOfWorkOptions,
+      referredBy: res.locals.formResponses?.['referredBy'] ?? req.journeyData.referral!.referredBy,
+      backUrl,
+      flowName: 'Make a CSIP referral',
+    })
   }
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
