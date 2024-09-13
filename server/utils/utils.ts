@@ -51,9 +51,9 @@ export const sentenceCase = (val: string, startsWithUppercase: boolean = true): 
   return startsWithUppercase ? sentence.charAt(0).toUpperCase() + sentence.slice(1) : sentence
 }
 
-export const getNonUndefinedProp = <T>(referral: T, key: keyof T) => {
+export const getNonUndefinedProp = <T>(referral: T, key: keyof T, mapper?: (obj: unknown) => string | null) => {
   if (referral[key] !== undefined) {
-    return { [key]: referral[key] }
+    return { [key]: mapper ? mapper(referral[key]) : referral[key] }
   }
   return {}
 }

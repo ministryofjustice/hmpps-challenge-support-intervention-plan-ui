@@ -11,7 +11,7 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
     (await csipApiService.getReferenceData(req, 'incident-involvement')).map(itm => [itm.code, itm]),
   )
 
-  const isProactive = !!req.journeyData?.referral?.isProactiveReferral
+  const isProactive = !!req.journeyData.referral!.isProactiveReferral
   const INVOLVEMENT_TYPE_ERROR_MSG = `Select how the prisoner ${isProactive ? 'has been involved in the behaviour' : 'was involved in the incident'}`
   const IS_STAFF_ASSAULTED_ERROR_MSG = `Select if any staff were assaulted ${isProactive ? 'as a result of the behaviour' : 'during the incident'} or not`
 

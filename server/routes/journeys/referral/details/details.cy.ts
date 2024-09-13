@@ -25,8 +25,27 @@ context('Make a Referral Journey', () => {
 
     checkDatepickerEdgeCases()
 
+    checkEmptyInputNotOverriddenByJourneyData()
+
     goBackCheckWithProactive()
   })
+
+  const checkEmptyInputNotOverriddenByJourneyData = () => {
+    cy.findByRole('link', { name: /^back/i }).click()
+    cy.findByRole('textbox', { name: /date of incident/i }).clear()
+    cy.findByRole('textbox', { name: /hour/i }).clear()
+    cy.findByRole('textbox', { name: /minute/i }).clear()
+    cy.findByRole('button', { name: /continue/i }).click()
+
+    cy.findByRole('textbox', { name: /date of incident/i }).should('have.value', '')
+    cy.findByRole('textbox', { name: /hour/i }).should('have.value', '')
+    cy.findByRole('textbox', { name: /minute/i }).should('have.value', '')
+
+    cy.findByRole('textbox', { name: /date of incident/i }).type('25/12/2001')
+    cy.findByRole('textbox', { name: /hour/i }).type('23')
+    cy.findByRole('textbox', { name: /minute/i }).type('23')
+    cy.findByRole('button', { name: /continue/i }).click()
+  }
 
   const goBackCheckWithProactive = () => {
     cy.findByRole('link', { name: /^back/i }).click()
@@ -34,11 +53,7 @@ context('Make a Referral Journey', () => {
     cy.findByRole('radio', { name: /proactive/i }).click()
     cy.findByRole('button', { name: /continue/i }).click()
 
-    const today = new Date()
-    cy.findByRole('textbox', { name: /date of occurrence/i }).should(
-      'have.value',
-      `01/0${today.getMonth() + 1}/${today.getFullYear()}`,
-    )
+    cy.findByRole('textbox', { name: /date of occurrence/i }).should('have.value', '25/12/2001')
     cy.findByRole('textbox', { name: /hour/i }).should('have.value', '23')
     cy.findByRole('textbox', { name: /minute/i }).should('have.value', '23')
     cy.findByRole('combobox', { name: /where was the most recent occurrence of the behaviour\?/i }).should(
