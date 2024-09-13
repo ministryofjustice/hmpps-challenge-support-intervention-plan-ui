@@ -45,6 +45,7 @@ context('test /referral/referrer', () => {
     cy.go('back')
 
     verifyDetailsAreRestoredFromJourney()
+    verifyBlankTextIsHonored()
   })
 
   const validatePageContents = () => {
@@ -105,7 +106,12 @@ context('test /referral/referrer', () => {
     cy.reload()
 
     getReferredBy().should('have.value', 'textarea input')
-
     getAreaOfWork().should('have.value', 'A')
+  }
+
+  const verifyBlankTextIsHonored = () => {
+    getReferredBy().clear()
+    getContinueButton().click()
+    getReferredBy().should('have.text', '')
   }
 })
