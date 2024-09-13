@@ -27,9 +27,7 @@ export class UpdateReferralDetailsController extends PatchReferralController {
     const incidentDate =
       res.locals.formResponses?.['incidentDate'] ?? formatInputDate(req.journeyData.referral!.incidentDate)
 
-    const [journeyDataHour, journeyDataMinute] = formatInputTime(
-      req.journeyData.referral!.incidentTime?.substring(0, 5),
-    )
+    const [journeyDataHour, journeyDataMinute] = formatInputTime(req.journeyData.referral!.incidentTime)
     const hour = res.locals.formResponses?.['hour'] ?? journeyDataHour
     const minute = res.locals.formResponses?.['minute'] ?? journeyDataMinute
 
