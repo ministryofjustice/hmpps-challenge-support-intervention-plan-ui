@@ -1,4 +1,5 @@
 import { stubFor } from './wiremock'
+import { YES_NO_ANSWER } from '../../server/routes/journeys/referral/safer-custody/schemas'
 
 const stubAreaOfWork = () => {
   return stubFor({
@@ -889,7 +890,7 @@ export const csip = {
         factorType: { code: 'C', description: 'Text with a TLA' },
       },
     ],
-    isSaferCustodyTeamInformed: 'Yes',
+    isSaferCustodyTeamInformed: YES_NO_ANSWER.Enum.YES,
     otherInformation: `Text
 
     • Bullet 1

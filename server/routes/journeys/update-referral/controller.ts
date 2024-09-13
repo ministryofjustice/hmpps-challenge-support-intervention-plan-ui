@@ -3,7 +3,7 @@ import { components } from '../../../@types/csip'
 import type PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
 import { BaseJourneyController } from '../base/controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
-import { ordinalNumber, sentenceCase } from '../../../utils/utils'
+import { ordinalNumber, sentenceCase, getNonUndefinedProp } from '../../../utils/utils'
 
 const hasInvestigation = (status: components['schemas']['CsipRecord']['status']) => {
   return !(['REFERRAL_PENDING', 'REFERRAL_SUBMITTED', 'INVESTIGATION_PENDING'] as (typeof status)[]).includes(status)
@@ -83,6 +83,23 @@ export class UpdateReferralController extends BaseJourneyController {
       incidentInvolvement: record.referral!.incidentInvolvement,
       staffAssaulted: record.referral!.isStaffAssaulted,
       assaultedStaffName: record.referral!.assaultedStaffName,
+    }
+    req.journeyData.referral = {
+      referredBy: referral.referredBy,
+      refererArea: referral.refererArea,
+      isProactiveReferral: Boolean(referral.isProactiveReferral),
+      incidentLocation: referral.incidentLocation,
+      incidentType: referral.incidentType,
+      incidentDate: referral.incidentDate,
+      incidentTime: referral.incidentTime || null,
+      ...getNonUndefinedProp(referral, 'descriptionOfConcern'),
+      ...getNonUndefinedProp(referral, 'knownReasons'),
+      contributoryFactors: referral.contributoryFactors,
+      isSaferCustodyTeamInformed: referral.isSaferCustodyTeamInformed,
+      ...getNonUndefinedProp(referral, 'otherInformation'),
+      ...getNonUndefinedProp(referral, 'incidentInvolvement'),
+      staffAssaulted: Boolean(referral.staffAssaulted),
+      ...getNonUndefinedProp(referral, 'assaultedStaffName'),
     }
 
     const uniqueContributoryFactors = new Set(

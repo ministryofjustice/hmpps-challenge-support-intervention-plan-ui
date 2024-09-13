@@ -9,9 +9,6 @@ import { getNonUndefinedProp } from '../../../../utils/utils'
 
 export class UpdateInvolvementController extends PatchReferralController {
   GET = async (req: Request, res: Response) => {
-    const isProactiveReferral = Boolean(req.journeyData.csipRecord!.referral.isProactiveReferral)
-    req.journeyData.referral = { isProactiveReferral } // populated to be used by schemas
-
     const items = await this.getReferenceDataOptionsForRadios(
       req,
       'incident-involvement',
@@ -25,10 +22,10 @@ export class UpdateInvolvementController extends PatchReferralController {
 
     res.render('referral/involvement/view', {
       involvementTypeItems: items,
-      isProactiveReferral,
-      staffAssaulted: formResponsesStaffAssaulted ?? req.journeyData.csipRecord!.referral.isStaffAssaulted,
+      isProactiveReferral: req.journeyData.referral!.isProactiveReferral,
+      staffAssaulted: formResponsesStaffAssaulted ?? req.journeyData.referral!.staffAssaulted,
       assaultedStaffName:
-        res.locals.formResponses?.['assaultedStaffName'] ?? req.journeyData.csipRecord!.referral.assaultedStaffName,
+        res.locals.formResponses?.['assaultedStaffName'] ?? req.journeyData.referral!.assaultedStaffName,
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
     })
@@ -44,7 +41,7 @@ export class UpdateInvolvementController extends PatchReferralController {
         isStaffAssaulted: req.body.staffAssaulted,
         ...getNonUndefinedProp(req.body, 'assaultedStaffName'),
       },
-      successMessage: req.journeyData.csipRecord!.referral.isProactiveReferral
+      successMessage: req.journeyData.referral!.isProactiveReferral
         ? MESSAGE_PROACTIVE_INVOLVEMENT_UPDATED
         : MESSAGE_REACTIVE_INVOLVEMENT_UPDATED,
     })
