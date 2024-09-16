@@ -70,4 +70,5 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addGlobal('todayStringGBFormat', todayStringGBFormat)
   njkEnv.addGlobal('YesNoDontKnow', YES_NO_ANSWER.enum)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
+  njkEnv.addFilter('substring', (str: string, start: number, end?: number) => str && str.substring(start, end))
 }

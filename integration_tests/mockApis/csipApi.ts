@@ -842,7 +842,7 @@ export const csip = {
     incidentLocation: { code: 'A', description: '<script>alert("Location")</script>' },
     incidentType: { code: 'A', description: '<script>alert("IncidentType")</script>' },
     incidentDate: '2024-12-25',
-    incidentTime: '23:59',
+    incidentTime: '23:59:00',
     incidentInvolvement: { code: 'CODE1', description: '<script>alert("Involvement")</script>' },
     isStaffAssaulted: true,
     assaultedStaffName: '<script>alert("Staff Name")</script>',

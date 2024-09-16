@@ -16,14 +16,14 @@ export class UpdateInvolvementController extends PatchReferralController {
     )
     // Differentiate between not set, false and true
     const formResponsesStaffAssaulted =
-      res.locals.formResponses?.['staffAssaulted'] === undefined
+      res.locals.formResponses?.['isStaffAssaulted'] === undefined
         ? undefined
-        : res.locals.formResponses?.['staffAssaulted'] === 'true'
+        : res.locals.formResponses?.['isStaffAssaulted'] === 'true'
 
     res.render('referral/involvement/view', {
       involvementTypeItems: items,
       isProactiveReferral: req.journeyData.referral!.isProactiveReferral,
-      staffAssaulted: formResponsesStaffAssaulted ?? req.journeyData.referral!.staffAssaulted,
+      isStaffAssaulted: formResponsesStaffAssaulted ?? req.journeyData.referral!.isStaffAssaulted,
       assaultedStaffName:
         res.locals.formResponses?.['assaultedStaffName'] ?? req.journeyData.referral!.assaultedStaffName,
       isUpdate: true,
@@ -38,7 +38,7 @@ export class UpdateInvolvementController extends PatchReferralController {
       next,
       changes: {
         incidentInvolvementCode: req.body.involvementType.code,
-        isStaffAssaulted: req.body.staffAssaulted,
+        isStaffAssaulted: req.body.isStaffAssaulted,
         ...getNonUndefinedProp(req.body, 'assaultedStaffName'),
       },
       successMessage: req.journeyData.referral!.isProactiveReferral

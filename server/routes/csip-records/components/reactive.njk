@@ -27,7 +27,7 @@
                 text: "Time of incident"
             },
             value: {
-                text: referral.incidentTime or "Not provided"
+                text: referral.incidentTime | substring(0, 5) or "Not provided"
             },
             actions: {
                 items: [
@@ -106,12 +106,12 @@
                 text: "Staff assaulted"
             },
             value: {
-                text: 'Yes' if referral.staffAssaulted else 'No'
+                text: 'Yes' if referral.isStaffAssaulted else 'No'
             },
             actions: {
                 items: [
                     {
-                        href: "update-referral/involvement#staffAssaulted",
+                        href: "update-referral/involvement#isStaffAssaulted",
                         text: "Change",
                         visuallyHiddenText: "if a staff member was assaulted or not",
                         classes: "govuk-link--no-visited-state"

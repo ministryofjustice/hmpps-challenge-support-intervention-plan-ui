@@ -49,12 +49,12 @@ context('test /record-investigation/check-answers', () => {
         incidentInvolvement: { code: 'A', description: 'TypeA' },
         incidentLocation: { code: 'A', description: 'LocationA' },
         incidentType: { code: 'A', description: 'IncidentA' },
-        incidentTime: '01:01',
+        incidentTime: '01:01:00',
         isOnBehalfOfReferral: false,
         knownReasons: 'idklol',
         refererArea: { code: 'A', description: 'AreaA' },
         referredBy: 'Test Person',
-        staffAssaulted: false,
+        isStaffAssaulted: false,
       },
     })
 

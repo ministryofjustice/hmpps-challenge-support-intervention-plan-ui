@@ -1,14 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
 import { SchemaType } from '../../referral/safer-custody/schemas'
 import { MESSAGE_REFERRAL_ADDITIONAL_INFO_UPDATED, PatchReferralController } from '../../base/patchReferralController'
-import logger from '../../../../../logger'
 
 export class UpdateSaferCustodyController extends PatchReferralController {
   GET = async (req: Request, res: Response) => {
     const isSaferCustodyTeamInformed =
       res.locals.formResponses?.['isSaferCustodyTeamInformed'] ?? req.journeyData.referral!.isSaferCustodyTeamInformed
 
-    logger.info(isSaferCustodyTeamInformed)
     res.render('referral/safer-custody/view', {
       isSaferCustodyTeamInformed,
       isUpdate: true,

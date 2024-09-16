@@ -52,9 +52,7 @@ export class UpdateReferralDetailsController extends PatchReferralController {
         incidentLocationCode: req.body.incidentLocation.code,
         incidentTypeCode: req.body.incidentType.code,
         incidentDate: req.body.incidentDate,
-        ...getNonUndefinedProp(req.body, 'incidentTime', incidentTime =>
-          incidentTime == null ? null : `${incidentTime}:00`,
-        ),
+        ...getNonUndefinedProp(req.body, 'incidentTime'),
       },
       successMessage: req.journeyData.referral!.isProactiveReferral
         ? MESSAGE_PROACTIVE_DETAILS_UPDATED
