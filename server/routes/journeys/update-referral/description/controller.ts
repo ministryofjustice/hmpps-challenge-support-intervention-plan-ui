@@ -21,7 +21,10 @@ export class UpdateDescriptionController extends PatchReferralController {
       res,
       next,
       changes: {
-        descriptionOfConcern: generateSaveTimestamp(req.journeyData.prisoner!) + req.body.descriptionOfConcern,
+        descriptionOfConcern:
+          req.journeyData.referral!.descriptionOfConcern +
+          generateSaveTimestamp(req.journeyData.prisoner!) +
+          req.body.descriptionOfConcern,
       },
       successMessage: MESSAGE_REFERRAL_DETAILS_UPDATED,
     })
