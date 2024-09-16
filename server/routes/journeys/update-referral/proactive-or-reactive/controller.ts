@@ -5,7 +5,7 @@ import { MESSAGE_REFERRAL_DETAILS_UPDATED, PatchReferralController } from '../..
 export class UpdateProactiveOrReactiveController extends PatchReferralController {
   GET = async (req: Request, res: Response) => {
     res.render('referral/proactive-or-reactive/view', {
-      isProactiveReferral: Boolean(req.journeyData.csipRecord!.referral.isProactiveReferral),
+      isProactiveReferral: req.journeyData.referral!.isProactiveReferral,
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
     })

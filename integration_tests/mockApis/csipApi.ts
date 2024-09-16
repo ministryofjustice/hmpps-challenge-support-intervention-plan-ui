@@ -1,4 +1,5 @@
 import { stubFor } from './wiremock'
+import { YES_NO_ANSWER } from '../../server/routes/journeys/referral/safer-custody/schemas'
 
 const stubAreaOfWork = () => {
   return stubFor({
@@ -841,7 +842,7 @@ export const csip = {
     incidentLocation: { code: 'A', description: '<script>alert("Location")</script>' },
     incidentType: { code: 'A', description: '<script>alert("IncidentType")</script>' },
     incidentDate: '2024-12-25',
-    incidentTime: '23:59',
+    incidentTime: '23:59:00',
     incidentInvolvement: { code: 'CODE1', description: '<script>alert("Involvement")</script>' },
     isStaffAssaulted: true,
     assaultedStaffName: '<script>alert("Staff Name")</script>',
@@ -889,7 +890,7 @@ export const csip = {
         factorType: { code: 'C', description: 'Text with a TLA' },
       },
     ],
-    isSaferCustodyTeamInformed: 'Yes',
+    isSaferCustodyTeamInformed: YES_NO_ANSWER.Enum.YES,
     otherInformation: `Text
 
     • Bullet 1

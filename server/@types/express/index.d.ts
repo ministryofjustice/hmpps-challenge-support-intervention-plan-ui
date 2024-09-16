@@ -51,7 +51,7 @@ type ReferralData = Partial<{
   isSaferCustodyTeamInformed: YesNoAnswer
   otherInformation: string | null
   incidentInvolvement: ReferenceData
-  staffAssaulted: boolean
+  isStaffAssaulted: boolean
   assaultedStaffName: string | null
 }>
 

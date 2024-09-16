@@ -19,14 +19,14 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
     involvementType: z
       .string({ message: INVOLVEMENT_TYPE_ERROR_MSG })
       .transform(validateAndTransformReferenceData(incidentInvolvementMap, INVOLVEMENT_TYPE_ERROR_MSG)),
-    staffAssaulted: z
+    isStaffAssaulted: z
       .string({ message: IS_STAFF_ASSAULTED_ERROR_MSG })
       .trim()
       .refine(val => ['false', 'true'].includes(val), { message: IS_STAFF_ASSAULTED_ERROR_MSG }),
     assaultedStaffName: z.string(),
   })
     .superRefine((val, ctx) => {
-      if (val.staffAssaulted === 'true') {
+      if (val.isStaffAssaulted === 'true') {
         if (!val.assaultedStaffName?.trim().length) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
@@ -44,8 +44,8 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
     })
     .transform(val => ({
       ...val,
-      staffAssaulted: val.staffAssaulted === 'true',
-      assaultedStaffName: val.staffAssaulted === 'true' ? val.assaultedStaffName : null,
+      isStaffAssaulted: val.isStaffAssaulted === 'true',
+      assaultedStaffName: val.isStaffAssaulted === 'true' ? val.assaultedStaffName : null,
     }))
 }
 

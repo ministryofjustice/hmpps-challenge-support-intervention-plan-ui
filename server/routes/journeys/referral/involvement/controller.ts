@@ -11,14 +11,14 @@ export class InvolvementController extends BaseJourneyController {
     )
     // Differentiate between not set, false and true
     const formResponsesStaffAssaulted =
-      res.locals.formResponses?.['staffAssaulted'] === undefined
+      res.locals.formResponses?.['isStaffAssaulted'] === undefined
         ? undefined
-        : res.locals.formResponses?.['staffAssaulted'] === 'true'
+        : res.locals.formResponses?.['isStaffAssaulted'] === 'true'
 
     res.render('referral/involvement/view', {
       involvementTypeItems: items,
       isProactiveReferral: Boolean(req.journeyData.referral!.isProactiveReferral),
-      staffAssaulted: formResponsesStaffAssaulted ?? req.journeyData.referral!.staffAssaulted,
+      isStaffAssaulted: formResponsesStaffAssaulted ?? req.journeyData.referral!.isStaffAssaulted,
       assaultedStaffName:
         res.locals.formResponses?.['assaultedStaffName'] ?? req.journeyData.referral!.assaultedStaffName,
       backUrl: 'details',
@@ -27,7 +27,7 @@ export class InvolvementController extends BaseJourneyController {
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
     req.journeyData.referral!.incidentInvolvement = req.body.involvementType
-    req.journeyData.referral!.staffAssaulted = req.body.staffAssaulted
+    req.journeyData.referral!.isStaffAssaulted = req.body.isStaffAssaulted
     req.journeyData.referral!.assaultedStaffName = req.body.assaultedStaffName
 
     res.redirect('description')

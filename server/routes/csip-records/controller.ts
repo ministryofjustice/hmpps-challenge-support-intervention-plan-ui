@@ -21,29 +21,13 @@ export class CsipRecordController {
     const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
     const referral = {
       createdAt: record.createdAt,
-      referredBy: record.referral!.referredBy,
-      refererArea: record.referral!.refererArea,
-      isProactiveReferral: record.referral!.isProactiveReferral,
-      incidentLocation: record.referral!.incidentLocation,
-      incidentType: record.referral!.incidentType,
-      incidentDate: record.referral!.incidentDate,
-      incidentTime: record.referral!.incidentTime && record.referral!.incidentTime.substring(0, 5),
-      descriptionOfConcern: record.referral!.descriptionOfConcern,
-      knownReasons: record.referral!.knownReasons,
-      contributoryFactors: record.referral!.contributoryFactors,
-      isSaferCustodyTeamInformed: record.referral!.isSaferCustodyTeamInformed,
-      otherInformation: record.referral!.otherInformation,
-      incidentInvolvement: record.referral!.incidentInvolvement,
-      staffAssaulted: record.referral!.isStaffAssaulted,
-      assaultedStaffName: record.referral!.assaultedStaffName,
+      ...record.referral,
     }
-    const investigation: Partial<components['schemas']['Investigation']> = {
-      ...record.referral!.investigation,
-    }
+    const { investigation } = referral
 
     const interviews = record.referral!.investigation?.interviews
     if (interviews) {
-      investigation['interviews'] = interviews.sort((intA, intB) => {
+      investigation!.interviews = interviews.sort((intA, intB) => {
         const dif = new Date(intA.interviewDate).getTime() - new Date(intB.interviewDate).getTime()
         if (dif !== 0) {
           return dif

@@ -3,7 +3,7 @@ import { components } from '../../../@types/csip'
 import type PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
 import { BaseJourneyController } from '../base/controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
-import { ordinalNumber, sentenceCase } from '../../../utils/utils'
+import { ordinalNumber, sentenceCase, getNonUndefinedProp } from '../../../utils/utils'
 
 const hasInvestigation = (status: components['schemas']['CsipRecord']['status']) => {
   return !(['REFERRAL_PENDING', 'REFERRAL_SUBMITTED', 'INVESTIGATION_PENDING'] as (typeof status)[]).includes(status)
@@ -66,23 +66,24 @@ export class UpdateReferralController extends BaseJourneyController {
     const record = req.journeyData.csipRecord!
 
     const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
-    const referral = {
-      createdAt: record.createdAt,
-      referredBy: record.referral!.referredBy,
-      refererArea: record.referral!.refererArea,
-      isProactiveReferral: record.referral!.isProactiveReferral,
-      incidentLocation: record.referral!.incidentLocation,
-      incidentType: record.referral!.incidentType,
-      incidentDate: record.referral!.incidentDate,
-      incidentTime: record.referral!.incidentTime && record.referral!.incidentTime.substring(0, 5),
-      descriptionOfConcern: record.referral!.descriptionOfConcern,
-      knownReasons: record.referral!.knownReasons,
-      contributoryFactors: record.referral!.contributoryFactors,
-      isSaferCustodyTeamInformed: record.referral!.isSaferCustodyTeamInformed,
-      otherInformation: record.referral!.otherInformation,
-      incidentInvolvement: record.referral!.incidentInvolvement,
-      staffAssaulted: record.referral!.isStaffAssaulted,
-      assaultedStaffName: record.referral!.assaultedStaffName,
+    const { referral } = record
+
+    req.journeyData.referral = {
+      referredBy: referral.referredBy,
+      refererArea: referral.refererArea,
+      isProactiveReferral: Boolean(referral.isProactiveReferral),
+      incidentLocation: referral.incidentLocation,
+      incidentType: referral.incidentType,
+      incidentDate: referral.incidentDate,
+      incidentTime: referral.incidentTime ?? null,
+      ...getNonUndefinedProp(referral, 'descriptionOfConcern'),
+      ...getNonUndefinedProp(referral, 'knownReasons'),
+      contributoryFactors: referral.contributoryFactors,
+      isSaferCustodyTeamInformed: referral.isSaferCustodyTeamInformed,
+      ...getNonUndefinedProp(referral, 'otherInformation'),
+      ...getNonUndefinedProp(referral, 'incidentInvolvement'),
+      isStaffAssaulted: Boolean(referral.isStaffAssaulted),
+      ...getNonUndefinedProp(referral, 'assaultedStaffName'),
     }
 
     const uniqueContributoryFactors = new Set(
@@ -91,13 +92,11 @@ export class UpdateReferralController extends BaseJourneyController {
     const uniqueSelectedContributoryFactors = new Set(referral.contributoryFactors.map(cf => cf.factorType.code))
     const canAddMoreContributoryFactors = uniqueSelectedContributoryFactors.size < uniqueContributoryFactors.size
 
-    const investigation: Partial<components['schemas']['Investigation']> = {
-      ...record.referral!.investigation,
-    }
+    const investigation = referral.investigation!
 
     const interviews = record.referral!.investigation?.interviews
     if (interviews) {
-      investigation['interviews'] = interviews.sort((intA, intB) => {
+      investigation.interviews = interviews.sort((intA, intB) => {
         const dif = new Date(intA.interviewDate).getTime() - new Date(intB.interviewDate).getTime()
         if (dif !== 0) {
           return dif

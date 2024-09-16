@@ -62,7 +62,7 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
     .transform(val => {
       const hour = val.hour?.length ? parse24Hour(val.hour) : null
       const minute = val.minute?.length ? parseMinute(val.minute) : null
-      const incidentTime = hour?.success && minute?.success ? `${hour.data}:${minute.data}` : null
+      const incidentTime = hour?.success && minute?.success ? `${hour.data}:${minute.data}:00` : null
       return { ...val, incidentTime }
     })
 }

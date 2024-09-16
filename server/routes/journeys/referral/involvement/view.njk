@@ -47,7 +47,7 @@
           }) }}
       {% endset -%}
       {{ govukRadios({
-          name: "staffAssaulted",
+          name: "isStaffAssaulted",
           fieldset: {
               legend: {
                   text: staffAssaultedLabel,
@@ -58,7 +58,7 @@
             {
               value: true,
               text: "Yes",
-              checked: staffAssaulted === true,
+              checked: isStaffAssaulted === true,
               conditional: {
                 html: staffMemberAssaultedHtml
               }
@@ -66,10 +66,10 @@
             {
               value: false,
               text: "No",
-              checked: staffAssaulted === false
+              checked: isStaffAssaulted === false
             }
           ],
-          errorMessage: validationErrors | findError('staffAssaulted')
+          errorMessage: validationErrors | findError('isStaffAssaulted')
       }) }}
       {{ submitButton({
           text: "Confirm and save" if isUpdate else "Continue",

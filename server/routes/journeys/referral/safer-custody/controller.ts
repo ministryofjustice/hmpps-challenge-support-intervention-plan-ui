@@ -4,7 +4,7 @@ import { SchemaType } from './schemas'
 export class ReferralSaferCustodyController {
   GET = async (req: Request, res: Response) => {
     const isSaferCustodyTeamInformed =
-      res.locals.formResponses?.['isSaferCustodyTeamInformed'] || req.journeyData.referral!.isSaferCustodyTeamInformed
+      res.locals.formResponses?.['isSaferCustodyTeamInformed'] ?? req.journeyData.referral!.isSaferCustodyTeamInformed
     res.render('referral/safer-custody/view', {
       isSaferCustodyTeamInformed,
       backUrl: 'contributory-factors-comments',

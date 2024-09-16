@@ -9,9 +9,6 @@ import { getNonUndefinedProp } from '../../../../utils/utils'
 
 export class UpdateInvolvementController extends PatchReferralController {
   GET = async (req: Request, res: Response) => {
-    const isProactiveReferral = Boolean(req.journeyData.csipRecord!.referral.isProactiveReferral)
-    req.journeyData.referral = { isProactiveReferral } // populated to be used by schemas
-
     const items = await this.getReferenceDataOptionsForRadios(
       req,
       'incident-involvement',
@@ -19,16 +16,16 @@ export class UpdateInvolvementController extends PatchReferralController {
     )
     // Differentiate between not set, false and true
     const formResponsesStaffAssaulted =
-      res.locals.formResponses?.['staffAssaulted'] === undefined
+      res.locals.formResponses?.['isStaffAssaulted'] === undefined
         ? undefined
-        : res.locals.formResponses?.['staffAssaulted'] === 'true'
+        : res.locals.formResponses?.['isStaffAssaulted'] === 'true'
 
     res.render('referral/involvement/view', {
       involvementTypeItems: items,
-      isProactiveReferral,
-      staffAssaulted: formResponsesStaffAssaulted ?? req.journeyData.csipRecord!.referral.isStaffAssaulted,
+      isProactiveReferral: req.journeyData.referral!.isProactiveReferral,
+      isStaffAssaulted: formResponsesStaffAssaulted ?? req.journeyData.referral!.isStaffAssaulted,
       assaultedStaffName:
-        res.locals.formResponses?.['assaultedStaffName'] ?? req.journeyData.csipRecord!.referral.assaultedStaffName,
+        res.locals.formResponses?.['assaultedStaffName'] ?? req.journeyData.referral!.assaultedStaffName,
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
     })
@@ -41,10 +38,10 @@ export class UpdateInvolvementController extends PatchReferralController {
       next,
       changes: {
         incidentInvolvementCode: req.body.involvementType.code,
-        isStaffAssaulted: req.body.staffAssaulted,
+        isStaffAssaulted: req.body.isStaffAssaulted,
         ...getNonUndefinedProp(req.body, 'assaultedStaffName'),
       },
-      successMessage: req.journeyData.csipRecord!.referral.isProactiveReferral
+      successMessage: req.journeyData.referral!.isProactiveReferral
         ? MESSAGE_PROACTIVE_INVOLVEMENT_UPDATED
         : MESSAGE_REACTIVE_INVOLVEMENT_UPDATED,
     })
