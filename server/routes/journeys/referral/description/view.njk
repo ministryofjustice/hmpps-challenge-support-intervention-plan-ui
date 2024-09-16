@@ -36,9 +36,11 @@
             summaryText: "What type of information to include",
             html: detailsHtml
         }) }}
-        {{ govukInsetText({
-            text: currentDescriptionOfConcern | escape | nl2br
-        }) }}
+        {% if isUpdate %}
+            {{ govukInsetText({
+                text: currentDescriptionOfConcern | escape | nl2br
+            }) }}
+        {% endif %}
         {{ govukCharacterCount({
             maxlength: maxLengthChars,
             rows: 5,

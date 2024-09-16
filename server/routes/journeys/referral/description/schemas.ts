@@ -7,7 +7,7 @@ const DESCRIPTION_OF_CONCERN_TOO_LONG_MSG = (length: number) =>
   `Description must be ${length.toLocaleString()} characters or less`
 
 export const schemaFactory = async (req: Request) => {
-  const { maxLengthChars } = getMaxCharsAndThreshold(req, req.journeyData.referral!.descriptionOfConcern)
+  const { maxLengthChars } = getMaxCharsAndThreshold(req, req.journeyData.csipRecord?.referral.descriptionOfConcern)
 
   const DESCRIPTION_OF_CONCERN_MSG = req.journeyData.referral!.isProactiveReferral
     ? 'Enter a description of the behaviour and concerns'
