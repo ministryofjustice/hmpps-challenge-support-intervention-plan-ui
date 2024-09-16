@@ -695,6 +695,28 @@ const stubCsipRecordGetSuccess = () => {
   })
 }
 
+const stubCsipRecordGetSuccessLongDescription = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        ...csip,
+        referral: {
+          ...csip.referral,
+          descriptionOfConcern: 'a'.repeat(3001),
+        },
+      },
+    },
+  })
+}
+
 const stubCsipRecordGetSuccessCFEdgeCases = () => {
   return stubFor({
     request: {
@@ -927,4 +949,5 @@ export default {
   stubPutDecision,
   stubCsipRecordPatchSuccess,
   stubCsipRecordGetSuccessCFEdgeCases,
+  stubCsipRecordGetSuccessLongDescription,
 }
