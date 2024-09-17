@@ -12,6 +12,15 @@ const DATE_FORMAT_GB_VERBOSE = new Intl.DateTimeFormat('en-GB', {
   day: '2-digit',
 })
 
+const DATE_TIME_FORMAT_GB_VERBOSE = new Intl.DateTimeFormat('en-GB', {
+  year: 'numeric',
+  month: 'long',
+  day: '2-digit',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric',
+})
+
 const RESULT_VALIDATOR = z.string().min(1)
 
 const parseNumber = (value: string, min: number, max: number, length: number) => {
@@ -31,7 +40,10 @@ export const formatInputDate = (value?: string) => value && DATE_FORMAT_GB.forma
 
 export const formatDisplayDate = (value?: string) => value && DATE_FORMAT_GB_VERBOSE.format(new Date(Date.parse(value)))
 
-// format HH:mm:ss time into separate input field values HH and mm
+export const formatDisplayDateTime = (value?: string) =>
+  value && DATE_TIME_FORMAT_GB_VERBOSE.format(new Date(Date.parse(value)))
+
+// format HH:mm time into separate input field values HH and mm
 export const formatInputTime = (value?: string | null) => {
   if (!value || value.length !== 8) {
     return [null, null]

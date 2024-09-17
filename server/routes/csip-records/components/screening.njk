@@ -26,7 +26,7 @@
             text: "Reasons for decision"
         },
             value: {
-            html: screening.reasonForDecision | escape | nl2br
+            html: (screening.reasonForDecision | escape | nl2br) if screening.reasonForDecision else "Not provided"
         }
         },
         {
