@@ -717,6 +717,55 @@ const stubCsipRecordGetSuccessLongDescription = () => {
   })
 }
 
+const stubCsipRecordGetSuccessAfterScreeningWithReason = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: csipRecordWithScreeningOutcome('a very well thought out reason'),
+    },
+  })
+}
+
+const stubCsipRecordGetSuccessAfterScreeningWithoutReason = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: csipRecordWithScreeningOutcome(''),
+    },
+  })
+}
+
+const csipRecordWithScreeningOutcome = (reason: string) => {
+  return {
+    ...csip,
+    status: 'INVESTIGATION_PENDING',
+    referral: {
+      ...csip.referral,
+      saferCustodyScreeningOutcome: {
+        date: '2024-08-01',
+        recordedBy: 'TEST_USER',
+        recordedByDisplayName: 'Test User',
+        reasonForDecision: reason,
+        outcome: { code: 'E2E', description: 'Progress to investigation' },
+      },
+    },
+  }
+}
+
 const stubCsipRecordGetSuccessCFEdgeCases = () => {
   return stubFor({
     request: {
@@ -949,5 +998,7 @@ export default {
   stubPutDecision,
   stubCsipRecordPatchSuccess,
   stubCsipRecordGetSuccessCFEdgeCases,
+  stubCsipRecordGetSuccessAfterScreeningWithReason,
+  stubCsipRecordGetSuccessAfterScreeningWithoutReason,
   stubCsipRecordGetSuccessLongDescription,
 }

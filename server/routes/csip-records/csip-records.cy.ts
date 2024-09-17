@@ -22,7 +22,7 @@ context('test /csip-records', () => {
     checkTabsAndReferral()
   })
 
-  it('should render a post-screen, pre-investigation csip record', () => {
+  it('should render pre-investigation csip record', () => {
     cy.task('stubCsipRecordGetSuccess')
 
     navigateToTestPage()
@@ -39,6 +39,40 @@ context('test /csip-records', () => {
     )
 
     checkContributoryFactors()
+  })
+
+  it('should render a post-screen csip record (no screening reason)', () => {
+    cy.task('stubCsipRecordGetSuccessAfterScreeningWithoutReason')
+
+    navigateToTestPage()
+
+    cy.findByRole('link', { name: /investigation/i }).should('not.exist')
+    cy.findByRole('link', { name: /referral/i }).should('not.exist')
+    cy.findByRole('heading', { name: /referral details/i }).should('be.visible')
+    cy.findByRole('heading', { name: /referral screening/i }).should('be.visible')
+    cy.findAllByRole('button', { name: /record investigation/i }).should('be.visible')
+
+    cy.contains('dt', 'Screening date').next().should('include.text', `01 August 2024`)
+    cy.contains('dt', 'Screening outcome').next().should('include.text', `Progress to investigation`)
+    cy.contains('dt', 'Reasons for decision').next().should('include.text', `Not provided`)
+    cy.contains('dt', 'Recorded by').next().should('include.text', `Test User`)
+  })
+
+  it('should render a post-screen csip record (with screening reason)', () => {
+    cy.task('stubCsipRecordGetSuccessAfterScreeningWithReason')
+
+    navigateToTestPage()
+
+    cy.findByRole('link', { name: /investigation/i }).should('not.exist')
+    cy.findByRole('link', { name: /referral/i }).should('not.exist')
+    cy.findByRole('heading', { name: /referral details/i }).should('be.visible')
+    cy.findByRole('heading', { name: /referral screening/i }).should('be.visible')
+    cy.findAllByRole('button', { name: /record investigation/i }).should('be.visible')
+
+    cy.contains('dt', 'Screening date').next().should('include.text', `01 August 2024`)
+    cy.contains('dt', 'Screening outcome').next().should('include.text', `Progress to investigation`)
+    cy.contains('dt', 'Reasons for decision').next().should('include.text', `a very well thought out reason`)
+    cy.contains('dt', 'Recorded by').next().should('include.text', `Test User`)
   })
 
   it('should render a post-decision, pre-plan csip record', () => {
