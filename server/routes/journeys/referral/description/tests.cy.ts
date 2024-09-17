@@ -70,8 +70,8 @@ context('Make a Referral Journey', () => {
     })
     cy.findByRole('button', { name: /continue/i }).click()
     cy.get('.govuk-error-summary a').should('have.length', 1)
-    cy.findByRole('link', { name: /description must be 3,943 characters or less/i }).should('be.visible')
-    cy.contains(/description must be 3,943 characters or less/i).should('be.visible')
+    cy.findByRole('link', { name: /description must be 4,000 characters or less/i }).should('be.visible')
+    cy.contains(/description must be 4,000 characters or less/i).should('be.visible')
     cy.contains(/you have 1 character too many/i).should('be.visible')
 
     cy.findByRole('textbox', { name: proactive ? proactiveTitle : reactiveTitle })
