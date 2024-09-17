@@ -1,12 +1,12 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = factorDescription + " comment - Make a CSIP referral" %}
+{% set pageTitle = ("New " + factorDescription | sentenceCase(false) + " comment - Update a CSIP referral") if isUpdate else (factorDescription + " comment - Make a CSIP referral") %}
 
 {% block innerContent %}
-    <span class="govuk-caption-l">Make a CSIP referral</span>
+    {% include 'base/components/referral-caption.njk' %}
     <label for="comment">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Add a comment on {{ factorDescription | sentenceCase(false) }} factors (optional)</h1>
     </label>
@@ -21,9 +21,9 @@
             value: comment,
             errorMessage: validationErrors | findError('comment')
         }) }}
-        {{ govukButton({
-            text: "Continue",
-            preventDoubleClick: true
+        {{ submitButton({
+            text: "Confirm and save" if isUpdate else "Continue",
+            alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
         }) }}
     </form>
 {% endblock %}

@@ -1,68 +1,60 @@
-import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
-context('test /referral/contributory-factors', () => {
-  const uuid = uuidV4()
-  const START_URL = `${uuid}/prisoners/A1111AA/referral/start`
-  const PAGE_URL = `${uuid}/referral/contributory-factors`
-
+context('test /update-referral/add-contributory-factor', () => {
   const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
-  const getFactor = () => cy.findByRole('checkbox', { name: 'Factor1' })
-
-  const resetInputs = () => {
-    getFactor().uncheck()
-  }
+  const getFactor = () => cy.findByRole('radio', { name: 'Factor1' })
 
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
-    cy.task('stubComponents')
-    cy.task('stubContribFactors')
-    cy.task('stubGetPrisonerImage')
     cy.task('stubGetPrisoner')
+    cy.task('stubGetPrisonerImage')
+    cy.task('stubComponents')
+    cy.task('stubIntervieweeRoles')
+    cy.task('stubCsipRecordGetSuccess')
+    cy.task('stubContribFactors')
+    cy.task('stubIncidentInvolvement')
   })
 
   it('should try out all cases', () => {
-    cy.signIn()
-    cy.visit(START_URL, { failOnStatusCode: false })
-    cy.visit(PAGE_URL)
+    navigateToTestPage()
+    cy.url().should('to.match', /\/update-referral\/add-contributory-factor$/)
 
     checkAxeAccessibility()
     validatePageContents()
-
     validateErrorMessagesMandatory()
-
     completeInputs()
 
     getContinueButton().click()
-    cy.url().should('to.match', /\/contributory-factors-comments$/)
-    cy.go('back')
+    cy.url().should('to.match', /\/new-code1-comment$/)
+    cy.findByRole('link', { name: /^back$/i }).click()
 
     verifyDetailsAreRestoredFromJourney()
   })
 
-  const validatePageContents = () => {
-    cy.findByText('What are the contributory factors?').should('be.visible')
+  const navigateToTestPage = () => {
+    cy.signIn()
+    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
+    cy.findAllByRole('link', { name: /update referral/i })
+      .first()
+      .click()
+    cy.findByRole('button', { name: /Add another contributory factor/i }).click()
+  }
 
-    cy.findByRole('link', { name: /^back/i })
-      .should('have.attr', 'href')
-      .and('match', /reasons$/)
+  const validatePageContents = () => {
+    cy.findByText('Add another contributory factor').should('be.visible')
   }
 
   const validateErrorMessagesMandatory = () => {
-    resetInputs()
-
     getContinueButton().click()
 
-    cy.findByRole('link', { name: /Select the contributory factors/i })
+    cy.findByRole('link', { name: /Select the contributory factor/i })
       .should('be.visible')
       .click()
     getFactor().should('be.focused')
   }
 
   const completeInputs = () => {
-    resetInputs()
-
     getFactor().type('textarea input', { delay: 0 })
   }
 
