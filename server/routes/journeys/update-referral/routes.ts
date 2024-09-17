@@ -9,6 +9,7 @@ import { ReferralContributoryFactorCommentRoutes } from '../referral/contributor
 import { UpdateSaferCustodyRoutes } from './safer-custody/routes'
 import { UpdateReferrerRoutes } from './referrer/routes'
 import { UpdateDescriptionRoutes } from './description/routes'
+import { UpdateContributoryFactorsRoutes } from './contributory-factors/routes'
 
 function Routes({ csipApiService, prisonerSearchService }: Services) {
   const { router, get } = JourneyRouter()
@@ -23,6 +24,7 @@ function Routes({ csipApiService, prisonerSearchService }: Services) {
   router.use('/safer-custody', UpdateSaferCustodyRoutes(csipApiService))
   router.use('/referrer', UpdateReferrerRoutes(csipApiService))
   router.use('/description', UpdateDescriptionRoutes(csipApiService))
+  router.use('/:factorUuid-factorType', UpdateContributoryFactorsRoutes(csipApiService))
 
   return router
 }
