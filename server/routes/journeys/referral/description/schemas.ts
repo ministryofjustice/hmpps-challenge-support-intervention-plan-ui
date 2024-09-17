@@ -6,9 +6,9 @@ import { getMaxCharsAndThreshold } from '../../../../utils/appendFieldUtils'
 const DESCRIPTION_OF_CONCERN_TOO_LONG_MSG = (length: number) =>
   `Description must be ${length.toLocaleString()} characters or less`
 
-export const schemaFactory = async (req: Request, res?: Response) => {
+export const schemaFactory = async (req: Request, res: Response) => {
   const maxLengthChars = req.journeyData.isUpdate
-    ? getMaxCharsAndThreshold(res!.locals.user.displayName, req.journeyData.csipRecord?.referral.descriptionOfConcern)
+    ? getMaxCharsAndThreshold(res.locals.user.displayName, req.journeyData.csipRecord?.referral.descriptionOfConcern)
         .maxLengthChars
     : 4000
 

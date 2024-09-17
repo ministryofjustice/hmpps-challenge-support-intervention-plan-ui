@@ -55,7 +55,7 @@ export const validateAndTransformReferenceData =
     return refDataMap.get(val)!
   }
 
-export type SchemaFactory = (request: Request, res?: Response) => Promise<z.ZodTypeAny>
+export type SchemaFactory = (request: Request, res: Response) => Promise<z.ZodTypeAny>
 
 const normaliseNewLines = (body: Record<string, unknown>) => {
   return Object.fromEntries(
