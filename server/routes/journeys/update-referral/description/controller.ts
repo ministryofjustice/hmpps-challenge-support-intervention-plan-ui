@@ -11,7 +11,10 @@ export class UpdateDescriptionController extends PatchReferralController {
       descriptionOfConcern: res.locals.formResponses?.['descriptionOfConcern'],
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
-      ...getMaxCharsAndThreshold(req, req.journeyData.csipRecord!.referral.descriptionOfConcern),
+      ...getMaxCharsAndThreshold(
+        res.locals.user.displayName,
+        req.journeyData.csipRecord!.referral.descriptionOfConcern,
+      ),
     })
   }
 
@@ -23,7 +26,7 @@ export class UpdateDescriptionController extends PatchReferralController {
       changes: {
         descriptionOfConcern:
           req.journeyData.referral!.descriptionOfConcern +
-          generateSaveTimestamp(req.journeyData.prisoner!) +
+          generateSaveTimestamp(res.locals.user.displayName) +
           req.body.descriptionOfConcern,
       },
       successMessage: MESSAGE_REFERRAL_DETAILS_UPDATED,

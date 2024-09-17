@@ -1,4 +1,4 @@
-import { RequestHandler, Request } from 'express'
+import { RequestHandler, Request, Response } from 'express'
 import z, { RefinementCtx } from 'zod'
 import { isValid, isBefore, parseISO, isAfter, isEqual } from 'date-fns'
 import { FLASH_KEY__FORM_RESPONSES, FLASH_KEY__VALIDATION_ERRORS } from '../utils/constants'
@@ -55,7 +55,7 @@ export const validateAndTransformReferenceData =
     return refDataMap.get(val)!
   }
 
-export type SchemaFactory = (request: Request) => Promise<z.ZodTypeAny>
+export type SchemaFactory = (request: Request, res?: Response) => Promise<z.ZodTypeAny>
 
 const normaliseNewLines = (body: Record<string, unknown>) => {
   return Object.fromEntries(
@@ -68,7 +68,7 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
     if (!schema) {
       return next()
     }
-    const resolvedSchema = typeof schema === 'function' ? await schema(req) : schema
+    const resolvedSchema = typeof schema === 'function' ? await schema(req, res) : schema
     const result = resolvedSchema.safeParse(normaliseNewLines(req.body))
     if (result.success) {
       req.body = result.data

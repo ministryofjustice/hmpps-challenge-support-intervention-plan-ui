@@ -32,7 +32,7 @@ context('test /update-referral/proactive-or-reactive', () => {
   it('test description, should show chars left immediately', () => {
     cy.task('stubCsipRecordGetSuccessLongDescription')
     navigateToTestPage()
-    cy.contains(/you have 938 characters remaining/i).should('be.visible') // 999 chars minus length of timestamp string
+    cy.contains(/you have 942 characters remaining/i).should('be.visible') // 999 chars minus length of timestamp string
   })
 
   const navigateToTestPage = () => {
@@ -66,7 +66,7 @@ context('test /update-referral/proactive-or-reactive', () => {
     cy.findByRole('textbox', { name: title }).should('be.focused')
 
     cy.findByRole('textbox').type(
-      'a'.repeat(3770), // prefix + timestamp + 3770 = 4001
+      'a'.repeat(3774), // prefix + timestamp + 3774 = 4001
       {
         delay: 0,
         force: true,
@@ -75,15 +75,15 @@ context('test /update-referral/proactive-or-reactive', () => {
     cy.findByRole('button', { name: /confirm and save/i }).click()
     cy.get('.govuk-error-summary a').should('have.length', 1)
 
-    // prefix is 170 chars and timestamp length is 61
-    cy.findByRole('link', { name: /description must be 3,769 characters or less/i }).should('be.visible')
-    cy.contains(/description must be 3,769 characters or less/i).should('be.visible')
+    // prefix is 166 chars and timestamp length is 61
+    cy.findByRole('link', { name: /description must be 3,773 characters or less/i }).should('be.visible')
+    cy.contains(/description must be 3,773 characters or less/i).should('be.visible')
     cy.contains(/you have 1 character too many/i).should('be.visible')
 
     cy.findByRole('textbox', { name: title })
       .clear()
       .type(
-        'a'.repeat(3000 - 170 - 62), // prefix and timestamp lengths
+        'a'.repeat(3000 - 166 - 61), // prefix and timestamp lengths
         {
           delay: 0,
           force: true,
@@ -91,6 +91,6 @@ context('test /update-referral/proactive-or-reactive', () => {
       )
     cy.contains(/you have [0-9]{0,1},?[0-9]{1,3} characters remaining/i).should('not.be.visible')
     cy.findByRole('textbox', { name: title }).type('a')
-    cy.contains(/you have 1,000 characters remaining/i).should('be.visible')
+    cy.contains(/you have 999 characters remaining/i).should('be.visible')
   }
 })
