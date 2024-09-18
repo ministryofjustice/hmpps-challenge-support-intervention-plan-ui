@@ -941,10 +941,12 @@ export const csip = {
     <button>also should be escaped</button>`,
     contributoryFactors: [
       {
-        factorType: { code: 'A', description: 'Text' },
+        factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f1',
+        factorType: { code: 'CODE3', description: 'Text' },
       },
       {
-        factorType: { code: 'B', description: '<script>alert("Text for type-B")</script>' },
+        factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f2',
+        factorType: { code: 'CODE1', description: '<script>alert("Text for type-B")</script>' },
         comment: `Text
 
         • Bullet 1
@@ -958,7 +960,8 @@ export const csip = {
         <button>factor comment button should be escaped</button>`,
       },
       {
-        factorType: { code: 'C', description: 'Text with a TLA' },
+        factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f3',
+        factorType: { code: `CODE4`, description: 'Text with a TLA' },
       },
     ],
     isSaferCustodyTeamInformed: YES_NO_ANSWER.Enum.YES,

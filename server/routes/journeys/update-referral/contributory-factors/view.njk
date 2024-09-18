@@ -1,5 +1,5 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 
 {% extends "partials/layout.njk" %}
@@ -22,9 +22,9 @@
             errorMessage: validationErrors | findError('contributoryFactors')
         }) }}
 
-        {{ govukButton({
+        {{ submitButton({
             text: "Confirm and save",
-            preventDoubleClick: true
+            alternativeHyperlinkHref: "/csip-records/" + recordUuid
         }) }}
     </form>
 {% endblock %}

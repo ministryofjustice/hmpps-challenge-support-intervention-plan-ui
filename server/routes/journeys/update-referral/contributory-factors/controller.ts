@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
-import { SchemaType } from '../../referral/contributory-factors/schemas'
-import { MESSAGE_REFERRAL_DETAILS_UPDATED, PatchReferralController } from '../../base/patchReferralController'
+import { PatchReferralController } from '../../base/patchReferralController'
+import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../../../utils/constants'
 
 export class UpdateContributoryFactorsController extends PatchReferralController {
   GET = async (req: Request, res: Response) => {
@@ -33,14 +33,19 @@ export class UpdateContributoryFactorsController extends PatchReferralController
     })
   }
 
-  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, res: Response, next: NextFunction) =>
-    this.submitChanges({
-      req,
-      res,
-      next,
-      changes: {},
-      successMessage: MESSAGE_REFERRAL_DETAILS_UPDATED,
-    })
+  checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction) => {
+    const uuid = req.baseUrl
+      .split('/')
+      .pop()
+      ?.match(/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/)?.[0]
+
+    if (!uuid) {
+      return res.notFound()
+    }
+
+    req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, 'You’ve updated the information on contributory factors.')
+    return next()
+  }
 
   POST = async (req: Request, res: Response) => {
     res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
