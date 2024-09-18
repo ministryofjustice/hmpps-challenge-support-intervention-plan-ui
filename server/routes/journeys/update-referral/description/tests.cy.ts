@@ -71,7 +71,7 @@ context('test /update-referral/proactive-or-reactive', () => {
     cy.findByRole('link', { name: errorMsg }).should('be.visible').click()
     cy.findByRole('textbox', { name: title }).should('be.focused')
 
-    cy.findByRole('textbox').type('a'.repeat(4000 - totalUsedChars), {
+    cy.findByRole('textbox').type('a'.repeat(4001 - totalUsedChars), {
       delay: 0,
       force: true,
     })
@@ -89,12 +89,14 @@ context('test /update-referral/proactive-or-reactive', () => {
     cy.findByRole('textbox', { name: title })
       .clear()
       .type(
-        'a'.repeat(3000 - totalUsedChars), // prefix and timestamp lengths
+        'a'.repeat(2999 - totalUsedChars), // prefix and timestamp lengths
         {
           delay: 0,
           force: true,
         },
       )
+    cy.contains(/you have [0-9]{0,1},?[0-9]{1,3} characters remaining/i).should('not.be.visible')
+    cy.findByRole('textbox', { name: title }).type('a')
     cy.contains(/you have 1,000 characters remaining/i).should('be.visible')
   }
 })

@@ -8,9 +8,16 @@ export const generateSaveTimestamp = (username: string) =>
 
 export const getMaxCharsAndThresholdForAppend = (username: string, appendField?: string) => {
   const timestampLength = generateSaveTimestamp(username).length
+  console.log(`generateSaveTimestamp(username): ${generateSaveTimestamp(username)}`)
   const maxLengthChars = 4000 - timestampLength - (appendField || '').length
+  if (timestampLength + (appendField || '').length >= 3000) {
+    return {
+      maxLengthChars,
+      threshold: '0',
+    }
+  }
   return {
     maxLengthChars,
-    threshold: '0',
+    threshold: String(Math.floor((1 - 1000 / maxLengthChars) * 1000000) / 10000),
   }
 }

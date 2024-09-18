@@ -80,12 +80,14 @@ context('test /update-referral/reasons', () => {
     cy.findByRole('textbox', { name: title })
       .clear()
       .type(
-        'a'.repeat(3000 - totalUsedChars), // prefix and timestamp lengths
+        'a'.repeat(2999 - totalUsedChars), // prefix and timestamp lengths
         {
           delay: 0,
           force: true,
         },
       )
+    cy.contains(/you have [0-9]{0,1},?[0-9]{1,3} characters remaining/i).should('not.be.visible')
+    cy.findByRole('textbox', { name: title }).type('a')
     cy.contains(/you have 1,000 characters remaining/i).should('be.visible')
   }
 })
