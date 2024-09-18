@@ -21,7 +21,7 @@ context('test /update-referral/proactive-or-reactive', () => {
   const proceedToNextPage = () => {
     cy.findByRole('button', { name: /Confirm and save/i }).click()
     cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
-    cy.findByText('You’ve updated the referral details.').should('be.visible')
+    cy.findByText('You’ve updated the behaviour description.').should('be.visible')
   }
 
   it('test description, including all edge cases, proactive', () => {

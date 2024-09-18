@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import { SchemaType } from '../../referral/description/schemas'
-import { MESSAGE_REFERRAL_DETAILS_UPDATED, PatchReferralController } from '../../base/patchReferralController'
+import {
+  MESSAGE_PROACTIVE_DESCRIPTION_UPDATED,
+  MESSAGE_REACTIVE_DESCRIPTION_UPDATED,
+  PatchReferralController,
+} from '../../base/patchReferralController'
 import { generateSaveTimestamp, getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
 
 export class UpdateDescriptionController extends PatchReferralController {
@@ -29,7 +33,9 @@ export class UpdateDescriptionController extends PatchReferralController {
           generateSaveTimestamp(res.locals.user.displayName) +
           req.body.descriptionOfConcern,
       },
-      successMessage: MESSAGE_REFERRAL_DETAILS_UPDATED,
+      successMessage: req.journeyData.referral?.isProactiveReferral
+        ? MESSAGE_PROACTIVE_DESCRIPTION_UPDATED
+        : MESSAGE_REACTIVE_DESCRIPTION_UPDATED,
     })
 
   POST = async (req: Request, res: Response) => {
