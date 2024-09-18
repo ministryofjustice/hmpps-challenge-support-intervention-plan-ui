@@ -1,34 +1,42 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Reasons - Make a CSIP referral" %}
+{% set pageTitle = "Reasons - Update CSIP referral" if isUpdate else "Reasons - Make a CSIP referral" %}
 
-{% set headerText = 'What reasons have been given for the behaviour?' if isProactiveReferral else 'What reasons have been given for the incident?' %}
+{% set nonUpdateHeaderText = 'What reasons have been given for the behaviour?' if isProactiveReferral else 'What reasons have been given for the incident?' %}
+{% set updateHeaderText = 'Add information to the reasons given for the behaviour' if isProactiveReferral else 'Add information to the reasons given for the incident' %}
+{% set headerText = updateHeaderText if isUpdate else nonUpdateHeaderText %}
 
 {% block innerContent %}
-    <span class="govuk-caption-l">Make a CSIP referral</span>
+    {% include 'base/components/referral-caption.njk' %}
     <label for="knownReasons">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ headerText }}</h1>
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+         {% if isUpdate %}
+            {{ govukInsetText({
+                text: currentKnownReasons | escape | nl2br
+            }) }}
+        {% endif %}
         {{ govukCharacterCount({
             hint: {
                 text: 'Include any reasons the prisoner has given about why the behaviour has occurred. You can also include reasons reported by other people.' if isProactiveReferral else 'Include any reasons the prisoner has given about why the incident occurred. You can also include reasons reported by other people.'
             },
-            maxlength: 4000,
+            maxlength: maxLengthChars,
             rows: 5,
-            threshold: "75",
+            threshold: threshold,
             id: "knownReasons",
             name: "knownReasons",
             value: knownReasons,
             errorMessage: validationErrors | findError('knownReasons')
         }) }}
-        {{ govukButton({
-            text: "Continue",
-            preventDoubleClick: true
-        }) }}
+        {{ submitButton({
+            text: "Confirm and save" if isUpdate else "Continue",
+            alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
+        }) }}   
     </form>
 {% endblock %}

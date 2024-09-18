@@ -1,10 +1,10 @@
 import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
-context('test /update-referral/proactive-or-reactive', () => {
-  const title = /Describe the behaviour and the concerns relating to the behaviour/i
-  const errorMsg = /enter a description of the behaviour and concerns/i
+context('test /update-referral/reasons', () => {
+  const title = /Add information to the reasons given for the behaviour/i
+  const errorMsg = /enter the reasons given for the behaviour/i
   const dividerText = generateSaveTimestamp('John Smith')
-  const totalUsedChars = dividerText.length + 170 // 170 = already existing description text
+  const totalUsedChars = dividerText.length + 158 // 158 = already existing reason text
 
   beforeEach(() => {
     cy.task('reset')
@@ -24,17 +24,16 @@ context('test /update-referral/proactive-or-reactive', () => {
     cy.findByText('You’ve updated the referral details.').should('be.visible')
   }
 
-  it('test description, including all edge cases, proactive', () => {
+  it('test reasons, including all edge cases, proactive', () => {
     cy.task('stubCsipRecordGetSuccess')
     navigateToTestPage()
     checkValuesPersist()
     checkValidation()
-    checkDetailsSummary()
     proceedToNextPage()
   })
 
-  it('test description, should show chars left immediately', () => {
-    cy.task('stubCsipRecordGetSuccessLongDescription')
+  it('test reasons, should show chars left immediately', () => {
+    cy.task('stubCsipRecordGetSuccessLongReasons')
     navigateToTestPage()
     cy.contains(new RegExp(`you have ${4000 - 3001 - dividerText.length} characters remaining`, 'i')).should(
       'be.visible',
@@ -47,20 +46,12 @@ context('test /update-referral/proactive-or-reactive', () => {
     cy.findAllByRole('link', { name: /update referral/i })
       .first()
       .click()
-    cy.findByRole('link', { name: /Change the description of the behaviour and concerns/i }).click()
-  }
-
-  const checkDetailsSummary = () => {
-    cy.get('details').invoke('attr', 'open').should('not.exist')
-    cy.get('summary').click()
-    cy.get('details').invoke('attr', 'open').should('exist')
-
-    cy.findByText(/a summary of the concerns/i).should('be.visible')
+    cy.findByRole('link', { name: /Change the reasons given for the behaviour/i }).click()
   }
 
   const checkValuesPersist = () => {
     cy.findByRole('textbox').should('have.value', '')
-    cy.findByText(/<script>alert\('concerns'\);<\/script>/).should('be.visible')
+    cy.findByText(/<script>alert\('xss'\);<\/script>/).should('be.visible')
   }
 
   const checkValidation = () => {
@@ -71,7 +62,7 @@ context('test /update-referral/proactive-or-reactive', () => {
     cy.findByRole('link', { name: errorMsg }).should('be.visible').click()
     cy.findByRole('textbox', { name: title }).should('be.focused')
 
-    cy.findByRole('textbox').type('a'.repeat(4000 - totalUsedChars), {
+    cy.findByRole('textbox').type('a'.repeat(4001 - totalUsedChars), {
       delay: 0,
       force: true,
     })
@@ -79,7 +70,7 @@ context('test /update-referral/proactive-or-reactive', () => {
     cy.get('.govuk-error-summary a').should('have.length', 1)
 
     const errorRegexp = new RegExp(
-      `description must be ${Number(4000 - totalUsedChars).toLocaleString()} characters or less`,
+      `reasons must be ${Number(4000 - totalUsedChars).toLocaleString()} characters or less`,
       'i',
     )
     cy.findByRole('link', { name: errorRegexp }).should('be.visible')
