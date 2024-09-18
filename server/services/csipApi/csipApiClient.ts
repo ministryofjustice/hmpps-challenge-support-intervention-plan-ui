@@ -46,6 +46,16 @@ export default class CsipApiClient {
     })
   }
 
+  async addContributoryFactor(
+    recordUuid: string,
+    createContributoryFactorRequest: components['schemas']['CreateContributoryFactorRequest'],
+  ): Promise<components['schemas']['ContributoryFactor']> {
+    return this.restClient.post({
+      path: `/csip-records/${recordUuid}/referral/contributory-factors`,
+      data: createContributoryFactorRequest,
+    })
+  }
+
   async createScreeningOutcome(
     recordUuid: string,
     payload: components['schemas']['CreateSaferCustodyScreeningOutcomeRequest'],

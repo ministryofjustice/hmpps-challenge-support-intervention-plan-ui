@@ -39,6 +39,16 @@ export default class CsipApiService {
     )
   }
 
+  addContributoryFactor(
+    req: Request,
+    createContributoryFactorRequest: components['schemas']['CreateContributoryFactorRequest'],
+  ): Promise<components['schemas']['ContributoryFactor']> {
+    return this.csipApiClientBuilder(req.systemClientToken).addContributoryFactor(
+      req.journeyData.csipRecord!.recordUuid,
+      createContributoryFactorRequest,
+    )
+  }
+
   createScreeningOutcome(req: Request, payload: Parameters<CsipApiClient['createScreeningOutcome']>[1]) {
     return this.csipApiClientBuilder(req.systemClientToken).createScreeningOutcome(
       req.journeyData.csipRecord!.recordUuid,
