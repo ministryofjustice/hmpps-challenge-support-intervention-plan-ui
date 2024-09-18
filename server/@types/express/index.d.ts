@@ -37,6 +37,7 @@ export type PrisonerSummary = Prisoner
 
 type ReferralData = Partial<{
   onBehalfOfSubJourney: ReferralData
+  contributoryFactorSubJourney: Partial<ContributoryFactor>
   isOnBehalfOfReferral: boolean
   referredBy: string
   refererArea: ReferenceData

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { SchemaType } from '../../referral/description/schemas'
+import { SchemaType } from '../../referral/reasons/schemas'
 import {
   MESSAGE_PROACTIVE_DESCRIPTION_UPDATED,
   MESSAGE_REACTIVE_DESCRIPTION_UPDATED,
@@ -7,17 +7,17 @@ import {
 } from '../../base/patchReferralController'
 import { generateSaveTimestamp, getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
 
-export class UpdateDescriptionController extends PatchReferralController {
+export class UpdateReasonsController extends PatchReferralController {
   GET = async (req: Request, res: Response) => {
-    res.render('referral/description/view', {
+    res.render('referral/reasons/view', {
       isProactiveReferral: req.journeyData.csipRecord!.referral.isProactiveReferral,
-      currentDescriptionOfConcern: req.journeyData.csipRecord!.referral.descriptionOfConcern,
-      descriptionOfConcern: res.locals.formResponses?.['descriptionOfConcern'],
+      currentKnownReasons: req.journeyData.csipRecord!.referral.knownReasons,
+      knownReasons: res.locals.formResponses?.['knownReasons'],
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
       ...getMaxCharsAndThresholdForAppend(
         res.locals.user.displayName,
-        req.journeyData.csipRecord!.referral.descriptionOfConcern,
+        req.journeyData.csipRecord!.referral.knownReasons,
       ),
     })
   }
@@ -28,10 +28,10 @@ export class UpdateDescriptionController extends PatchReferralController {
       res,
       next,
       changes: {
-        descriptionOfConcern:
-          req.journeyData.referral!.descriptionOfConcern +
+        knownReasons:
+          req.journeyData.referral!.knownReasons +
           generateSaveTimestamp(res.locals.user.displayName) +
-          req.body.descriptionOfConcern,
+          req.body.knownReasons,
       },
       successMessage: req.journeyData.referral?.isProactiveReferral
         ? MESSAGE_PROACTIVE_DESCRIPTION_UPDATED

@@ -21,7 +21,7 @@ export const csipStatusDisplayText = (csipRecord: CsipRecord) => {
     case 'REFERRAL_SUBMITTED':
       return 'Referral submitted'
     case 'SUPPORT_OUTSIDE_CSIP':
-      return 'Support to be provided outside CSIP'
+      return 'Support outside of CSIP'
     case 'UNKNOWN':
     default:
       throw new Error(`Unrecognised CSIP status: ${csipRecord.status}`)
