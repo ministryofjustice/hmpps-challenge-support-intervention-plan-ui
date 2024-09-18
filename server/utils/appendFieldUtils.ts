@@ -6,7 +6,7 @@ import { formatDisplayDateTime } from './datetimeUtils'
 export const generateSaveTimestamp = (username: string) =>
   `\n\n[On ${formatDisplayDateTime(new Date().toString())}, ${username} added:]\n\n`
 
-export const getMaxCharsAndThresholdForAppend = (username: string, appendField?: string) => {
+export const getMaxCharsAndThresholdForAppend = (username: string, appendField?: string | null) => {
   const timestampLength = generateSaveTimestamp(username).length
   const maxLengthChars = 4000 - timestampLength - (appendField || '').length
   if (timestampLength + (appendField || '').length >= 3000) {

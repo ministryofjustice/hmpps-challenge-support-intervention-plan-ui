@@ -1,13 +1,24 @@
 import z from 'zod'
+import { Request, Response } from 'express'
 import { createSchema } from '../../../../middleware/validationMiddleware'
+import { getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
 
-const TOO_LONG_ERROR_MSG = 'Additional information must be 4,000 characters or less'
+const TOO_LONG_MSG = (length: number) => `Additional information must be ${length.toLocaleString()} characters or less`
 
-export const schema = createSchema({
-  otherInformation: z
-    .string()
-    .max(4000, TOO_LONG_ERROR_MSG)
-    .transform(val => (val?.trim().length ? val : null)),
-})
+export const schemaFactory = async (req: Request, res: Response) => {
+  const maxLengthChars = req.journeyData.isUpdate
+    ? getMaxCharsAndThresholdForAppend(
+        res.locals.user.displayName,
+        req.journeyData.csipRecord?.referral.otherInformation,
+      ).maxLengthChars
+    : 4000
 
-export type SchemaType = z.infer<typeof schema>
+  return createSchema({
+    otherInformation: z
+      .string()
+      .max(maxLengthChars, TOO_LONG_MSG(maxLengthChars))
+      .transform(val => (val?.trim().length ? val : null)),
+  })
+}
+
+export type SchemaType = z.infer<Awaited<ReturnType<typeof schemaFactory>>>
