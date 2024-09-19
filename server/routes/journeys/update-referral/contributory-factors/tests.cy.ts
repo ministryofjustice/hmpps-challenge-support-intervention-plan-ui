@@ -35,11 +35,13 @@ context('test /update-referral/contributory-factors', () => {
 
     cy.visit(
       `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/not-a-uuid-factorType#contributoryFactor`,
+      { failOnStatusCode: false },
     )
     cy.findByRole('heading', { name: /Page not found/i }).should('be.visible')
 
     cy.visit(
       `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/${uuid}-factorType#contributoryFactor`,
+      { failOnStatusCode: false },
     )
     cy.findByRole('heading', { name: /Page not found/i }).should('be.visible')
   })
