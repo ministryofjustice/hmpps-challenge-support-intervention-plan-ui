@@ -839,6 +839,38 @@ const stubPutDecision = () => {
   })
 }
 
+const stubPatchContributoryFactorSuccess = () => {
+  return stubFor({
+    request: {
+      method: 'PATCH',
+      urlPattern: '/csip-api/csip-records/referral/contributory-factors/[a-zA-Z0-9-]*',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {},
+    },
+  })
+}
+
+const stubPatchContributoryFactorFail = () => {
+  return stubFor({
+    request: {
+      method: 'PATCH',
+      urlPattern: '/csip-api/csip-records/referral/contributory-factors/[a-zA-Z0-9-]*',
+    },
+    response: {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
+    },
+  })
+}
+
 export const csip = {
   recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
   prisonNumber: 'A1111AA',
@@ -950,4 +982,6 @@ export default {
   stubCsipRecordGetSuccessLongDescription,
   stubCsipRecordGetSuccessLongReasons,
   stubCsipRecordGetSuccessLongAdditionalInfo,
+  stubPatchContributoryFactorSuccess,
+  stubPatchContributoryFactorFail,
 }

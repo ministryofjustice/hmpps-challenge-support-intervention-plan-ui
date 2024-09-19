@@ -13,13 +13,13 @@
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 
         {{ govukRadios({
-            id: "contributoryFactors",
-            name: "contributoryFactors",
-            items: contributoryFactorCheckboxes,
+            id: "contributoryFactor",
+            name: "contributoryFactor",
+            items: contributoryFactorOptions,
             hint: {
                 text: "Select one option."
             },
-            errorMessage: validationErrors | findError('contributoryFactors')
+            errorMessage: validationErrors | findError('contributoryFactor')
         }) }}
 
         {{ submitButton({

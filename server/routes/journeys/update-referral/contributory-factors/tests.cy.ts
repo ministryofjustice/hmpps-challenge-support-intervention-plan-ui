@@ -8,12 +8,11 @@ context('test /update-referral/contributory-factors', () => {
     cy.task('stubIntervieweeRoles')
     cy.task('stubContribFactors')
     cy.task('stubIncidentInvolvement')
-    cy.task('stubCsipRecordPatchSuccess')
+    cy.task('stubCsipRecordGetSuccess')
   })
 
   it('should render the update referral screen with more contrib factors available', () => {
-    cy.task('stubContribFactors')
-    cy.task('stubCsipRecordGetSuccess')
+    cy.task('stubPatchContributoryFactorSuccess')
 
     navigateToTestPage()
 
@@ -21,9 +20,30 @@ context('test /update-referral/contributory-factors', () => {
 
     checkChangingFirstContributoryFactor()
 
+    cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
+    cy.findByText('You’ve updated the information on contributory factors.').should('be.visible')
+
     goToUpdatePage()
 
     checkChangingSecondContributoryFactor()
+  })
+
+  it('should handle API errors', () => {
+    cy.task('stubPatchContributoryFactorFail')
+
+    navigateToTestPage()
+
+    goToUpdatePage()
+
+    checkChangingFirstContributoryFactor()
+
+    cy.url().should(
+      'to.match',
+      /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-referral\/b8dff21f-e96c-4240-aee7-28900dd910f2-factorType#contributoryFactor$/,
+    )
+
+    cy.findByText('Simulated Error for E2E testing').should('be.visible')
+    cy.findByRole('radio', { name: /factor5/i }).should('be.checked')
   })
 
   const navigateToTestPage = () => {
@@ -47,18 +67,16 @@ context('test /update-referral/contributory-factors', () => {
 
     cy.url().should(
       'to.match',
-      /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-referral\/b8dff21f-e96c-4240-aee7-28900dd910f2-factorType#contributoryFactors$/,
+      /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-referral\/b8dff21f-e96c-4240-aee7-28900dd910f2-factorType#contributoryFactor$/,
     )
     cy.findByRole('heading', { name: /Change the contributory factor/ }).should('be.visible')
     cy.findByText('Update a CSIP referral').should('be.visible')
 
     cy.findByRole('radio', { name: /factor1/i }).should('have.focus')
+    cy.findByRole('radio', { name: /factor5/i }).click()
 
     cy.findByRole('link', { name: /cancel/i })
     cy.findByRole('button', { name: /confirm and save/i }).click()
-
-    cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
-    cy.findByText('You’ve updated the information on contributory factors.').should('be.visible')
   }
 
   const checkChangingSecondContributoryFactor = () => {
@@ -70,7 +88,7 @@ context('test /update-referral/contributory-factors', () => {
 
     cy.url().should(
       'to.match',
-      /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-referral\/b8dff21f-e96c-4240-aee7-28900dd910f1-factorType#contributoryFactors-2$/,
+      /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-referral\/b8dff21f-e96c-4240-aee7-28900dd910f1-factorType#contributoryFactor-2$/,
     )
 
     cy.findByRole('radio', { name: /factor3/i }).should('have.focus')

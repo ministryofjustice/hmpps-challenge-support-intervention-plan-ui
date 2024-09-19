@@ -73,4 +73,12 @@ export default class CsipApiService {
   createPlan(req: Request, payload: Parameters<CsipApiClient['createPlan']>[1]) {
     return this.csipApiClientBuilder(req.systemClientToken).createPlan(req.journeyData.csipRecord!.recordUuid, payload)
   }
+
+  updateContributoryFactor(
+    req: Request,
+    factorUuid: string,
+    payload: Parameters<CsipApiClient['updateContributoryFactor']>[1],
+  ) {
+    return this.csipApiClientBuilder(req.systemClientToken).updateContributoryFactor(factorUuid, payload)
+  }
 }
