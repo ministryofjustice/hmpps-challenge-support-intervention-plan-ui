@@ -2,7 +2,7 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 
 context('test /update-referral/new-contributory-factor-comment', () => {
   const getContinueButton = () => cy.findByRole('button', { name: /Confirm and save/ })
-  const getComment = () => cy.findByRole('textbox', { name: 'Add a comment on factor1 factors (optional)' })
+  const getComment = () => cy.findByRole('textbox', { name: 'Add a comment on factor2 factors (optional)' })
 
   const resetInputs = () => {
     getComment().clear()
@@ -23,7 +23,7 @@ context('test /update-referral/new-contributory-factor-comment', () => {
 
   it('should try out all cases', () => {
     navigateToTestPage()
-    cy.url().should('to.match', /\/new-code1-comment$/)
+    cy.url().should('to.match', /\/new-code2-comment$/)
 
     checkAxeAccessibility()
     validatePageContents()
@@ -43,7 +43,7 @@ context('test /update-referral/new-contributory-factor-comment', () => {
       .click()
     cy.findByRole('button', { name: /Add another contributory factor/i }).click()
     cy.url().should('to.match', /\/update-referral\/add-contributory-factor$/)
-    cy.findByRole('radio', { name: 'Factor1' }).click()
+    cy.findByRole('radio', { name: 'Factor2' }).click()
     cy.findByRole('button', { name: /Continue/ }).click()
   }
 
