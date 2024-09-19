@@ -2,6 +2,7 @@ import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
 context('test /update-referral/additional-information', () => {
   const title = /Add additional information \(optional\)/i
+  const errorMsg = /enter an update to the additional information/i
   const dividerText = generateSaveTimestamp('John Smith')
   const totalUsedChars = dividerText.length + 170 // 170 = already existing additional info text
 
@@ -56,10 +57,23 @@ context('test /update-referral/additional-information', () => {
   const checkValidation = () => {
     cy.findByRole('heading', { name: title }).should('be.visible')
 
-    cy.findByRole('textbox').type('a'.repeat(4001 - totalUsedChars), {
-      delay: 0,
-      force: true,
-    })
+    cy.findByRole('button', { name: /confirm and save/i }).click()
+    cy.get('.govuk-error-summary a').should('have.length', 1)
+    cy.get('p').contains(errorMsg).should('be.visible')
+    cy.findByRole('link', { name: errorMsg }).should('be.visible').click()
+    cy.findByRole('textbox', { name: title }).should('be.focused')
+    cy.reload()
+    cy.findByRole('textbox').type('   ')
+    cy.findByRole('button', { name: /confirm and save/i }).click()
+    cy.get('.govuk-error-summary a').should('have.length', 1)
+    cy.get('p').contains(errorMsg).should('be.visible')
+
+    cy.findByRole('textbox')
+      .clear()
+      .type('a'.repeat(4001 - totalUsedChars), {
+        delay: 0,
+        force: true,
+      })
     cy.findByRole('button', { name: /confirm and save/i }).click()
     cy.get('.govuk-error-summary a').should('have.length', 1)
 

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { SchemaType } from '../../referral/additional-information/schemas'
+import { SchemaType } from './schemas'
 import { MESSAGE_REFERRAL_ADDITIONAL_INFO_UPDATED, PatchReferralController } from '../../base/patchReferralController'
 import { generateSaveTimestamp, getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
 
