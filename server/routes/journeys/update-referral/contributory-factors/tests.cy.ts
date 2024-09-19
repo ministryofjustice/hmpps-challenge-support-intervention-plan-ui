@@ -1,4 +1,8 @@
+import { v4 as uuidV4 } from 'uuid'
+
 context('test /update-referral/contributory-factors', () => {
+  const uuid = uuidV4()
+
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
@@ -9,6 +13,7 @@ context('test /update-referral/contributory-factors', () => {
     cy.task('stubContribFactors')
     cy.task('stubIncidentInvolvement')
     cy.task('stubCsipRecordGetSuccess')
+    cy.signIn()
   })
 
   it('should render the update referral screen with more contrib factors available', () => {
@@ -16,24 +21,33 @@ context('test /update-referral/contributory-factors', () => {
 
     navigateToTestPage()
 
-    goToUpdatePage()
-
     checkChangingFirstContributoryFactor()
 
     cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
     cy.findByText('You’ve updated the information on contributory factors.').should('be.visible')
 
-    goToUpdatePage()
-
+    navigateToTestPage()
     checkChangingSecondContributoryFactor()
+  })
+
+  it('should show not found page when a contributory factor does not exist', () => {
+    navigateToTestPage()
+
+    cy.visit(
+      `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/not-a-uuid-factorType#contributoryFactor`,
+    )
+    cy.findByRole('heading', { name: /Page not found/i }).should('be.visible')
+
+    cy.visit(
+      `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/${uuid}-factorType#contributoryFactor`,
+    )
+    cy.findByRole('heading', { name: /Page not found/i }).should('be.visible')
   })
 
   it('should handle API errors', () => {
     cy.task('stubPatchContributoryFactorFail')
 
     navigateToTestPage()
-
-    goToUpdatePage()
 
     checkChangingFirstContributoryFactor()
 
@@ -47,15 +61,7 @@ context('test /update-referral/contributory-factors', () => {
   })
 
   const navigateToTestPage = () => {
-    cy.signIn()
-    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
-  }
-
-  const goToUpdatePage = () => {
-    cy.findAllByRole('link', { name: /update referral/i })
-      .should('be.visible')
-      .first()
-      .click()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start`)
   }
 
   const checkChangingFirstContributoryFactor = () => {
@@ -72,6 +78,7 @@ context('test /update-referral/contributory-factors', () => {
     cy.findByRole('heading', { name: /Change the contributory factor/ }).should('be.visible')
     cy.findByText('Update a CSIP referral').should('be.visible')
 
+    cy.contains('label', 'Factor3').should('not.exist')
     cy.findByRole('radio', { name: /factor1/i }).should('have.focus')
     cy.findByRole('radio', { name: /factor5/i }).click()
 

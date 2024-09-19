@@ -6,25 +6,36 @@ import {
   FLASH_KEY__VALIDATION_ERRORS,
 } from '../../../../utils/constants'
 import { SanitisedError } from '../../../../sanitisedError'
+import { getNonUndefinedProp } from '../../../../utils/utils'
+import { ContributoryFactor } from '../../../../@types/express'
 
 export class UpdateContributoryFactorsController extends PatchReferralController {
-  GET = async (req: Request, res: Response) => {
+  private getSelectedCf = (req: Request): ContributoryFactor | undefined => {
     const uuid = req.baseUrl
       .split('/')
       .pop()
       ?.match(/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/)?.[0]
+
     if (!uuid) {
+      return undefined
+    }
+
+    return req.journeyData.referral!.contributoryFactors?.find(factors => factors.factorUuid === uuid)
+  }
+
+  GET = async (req: Request, res: Response) => {
+    const selectedCf = this.getSelectedCf(req)
+
+    if (!selectedCf) {
       return res.notFound()
     }
 
     const contributoryFactorOptions = await this.getReferenceDataOptionsForRadios(
       req,
       'contributory-factor-type',
-      res.locals.formResponses?.['contributoryFactor'] ||
-        req.journeyData.referral!.contributoryFactors?.find(factors => factors.factorUuid === uuid)?.factorType.code,
+      res.locals.formResponses?.['contributoryFactor'] || selectedCf.factorType.code,
     )
 
-    const cf = req.journeyData.referral!.contributoryFactors!.find(factors => factors.factorUuid === uuid)
     const { referral } = req.journeyData.csipRecord!
 
     return res.render('update-referral/contributory-factors/view', {
@@ -32,28 +43,23 @@ export class UpdateContributoryFactorsController extends PatchReferralController
       recordUuid: req.journeyData.csipRecord!.recordUuid,
       contributoryFactorOptions: contributoryFactorOptions.filter(
         o =>
-          cf?.factorType.code === o.value ||
+          selectedCf.factorType.code === o.value ||
           !referral.contributoryFactors.find(factor => factor.factorType.code === o.value),
       ),
     })
   }
 
   checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const uuid = req.baseUrl
-      .split('/')
-      .pop()
-      ?.match(/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/)?.[0]
+    const selectedCf = this.getSelectedCf(req)
 
-    if (!uuid) {
+    if (!selectedCf) {
       return res.notFound()
     }
 
-    const comment = req.journeyData.referral!.contributoryFactors!.find(factors => factors.factorUuid === uuid)?.comment
-
     try {
-      await this.csipApiService.updateContributoryFactor(req, uuid, {
+      await this.csipApiService.updateContributoryFactor(req, selectedCf.factorUuid!, {
         factorTypeCode: req.body.contributoryFactor.code,
-        ...((comment && { comment }) || []),
+        ...getNonUndefinedProp(selectedCf, 'comment'),
       })
     } catch (e) {
       if ((e as SanitisedError).data) {
