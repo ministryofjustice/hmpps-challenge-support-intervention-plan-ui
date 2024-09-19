@@ -33,7 +33,10 @@
       "server/**/*.{ts,js,jsx,mjs}"
     ],
     "coverageDirectory": "test_results/jest/",
-    "coverageReporters": ["json", "lcov"],
+    "coverageReporters": [
+      "json",
+      "lcov"
+    ],
     "reporters": [
       "default",
       [
@@ -102,6 +105,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@jgoz/esbuild-plugin-typecheck": "^4.0.1",
     "@testing-library/cypress": "^10.0.2",
     "@testing-library/dom": "^10.4.0",
@@ -117,8 +121,8 @@
     "@types/http-errors": "^2.0.4",
     "@types/jest": "^29.5.13",
     "@types/jsonwebtoken": "^9.0.6",
-    "@types/nunjucks": "^3.2.6",
     "@types/node": "^22.5.4",
+    "@types/nunjucks": "^3.2.6",
     "@types/passport": "^1.0.16",
     "@types/passport-oauth2": "^1.4.17",
     "@types/superagent": "^8.1.9",
