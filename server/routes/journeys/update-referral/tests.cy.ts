@@ -95,11 +95,11 @@ context('test /update-referral', () => {
   const navigateToTestPage = () => {
     cy.signIn()
     cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
-    checkAxeAccessibility()
   }
 
   const goToUpdatePage = () => {
     cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/referral$/)
+    checkAxeAccessibility()
     cy.findAllByRole('button', { name: /[\s\S]*screen referral[\s\S]*/i }).should('be.visible')
 
     cy.findAllByRole('link', { name: /update referral/i })
