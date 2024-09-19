@@ -1,3 +1,4 @@
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
 context('test /update-referral/additional-information', () => {
@@ -22,6 +23,7 @@ context('test /update-referral/additional-information', () => {
     cy.findByRole('button', { name: /Confirm and save/i }).click()
     cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
     cy.findByText('You’ve updated the additional information.').should('be.visible')
+    checkAxeAccessibility()
   }
 
   it('test additional info, including all edge cases, proactive', () => {
@@ -47,6 +49,7 @@ context('test /update-referral/additional-information', () => {
       .first()
       .click()
     cy.findByRole('link', { name: /Change the additional information relating to the referral/i }).click()
+    checkAxeAccessibility()
   }
 
   const checkValuesPersist = () => {

@@ -1,3 +1,5 @@
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
+
 context('Make a Referral Journey', () => {
   beforeEach(() => {
     cy.task('reset')
@@ -13,6 +15,8 @@ context('Make a Referral Journey', () => {
 
     cy.findByRole('heading', { name: /make a csip referral/i }).should('be.visible')
     cy.findByText(/are you making this referral on someone else’s behalf\?/i).should('be.visible')
+
+    checkAxeAccessibility()
 
     cy.findByRole('button', { name: /continue/i }).click()
     cy.get('.govuk-error-summary a').should('have.length', 1)

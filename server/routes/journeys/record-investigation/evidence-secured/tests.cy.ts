@@ -18,9 +18,9 @@ context('test /record-investigation/evidence-secured', () => {
 
   it('should try out all cases', () => {
     navigateToTestPage()
-    checkAxeAccessibility()
 
     cy.url().should('to.match', /\/evidence-secured$/)
+    checkAxeAccessibility()
 
     validatePageContents()
     validateErrorMessage()

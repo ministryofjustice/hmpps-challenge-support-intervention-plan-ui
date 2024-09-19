@@ -1,3 +1,5 @@
+import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+
 context('test /update-referral', () => {
   beforeEach(() => {
     cy.task('reset')
@@ -93,6 +95,7 @@ context('test /update-referral', () => {
   const navigateToTestPage = () => {
     cy.signIn()
     cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
+    checkAxeAccessibility()
   }
 
   const goToUpdatePage = () => {

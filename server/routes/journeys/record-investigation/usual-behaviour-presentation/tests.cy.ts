@@ -19,9 +19,8 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
 
   it('should try out all cases', () => {
     navigateToTestPage()
-    checkAxeAccessibility()
-
     cy.url().should('to.match', /\/usual-behaviour-presentation$/)
+    checkAxeAccessibility()
 
     validatePageContents()
     validateErrorMessage()

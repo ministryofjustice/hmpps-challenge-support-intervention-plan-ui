@@ -28,9 +28,8 @@ context('test /record-investigation/delete-interview', () => {
       },
     })
 
-    checkAxeAccessibility()
-
     cy.url().should('to.match', /\/delete-interview\/1$/)
+    checkAxeAccessibility()
     cy.findByRole('heading', { name: /Are you sure you want to delete this interview\?/ }).should('be.visible')
 
     cy.contains('dt', 'Interviewee').next().should('include.text', 'Some Person')

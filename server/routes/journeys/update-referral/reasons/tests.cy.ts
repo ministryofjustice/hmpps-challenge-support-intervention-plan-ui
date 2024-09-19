@@ -1,3 +1,4 @@
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
 context('test /update-referral/reasons', () => {
@@ -47,6 +48,8 @@ context('test /update-referral/reasons', () => {
       .first()
       .click()
     cy.findByRole('link', { name: /Change the reasons given for the behaviour/i }).click()
+    cy.url().should('to.match', /\/update-referral\/reasons#knownReasons$/)
+    checkAxeAccessibility()
   }
 
   const checkValuesPersist = () => {

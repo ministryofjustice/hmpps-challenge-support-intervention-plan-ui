@@ -1,5 +1,6 @@
 import { v4 } from 'uuid'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
 const uuid = v4()
 context('Make a Referral Journey', () => {
@@ -146,6 +147,7 @@ context('Make a Referral Journey', () => {
     cy.get('p')
       .contains(/select if any staff were assaulted during the incident or not/i)
       .should('be.visible')
+    checkAxeAccessibility()
   }
 
   const setupDataSignInAndGo = () => {

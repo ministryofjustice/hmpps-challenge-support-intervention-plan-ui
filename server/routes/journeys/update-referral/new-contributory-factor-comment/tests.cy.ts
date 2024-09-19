@@ -43,6 +43,7 @@ context('test /update-referral/new-contributory-factor-comment', () => {
       .click()
     cy.findByRole('button', { name: /Add another contributory factor/i }).click()
     cy.url().should('to.match', /\/update-referral\/add-contributory-factor$/)
+    checkAxeAccessibility()
     cy.findByRole('radio', { name: 'Factor1' }).click()
     cy.findByRole('button', { name: /Continue/ }).click()
   }

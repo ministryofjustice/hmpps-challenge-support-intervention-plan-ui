@@ -1,3 +1,5 @@
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
+
 context('Make a Referral Journey', () => {
   beforeEach(() => {
     cy.task('reset')
@@ -12,6 +14,8 @@ context('Make a Referral Journey', () => {
     setupDataSignInAndGo()
 
     checkValidation()
+
+    checkAxeAccessibility()
 
     checkValuesPersist()
   })

@@ -47,6 +47,7 @@ context('test /update-referral/add-contributory-factor', () => {
 
   const validateErrorMessagesMandatory = () => {
     getContinueButton().click()
+    checkAxeAccessibility()
 
     cy.findByRole('link', { name: /Select the contributory factor/i })
       .should('be.visible')

@@ -1,5 +1,6 @@
 import { v4 } from 'uuid'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
 const proactiveTitle = /Describe the behaviour and the concerns relating to the behaviour/i
 const reactiveTitle = /Describe the incident and the concerns relating to the incident/i
@@ -88,6 +89,7 @@ context('Make a Referral Journey', () => {
       force: true,
     })
     cy.contains(/you have 0 characters remaining/i).should('be.visible')
+    checkAxeAccessibility()
   }
 
   const setupDataSignInAndGo = (proactive: boolean, uuid: string) => {

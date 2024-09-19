@@ -29,9 +29,8 @@ context('test /record-investigation/interview-details', () => {
 
   it('should try out all cases', () => {
     navigateToTestPage()
-    checkAxeAccessibility()
-
     cy.url().should('to.match', /\/interviews-summary$/)
+    checkAxeAccessibility()
 
     cy.findByRole('heading', { name: /Interviews summary/ }).should('be.visible')
     cy.findByText(/No interview details recorded./).should('be.visible')

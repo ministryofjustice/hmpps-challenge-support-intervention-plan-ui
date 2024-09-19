@@ -1,14 +1,12 @@
-import { Result } from 'axe-core'
+import { Result, Spec } from 'axe-core'
 
 const logAccessibilityViolations = (violations: Result[]) => {
   cy.task('logAccessibilityViolationsSummary', `Accessibility violations detected: ${violations.length}`)
 
-  const violationData = violations.map(({ id, impact, description, nodes }) => ({
-    id,
-    impact,
-    description,
-    nodes: nodes.length,
-    nodeTargets: nodes.map(node => node.target).join(' - '),
+  const violationData = violations.map(violation => ({
+    ...violation,
+    nodes: violation.nodes.length,
+    nodeTargets: violation.nodes.map(node => node.target).join(' - '),
   }))
 
   cy.task('logAccessibilityViolationsTable', violationData)
@@ -24,7 +22,7 @@ export const checkAxeAccessibility = () => {
       { id: 'region', reviewOnFail: true, selector: '.govuk-back-link' },
       { id: 'empty-table-header', reviewOnFail: true },
     ],
-  })
+  } as Spec)
   cy.checkA11y(undefined, undefined, logAccessibilityViolations)
 }
 

@@ -1,3 +1,5 @@
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
+
 context('test /update-referral/safer-custody', () => {
   beforeEach(() => {
     cy.task('reset')
@@ -16,6 +18,7 @@ context('test /update-referral/safer-custody', () => {
     navigateToTestPage()
 
     cy.url().should('to.match', /\/update-referral\/safer-custody#isSaferCustodyTeamInformed$/)
+    checkAxeAccessibility()
 
     cy.findByRole('link', { name: /Cancel/i })
       .should('be.visible')

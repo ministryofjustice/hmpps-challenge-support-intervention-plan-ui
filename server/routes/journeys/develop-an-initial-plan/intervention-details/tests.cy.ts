@@ -71,6 +71,7 @@ context('test /develop-an-initial-plan/intervention-details', () => {
     cy.visit(`${PAGE_URL}1`, { failOnStatusCode: false })
 
     cy.findByText('Page not found').should('be.visible')
+    checkAxeAccessibility()
   })
 
   it('should try out all cases', () => {

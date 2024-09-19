@@ -74,5 +74,6 @@ context('test /develop-an-initial-plan/delete-identified-need', () => {
     cy.findByRole('button', { name: /yes, delete it/i }).click()
     cy.url().should('to.match', /\/identified-needs$/)
     cy.findByText(/no identified needs recorded/i).should('be.visible')
+    checkAxeAccessibility()
   }
 })
