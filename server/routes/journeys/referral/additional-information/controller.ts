@@ -8,6 +8,8 @@ export class ReferralAdditionalInformationController {
     res.render('referral/additional-information/view', {
       otherInformation,
       backUrl: 'safer-custody',
+      maxLengthChars: 4000,
+      threshold: '75',
     })
   }
 

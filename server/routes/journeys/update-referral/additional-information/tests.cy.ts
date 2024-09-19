@@ -1,10 +1,10 @@
 import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
-context('test /update-referral/reasons', () => {
-  const title = /Add information to the reasons given for the behaviour/i
-  const errorMsg = /enter the reasons given for the behaviour/i
+context('test /update-referral/additional-information', () => {
+  const title = /Add additional information \(optional\)/i
+  const errorMsg = /enter an update to the additional information/i
   const dividerText = generateSaveTimestamp('John Smith')
-  const totalUsedChars = dividerText.length + 158 // 158 = already existing reason text
+  const totalUsedChars = dividerText.length + 170 // 170 = already existing additional info text
 
   beforeEach(() => {
     cy.task('reset')
@@ -21,10 +21,10 @@ context('test /update-referral/reasons', () => {
   const proceedToNextPage = () => {
     cy.findByRole('button', { name: /Confirm and save/i }).click()
     cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
-    cy.findByText('You’ve updated the behaviour description.').should('be.visible')
+    cy.findByText('You’ve updated the additional information.').should('be.visible')
   }
 
-  it('test reasons, including all edge cases, proactive', () => {
+  it('test additional info, including all edge cases, proactive', () => {
     cy.task('stubCsipRecordGetSuccess')
     navigateToTestPage()
     checkValuesPersist()
@@ -32,8 +32,8 @@ context('test /update-referral/reasons', () => {
     proceedToNextPage()
   })
 
-  it('test reasons, should show chars left immediately', () => {
-    cy.task('stubCsipRecordGetSuccessLongReasons')
+  it('test additional info, should show chars left immediately', () => {
+    cy.task('stubCsipRecordGetSuccessLongAdditionalInfo')
     navigateToTestPage()
     cy.contains(new RegExp(`you have ${4000 - 3001 - dividerText.length} characters remaining`, 'i')).should(
       'be.visible',
@@ -46,7 +46,7 @@ context('test /update-referral/reasons', () => {
     cy.findAllByRole('link', { name: /update referral/i })
       .first()
       .click()
-    cy.findByRole('link', { name: /Change the reasons given for the behaviour/i }).click()
+    cy.findByRole('link', { name: /Change the additional information relating to the referral/i }).click()
   }
 
   const checkValuesPersist = () => {
@@ -56,6 +56,7 @@ context('test /update-referral/reasons', () => {
 
   const checkValidation = () => {
     cy.findByRole('heading', { name: title }).should('be.visible')
+
     cy.findByRole('button', { name: /confirm and save/i }).click()
     cy.get('.govuk-error-summary a').should('have.length', 1)
     cy.get('p').contains(errorMsg).should('be.visible')
@@ -77,7 +78,7 @@ context('test /update-referral/reasons', () => {
     cy.get('.govuk-error-summary a').should('have.length', 1)
 
     const errorRegexp = new RegExp(
-      `reasons must be ${Number(4000 - totalUsedChars).toLocaleString()} characters or less`,
+      `additional information must be ${Number(4000 - totalUsedChars).toLocaleString()} characters or less`,
       'i',
     )
     cy.findByRole('link', { name: errorRegexp }).should('be.visible')

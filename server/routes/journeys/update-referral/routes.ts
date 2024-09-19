@@ -13,6 +13,7 @@ import { NewContributoryFactorCommentRoutes } from './new-contributory-factor-co
 import { UpdateDescriptionRoutes } from './description/routes'
 import { UpdateContributoryFactorsRoutes } from './contributory-factors/routes'
 import { UpdateReasonsRoutes } from './reasons/routes'
+import { UpdateAdditionalInfoRoutes } from './additional-information/routes'
 
 function Routes({ csipApiService, prisonerSearchService }: Services) {
   const { router, get } = JourneyRouter()
@@ -31,6 +32,7 @@ function Routes({ csipApiService, prisonerSearchService }: Services) {
   router.use('/description', UpdateDescriptionRoutes(csipApiService))
   router.use('/:factorUuid-factorType', UpdateContributoryFactorsRoutes(csipApiService))
   router.use('/reasons', UpdateReasonsRoutes(csipApiService))
+  router.use('/additional-information', UpdateAdditionalInfoRoutes(csipApiService))
 
   return router
 }
