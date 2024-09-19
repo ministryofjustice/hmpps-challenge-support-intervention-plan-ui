@@ -6,7 +6,6 @@ import { generateSaveTimestamp, getMaxCharsAndThresholdForAppend } from '../../.
 export class UpdateAdditionalInfoController extends PatchReferralController {
   GET = async (req: Request, res: Response) => {
     res.render('referral/additional-information/view', {
-      isProactiveReferral: req.journeyData.referral!.isProactiveReferral,
       currentOtherInformation: req.journeyData.referral!.otherInformation,
       otherInformation: res.locals.formResponses?.['otherInformation'],
       isUpdate: true,
