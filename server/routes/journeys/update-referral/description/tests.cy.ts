@@ -70,11 +70,18 @@ context('test /update-referral/proactive-or-reactive', () => {
     cy.get('p').contains(errorMsg).should('be.visible')
     cy.findByRole('link', { name: errorMsg }).should('be.visible').click()
     cy.findByRole('textbox', { name: title }).should('be.focused')
+    cy.reload()
+    cy.findByRole('textbox').type('   ')
+    cy.findByRole('button', { name: /confirm and save/i }).click()
+    cy.get('.govuk-error-summary a').should('have.length', 1)
+    cy.get('p').contains(errorMsg).should('be.visible')
 
-    cy.findByRole('textbox').type('a'.repeat(4001 - totalUsedChars), {
-      delay: 0,
-      force: true,
-    })
+    cy.findByRole('textbox')
+      .clear()
+      .type('a'.repeat(4001 - totalUsedChars), {
+        delay: 0,
+        force: true,
+      })
     cy.findByRole('button', { name: /confirm and save/i }).click()
     cy.get('.govuk-error-summary a').should('have.length', 1)
 
