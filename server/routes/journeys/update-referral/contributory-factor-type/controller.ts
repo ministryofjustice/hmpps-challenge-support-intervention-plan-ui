@@ -38,7 +38,7 @@ export class UpdateContributoryFactorsController extends PatchReferralController
 
     const { referral } = req.journeyData.csipRecord!
 
-    return res.render('update-referral/contributory-factors/view', {
+    return res.render('update-referral/contributory-factor-type/view', {
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
       contributoryFactorOptions: contributoryFactorOptions.filter(
