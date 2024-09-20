@@ -1,20 +1,15 @@
 import z from 'zod'
-import { Request } from 'express'
-import CsipApiService from '../../../../services/csipApi/csipApiService'
-import { createSchema, validateAndTransformReferenceData } from '../../../../middleware/validationMiddleware'
+import { Response } from 'express'
+import { createSchema } from '../../../../middleware/validationMiddleware'
+import { getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
+import { ContributoryFactor } from '../../../../@types/express'
 
-const ERROR_MESSAGE = 'Select the contributory factors'
-
-export const schemaFactory = (csipApiService: CsipApiService) => async (req: Request) => {
-  const contributoryFactorsMap = new Map(
-    (await csipApiService.getReferenceData(req, 'contributory-factor-type')).map(itm => [itm.code, itm]),
-  )
+export const schemaFactory = (res: Response, selectedCf: ContributoryFactor) => {
+  const { maxLengthChars } = getMaxCharsAndThresholdForAppend(res.locals.user.displayName, selectedCf.comment)
 
   return createSchema({
-    contributoryFactor: z
-      .string({ message: ERROR_MESSAGE })
-      .transform(validateAndTransformReferenceData(contributoryFactorsMap, ERROR_MESSAGE)),
+    comment: z.string().max(maxLengthChars, `Comment must be ${maxLengthChars.toLocaleString()} characters or less`),
   })
 }
 
-export type SchemaType = z.infer<Awaited<ReturnType<ReturnType<typeof schemaFactory>>>>
+export type SchemaType = z.infer<Awaited<ReturnType<typeof schemaFactory>>>

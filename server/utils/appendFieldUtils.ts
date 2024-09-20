@@ -22,5 +22,5 @@ export const getMaxCharsAndThresholdForAppend = (username: string, appendField?:
 }
 
 export const getTextForApiSubmission = (existingText: string, username: string, appendText: string) => {
-  return existingText + generateSaveTimestamp(username) + appendText
+  return (existingText || '') + generateSaveTimestamp(username) + appendText
 }
