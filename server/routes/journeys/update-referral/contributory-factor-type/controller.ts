@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { PatchReferralController } from '../../base/patchReferralController'
+import { MESSAGE_CONTRIBUTORY_FACTOR_UPDATED, PatchReferralController } from '../../base/patchReferralController'
 import {
   FLASH_KEY__CSIP_SUCCESS_MESSAGE,
   FLASH_KEY__FORM_RESPONSES,
@@ -72,7 +72,7 @@ export class UpdateContributoryFactorsController extends PatchReferralController
       return res.redirect('back')
     }
 
-    req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, 'You’ve updated the information on contributory factors.')
+    req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_CONTRIBUTORY_FACTOR_UPDATED)
     return next()
   }
 
