@@ -87,6 +87,7 @@ export class CsipRecordController {
       isUpdate: true,
       status: record.status,
       shouldShowTabs: hasInvestigation(record.status),
+      record,
       decision,
       investigation,
       recordUuid,
@@ -165,6 +166,7 @@ export class CsipRecordController {
     res.render('csip-records/view', {
       status: record.status,
       shouldShowTabs: hasInvestigation(record.status),
+      record,
       decision,
       investigation,
       recordUuid,

@@ -6,8 +6,8 @@
             <h2 class="govuk-heading-l">Referral</h2>
         </div>
         {% if status == 'REFERRAL_SUBMITTED' and secondaryButton %}
-            <div class="govuk-grid-column-one-third">
-                <a class="govuk-link govuk-summary-list govuk-summary-list__actions govuk-link--no-visited-state" href="{{secondaryButton.link}}">Update referral</a>
+            <div class="govuk-summary-list govuk-summary-list__actions">
+                <a class="govuk-link govuk-link--no-visited-state" href="{{secondaryButton.link}}">Update referral</a>
             </div>
         {% endif %}
     </div>
