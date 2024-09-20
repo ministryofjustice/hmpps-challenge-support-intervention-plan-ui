@@ -72,7 +72,7 @@ const getChangeLink = (
   )
   const cfIndex = availableFactors.findIndex(opt => opt.value === cf.factorType.code)
   const radioId = cfIndex < 1 ? '' : `-${cfIndex + 1}`
-  return `update-referral/${cf.factorUuid}-factorType#contributoryFactor${radioId}`
+  return `update-referral/${cf.factorUuid}-type#contributoryFactor${radioId}`
 }
 
 export class UpdateReferralController extends BaseJourneyController {

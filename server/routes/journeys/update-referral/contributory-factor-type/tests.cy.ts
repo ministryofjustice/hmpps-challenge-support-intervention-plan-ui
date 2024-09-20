@@ -34,13 +34,13 @@ context('test /update-referral/contributory-factors', () => {
     navigateToTestPage()
 
     cy.visit(
-      `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/not-a-uuid-factorType#contributoryFactor`,
+      `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/not-a-uuid-type#contributoryFactor`,
       { failOnStatusCode: false },
     )
     cy.findByRole('heading', { name: /Page not found/i }).should('be.visible')
 
     cy.visit(
-      `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/${uuid}-factorType#contributoryFactor`,
+      `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/${uuid}-type#contributoryFactor`,
       { failOnStatusCode: false },
     )
     cy.findByRole('heading', { name: /Page not found/i }).should('be.visible')
@@ -55,7 +55,7 @@ context('test /update-referral/contributory-factors', () => {
 
     cy.url().should(
       'to.match',
-      /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-referral\/b8dff21f-e96c-4240-aee7-28900dd910f2-factorType#contributoryFactor$/,
+      /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-referral\/b8dff21f-e96c-4240-aee7-28900dd910f2-type#contributoryFactor$/,
     )
 
     cy.findByText('Simulated Error for E2E testing').should('be.visible')
@@ -75,7 +75,7 @@ context('test /update-referral/contributory-factors', () => {
 
     cy.url().should(
       'to.match',
-      /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-referral\/b8dff21f-e96c-4240-aee7-28900dd910f2-factorType#contributoryFactor$/,
+      /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-referral\/b8dff21f-e96c-4240-aee7-28900dd910f2-type#contributoryFactor$/,
     )
     cy.findByRole('heading', { name: /Change the contributory factor/ }).should('be.visible')
     cy.findByText('Update a CSIP referral').should('be.visible')
@@ -97,7 +97,7 @@ context('test /update-referral/contributory-factors', () => {
 
     cy.url().should(
       'to.match',
-      /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-referral\/b8dff21f-e96c-4240-aee7-28900dd910f1-factorType#contributoryFactor-2$/,
+      /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-referral\/b8dff21f-e96c-4240-aee7-28900dd910f1-type#contributoryFactor-2$/,
     )
 
     cy.findByRole('radio', { name: /factor3/i }).should('have.focus')
