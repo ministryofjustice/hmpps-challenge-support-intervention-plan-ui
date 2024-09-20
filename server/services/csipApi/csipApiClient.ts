@@ -86,4 +86,14 @@ export default class CsipApiClient {
       data: payload,
     })
   }
+
+  async updateContributoryFactor(
+    factorUuid: string,
+    payload: components['schemas']['UpdateContributoryFactorRequest'],
+  ) {
+    return this.restClient.patch<components['schemas']['ContributoryFactor']>({
+      path: `/csip-records/referral/contributory-factors/${factorUuid}`,
+      data: payload,
+    })
+  }
 }

@@ -72,7 +72,7 @@ export default function createApp(services: Services): express.Application {
   )
   app.use(breadcrumbs())
   app.use((_req, res, next) => {
-    res.notFound = () => res.render('pages/not-found')
+    res.notFound = () => res.status(404).render('pages/not-found')
     next()
   })
   app.use(routes(services))

@@ -2,7 +2,7 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 
 context('test /update-referral/add-contributory-factor', () => {
   const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
-  const getFactor = () => cy.findByRole('radio', { name: 'Factor1' })
+  const getFactor = () => cy.findByRole('radio', { name: 'Factor2' })
 
   beforeEach(() => {
     cy.task('reset')
@@ -26,7 +26,7 @@ context('test /update-referral/add-contributory-factor', () => {
     completeInputs()
 
     getContinueButton().click()
-    cy.url().should('to.match', /\/new-code1-comment$/)
+    cy.url().should('to.match', /\/new-code2-comment$/)
     cy.findByRole('link', { name: /^back$/i }).click()
 
     verifyDetailsAreRestoredFromJourney()

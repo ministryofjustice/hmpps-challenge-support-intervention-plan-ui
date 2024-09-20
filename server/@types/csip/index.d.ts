@@ -535,7 +535,7 @@ export interface components {
     }
     SyncDecisionAndActionsRequest: {
       conclusion?: string
-      outcomeTypeCode: string
+      outcomeTypeCode?: string
       signedOffByRoleCode?: string
       /** Format: date */
       date?: string
@@ -606,10 +606,10 @@ export interface components {
       lastModifiedByDisplayName?: string
     }
     SyncPlanRequest: {
-      caseManager: string
-      reasonForPlan: string
+      caseManager?: string
+      reasonForPlan?: string
       /** Format: date */
-      firstCaseReviewDate: string
+      firstCaseReviewDate?: string
       identifiedNeeds: components['schemas']['SyncNeedRequest'][]
       reviews: components['schemas']['SyncReviewRequest'][]
     }
@@ -642,6 +642,7 @@ export interface components {
       saferCustodyScreeningOutcome?: components['schemas']['SyncScreeningOutcomeRequest']
       investigation?: components['schemas']['SyncInvestigationRequest']
       decisionAndActions?: components['schemas']['SyncDecisionAndActionsRequest']
+      completed?: boolean
     }
     SyncReviewRequest: {
       /** Format: date */
@@ -670,7 +671,7 @@ export interface components {
     }
     SyncScreeningOutcomeRequest: {
       outcomeTypeCode: string
-      reasonForDecision: string
+      reasonForDecision?: string
       /** Format: date */
       date: string
       recordedBy: string
@@ -743,7 +744,7 @@ export interface components {
     DecisionAndActions: {
       /** @description The conclusion of the referral and reasons for the outcome decision. */
       conclusion?: string
-      outcome: components['schemas']['ReferenceData']
+      outcome?: components['schemas']['ReferenceData']
       signedOffByRole?: components['schemas']['ReferenceData']
       /** @description The username of the user who recorded the outcome decision. */
       recordedBy?: string
@@ -844,16 +845,6 @@ export interface components {
       isSaferCustodyTeamInformed: 'YES' | 'NO' | 'DO_NOT_KNOW'
       /** @description Is the referral complete. */
       isReferralComplete?: boolean
-      /**
-       * Format: date
-       * @description The date the referral was completed.
-       * @example 2024-07-29
-       */
-      completedDate?: string
-      /** @description The username of the person who completed the referral. */
-      completedBy?: string
-      /** @description The displayable name of the person who completed the referral. */
-      completedByDisplayName?: string
       /** @description Contributory factors to the incident that motivated the referral. */
       contributoryFactors: components['schemas']['CreateContributoryFactorRequest'][]
     }
@@ -1144,15 +1135,15 @@ export interface components {
     /** @description The CSIP Plan of a CSIP record */
     Plan: {
       /** @description The case manager assigned to the CSIP plan. */
-      caseManager: string
+      caseManager?: string
       /** @description The reasons motivating the creation of a CSIP plan. */
-      reasonForPlan: string
+      reasonForPlan?: string
       /**
        * Format: date
        * @description The first date the CSIP plan should be reviewed.
        * @example 2021-09-27
        */
-      firstCaseReviewDate: string
+      firstCaseReviewDate?: string
       /** @description The needs identified in the CSIP plan. */
       identifiedNeeds: components['schemas']['IdentifiedNeed'][]
       /** @description Regular reviews of the CSIP Plan */
@@ -1197,6 +1188,15 @@ export interface components {
       isSaferCustodyTeamInformed: 'YES' | 'NO' | 'DO_NOT_KNOW'
       /** @description Is the referral complete. */
       isReferralComplete?: boolean
+      /**
+       * Format: date
+       * @description The date the referral was completed.
+       */
+      referralCompletedDate?: string
+      /** @description The username of the person completing the referral */
+      referralCompletedBy?: string
+      /** @description The name of the person completing the referral */
+      referralCompletedByDisplayName?: string
       /** @description Contributory factors to the incident that motivated the referral. */
       contributoryFactors: components['schemas']['ContributoryFactor'][]
       investigation?: components['schemas']['Investigation']
@@ -1290,7 +1290,7 @@ export interface components {
        */
       date: string
       /** @description The reasons for the safer custody screening outcome decision. */
-      reasonForDecision: string
+      reasonForDecision?: string
     }
     /** @description The request body to create the Safer Custody Screening Outcome to the CSIP referral */
     CreateSaferCustodyScreeningOutcomeRequest: {
@@ -1476,19 +1476,9 @@ export interface components {
       isSaferCustodyTeamInformed: 'YES' | 'NO' | 'DO_NOT_KNOW'
       /** @description Is the referral complete. */
       isReferralComplete?: boolean
-      /**
-       * Format: date
-       * @description The date the referral was completed.
-       * @example 2024-07-29
-       */
-      completedDate?: string
-      /** @description The username of the person who completed the referral. */
-      completedBy?: string
-      /** @description The displayable name of the person who completed the referral. */
-      completedByDisplayName?: string
     }
     /** @description The request body to update an investigation on the incident that motivated the CSIP referral. */
-    UpsertInvestigationRequest: {
+    UpdateInvestigationRequest: {
       /** @description The names of the staff involved in the investigation. */
       staffInvolved?: string
       /** @description Any evidence that was secured as part of the investigation. */
@@ -1503,7 +1493,7 @@ export interface components {
       protectiveFactors?: string
     }
     /** @description The request for creating a CSIP Plan for a CSIP record */
-    UpsertPlanRequest: {
+    UpdatePlanRequest: {
       /** @description The case manager assigned to the CSIP plan. */
       caseManager: string
       /** @description The reasons motivating the creation of a CSIP plan. */
@@ -2054,7 +2044,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        'application/json': components['schemas']['UpsertInvestigationRequest']
+        'application/json': components['schemas']['UpdateInvestigationRequest']
       }
     }
     responses: {
@@ -2324,7 +2314,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        'application/json': components['schemas']['UpsertPlanRequest']
+        'application/json': components['schemas']['UpdatePlanRequest']
       }
     }
     responses: {
