@@ -1,4 +1,4 @@
-import { format, isValid, parse, parseISO } from 'date-fns'
+import { format, isValid, parse } from 'date-fns'
 
 const uniformWhitespace = (word: string): string => (word ? word.trim().replace(/\s+/g, ' ') : '')
 
@@ -37,9 +37,3 @@ export const personProfileName = (person: { firstName: string; lastName: string 
 export const personDateOfBirth = (dateOfBirth: string): string => dayMonthYearForwardSlashSeparator(dateOfBirth)
 
 export const personStatus = (status: string): string => sentenceCase(status)
-
-export const hmppsFormatDate = (dateString: string, pattern: string): string => {
-  if (!dateString) return ''
-  const date = parseISO(dateString)
-  return date && isValid(date) ? format(date, pattern) : dateString
-}
