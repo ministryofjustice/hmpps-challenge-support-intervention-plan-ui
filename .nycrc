@@ -4,6 +4,8 @@
   "inPlace": true,
   "compact": false,
   "exclude": [
+    "server/testutils.ts",
+    "server/testRequestCaptor.ts",
     "coverage/**",
     "packages/*/test{,s}/**",
     "**/*.d.ts",
