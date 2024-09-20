@@ -11,10 +11,7 @@ import { ContributoryFactor } from '../../../../@types/express'
 
 export class UpdateContributoryFactorsController extends PatchReferralController {
   private getSelectedCf = (req: Request): ContributoryFactor | undefined => {
-    const uuid = req.baseUrl
-      .split('/')
-      .pop()
-      ?.match(/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/)?.[0]
+    const uuid = req.params['factorUuid']
 
     if (!uuid) {
       return undefined
