@@ -8,6 +8,7 @@ import {
 import { SanitisedError } from '../../../../sanitisedError'
 import { getNonUndefinedProp } from '../../../../utils/utils'
 import { ContributoryFactor } from '../../../../@types/express'
+import { generateSaveTimestamp, getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
 
 export class UpdateContributoryFactorsCommentController extends PatchReferralController {
   private getSelectedCf = (req: Request): ContributoryFactor | undefined => {
@@ -35,10 +36,11 @@ export class UpdateContributoryFactorsCommentController extends PatchReferralCon
     return res.render('update-referral/contributory-factors/view', {
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
-      contributoryFactorOptions: contributoryFactorOptions.filter(
-        o =>
-          selectedCf.factorType.code === o.value ||
-          !referral.contributoryFactors.find(factor => factor.factorType.code === o.value),
+      currentComment: selectedCf.comment,
+      comment: res.locals.formResponses?.['comment'],
+      ...getMaxCharsAndThresholdForAppend(
+        res.locals.user.displayName,
+        req.journeyData.csipRecord!.referral.descriptionOfConcern,
       ),
     })
   }
@@ -52,8 +54,9 @@ export class UpdateContributoryFactorsCommentController extends PatchReferralCon
 
     try {
       await this.csipApiService.updateContributoryFactor(req, selectedCf.factorUuid!, {
-        factorTypeCode: req.body.contributoryFactor.code,
-        ...getNonUndefinedProp(selectedCf, 'comment'),
+        factorTypeCode: selectedCf.factorType.code,
+        comment: generateSaveTimestamp(res.locals.user.displayName) +
+          req.body.descriptionOfConcern,
       })
     } catch (e) {
       if ((e as SanitisedError).data) {

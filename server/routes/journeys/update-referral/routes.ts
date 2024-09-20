@@ -13,6 +13,7 @@ import { UpdateDescriptionRoutes } from './description/routes'
 import { UpdateContributoryFactorsRoutes } from './contributory-factor-type/routes'
 import { UpdateReasonsRoutes } from './reasons/routes'
 import { UpdateAdditionalInfoRoutes } from './additional-information/routes'
+import { UpdateContributoryFactorsCommentRoutes } from './contributory-factor-comment/routes'
 
 function Routes({ csipApiService, prisonerSearchService }: Services) {
   const { router, get } = JourneyRouter()
@@ -28,7 +29,7 @@ function Routes({ csipApiService, prisonerSearchService }: Services) {
   router.use('/referrer', UpdateReferrerRoutes(csipApiService))
   router.use('/add-contributory-factor', AddContributoryFactorRoutes(csipApiService))
   router.use('/description', UpdateDescriptionRoutes(csipApiService))
-  router.use('/:factorUuid-comment', ReferralContributoryFactorCommentRoutes())
+  router.use('/:factorUuid-comment', UpdateContributoryFactorsCommentRoutes(csipApiService))
   router.use('/:factorUuid-type', UpdateContributoryFactorsRoutes(csipApiService))
   router.use('/reasons', UpdateReasonsRoutes(csipApiService))
   router.use('/additional-information', UpdateAdditionalInfoRoutes(csipApiService))
