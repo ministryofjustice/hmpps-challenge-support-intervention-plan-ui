@@ -10,7 +10,7 @@
     "build": "node esbuild/esbuild.config.js --build",
     "start": "node $NODE_OPTIONS dist/server.js | bunyan -o short",
     "start:dev": "concurrently -k -p \"[{name}]\" -n \"ESBuild,Node\" -c \"yellow.bold,cyan.bold\" \"node esbuild/esbuild.config.js --build --watch\" \"node esbuild/esbuild.config.js --dev-server\"",
-    "start-e2e": "npx nyc instrument --nycrc-path ./.nycrc && export $(cat e2e-test.env) && node $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
+    "start-e2e": "npx nyc instrument dist --nycrc-path ./.nycrc && export $(cat e2e-test.env) && node $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
     "start-e2e:watch": "export $(cat e2e-test.env) && concurrently -k -p \"[{name}]\" -n \"ESBuild,Node\" -c \"yellow.bold,cyan.bold\" \"node esbuild/esbuild.config.js --build --watch\" \"node esbuild/esbuild.config.js --dev-server\"",
     "lint": "eslint . --cache --max-warnings 0",
     "lint-fix": "eslint . --cache --max-warnings 0 --fix",
