@@ -19,10 +19,10 @@ context('test /edit-log-code', () => {
     cy.task('stubCsipRecordGetSuccess')
     cy.task('stubContribFactors')
     cy.task('stubIncidentInvolvement')
-    cy.task('stubCsipRecordPatchSuccess')
   })
 
   it('should try out all cases', () => {
+    cy.task('stubCsipRecordPatchSuccess')
     navigateToTestPage()
     cy.url().should('to.match', /\/edit-log-code$/)
 
@@ -34,6 +34,16 @@ context('test /edit-log-code', () => {
     getContinueButton().click()
     cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
     cy.findByText('You’ve edited the CSIP log code.').should('be.visible')
+  })
+
+  it('should handle API errors', () => {
+    cy.task('stubCsipRecordPatchFail')
+    navigateToTestPage()
+    completeInputs()
+    getContinueButton().click()
+    cy.url().should('to.match', /\/edit-log-code$/)
+
+    cy.findByText('Simulated Error for E2E testing').should('be.visible')
   })
 
   const navigateToTestPage = () => {
