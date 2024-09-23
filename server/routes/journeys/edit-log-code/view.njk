@@ -1,0 +1,32 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Edit CSIP log code" %}
+
+{% block innerContent %}
+    <label for="logCode">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Update the CSIP log code for your internal records (optional)</h1>
+    </label>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukCharacterCount({
+            hint: {
+                text: "Maximum length is 10 characters."
+            },
+            maxlength: 10,
+            rows: 1,
+            threshold: "100",
+            id: "logCode",
+            name: "logCode",
+            value: logCode,
+            classes: "govuk-input--width-10 single-row-textarea",
+            errorMessage: validationErrors | findError('logCode')
+        }) }}
+        {{ submitButton({
+            text: "Confirm and save",
+            alternativeHyperlinkHref: "/csip-records/" + recordUuid
+        }) }}
+    </form>
+{% endblock %}
