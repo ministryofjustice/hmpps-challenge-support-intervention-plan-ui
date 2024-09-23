@@ -117,7 +117,7 @@
                 text: 'Comment'
             },
             value: {
-                html: (factor.comment or 'Not provided') | escape | nl2br
+                html: (factor.comment or 'Not provided') | escape | boldAppendStamp | nl2br
             },
             actions: {
                 items: [
@@ -173,7 +173,7 @@
                 text: "Other information relating to this referral"
             },
             value: {
-                html: (referral.otherInformation or 'Not provided') | escape | nl2br
+                html: (referral.otherInformation or 'Not provided') | escape | boldAppendStamp | nl2br
             },
             actions: {
                 items: [

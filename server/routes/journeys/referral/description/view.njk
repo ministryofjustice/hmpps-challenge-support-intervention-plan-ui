@@ -38,7 +38,7 @@
         }) }}
         {% if isUpdate and currentDescriptionOfConcern %}
             {{ govukInsetText({
-                text: currentDescriptionOfConcern | escape | nl2br
+                html: currentDescriptionOfConcern | escape | boldAppendStamp | nl2br
             }) }}
         {% endif %}
         {{ govukCharacterCount({

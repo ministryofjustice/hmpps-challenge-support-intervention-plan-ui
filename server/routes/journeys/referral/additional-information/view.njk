@@ -15,7 +15,7 @@
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {% if isUpdate and currentOtherInformation %}
             {{ govukInsetText({
-                text: currentOtherInformation | escape | nl2br
+                html: currentOtherInformation | escape | boldAppendStamp | nl2br
             }) }}
         {% endif %}
         {{ govukCharacterCount({

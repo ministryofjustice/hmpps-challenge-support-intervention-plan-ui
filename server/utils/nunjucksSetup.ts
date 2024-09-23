@@ -3,7 +3,7 @@ import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
-import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
+import { boldAppendStamp, convertToTitleCase, initialiseName, sentenceCase } from './utils'
 import config from '../config'
 import { buildErrorSummaryList, customErrorOrderBuilder, findError } from '../middleware/validationMiddleware'
 import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
@@ -66,6 +66,7 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('customErrorOrderBuilder', customErrorOrderBuilder)
   njkEnv.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
   njkEnv.addFilter('possessiveComma', (name: string) => (name.endsWith('s') ? `${name}’` : `${name}’s`))
+  njkEnv.addFilter('boldAppendStamp', boldAppendStamp)
   njkEnv.addFilter('csipStatusDisplayText', csipStatusDisplayText)
   njkEnv.addFilter('csipStatusTagClass', csipStatusTagClass)
   njkEnv.addGlobal('todayStringGBFormat', todayStringGBFormat)
