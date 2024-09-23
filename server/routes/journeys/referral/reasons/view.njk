@@ -17,7 +17,7 @@
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-         {% if isUpdate %}
+         {% if isUpdate and currentKnownReasons %}
             {{ govukInsetText({
                 text: currentKnownReasons | escape | nl2br
             }) }}

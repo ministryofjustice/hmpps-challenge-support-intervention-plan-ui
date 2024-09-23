@@ -36,7 +36,7 @@
             summaryText: "What type of information to include",
             html: detailsHtml
         }) }}
-        {% if isUpdate %}
+        {% if isUpdate and currentDescriptionOfConcern %}
             {{ govukInsetText({
                 text: currentDescriptionOfConcern | escape | nl2br
             }) }}
