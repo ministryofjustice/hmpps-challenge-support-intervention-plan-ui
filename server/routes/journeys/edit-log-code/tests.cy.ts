@@ -71,6 +71,13 @@ context('test /edit-log-code', () => {
       .should('be.visible')
       .click()
     getLogCodeInput().should('be.focused')
+
+    resetInputs()
+    getContinueButton().click()
+    cy.findByRole('link', { name: /Enter a CSIP log code/i })
+      .should('be.visible')
+      .click()
+    getLogCodeInput().should('be.focused')
   }
 
   const completeInputs = () => {
