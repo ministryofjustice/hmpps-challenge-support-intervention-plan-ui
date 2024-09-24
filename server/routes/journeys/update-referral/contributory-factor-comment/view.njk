@@ -15,13 +15,15 @@
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        {{ govukInsetText({
-            text: currentComment | escape | nl2br
-        }) }}
+        {% if currentComment %}
+            {{ govukInsetText({
+                text: currentComment | escape | nl2br
+            }) }}
+        {% endif %}
         {{ govukCharacterCount({
             maxlength: maxLengthChars,
             rows: 5,
-            threshold: "75",
+            threshold: threshold,
             id: "comment",
             name: "comment",
             value: comment,

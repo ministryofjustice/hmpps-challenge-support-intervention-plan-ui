@@ -676,6 +676,43 @@ const stubCsipRecordGetSuccessLongReasons = () => {
   })
 }
 
+const stubCsipRecordGetSuccessLongCFComment = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        ...csip,
+        referral: {
+          ...csip.referral,
+          contributoryFactors: [
+            {
+              factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f1',
+              factorType: { code: 'CODE3', description: 'Text' },
+              comment: 'a'.repeat(3001),
+            },
+            {
+              factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f2',
+              factorType: { code: 'CODE2', description: 'Text' },
+            },
+            {
+              factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f3',
+              factorType: { code: 'CODE3', description: 'Text' },
+              comment: 'a'.repeat(10),
+            },
+          ],
+        },
+      },
+    },
+  })
+}
+
 const stubCsipRecordGetSuccessAfterScreeningWithReason = () => {
   return stubFor({
     request: {
@@ -1001,4 +1038,5 @@ export default {
   stubCsipRecordGetSuccessLongAdditionalInfo,
   stubPatchContributoryFactorSuccess,
   stubPatchContributoryFactorFail,
+  stubCsipRecordGetSuccessLongCFComment,
 }
