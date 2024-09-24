@@ -536,6 +536,37 @@ const stubCsipRecordSuccessAwaitingDecision = () => {
   })
 }
 
+const stubCsipRecordSuccessAwaitingDecisionNoInterviews = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        ...csip,
+        status: 'AWAITING_DECISION',
+        referral: {
+          ...csip.referral,
+          investigation: {
+            interviews: [],
+            staffInvolved: 'staff stafferson',
+            evidenceSecured: 'SomeVidence',
+            occurrenceReason: 'bananas',
+            personsUsualBehaviour: 'a great person',
+            personsTrigger: 'spiders',
+            protectiveFactors: 'SomeFactors',
+          },
+        },
+      },
+    },
+  })
+}
+
 const stubCsipRecordSuccessPlanPending = () => {
   return stubFor({
     request: {
@@ -988,6 +1019,7 @@ export default {
   stubPostInvestigation,
   stubPostPlan,
   stubCsipRecordSuccessAwaitingDecision,
+  stubCsipRecordSuccessAwaitingDecisionNoInterviews,
   stubCsipRecordSuccessPlanPending,
   stubPutDecision,
   stubCsipRecordPatchSuccess,

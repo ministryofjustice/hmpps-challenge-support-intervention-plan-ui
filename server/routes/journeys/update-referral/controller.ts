@@ -162,6 +162,7 @@ export class UpdateReferralController extends BaseJourneyController {
       contributoryFactors: convertCfsToSummaryRows(record, contributoryFactorOptions),
       canAddMoreContributoryFactors,
       isUpdate: true,
+      updatingEntity: 'referral',
       status: record.status,
       shouldShowTabs: hasInvestigation(record.status),
       decision: record.referral!.decisionAndActions,
