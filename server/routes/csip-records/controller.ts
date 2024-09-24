@@ -150,6 +150,10 @@ export class CsipRecordController {
           label: 'Record decision',
           action: 'decision',
         }
+        secondaryButton = {
+          label: 'Update investigation',
+          link: `/csip-record/${recordUuid}/update-investigation/start`,
+        }
         break
       case 'CSIP_OPEN':
         actionButton = {
