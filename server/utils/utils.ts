@@ -75,9 +75,7 @@ export const boldAppendStamp = (val: string) => {
   let endIndex = 0
 
   val.matchAll(APPEND_STAMP_REGEX).forEach(match => {
-    if (match.index > 0) {
-      res.push(val.substring(endIndex, match.index))
-    }
+    res.push(val.substring(endIndex, match.index))
     res.push('\n<strong>')
     res.push(match[1]!)
     res.push('</strong>\n')
