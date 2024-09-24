@@ -41,6 +41,20 @@ context('test /update-referral/contributory-factor-comment', () => {
     cy.get('.govuk-inset-text').should('be.visible')
   })
 
+  it('should show not found page when a contributory factor does not exist', () => {
+    navigateToTestPage()
+
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/not-a-uuid-comment#comment`, {
+      failOnStatusCode: false,
+    })
+    cy.findByRole('heading', { name: /Page not found/i }).should('be.visible')
+
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/${uuid}-comment#comment`, {
+      failOnStatusCode: false,
+    })
+    cy.findByRole('heading', { name: /Page not found/i }).should('be.visible')
+  })
+
   const navigateToTestPage = () => {
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start`)
   }
