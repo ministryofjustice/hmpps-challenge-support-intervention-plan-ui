@@ -525,7 +525,7 @@ const stubCsipRecordSuccessAwaitingDecision = () => {
               {
                 interviewee: 'Some Person',
                 interviewDate: '2024-12-25',
-                intervieweeRole: { code: 'CODE', description: 'Witness' },
+                intervieweeRole: { code: 'CODE', description: 'Foobar' },
                 interviewText: 'other stuff',
               },
             ],
