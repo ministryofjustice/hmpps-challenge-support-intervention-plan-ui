@@ -29,7 +29,13 @@ export class UpdateContributoryFactorsController extends UpdateReferralContribut
   }
 
   checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    return this.updateContributoryFactor(req, res, next, req.body.contributoryFactor.code)
+    const selectedCf = this.getSelectedCf(req)
+
+    if (!selectedCf) {
+      return res.notFound()
+    }
+
+    return this.updateContributoryFactor(req, res, next, selectedCf, req.body.contributoryFactor.code)
   }
 
   POST = async (req: Request, res: Response) => {

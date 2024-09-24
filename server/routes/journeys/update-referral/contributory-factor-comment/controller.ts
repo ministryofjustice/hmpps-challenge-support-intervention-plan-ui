@@ -31,6 +31,7 @@ export class UpdateContributoryFactorsCommentController extends UpdateReferralCo
       req,
       res,
       next,
+      selectedCf,
       selectedCf.factorType.code,
       getTextForApiSubmission(selectedCf.comment!, res.locals.user.displayName, req.body.comment),
     )
