@@ -428,6 +428,22 @@ const stubCsipRecordPatchSuccess = () => {
   })
 }
 
+const stubCsipRecordPatchFail = () => {
+  return stubFor({
+    request: {
+      method: 'PATCH',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*',
+    },
+    response: {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
+    },
+  })
+}
+
 const stubContributoryFactorPostSuccess = () => {
   return stubFor({
     request: {
@@ -975,6 +991,7 @@ export default {
   stubCsipRecordSuccessPlanPending,
   stubPutDecision,
   stubCsipRecordPatchSuccess,
+  stubCsipRecordPatchFail,
   stubContributoryFactorPostSuccess,
   stubCsipRecordGetSuccessCFEdgeCases,
   stubCsipRecordGetSuccessAfterScreeningWithReason,

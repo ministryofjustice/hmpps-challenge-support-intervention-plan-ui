@@ -27,3 +27,31 @@ export const csipStatusDisplayText = (csipRecord: CsipRecord) => {
       throw new Error(`Unrecognised CSIP status: ${csipRecord.status}`)
   }
 }
+
+export const csipStatusTagClass = (csipRecord: CsipRecord) => {
+  switch (csipRecord.status) {
+    case 'ACCT_SUPPORT':
+      return 'govuk-tag--grey'
+    case 'AWAITING_DECISION':
+      return 'govuk-tag--blue'
+    case 'CSIP_CLOSED':
+      return 'govuk-tag--grey'
+    case 'CSIP_OPEN':
+      return 'govuk-tag--turquoise'
+    case 'INVESTIGATION_PENDING':
+      return 'govuk-tag--blue'
+    case 'NO_FURTHER_ACTION':
+      return 'govuk-tag--grey'
+    case 'PLAN_PENDING':
+      return 'govuk-tag--blue'
+    case 'REFERRAL_PENDING':
+      return 'govuk-tag--blue'
+    case 'REFERRAL_SUBMITTED':
+      return 'govuk-tag--blue'
+    case 'SUPPORT_OUTSIDE_CSIP':
+      return 'govuk-tag--grey'
+    case 'UNKNOWN':
+    default:
+      throw new Error(`Unrecognised CSIP status: ${csipRecord.status}`)
+  }
+}

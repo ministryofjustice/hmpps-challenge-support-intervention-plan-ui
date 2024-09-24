@@ -67,3 +67,24 @@ export const ordinalNumber = (number: number) => {
   const ordinal = ['st', 'nd', 'rd'][((((number + 90) % 100) - 10) % 10) - 1] || 'th'
   return number + ordinal
 }
+
+const APPEND_STAMP_REGEX = /\n(\[.+?])\n/g
+
+export const boldAppendStamp = (val: string) => {
+  const res: string[] = []
+  let endIndex = 0
+
+  val.matchAll(APPEND_STAMP_REGEX).forEach(match => {
+    if (match.index > 0) {
+      res.push(val.substring(endIndex, match.index))
+    }
+    res.push('\n<strong>')
+    res.push(match[1]!)
+    res.push('</strong>\n')
+    endIndex = match.index + match[0].length
+  })
+
+  res.push(val.substring(endIndex))
+
+  return res.join('')
+}
