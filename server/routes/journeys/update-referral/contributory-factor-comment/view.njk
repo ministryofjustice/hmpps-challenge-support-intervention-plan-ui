@@ -17,7 +17,7 @@
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {% if currentComment %}
             {{ govukInsetText({
-                text: currentComment | escape | nl2br
+                text: currentComment | escape | boldAppendStamp | nl2br
             }) }}
         {% endif %}
         {{ govukCharacterCount({
