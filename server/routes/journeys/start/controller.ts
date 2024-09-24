@@ -3,7 +3,6 @@ import PrisonerSearchService from '../../../services/prisonerSearch/prisonerSear
 import { PrisonerSummary } from '../../../@types/express'
 import { SanitisedError } from '../../../sanitisedError'
 import CsipApiService from '../../../services/csipApi/csipApiService'
-import { getNonUndefinedProp } from '../../../utils/utils'
 
 export class StartJourneyController {
   constructor(
@@ -38,41 +37,6 @@ export class StartJourneyController {
     try {
       const csip = await this.csipService.getCsipRecord(req, csipRecordId as string)
       req.journeyData.csipRecord = csip
-
-      const { referral } = csip
-
-      req.journeyData.referral = {
-        referredBy: referral.referredBy,
-        refererArea: referral.refererArea,
-        isProactiveReferral: Boolean(referral.isProactiveReferral),
-        incidentLocation: referral.incidentLocation,
-        incidentType: referral.incidentType,
-        incidentDate: referral.incidentDate,
-        incidentTime: referral.incidentTime ?? null,
-        ...getNonUndefinedProp(referral, 'descriptionOfConcern'),
-        ...getNonUndefinedProp(referral, 'knownReasons'),
-        contributoryFactors: referral.contributoryFactors,
-        isSaferCustodyTeamInformed: referral.isSaferCustodyTeamInformed,
-        ...getNonUndefinedProp(referral, 'otherInformation'),
-        ...getNonUndefinedProp(referral, 'incidentInvolvement'),
-        isStaffAssaulted: Boolean(referral.isStaffAssaulted),
-        ...getNonUndefinedProp(referral, 'assaultedStaffName'),
-      }
-
-      if (referral.investigation) {
-        req.journeyData.investigation = {
-          interviews: referral.investigation.interviews,
-          ...getNonUndefinedProp(referral.investigation, 'staffInvolved'),
-          ...getNonUndefinedProp(referral.investigation, 'evidenceSecured'),
-          ...getNonUndefinedProp(referral.investigation, 'occurrenceReason'),
-          ...getNonUndefinedProp(referral.investigation, 'personsUsualBehaviour'),
-          ...getNonUndefinedProp(referral.investigation, 'personsTrigger'),
-          ...getNonUndefinedProp(referral.investigation, 'protectiveFactors'),
-        }
-      } else {
-        req.journeyData.investigation = {}
-      }
-
       req.journeyData.saferCustodyScreening = {}
       req.journeyData.decisionAndActions = {}
       req.journeyData.plan = {}
