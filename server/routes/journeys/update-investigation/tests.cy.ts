@@ -33,7 +33,7 @@ context('test /update-investigation', () => {
   })
 
   const checkInterviews = () => {
-    cy.get('.govuk-summary-card').should('have.length', 1)
+    cy.get('.govuk-summary-card').should('have.length', 2)
     cy.get('.govuk-summary-card')
       .eq(0)
       .within(() => {
@@ -51,6 +51,13 @@ context('test /update-investigation', () => {
         cy.findByRole('link', {
           name: /change the comments about the interview with some person \(interview with some person\)/i,
         }).should('be.visible')
+      })
+
+    cy.get('.govuk-summary-card')
+      .eq(1)
+      .within(() => {
+        cy.findByRole('heading', { name: /interview with another person/i }).should('be.visible')
+        cy.get('dd').contains('Another Person').should('be.visible')
       })
   }
 
