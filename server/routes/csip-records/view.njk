@@ -6,7 +6,7 @@
 
 {% set fullWidth = true %}
 
-{% set pageTitle = "Update a CSIP referral" if isUpdate else "CSIP record - CSIP" %}
+{% set pageTitle = ("Update a CSIP " + updatingEntity) if isUpdate else "CSIP record - CSIP" %}
 {% extends "partials/layout.njk" %}
 
 {% if actionButton %}
@@ -23,7 +23,7 @@
   {% endset %}
 {% endif %}
 
-{% set basePageHeader = 'CSIP referral for ' + (prisoner | firstNameSpaceLastName) %}
+{% set basePageHeader = 'CSIP ' + updatingEntity + ' for ' + (prisoner | firstNameSpaceLastName) %}
 
 {% block pageHeader %}
   {% if successMessage %}
@@ -87,7 +87,6 @@
   {% else %}
     {% if decision %}
       {% include './components/decision.njk' %}
-      <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
     {% endif %}
     {% include './components/investigation.njk' %}
   {% endif %}
