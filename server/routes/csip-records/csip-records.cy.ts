@@ -117,8 +117,8 @@ context('test /csip-records', () => {
   }
 
   const checkTabsAndReferral = () => {
-    cy.findByRole('link', { name: /investigation/i }).should('be.visible')
-    cy.findByRole('link', { name: /investigation/i, current: 'page' }).should('be.visible')
+    cy.findByRole('link', { name: /^investigation/i }).should('be.visible')
+    cy.findByRole('link', { name: /^investigation/i, current: 'page' }).should('be.visible')
 
     cy.findByRole('link', { name: /referral/i })
       .should('be.visible')
