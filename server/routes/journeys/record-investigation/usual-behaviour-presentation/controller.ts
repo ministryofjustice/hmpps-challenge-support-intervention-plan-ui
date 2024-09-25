@@ -8,6 +8,8 @@ export class UsualBehaviourPresentationController {
     res.render('record-investigation/usual-behaviour-presentation/view', {
       personsUsualBehaviour,
       backUrl: '../record-investigation',
+      maxLengthChars: 4000,
+      threshold: '75',
     })
   }
 

@@ -1,6 +1,6 @@
 import { UsualBehaviourPresentationController } from './controller'
 import { validate } from '../../../../middleware/validationMiddleware'
-import { schema } from './schemas'
+import { schemaFactory } from './schemas'
 import { JourneyRouter } from '../../base/routes'
 
 export const UsualBehaviourPresentationRoutes = () => {
@@ -8,7 +8,7 @@ export const UsualBehaviourPresentationRoutes = () => {
   const controller = new UsualBehaviourPresentationController()
 
   get('/', controller.GET)
-  post('/', validate(schema), controller.POST)
+  post('/', validate(schemaFactory), controller.POST)
 
   return router
 }
