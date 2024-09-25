@@ -3,6 +3,7 @@ import { Services } from '../../../services'
 import { JourneyRouter } from '../base/routes'
 import { UpdateInvestigationController } from './controller'
 import { UpdateStaffInvolvedRoutes } from './staff-involved/routes'
+import { UpdateWhyBehaviourOccurredRoutes } from './why-behaviour-occurred/routes'
 
 function Routes({ csipApiService, prisonerSearchService }: Services) {
   const { router, get } = JourneyRouter()
@@ -11,6 +12,7 @@ function Routes({ csipApiService, prisonerSearchService }: Services) {
   get('/', updateController.UPDATE)
 
   router.use('/staff-involved', UpdateStaffInvolvedRoutes(csipApiService))
+  router.use('/why-behaviour-occurred', UpdateWhyBehaviourOccurredRoutes(csipApiService))
 
   return router
 }

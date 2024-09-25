@@ -1,17 +1,17 @@
 import { NextFunction, Request, Response } from 'express'
-import { SchemaType } from '../../record-investigation/staff-involved/schemas'
+import { SchemaType } from '../../record-investigation/why-behaviour-occurred/schemas'
 import { MESSAGE_INVESTIGATION_UPDATED, PatchInvestigationController } from '../../base/patchInvestigationController'
 import { generateSaveTimestamp, getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
 
-export class UpdateStaffInvolvedController extends PatchInvestigationController {
+export class UpdateWhyBehaviourOccurredController extends PatchInvestigationController {
   GET = async (req: Request, res: Response) => {
-    const currentStaffInvolved = req.journeyData.csipRecord!.referral.investigation!.staffInvolved
-    res.render('record-investigation/staff-involved/view', {
-      currentStaffInvolved,
-      staffInvolved: res.locals.formResponses?.['staffInvolved'],
+    const currentOccurrenceReason = req.journeyData.csipRecord!.referral.investigation!.occurrenceReason
+    res.render('record-investigation/why-behaviour-occurred/view', {
+      currentOccurrenceReason,
+      occurrenceReason: res.locals.formResponses?.['occurrenceReason'],
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
-      ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentStaffInvolved),
+      ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentOccurrenceReason),
     })
   }
 
@@ -21,10 +21,10 @@ export class UpdateStaffInvolvedController extends PatchInvestigationController 
       res,
       next,
       changes: {
-        staffInvolved:
-          (req.journeyData.investigation!.staffInvolved ?? '') +
+        occurrenceReason:
+          (req.journeyData.investigation!.occurrenceReason ?? '') +
           generateSaveTimestamp(res.locals.user.displayName) +
-          req.body.staffInvolved,
+          req.body.occurrenceReason,
       },
       successMessage: MESSAGE_INVESTIGATION_UPDATED,
     })
