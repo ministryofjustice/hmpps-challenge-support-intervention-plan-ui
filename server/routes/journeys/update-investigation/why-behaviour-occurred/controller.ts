@@ -5,7 +5,6 @@ import { generateSaveTimestamp, getMaxCharsAndThresholdForAppend } from '../../.
 
 export class UpdateWhyBehaviourOccurredController extends PatchInvestigationController {
   GET = async (req: Request, res: Response) => {
-    req.journeyData.isUpdate = true
     const currentOccurrenceReason = req.journeyData.csipRecord!.referral.investigation!.occurrenceReason
     res.render('record-investigation/why-behaviour-occurred/view', {
       currentOccurrenceReason,

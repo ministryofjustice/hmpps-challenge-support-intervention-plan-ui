@@ -5,7 +5,6 @@ import { generateSaveTimestamp, getMaxCharsAndThresholdForAppend } from '../../.
 
 export class UpdateStaffInvolvedController extends PatchInvestigationController {
   GET = async (req: Request, res: Response) => {
-    req.journeyData.isUpdate = true
     const currentStaffInvolved = req.journeyData.csipRecord!.referral.investigation!.staffInvolved
     res.render('record-investigation/staff-involved/view', {
       currentStaffInvolved,
