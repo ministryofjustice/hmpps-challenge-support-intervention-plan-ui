@@ -18,25 +18,25 @@ afterEach(() => {
 })
 
 describe('GET 404', () => {
-  it('should render content with stack in dev mode', () => {
+  it('should render content in dev mode', () => {
     return request(app)
       .get(`/${uuid}/unknown`)
       .expect(404)
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('NotFoundError: Not Found')
+        expect(res.text).toContain('Page not found')
         expect(res.text).not.toContain('Something went wrong. The error has been logged. Please try again')
       })
   })
 
-  it('should render content without stack in production mode', () => {
+  it('should render content in production mode', () => {
     const uuidLocal = uuidV4()
     return request(appWithAllRoutes({ production: true, uuid: uuidLocal }))
       .get(`/${uuidLocal}/unknown`)
-      .expect(200)
+      .expect(404)
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('Sorry, there is a problem with the service')
+        expect(res.text).toContain('Page not found')
       })
   })
 })
