@@ -38,6 +38,7 @@ export class StartJourneyController {
       const csip = await this.csipService.getCsipRecord(req, csipRecordId as string)
       req.journeyData.csipRecord = csip
       req.journeyData.saferCustodyScreening = {}
+      req.journeyData.investigation = {}
       req.journeyData.decisionAndActions = {}
       req.journeyData.plan = {}
       req.journeyData.prisoner = await this.prisonerSearchService.getPrisonerDetails(req, csip.prisonNumber as string)
