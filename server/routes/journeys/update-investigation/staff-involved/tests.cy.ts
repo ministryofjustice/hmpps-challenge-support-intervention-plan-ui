@@ -76,6 +76,16 @@ context('test /update-investigation/staff-involved', () => {
     cy.findByRole('link', { name: /Names of staff involved in the investigation must be [0-9,]+ characters or less/i })
       .should('be.visible')
       .click()
+    cy.findAllByText(/You have [0-9,]+ characters too many/)
+      .filter(':visible')
+      .should('have.length.of.at.least', 1)
+    getInputTextbox().should('be.focused')
+
+    getInputTextbox().clear().type('  ')
+    getContinueButton().click()
+    cy.findByRole('link', { name: /Enter an update to the names of staff involved in the investigation/i })
+      .should('be.visible')
+      .click()
     getInputTextbox().should('be.focused')
   }
 
