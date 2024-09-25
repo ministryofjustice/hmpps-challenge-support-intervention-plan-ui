@@ -1,6 +1,7 @@
 import { v4 } from 'uuid'
 import { getDaysInMonth } from 'date-fns'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
 const uuid = v4()
 
@@ -31,6 +32,7 @@ context('Make a Referral Journey', () => {
   }
 
   const checkValidation = () => {
+    checkAxeAccessibility()
     cy.findByRole('heading', { name: /set a date for the next CSIP review/i }).should('be.visible')
     cy.findByRole('button', { name: /continue/i }).click()
     cy.get('.govuk-error-summary a').should('have.length', 1)

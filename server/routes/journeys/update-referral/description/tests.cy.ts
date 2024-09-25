@@ -1,3 +1,4 @@
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
 context('test /update-referral/proactive-or-reactive', () => {
@@ -27,6 +28,8 @@ context('test /update-referral/proactive-or-reactive', () => {
   it('test description, including all edge cases, proactive', () => {
     cy.task('stubCsipRecordGetSuccess')
     navigateToTestPage()
+    cy.url().should('to.match', /\/update-referral\/description#descriptionOfConcern$/)
+    checkAxeAccessibility()
     checkValuesPersist()
     checkValidation()
     checkDetailsSummary()

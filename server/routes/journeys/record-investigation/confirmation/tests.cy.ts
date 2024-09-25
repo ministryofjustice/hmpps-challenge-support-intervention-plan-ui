@@ -1,4 +1,5 @@
 import { v4 as uuidV4 } from 'uuid'
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
 context('test /record-investigation/confirmation', () => {
   const uuid = uuidV4()
@@ -20,6 +21,8 @@ context('test /record-investigation/confirmation', () => {
     cy.visit(`${uuid}/record-investigation/confirmation`)
 
     validatePageContents()
+
+    checkAxeAccessibility()
   })
 
   const validatePageContents = () => {

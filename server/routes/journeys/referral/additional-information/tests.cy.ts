@@ -1,5 +1,6 @@
 import { v4 } from 'uuid'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
 const uuid = v4()
 
@@ -22,6 +23,8 @@ context('Make a Referral Journey', () => {
     setupDataSignInAndGo()
 
     checkValidation()
+
+    checkAxeAccessibility()
 
     checkValuesPersist()
   })

@@ -1,3 +1,5 @@
+import { checkAxeAccessibility } from '../../../integration_tests/support/accessibilityViolations'
+
 context('test /csip-records', () => {
   beforeEach(() => {
     cy.task('reset')
@@ -90,12 +92,14 @@ context('test /csip-records', () => {
     cy.findAllByRole('button', { name: /develop initial plan/i })
       .first()
       .click()
+    checkAxeAccessibility()
     cy.url().should('include', 'develop-an-initial-plan')
   })
 
   const navigateToTestPage = () => {
     cy.signIn()
     cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
+    checkAxeAccessibility()
   }
 
   const checkInvestigationDetailsExist = () => {
@@ -123,6 +127,7 @@ context('test /csip-records', () => {
     cy.findByRole('link', { name: /referral/i })
       .should('be.visible')
       .click()
+    checkAxeAccessibility()
     cy.findByRole('link', { name: /referral/i, current: 'page' }).should('be.visible')
   }
 

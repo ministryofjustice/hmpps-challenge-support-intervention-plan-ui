@@ -1,3 +1,5 @@
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
+
 context('test /update-referral/proactive-or-reactive', () => {
   beforeEach(() => {
     cy.task('reset')
@@ -16,6 +18,7 @@ context('test /update-referral/proactive-or-reactive', () => {
     navigateToTestPage()
 
     cy.url().should('to.match', /\/update-referral\/proactive-or-reactive#isProactiveReferral$/)
+    checkAxeAccessibility()
 
     cy.findByRole('link', { name: /Cancel/i })
       .should('be.visible')

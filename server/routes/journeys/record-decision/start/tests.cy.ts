@@ -1,4 +1,5 @@
 import { v4 as uuidV4 } from 'uuid'
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
 context('test /csip-record/:recordUuid/record-decision/start', () => {
   const uuid = uuidV4()
@@ -18,6 +19,7 @@ context('test /csip-record/:recordUuid/record-decision/start', () => {
       failOnStatusCode: false,
     })
     cy.url().should('to.match', /\/record-decision$/)
+    checkAxeAccessibility()
   })
 
   it('should redirect to root if CSIP record is not found', () => {

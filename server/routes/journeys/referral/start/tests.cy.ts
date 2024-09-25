@@ -1,4 +1,5 @@
 import { v4 as uuidV4 } from 'uuid'
+import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
 context('test /csip-record/:recordUuid/referral/start', () => {
   const uuid = uuidV4()
@@ -16,6 +17,7 @@ context('test /csip-record/:recordUuid/referral/start', () => {
     cy.signIn()
     cy.visit(`${uuid}/prisoners/A1111AA/referral/start`, { failOnStatusCode: false })
     cy.url().should('to.match', /\/referral\/on-behalf-of$/)
+    checkAxeAccessibility()
   })
 
   it('should redirect to dps prisoner search page if prisoner is not found', () => {

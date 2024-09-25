@@ -35,6 +35,7 @@ context('test /update-referral/referrer', () => {
       .click()
     cy.findByRole('link', { name: /Change area of work/i }).click()
 
+    cy.url().should('to.match', /\/update-referral\/referrer#areaOfWork$/)
     checkAxeAccessibility()
     checkInputsArePrepopulated()
     validatePageContents()
