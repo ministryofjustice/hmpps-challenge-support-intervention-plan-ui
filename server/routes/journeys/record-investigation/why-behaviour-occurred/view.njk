@@ -28,7 +28,7 @@
             errorMessage: validationErrors | findError('occurrenceReason'),
             hint: {
                 html: "Include any reasons the prisoner has given about why the behaviour occured.</br>You can also include reasons reported by other people."
-            } if isUpdate else undefined
+            } if not isUpdate else undefined
         }) }}
         {{ submitButton({
             text: "Confirm and save" if isUpdate else "Continue",

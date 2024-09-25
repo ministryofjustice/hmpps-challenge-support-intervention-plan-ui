@@ -56,7 +56,7 @@ context('test /update-investigation/why-behaviour-occurred', () => {
       .should('be.visible')
       .and('have.attr', 'href')
       .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
-    cy.findByText('Include any reasons the prisoner').should('not.exist')
+    cy.findByText(/Include any reasons the prisoner/).should('not.exist')
     cy.title().should('equal', 'Why the behaviour occurred - Update a CSIP investigation - DPS')
   }
 
