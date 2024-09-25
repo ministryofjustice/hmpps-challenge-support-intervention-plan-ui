@@ -1,32 +1,38 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Why the behaviour occurred - Record a CSIP investigation" %}
+{% set pageTitle = "Why the behaviour occurred - Update a CSIP investigation" if isUpdate else "Why the behaviour occurred - Record a CSIP investigation" %}
 
 {% block innerContent %}
-    <span class="govuk-caption-l">Record a CSIP investigation</span>
+    {% include 'base/components/investigation-caption.njk' %}
     <label for="occurrenceReason">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Why did the behaviour occur?</h1>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ "Add information on why this occurred" if isUpdate else "Why did the behaviour occur?" }}</h1>
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {% if isUpdate and currentOccurrenceReason %}
+            {{ govukInsetText({
+                html: currentOccurrenceReason | escape | boldAppendStamp | nl2br
+            }) }}
+        {% endif %}
         {{ govukCharacterCount({
-            maxlength: 4000,
+            maxlength: maxLengthChars,
             rows: 5,
-            threshold: "75",
+            threshold: threshold,
             id: "occurrenceReason",
             name: "occurrenceReason",
             value: occurrenceReason,
             errorMessage: validationErrors | findError('occurrenceReason'),
             hint: {
                 html: "Include any reasons the prisoner has given about why the behaviour occured.</br>You can also include reasons reported by other people."
-            }
+            } if isUpdate else undefined
         }) }}
-        {{ govukButton({
-            text: "Continue",
-            preventDoubleClick: true
+        {{ submitButton({
+            text: "Confirm and save" if isUpdate else "Continue",
+            alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
         }) }}
     </form>
 {% endblock %}

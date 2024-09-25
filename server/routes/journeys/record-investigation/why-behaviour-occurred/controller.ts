@@ -8,6 +8,8 @@ export class OccurrenceReasonController {
     res.render('record-investigation/why-behaviour-occurred/view', {
       occurrenceReason,
       backUrl: '../record-investigation',
+      maxLengthChars: 4000,
+      threshold: '75',
     })
   }
 
