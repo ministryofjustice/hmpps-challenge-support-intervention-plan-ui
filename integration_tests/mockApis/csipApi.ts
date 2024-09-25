@@ -897,6 +897,38 @@ const stubPostInvestigation = () => {
   })
 }
 
+const stubPatchInvestigationSuccess = () => {
+  return stubFor({
+    request: {
+      method: 'PATCH',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {},
+    },
+  })
+}
+
+const stubPatchInvestigationFail = () => {
+  return stubFor({
+    request: {
+      method: 'PATCH',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation',
+    },
+    response: {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
+    },
+  })
+}
+
 const stubPostPlan = () => {
   return stubFor({
     request: {
@@ -1060,6 +1092,8 @@ export default {
   stubCsipRecordGetSuccess,
   stubPostSaferCustodyScreening,
   stubPostInvestigation,
+  stubPatchInvestigationSuccess,
+  stubPatchInvestigationFail,
   stubPostPlan,
   stubCsipRecordSuccessAwaitingDecision,
   stubCsipRecordSuccessAwaitingDecisionNoInterviews,

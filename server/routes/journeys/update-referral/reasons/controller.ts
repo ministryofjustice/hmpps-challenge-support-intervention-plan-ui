@@ -29,7 +29,7 @@ export class UpdateReasonsController extends PatchReferralController {
       next,
       changes: {
         knownReasons:
-          req.journeyData.referral!.knownReasons +
+          (req.journeyData.referral!.knownReasons ?? '') +
           generateSaveTimestamp(res.locals.user.displayName) +
           req.body.knownReasons,
       },

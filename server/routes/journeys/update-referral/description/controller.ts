@@ -29,7 +29,7 @@ export class UpdateDescriptionController extends PatchReferralController {
       next,
       changes: {
         descriptionOfConcern:
-          req.journeyData.referral!.descriptionOfConcern +
+          (req.journeyData.referral!.descriptionOfConcern ?? '') +
           generateSaveTimestamp(res.locals.user.displayName) +
           req.body.descriptionOfConcern,
       },
