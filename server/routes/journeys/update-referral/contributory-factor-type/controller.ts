@@ -1,25 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
-import { MESSAGE_CONTRIBUTORY_FACTOR_UPDATED, PatchReferralController } from '../../base/patchReferralController'
-import {
-  FLASH_KEY__CSIP_SUCCESS_MESSAGE,
-  FLASH_KEY__FORM_RESPONSES,
-  FLASH_KEY__VALIDATION_ERRORS,
-} from '../../../../utils/constants'
-import { SanitisedError } from '../../../../sanitisedError'
-import { getNonUndefinedProp } from '../../../../utils/utils'
-import { ContributoryFactor } from '../../../../@types/express'
+import { UpdateReferralContributoryFactorController } from '../../base/updateReferralContributoryFactorController'
 
-export class UpdateContributoryFactorsController extends PatchReferralController {
-  private getSelectedCf = (req: Request): ContributoryFactor | undefined => {
-    const uuid = req.params['factorUuid']
-
-    if (!uuid) {
-      return undefined
-    }
-
-    return req.journeyData.referral!.contributoryFactors?.find(factors => factors.factorUuid === uuid)
-  }
-
+export class UpdateContributoryFactorsController extends UpdateReferralContributoryFactorController {
   GET = async (req: Request, res: Response) => {
     const selectedCf = this.getSelectedCf(req)
 
@@ -53,27 +35,7 @@ export class UpdateContributoryFactorsController extends PatchReferralController
       return res.notFound()
     }
 
-    try {
-      await this.csipApiService.updateContributoryFactor(req, selectedCf.factorUuid!, {
-        factorTypeCode: req.body.contributoryFactor.code,
-        ...getNonUndefinedProp(selectedCf, 'comment'),
-      })
-    } catch (e) {
-      if ((e as SanitisedError).data) {
-        const errorRespData = (e as SanitisedError).data as Record<string, string | unknown>
-        req.flash(
-          FLASH_KEY__VALIDATION_ERRORS,
-          JSON.stringify({
-            referral: [errorRespData?.['userMessage'] as string],
-          }),
-        )
-        req.flash(FLASH_KEY__FORM_RESPONSES, JSON.stringify(req.body))
-      }
-      return res.redirect('back')
-    }
-
-    req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_CONTRIBUTORY_FACTOR_UPDATED)
-    return next()
+    return this.updateContributoryFactor(req, res, next, selectedCf, req.body.contributoryFactor.code)
   }
 
   POST = async (req: Request, res: Response) => {

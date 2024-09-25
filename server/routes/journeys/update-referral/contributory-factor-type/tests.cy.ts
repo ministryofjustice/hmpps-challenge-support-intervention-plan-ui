@@ -1,6 +1,6 @@
 import { v4 as uuidV4 } from 'uuid'
 
-context('test /update-referral/contributory-factors', () => {
+context('test /update-referral/contributory-factor-type', () => {
   const uuid = uuidV4()
 
   beforeEach(() => {
