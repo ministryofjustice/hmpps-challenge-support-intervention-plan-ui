@@ -2,7 +2,7 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
 context('test /update-referral/additional-information', () => {
-  const title = /Add additional information \(optional\)/i
+  const title = /Add additional information/i
   const errorMsg = /enter an update to the additional information/i
   const dividerText = generateSaveTimestamp('John Smith')
   const totalUsedChars = dividerText.length + 170 // 170 = already existing additional info text

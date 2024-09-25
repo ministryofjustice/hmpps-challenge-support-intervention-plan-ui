@@ -21,7 +21,7 @@ export class UpdateAdditionalInfoController extends PatchReferralController {
       next,
       changes: {
         otherInformation:
-          req.journeyData.referral!.otherInformation +
+          (req.journeyData.referral!.otherInformation ?? '') +
           generateSaveTimestamp(res.locals.user.displayName) +
           req.body.otherInformation,
       },

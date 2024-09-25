@@ -1,0 +1,29 @@
+{% from "partials/submitButton/macro.njk" import submitButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Update contributory factor - Update a CSIP referral" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Update a CSIP referral</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Change the contributory factor</h1>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+        {{ govukRadios({
+            id: "contributoryFactor",
+            name: "contributoryFactor",
+            items: contributoryFactorOptions,
+            hint: {
+                text: "Select one option."
+            },
+            errorMessage: validationErrors | findError('contributoryFactor')
+        }) }}
+
+        {{ submitButton({
+            text: "Confirm and save",
+            alternativeHyperlinkHref: "/csip-records/" + recordUuid
+        }) }}
+    </form>
+{% endblock %}

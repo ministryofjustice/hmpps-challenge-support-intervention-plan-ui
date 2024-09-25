@@ -73,6 +73,16 @@ export default class CsipApiClient {
     })
   }
 
+  async updateInvestigation(
+    recordUuid: string,
+    updateInvestigationRequest: components['schemas']['UpdateInvestigationRequest'],
+  ): Promise<components['schemas']['Investigation']> {
+    return this.restClient.patch<components['schemas']['Investigation']>({
+      path: `/csip-records/${recordUuid}/referral/investigation`,
+      data: updateInvestigationRequest,
+    })
+  }
+
   async createDecision(recordUuid: string, payload: components['schemas']['UpsertDecisionAndActionsRequest']) {
     return this.restClient.put<components['schemas']['DecisionAndActions']>({
       path: `/csip-records/${recordUuid}/referral/decision-and-actions`,
@@ -83,6 +93,16 @@ export default class CsipApiClient {
   async createPlan(recordUuid: string, payload: components['schemas']['CreatePlanRequest']) {
     return this.restClient.post<components['schemas']['Plan']>({
       path: `/csip-records/${recordUuid}/plan`,
+      data: payload,
+    })
+  }
+
+  async updateContributoryFactor(
+    factorUuid: string,
+    payload: components['schemas']['UpdateContributoryFactorRequest'],
+  ) {
+    return this.restClient.patch<components['schemas']['ContributoryFactor']>({
+      path: `/csip-records/referral/contributory-factors/${factorUuid}`,
       data: payload,
     })
   }

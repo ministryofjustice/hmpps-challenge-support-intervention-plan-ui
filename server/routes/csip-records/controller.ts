@@ -87,6 +87,7 @@ export class CsipRecordController {
       isUpdate: true,
       status: record.status,
       shouldShowTabs: hasInvestigation(record.status),
+      record,
       decision,
       investigation,
       recordUuid,
@@ -149,6 +150,10 @@ export class CsipRecordController {
           label: 'Record decision',
           action: 'decision',
         }
+        secondaryButton = {
+          label: 'Update investigation',
+          link: `/csip-record/${recordUuid}/update-investigation/start`,
+        }
         break
       case 'CSIP_OPEN':
         actionButton = {
@@ -165,6 +170,7 @@ export class CsipRecordController {
     res.render('csip-records/view', {
       status: record.status,
       shouldShowTabs: hasInvestigation(record.status),
+      record,
       decision,
       investigation,
       recordUuid,

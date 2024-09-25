@@ -7,6 +7,8 @@ export class StaffInvolvedController {
     res.render('record-investigation/staff-involved/view', {
       staffInvolved,
       backUrl: '../record-investigation',
+      maxLengthChars: 4000,
+      threshold: '75',
     })
   }
 

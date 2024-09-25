@@ -22,6 +22,7 @@ context('test /update-referral', () => {
     cy.findByRole('button', { name: /add another contributory factor/i }).should('be.visible')
 
     checkChangeLinks()
+    checkCfChangeLinks()
   })
 
   it('should render the update referral screen with no more contrib factors available', () => {
@@ -127,5 +128,32 @@ context('test /update-referral', () => {
     cy.findByRole('link', { name: /Change the reasons given for the behaviour/i }).should('be.visible')
     cy.findByRole('link', { name: /Change if Safer Custody are aware of the referral or not/i }).should('be.visible')
     cy.findByRole('link', { name: /Change the additional information relating to the referral/i }).should('be.visible')
+  }
+
+  const checkCfChangeLinks = () => {
+    cy.get('.govuk-summary-card')
+      .eq(0)
+      .within(() => {
+        cy.findByRole('link', { name: /Change the contributory factor/i })
+          .should('be.visible')
+          .should('have.attr', 'href')
+          .and('include', 'update-referral/b8dff21f-e96c-4240-aee7-28900dd910f2-type#contributoryFactor')
+      })
+    cy.get('.govuk-summary-card')
+      .eq(1)
+      .within(() => {
+        cy.findByRole('link', { name: /Change the contributory factor/i })
+          .should('be.visible')
+          .should('have.attr', 'href')
+          .and('include', 'update-referral/b8dff21f-e96c-4240-aee7-28900dd910f1-type#contributoryFactor-2')
+      })
+    cy.get('.govuk-summary-card')
+      .eq(2)
+      .within(() => {
+        cy.findByRole('link', { name: /Change the contributory factor/i })
+          .should('be.visible')
+          .should('have.attr', 'href')
+          .and('include', 'update-referral/b8dff21f-e96c-4240-aee7-28900dd910f3-type#contributoryFactor-2')
+      })
   }
 })

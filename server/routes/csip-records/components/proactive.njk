@@ -149,7 +149,7 @@
                 text: "Description of behaviour and concerns"
             },
             value: {
-                html: referral.descriptionOfConcern | escape | nl2br
+                html: referral.descriptionOfConcern | escape | boldAppendStamp | nl2br
             },
             actions: {
                 items: [
@@ -167,7 +167,7 @@
                 text: "Reasons given for the behaviour"
             },
             value: {
-                html: referral.knownReasons | escape | nl2br
+                html: referral.knownReasons | escape | boldAppendStamp | nl2br
             },
             actions: {
                 items: [

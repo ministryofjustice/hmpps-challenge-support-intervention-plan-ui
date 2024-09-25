@@ -11,7 +11,10 @@ const hasInvestigation = (status: components['schemas']['CsipRecord']['status'])
 
 type APIContributoryFactor = components['schemas']['ContributoryFactor']
 
-const convertCfsToSummaryRows = (record: typeof request.journeyData.csipRecord) => {
+const convertCfsToSummaryRows = (
+  record: typeof request.journeyData.csipRecord,
+  cfOptions: Awaited<ReturnType<BaseJourneyController['getReferenceDataOptionsForCheckboxes']>>,
+) => {
   const groupedFactors = Object.groupBy(record!.referral.contributoryFactors, itm => itm.factorType.code) as Record<
     APIContributoryFactor['factorType']['code'],
     APIContributoryFactor[]
@@ -44,14 +47,32 @@ const convertCfsToSummaryRows = (record: typeof request.journeyData.csipRecord) 
             listToOperateOn.length === 1
               ? `to the comment on ${sentenceCase(cf.factorType.description!, false)} factor`
               : `to the ${ordinalNumber(idx + 1)} comment on ${sentenceCase(cf.factorType.description!, false)} factor. This contributory factor is listed ${listToOperateOn.length} times in this referral.`
+
           return {
             ...cf,
             visuallyHiddenCommentText,
+            changeLink: getChangeLink(record!.referral, cfOptions, cf),
           }
         })
     })
     .flat()
     .filter(cf => cf !== undefined)
+}
+
+const getChangeLink = (
+  referral: components['schemas']['Referral'],
+  cfOptions: Awaited<ReturnType<BaseJourneyController['getReferenceDataOptionsForCheckboxes']>>,
+  cf: APIContributoryFactor,
+) => {
+  // Remove existing factors that are not the current one
+  const availableFactors = cfOptions.filter(
+    o =>
+      cf.factorType.code === o.value ||
+      !referral.contributoryFactors.find(factor => factor.factorType.code === o.value),
+  )
+  const cfIndex = availableFactors.findIndex(opt => opt.value === cf.factorType.code)
+  const radioId = cfIndex < 1 ? '' : `-${cfIndex + 1}`
+  return `update-referral/${cf.factorUuid}-type#contributoryFactor${radioId}`
 }
 
 export class UpdateReferralController extends BaseJourneyController {
@@ -86,9 +107,9 @@ export class UpdateReferralController extends BaseJourneyController {
       ...getNonUndefinedProp(referral, 'assaultedStaffName'),
     }
 
-    const uniqueContributoryFactors = new Set(
-      (await this.getReferenceDataOptionsForCheckboxes(req, 'contributory-factor-type')).map(cf => cf.value),
-    )
+    const contributoryFactorOptions = await this.getReferenceDataOptionsForCheckboxes(req, 'contributory-factor-type')
+    const uniqueContributoryFactors = new Set(contributoryFactorOptions.map(cf => cf.value))
+
     const uniqueSelectedContributoryFactors = new Set(referral.contributoryFactors.map(cf => cf.factorType.code))
     const canAddMoreContributoryFactors = uniqueSelectedContributoryFactors.size < uniqueContributoryFactors.size
 
@@ -138,9 +159,10 @@ export class UpdateReferralController extends BaseJourneyController {
     req.journeyData.isUpdate = true
 
     res.render('csip-records/view', {
-      contributoryFactors: convertCfsToSummaryRows(record),
+      contributoryFactors: convertCfsToSummaryRows(record, contributoryFactorOptions),
       canAddMoreContributoryFactors,
       isUpdate: true,
+      updatingEntity: 'referral',
       status: record.status,
       shouldShowTabs: hasInvestigation(record.status),
       decision: record.referral!.decisionAndActions,

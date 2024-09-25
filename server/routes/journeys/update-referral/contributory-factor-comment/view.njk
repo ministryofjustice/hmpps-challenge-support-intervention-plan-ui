@@ -1,0 +1,37 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Update " + factorDescription | sentenceCase(false) + " comment (optional)" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">
+        Update a CSIP referral
+    </span>
+    <label for="comment">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Add information to the comment on {{ factorDescription | sentenceCase(false) }} factors (optional)</h1>
+    </label>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {% if currentComment %}
+            {{ govukInsetText({
+                text: currentComment | escape | boldAppendStamp | nl2br
+            }) }}
+        {% endif %}
+        {{ govukCharacterCount({
+            maxlength: maxLengthChars,
+            rows: 5,
+            threshold: threshold,
+            id: "comment",
+            name: "comment",
+            value: comment,
+            errorMessage: validationErrors | findError('comment')
+        }) }}
+        {{ submitButton({
+            text: "Confirm and save",
+            alternativeHyperlinkHref: "/csip-records/" + recordUuid
+        }) }}
+    </form>
+{% endblock %}

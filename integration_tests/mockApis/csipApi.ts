@@ -428,6 +428,22 @@ const stubCsipRecordPatchSuccess = () => {
   })
 }
 
+const stubCsipRecordPatchFail = () => {
+  return stubFor({
+    request: {
+      method: 'PATCH',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*',
+    },
+    response: {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
+    },
+  })
+}
+
 const stubContributoryFactorPostSuccess = () => {
   return stubFor({
     request: {
@@ -501,12 +517,49 @@ const stubCsipRecordSuccessAwaitingDecision = () => {
           investigation: {
             interviews: [
               {
-                interviewee: 'Some Person',
-                interviewDate: '2024-12-25',
+                interviewee: 'Another Person',
+                interviewDate: '2024-12-29',
                 intervieweeRole: { code: 'CODE', description: 'Witness' },
                 interviewText: 'some text',
               },
+              {
+                interviewee: 'Some Person',
+                interviewDate: '2024-12-25',
+                intervieweeRole: { code: 'CODE', description: 'Foobar' },
+                interviewText: 'other stuff',
+              },
             ],
+            staffInvolved: 'staff stafferson',
+            evidenceSecured: 'SomeVidence',
+            occurrenceReason: 'bananas',
+            personsUsualBehaviour: 'a great person',
+            personsTrigger: 'spiders',
+            protectiveFactors: 'SomeFactors',
+          },
+        },
+      },
+    },
+  })
+}
+
+const stubCsipRecordSuccessAwaitingDecisionNoInterviews = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        ...csip,
+        status: 'AWAITING_DECISION',
+        referral: {
+          ...csip.referral,
+          investigation: {
+            interviews: [],
             staffInvolved: 'staff stafferson',
             evidenceSecured: 'SomeVidence',
             occurrenceReason: 'bananas',
@@ -660,6 +713,43 @@ const stubCsipRecordGetSuccessLongReasons = () => {
   })
 }
 
+const stubCsipRecordGetSuccessLongCFComment = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        ...csip,
+        referral: {
+          ...csip.referral,
+          contributoryFactors: [
+            {
+              factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f1',
+              factorType: { code: 'CODE3', description: 'Text' },
+              comment: 'a'.repeat(3001),
+            },
+            {
+              factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f2',
+              factorType: { code: 'CODE2', description: 'Text' },
+            },
+            {
+              factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f3',
+              factorType: { code: 'CODE3', description: 'Text' },
+              comment: 'a'.repeat(10),
+            },
+          ],
+        },
+      },
+    },
+  })
+}
+
 const stubCsipRecordGetSuccessAfterScreeningWithReason = () => {
   return stubFor({
     request: {
@@ -807,6 +897,38 @@ const stubPostInvestigation = () => {
   })
 }
 
+const stubPatchInvestigationSuccess = () => {
+  return stubFor({
+    request: {
+      method: 'PATCH',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {},
+    },
+  })
+}
+
+const stubPatchInvestigationFail = () => {
+  return stubFor({
+    request: {
+      method: 'PATCH',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation',
+    },
+    response: {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
+    },
+  })
+}
+
 const stubPostPlan = () => {
   return stubFor({
     request: {
@@ -835,6 +957,38 @@ const stubPutDecision = () => {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       jsonBody: {},
+    },
+  })
+}
+
+const stubPatchContributoryFactorSuccess = () => {
+  return stubFor({
+    request: {
+      method: 'PATCH',
+      urlPattern: '/csip-api/csip-records/referral/contributory-factors/[a-zA-Z0-9-]*',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {},
+    },
+  })
+}
+
+const stubPatchContributoryFactorFail = () => {
+  return stubFor({
+    request: {
+      method: 'PATCH',
+      urlPattern: '/csip-api/csip-records/referral/contributory-factors/[a-zA-Z0-9-]*',
+    },
+    response: {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
     },
   })
 }
@@ -884,10 +1038,12 @@ export const csip = {
     <button>also should be escaped</button>`,
     contributoryFactors: [
       {
-        factorType: { code: 'A', description: 'Text' },
+        factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f1',
+        factorType: { code: 'CODE3', description: 'Text' },
       },
       {
-        factorType: { code: 'B', description: '<script>alert("Text for type-B")</script>' },
+        factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f2',
+        factorType: { code: 'CODE1', description: '<script>alert("Text for type-B")</script>' },
         comment: `Text
 
         • Bullet 1
@@ -901,7 +1057,8 @@ export const csip = {
         <button>factor comment button should be escaped</button>`,
       },
       {
-        factorType: { code: 'C', description: 'Text with a TLA' },
+        factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f3',
+        factorType: { code: `CODE4`, description: 'Text with a TLA' },
       },
     ],
     isSaferCustodyTeamInformed: YES_NO_ANSWER.Enum.YES,
@@ -935,11 +1092,15 @@ export default {
   stubCsipRecordGetSuccess,
   stubPostSaferCustodyScreening,
   stubPostInvestigation,
+  stubPatchInvestigationSuccess,
+  stubPatchInvestigationFail,
   stubPostPlan,
   stubCsipRecordSuccessAwaitingDecision,
+  stubCsipRecordSuccessAwaitingDecisionNoInterviews,
   stubCsipRecordSuccessPlanPending,
   stubPutDecision,
   stubCsipRecordPatchSuccess,
+  stubCsipRecordPatchFail,
   stubContributoryFactorPostSuccess,
   stubCsipRecordGetSuccessCFEdgeCases,
   stubCsipRecordGetSuccessAfterScreeningWithReason,
@@ -947,4 +1108,7 @@ export default {
   stubCsipRecordGetSuccessLongDescription,
   stubCsipRecordGetSuccessLongReasons,
   stubCsipRecordGetSuccessLongAdditionalInfo,
+  stubPatchContributoryFactorSuccess,
+  stubPatchContributoryFactorFail,
+  stubCsipRecordGetSuccessLongCFComment,
 }

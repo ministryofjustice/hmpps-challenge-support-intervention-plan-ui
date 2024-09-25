@@ -7,6 +7,8 @@ import populatePrisonerSummary from '../../middleware/populatePrisonerSummary'
 import { DecisionRoutes } from './record-decision/routes'
 import { DevelopPlanRoutes } from './develop-an-initial-plan/routes'
 import { UpdateReferralRoutes } from './update-referral/routes'
+import { EditLogCodeRoutes } from './edit-log-code/routes'
+import { UpdateInvestigationRoutes } from './update-investigation/routes'
 
 export const JourneyRoutes = (services: Services) => {
   const router = Router({ mergeParams: true })
@@ -19,6 +21,8 @@ export const JourneyRoutes = (services: Services) => {
   router.use('/', DecisionRoutes({ services, path: '/record-decision' }))
   router.use('/', DevelopPlanRoutes({ services, path: '/develop-an-initial-plan' }))
   router.use('/', UpdateReferralRoutes({ services, path: '/update-referral' }))
+  router.use('/', EditLogCodeRoutes({ services, path: '/edit-log-code' }))
+  router.use('/', UpdateInvestigationRoutes({ services, path: '/update-investigation' }))
 
   if (process.env.NODE_ENV === 'e2e-test') {
     router.get('/inject-journey-data', (req, res) => {

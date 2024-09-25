@@ -15,7 +15,7 @@ context('test /record-decision/confirmation', () => {
     cy.task('stubComponents')
     cy.task('stubGetPrisonerImage')
     cy.task('stubGetPrisoner')
-    cy.task('stubCsipRecordGetSuccess')
+    cy.task('stubCsipRecordSuccessPlanPending')
   })
 
   it('should display page correctly when outcome type is "No further action"', () => {
@@ -58,7 +58,7 @@ context('test /record-decision/confirmation', () => {
 
     cy.findByText('CSIP investigation decision recorded').should('be.visible')
 
-    cy.findByText('We’ve updated the status of the referral to “referral submitted”.').should('be.visible')
+    cy.findByText('We’ve updated the status of the referral to “plan pending”.').should('be.visible')
     cy.findByText('Other actions to consider').should('be.visible')
   }
 })

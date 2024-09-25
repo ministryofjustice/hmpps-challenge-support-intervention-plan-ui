@@ -63,6 +63,16 @@ export default class CsipApiService {
     )
   }
 
+  updateInvestigation(
+    req: Request,
+    updateInvestigationRequest: components['schemas']['UpdateInvestigationRequest'],
+  ): Promise<components['schemas']['Investigation']> {
+    return this.csipApiClientBuilder(req.systemClientToken).updateInvestigation(
+      req.journeyData.csipRecord!.recordUuid,
+      updateInvestigationRequest,
+    )
+  }
+
   createDecision(req: Request, payload: Parameters<CsipApiClient['createDecision']>[1]) {
     return this.csipApiClientBuilder(req.systemClientToken).createDecision(
       req.journeyData.csipRecord!.recordUuid,
@@ -72,5 +82,13 @@ export default class CsipApiService {
 
   createPlan(req: Request, payload: Parameters<CsipApiClient['createPlan']>[1]) {
     return this.csipApiClientBuilder(req.systemClientToken).createPlan(req.journeyData.csipRecord!.recordUuid, payload)
+  }
+
+  updateContributoryFactor(
+    req: Request,
+    factorUuid: string,
+    payload: Parameters<CsipApiClient['updateContributoryFactor']>[1],
+  ) {
+    return this.csipApiClientBuilder(req.systemClientToken).updateContributoryFactor(factorUuid, payload)
   }
 }

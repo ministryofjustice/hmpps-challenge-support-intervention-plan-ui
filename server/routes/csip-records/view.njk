@@ -2,10 +2,11 @@
 {% from "moj/components/page-header-actions/macro.njk" import mojPageHeaderActions %}
 {%- from "moj/components/sub-navigation/macro.njk" import mojSubNavigation -%}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "partials/statusTag/macro.njk" import statusTag %}
 
 {% set fullWidth = true %}
 
-{% set pageTitle = "Update a CSIP referral" if isUpdate else "CSIP record - CSIP" %}
+{% set pageTitle = ("Update a CSIP " + updatingEntity) if isUpdate else "CSIP record - CSIP" %}
 {% extends "partials/layout.njk" %}
 
 {% if actionButton %}
@@ -22,7 +23,7 @@
   {% endset %}
 {% endif %}
 
-{% set basePageHeader = 'CSIP referral for ' + (prisoner | firstNameSpaceLastName) %}
+{% set basePageHeader = 'CSIP ' + updatingEntity + ' for ' + (prisoner | firstNameSpaceLastName) %}
 
 {% block pageHeader %}
   {% if successMessage %}
@@ -47,6 +48,19 @@
 {% endblock %}
 
 {% block innerContent %}
+  {% if not isUpdate %}
+    <p class="govuk-!-margin-bottom-6">
+      {{ statusTag({ record: record }) }}
+    </p>
+    <p class="govuk-!-margin-bottom-8">
+      <strong>CSIP log code:</strong> {{ record.logCode or "Not provided" }}
+      <a class="govuk-link govuk-link--no-visited-state govuk-!-margin-left-2" href="/csip-record/{{ recordUuid }}/edit-log-code/start">Edit log code</a>
+    </p>
+    {% if not shouldShowTabs %}
+      <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-8">
+    {% endif %}
+  {% endif %}
+
   {% if shouldShowTabs %}
     {{ mojSubNavigation({
       label: 'Sub navigation',
@@ -73,7 +87,6 @@
   {% else %}
     {% if decision %}
       {% include './components/decision.njk' %}
-      <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
     {% endif %}
     {% include './components/investigation.njk' %}
   {% endif %}
