@@ -7,7 +7,6 @@ export class UpdateEvidenceSecuredController extends PatchInvestigationControlle
   GET = async (req: Request, res: Response) => {
     req.journeyData.isUpdate = true
     const currentEvidenceSecured = req.journeyData.csipRecord!.referral.investigation!.evidenceSecured
-    console.error(JSON.stringify(req.journeyData, null, 2))
     res.render('record-investigation/evidence-secured/view', {
       currentEvidenceSecured,
       evidenceSecured: res.locals.formResponses?.['evidenceSecured'],
