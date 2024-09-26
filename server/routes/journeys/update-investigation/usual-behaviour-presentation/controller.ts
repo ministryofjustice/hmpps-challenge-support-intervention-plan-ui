@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { SchemaType } from '../../record-investigation/usual-behaviour-presentation/schemas'
 import { MESSAGE_INVESTIGATION_UPDATED, PatchInvestigationController } from '../../base/patchInvestigationController'
-import { generateSaveTimestamp, getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
+import { getMaxCharsAndThresholdForAppend, getTextForApiSubmission } from '../../../../utils/appendFieldUtils'
 
 export class UpdateUsualBehaviourController extends PatchInvestigationController {
   GET = async (req: Request, res: Response) => {
@@ -21,10 +21,11 @@ export class UpdateUsualBehaviourController extends PatchInvestigationController
       res,
       next,
       changes: {
-        personsUsualBehaviour:
-          (req.journeyData.investigation!.personsUsualBehaviour ?? '') +
-          generateSaveTimestamp(res.locals.user.displayName) +
+        personsUsualBehaviour: getTextForApiSubmission(
+          req.journeyData.investigation!.personsUsualBehaviour,
+          res.locals.user.displayName,
           req.body.personsUsualBehaviour,
+        ),
       },
       successMessage: MESSAGE_INVESTIGATION_UPDATED,
     })

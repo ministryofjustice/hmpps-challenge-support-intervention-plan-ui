@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { SchemaType } from './schemas'
 import { MESSAGE_REFERRAL_ADDITIONAL_INFO_UPDATED, PatchReferralController } from '../../base/patchReferralController'
-import { generateSaveTimestamp, getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
+import { getMaxCharsAndThresholdForAppend, getTextForApiSubmission } from '../../../../utils/appendFieldUtils'
 
 export class UpdateAdditionalInfoController extends PatchReferralController {
   GET = async (req: Request, res: Response) => {
@@ -20,10 +20,11 @@ export class UpdateAdditionalInfoController extends PatchReferralController {
       res,
       next,
       changes: {
-        otherInformation:
-          (req.journeyData.referral!.otherInformation ?? '') +
-          generateSaveTimestamp(res.locals.user.displayName) +
+        otherInformation: getTextForApiSubmission(
+          req.journeyData.referral!.otherInformation,
+          res.locals.user.displayName,
           req.body.otherInformation,
+        ),
       },
       successMessage: MESSAGE_REFERRAL_ADDITIONAL_INFO_UPDATED,
     })

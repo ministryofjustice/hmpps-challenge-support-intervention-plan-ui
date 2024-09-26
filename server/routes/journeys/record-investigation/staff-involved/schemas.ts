@@ -5,8 +5,6 @@ import { getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldU
 
 const ERROR_MSG = 'Enter the names of staff involved in the investigation'
 const UPDATE_ERROR_MSG = 'Enter an update to the names of staff involved in the investigation'
-const TOO_LONG_ERROR_MSG = (length: number) =>
-  `Names of staff involved in the investigation must be ${length.toLocaleString()} characters or less`
 
 export const schemaFactory = async (req: Request, res: Response) => {
   const maxLengthChars = req.journeyData.isUpdate
@@ -19,7 +17,10 @@ export const schemaFactory = async (req: Request, res: Response) => {
   return createSchema({
     staffInvolved: z
       .string({ message: req.journeyData.isUpdate ? UPDATE_ERROR_MSG : ERROR_MSG })
-      .max(maxLengthChars, TOO_LONG_ERROR_MSG(maxLengthChars))
+      .max(
+        maxLengthChars,
+        `Names of staff involved in the investigation must be ${maxLengthChars.toLocaleString()} characters or less`,
+      )
       .refine(val => val && val.trim().length > 0, req.journeyData.isUpdate ? UPDATE_ERROR_MSG : ERROR_MSG),
   })
 }
