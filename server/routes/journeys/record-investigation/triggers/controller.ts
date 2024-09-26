@@ -7,6 +7,8 @@ export class TriggersController {
     res.render('record-investigation/triggers/view', {
       personsTrigger,
       backUrl: '../record-investigation',
+      maxLengthChars: 4000,
+      threshold: '75',
     })
   }
 

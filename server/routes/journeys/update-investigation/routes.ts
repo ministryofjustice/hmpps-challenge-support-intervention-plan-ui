@@ -5,6 +5,7 @@ import { UpdateInvestigationController } from './controller'
 import { UpdateStaffInvolvedRoutes } from './staff-involved/routes'
 import { UpdateUsualBehaviourRoutes } from './usual-behaviour-presentation/routes'
 import { UpdateWhyBehaviourOccurredRoutes } from './why-behaviour-occurred/routes'
+import { UpdateTriggersRoutes } from './triggers/routes'
 
 function Routes({ csipApiService, prisonerSearchService }: Services) {
   const { router, get } = JourneyRouter()
@@ -15,6 +16,7 @@ function Routes({ csipApiService, prisonerSearchService }: Services) {
   router.use('/staff-involved', UpdateStaffInvolvedRoutes(csipApiService))
   router.use('/usual-behaviour-presentation', UpdateUsualBehaviourRoutes(csipApiService))
   router.use('/why-behaviour-occurred', UpdateWhyBehaviourOccurredRoutes(csipApiService))
+  router.use('/triggers', UpdateTriggersRoutes(csipApiService))
 
   return router
 }
