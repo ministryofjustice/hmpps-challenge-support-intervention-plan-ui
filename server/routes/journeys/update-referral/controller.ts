@@ -117,13 +117,13 @@ export class UpdateReferralController extends BaseJourneyController {
 
     const interviews = record.referral!.investigation?.interviews
     if (interviews) {
-      investigation.interviews = interviews.sort((intA, intB) => {
-        const dif = new Date(intA.interviewDate).getTime() - new Date(intB.interviewDate).getTime()
-        if (dif !== 0) {
-          return dif
-        }
-        return intB.interviewText!.localeCompare(intA.interviewText!)
-      })
+      investigation.interviews = interviews.sort(
+        (intA, intB) =>
+          intA.interviewDate.localeCompare(intB.interviewDate) ||
+          -+!intA.interviewText + +!intB.interviewText ||
+          (intA.interviewText && intB.interviewText && intB.interviewText.localeCompare(intA.interviewText)) ||
+          intB.interviewUuid.localeCompare(intA.interviewUuid),
+      )
     }
 
     const involvementFilter = (itm: { key: { text: string } }) =>
@@ -136,7 +136,7 @@ export class UpdateReferralController extends BaseJourneyController {
       case 'REFERRAL_SUBMITTED':
         secondaryButton = {
           label: 'Cancel',
-          link: `/csip-record/${record.recordUuid}`,
+          link: `/csip-records/${record.recordUuid}`,
         }
         break
       case 'PLAN_PENDING':

@@ -56,4 +56,66 @@ export class PatchInvestigationController extends BaseJourneyController {
     req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, successMessage)
     next()
   }
+
+  addInterview = async <T>({
+    req,
+    res,
+    next,
+    body,
+  }: {
+    req: Request<Record<string, string>, unknown, T>
+    res: Response
+    next: NextFunction
+    body: components['schemas']['CreateInterviewRequest']
+  }) => {
+    try {
+      await this.csipApiService.addInterview(req as Request, body)
+    } catch (e) {
+      if ((e as SanitisedError).data) {
+        const errorRespData = (e as SanitisedError).data as Record<string, string | unknown>
+        req.flash(
+          FLASH_KEY__VALIDATION_ERRORS,
+          JSON.stringify({
+            referral: [errorRespData?.['userMessage'] as string],
+          }),
+        )
+      }
+      res.redirect('back')
+      return
+    }
+    req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_INTERVIEW_ADDED)
+    next()
+  }
+
+  updateInterview = async <T>({
+    req,
+    res,
+    next,
+    body,
+    interviewUuid,
+  }: {
+    req: Request<Record<string, string>, unknown, T>
+    res: Response
+    next: NextFunction
+    body: components['schemas']['UpdateInterviewRequest']
+    interviewUuid: string
+  }) => {
+    try {
+      await this.csipApiService.updateInterview(req as Request, interviewUuid, body)
+    } catch (e) {
+      if ((e as SanitisedError).data) {
+        const errorRespData = (e as SanitisedError).data as Record<string, string | unknown>
+        req.flash(
+          FLASH_KEY__VALIDATION_ERRORS,
+          JSON.stringify({
+            referral: [errorRespData?.['userMessage'] as string],
+          }),
+        )
+      }
+      res.redirect('back')
+      return
+    }
+    req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_INTERVIEW_DETAILS_UPDATED)
+    next()
+  }
 }

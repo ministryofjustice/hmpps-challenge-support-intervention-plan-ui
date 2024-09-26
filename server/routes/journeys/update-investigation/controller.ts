@@ -18,13 +18,13 @@ export class UpdateInvestigationController extends BaseJourneyController {
     const { referral } = record
 
     const interviews = record.referral!.investigation?.interviews
-      ? referral!.investigation!.interviews.sort((intA, intB) => {
-          const dif = new Date(intA.interviewDate).getTime() - new Date(intB.interviewDate).getTime()
-          if (dif !== 0) {
-            return dif
-          }
-          return intB.interviewText!.localeCompare(intA.interviewText!)
-        })
+      ? referral!.investigation!.interviews.sort(
+          (intA, intB) =>
+            intA.interviewDate.localeCompare(intB.interviewDate) ||
+            -+!intA.interviewText + +!intB.interviewText ||
+            (intA.interviewText && intB.interviewText && intB.interviewText.localeCompare(intA.interviewText)) ||
+            intB.interviewUuid.localeCompare(intA.interviewUuid),
+        )
       : undefined
 
     const investigation = {
@@ -35,7 +35,7 @@ export class UpdateInvestigationController extends BaseJourneyController {
 
     const secondaryButton = {
       label: 'Cancel',
-      link: `/csip-record/${record.recordUuid}`,
+      link: `/csip-records/${record.recordUuid}`,
     }
 
     req.journeyData.isUpdate = true

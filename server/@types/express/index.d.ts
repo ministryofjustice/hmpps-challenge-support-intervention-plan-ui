@@ -82,7 +82,9 @@ type Interview = Partial<{
   interviewDate: string
   intervieweeRole: ReferenceData
   interviewText: string | null
-}>
+}> & {
+  interviewUuid?: string
+}
 
 type DecisionAndActions = Partial<{
   signedOffByRole: ReferenceData

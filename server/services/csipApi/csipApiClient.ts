@@ -83,6 +83,26 @@ export default class CsipApiClient {
     })
   }
 
+  async addInterview(
+    recordUuid: string,
+    createInterviewRequest: components['schemas']['CreateInterviewRequest'],
+  ): Promise<components['schemas']['Interview']> {
+    return this.restClient.post({
+      path: `/csip-records/${recordUuid}/referral/investigation/interviews`,
+      data: createInterviewRequest,
+    })
+  }
+
+  async updateInterview(
+    interviewUuid: string,
+    updateInterviewRequest: components['schemas']['UpdateInterviewRequest'],
+  ): Promise<components['schemas']['Interview']> {
+    return this.restClient.patch({
+      path: `/csip-records/referral/investigation/interviews/${interviewUuid}`,
+      data: updateInterviewRequest,
+    })
+  }
+
   async createDecision(recordUuid: string, payload: components['schemas']['UpsertDecisionAndActionsRequest']) {
     return this.restClient.put<components['schemas']['DecisionAndActions']>({
       path: `/csip-records/${recordUuid}/referral/decision-and-actions`,

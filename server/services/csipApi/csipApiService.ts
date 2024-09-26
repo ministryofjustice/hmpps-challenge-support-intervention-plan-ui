@@ -73,6 +73,24 @@ export default class CsipApiService {
     )
   }
 
+  addInterview(
+    req: Request,
+    createInterviewRequest: components['schemas']['CreateInterviewRequest'],
+  ): Promise<components['schemas']['Interview']> {
+    return this.csipApiClientBuilder(req.systemClientToken).addInterview(
+      req.journeyData.csipRecord!.recordUuid,
+      createInterviewRequest,
+    )
+  }
+
+  updateInterview(
+    req: Request,
+    interviewUuid: string,
+    updateInterviewRequest: components['schemas']['UpdateInterviewRequest'],
+  ): Promise<components['schemas']['Interview']> {
+    return this.csipApiClientBuilder(req.systemClientToken).updateInterview(interviewUuid, updateInterviewRequest)
+  }
+
   createDecision(req: Request, payload: Parameters<CsipApiClient['createDecision']>[1]) {
     return this.csipApiClientBuilder(req.systemClientToken).createDecision(
       req.journeyData.csipRecord!.recordUuid,
