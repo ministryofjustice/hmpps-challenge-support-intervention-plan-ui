@@ -594,7 +594,7 @@ const stubCsipRecordSuccessPlanPending = () => {
               {
                 interviewee: 'Some Person',
                 interviewDate: '2024-12-25',
-                intervieweeRole: { code: 'CODE', description: 'Witness' },
+                intervieweeRole: { code: 'B', description: 'Role2' },
                 interviewText: 'some text',
               },
             ],
