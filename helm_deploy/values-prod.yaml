@@ -16,6 +16,7 @@ generic-service:
     COMMON_COMPONENTS_ENABLED: true
     DPS_HOME_PAGE_URL: "https://digital.prison.service.justice.gov.uk"
     AUDIT_ENABLED: "false"
+    SENTRY_ENVIRONMENT: prod
 
 generic-prometheus-alerts:
   alertSeverity: move-and-improve-alerts

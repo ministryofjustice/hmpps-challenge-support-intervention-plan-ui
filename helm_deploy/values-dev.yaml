@@ -22,6 +22,7 @@ generic-service:
     DPS_HOME_PAGE_URL: "https://digital-dev.prison.service.justice.gov.uk"
     ENVIRONMENT_NAME: DEV
     AUDIT_ENABLED: "false"
+    SENTRY_ENVIRONMENT: dev
 
 generic-prometheus-alerts:
   alertSeverity: move-and-improve-alerts-non-prod
