@@ -24,14 +24,29 @@ export const JourneyRoutes = (services: Services) => {
   router.use('/', EditLogCodeRoutes({ services, path: '/edit-log-code' }))
   router.use('/', UpdateInvestigationRoutes({ services, path: '/update-investigation' }))
 
+  /* eslint-disable no-param-reassign */
+  const mergeObjects = <T>(destination: T, source: Partial<T>) => {
+    Object.entries(source).forEach(([key, value]) => {
+      if (typeof value === 'object' && !Array.isArray(value)) {
+        // @ts-expect-error unexpected types
+        if (!destination[key]) {
+          // @ts-expect-error set up object for future recursive writes
+          destination[key] = {}
+        }
+        // @ts-expect-error unexpected types
+        mergeObjects(destination[key], value)
+      } else {
+        // @ts-expect-error unexpected types
+        destination[key] = value
+      }
+    })
+  }
+
   if (process.env.NODE_ENV === 'e2e-test') {
     router.get('/inject-journey-data', (req, res) => {
       const { data } = req.query
       const json = JSON.parse(atob(data as string))
-      Object.entries(json).forEach(([key, value]) => {
-        // @ts-expect-error unexpected types
-        req.journeyData[key] = value
-      })
+      mergeObjects(req.journeyData, json)
       res.sendStatus(200)
     })
   }

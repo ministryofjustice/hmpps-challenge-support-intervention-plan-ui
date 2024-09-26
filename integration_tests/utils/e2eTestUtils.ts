@@ -1,6 +1,12 @@
 import { JourneyData } from '../../server/@types/express'
 
-export const injectJourneyDataAndReload = (uuid: string, json: Partial<JourneyData>) => {
+type RecursivePartial<T> = T extends unknown
+  ? T extends object
+    ? { [K in keyof T]?: RecursivePartial<T[K]> }
+    : T
+  : never
+
+export const injectJourneyDataAndReload = (uuid: string, json: RecursivePartial<JourneyData>) => {
   const data = encodeURIComponent(btoa(JSON.stringify(json)))
   cy.request('GET', `/${uuid}/inject-journey-data?data=${data}`)
   cy.reload()
