@@ -1,17 +1,17 @@
 import { NextFunction, Request, Response } from 'express'
-import { SchemaType } from '../../record-investigation/staff-involved/schemas'
+import { SchemaType } from '../../record-investigation/usual-behaviour-presentation/schemas'
 import { MESSAGE_INVESTIGATION_UPDATED, PatchInvestigationController } from '../../base/patchInvestigationController'
 import { getMaxCharsAndThresholdForAppend, getTextForApiSubmission } from '../../../../utils/appendFieldUtils'
 
-export class UpdateStaffInvolvedController extends PatchInvestigationController {
+export class UpdateUsualBehaviourController extends PatchInvestigationController {
   GET = async (req: Request, res: Response) => {
-    const currentStaffInvolved = req.journeyData.csipRecord!.referral.investigation!.staffInvolved
-    res.render('record-investigation/staff-involved/view', {
-      currentStaffInvolved,
-      staffInvolved: res.locals.formResponses?.['staffInvolved'],
+    const currentPersonsUsualBehaviour = req.journeyData.csipRecord!.referral.investigation!.personsUsualBehaviour
+    res.render('record-investigation/usual-behaviour-presentation/view', {
+      currentPersonsUsualBehaviour,
+      personsUsualBehaviour: res.locals.formResponses?.['personsUsualBehaviour'],
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
-      ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentStaffInvolved),
+      ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentPersonsUsualBehaviour),
     })
   }
 
@@ -21,10 +21,10 @@ export class UpdateStaffInvolvedController extends PatchInvestigationController 
       res,
       next,
       changes: {
-        staffInvolved: getTextForApiSubmission(
-          req.journeyData.investigation!.staffInvolved,
+        personsUsualBehaviour: getTextForApiSubmission(
+          req.journeyData.investigation!.personsUsualBehaviour,
           res.locals.user.displayName,
-          req.body.staffInvolved,
+          req.body.personsUsualBehaviour,
         ),
       },
       successMessage: MESSAGE_INVESTIGATION_UPDATED,

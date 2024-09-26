@@ -1,17 +1,17 @@
 import { NextFunction, Request, Response } from 'express'
-import { SchemaType } from '../../record-investigation/staff-involved/schemas'
+import { SchemaType } from '../../record-investigation/triggers/schemas'
 import { MESSAGE_INVESTIGATION_UPDATED, PatchInvestigationController } from '../../base/patchInvestigationController'
 import { getMaxCharsAndThresholdForAppend, getTextForApiSubmission } from '../../../../utils/appendFieldUtils'
 
-export class UpdateStaffInvolvedController extends PatchInvestigationController {
+export class UpdateTriggersController extends PatchInvestigationController {
   GET = async (req: Request, res: Response) => {
-    const currentStaffInvolved = req.journeyData.csipRecord!.referral.investigation!.staffInvolved
-    res.render('record-investigation/staff-involved/view', {
-      currentStaffInvolved,
-      staffInvolved: res.locals.formResponses?.['staffInvolved'],
+    const currentPersonsTrigger = req.journeyData.csipRecord!.referral.investigation!.personsTrigger
+    res.render('record-investigation/triggers/view', {
+      currentPersonsTrigger,
+      personsTrigger: res.locals.formResponses?.['personsTrigger'],
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
-      ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentStaffInvolved),
+      ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentPersonsTrigger),
     })
   }
 
@@ -21,10 +21,10 @@ export class UpdateStaffInvolvedController extends PatchInvestigationController 
       res,
       next,
       changes: {
-        staffInvolved: getTextForApiSubmission(
-          req.journeyData.investigation!.staffInvolved,
+        personsTrigger: getTextForApiSubmission(
+          req.journeyData.investigation!.personsTrigger,
           res.locals.user.displayName,
-          req.body.staffInvolved,
+          req.body.personsTrigger,
         ),
       },
       successMessage: MESSAGE_INVESTIGATION_UPDATED,

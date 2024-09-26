@@ -1,5 +1,4 @@
 import express, { Express, Locals, Request } from 'express'
-import { NotFound } from 'http-errors'
 import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
 import routes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
@@ -98,8 +97,12 @@ function appSetup(
     }),
   )
   app.use(breadcrumbs())
+  app.use((_req, res, next) => {
+    res.notFound = () => res.status(404).render('pages/not-found')
+    next()
+  })
   app.use(routes(services))
-  app.use((_req, _res, next) => next(new NotFound()))
+  app.use((_req, res) => res.notFound())
   app.use(errorHandler(production))
 
   return app
