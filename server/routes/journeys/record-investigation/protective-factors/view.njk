@@ -15,7 +15,7 @@
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        {% if isUpdate %}
+        {% if not isUpdate %}
             {{ govukDetails({
                 summaryText: "Help with understanding protective factors",
                 html: '

@@ -4,7 +4,7 @@ import { createSchema } from '../../../../middleware/validationMiddleware'
 import { getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
 
 const ERROR_MSG = 'Enter a description of the prisoner’s protective factors'
-const UPDATE_ERROR_MSG = 'Enter an update to the prisoner’s protective factors'
+const UPDATE_ERROR_MSG = 'Enter an update to the description of the prisoner’s protective factors'
 
 export const schemaFactory = async (req: Request, res: Response) => {
   const maxLengthChars = req.journeyData.isUpdate

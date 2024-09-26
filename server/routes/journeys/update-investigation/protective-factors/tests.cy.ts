@@ -50,7 +50,9 @@ context('test /update-investigation/protective-factors', () => {
   }
 
   const validatePageContents = () => {
-    cy.findByRole('heading', { name: 'Add information on why this occurred' }).should('be.visible')
+    cy.findByRole('heading', { name: 'Add information about the protective factors for Testname User' }).should(
+      'be.visible',
+    )
     cy.findByText('SomeFactors').should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /Cancel/i })
