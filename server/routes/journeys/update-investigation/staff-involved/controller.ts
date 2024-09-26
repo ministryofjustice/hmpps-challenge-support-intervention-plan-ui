@@ -10,6 +10,7 @@ export class UpdateStaffInvolvedController extends PatchInvestigationController 
       currentStaffInvolved,
       staffInvolved: res.locals.formResponses?.['staffInvolved'],
       isUpdate: true,
+      backUrl: '../update-investigation',
       recordUuid: req.journeyData.csipRecord!.recordUuid,
       ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentStaffInvolved),
     })

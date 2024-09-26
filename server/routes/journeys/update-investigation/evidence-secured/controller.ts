@@ -5,12 +5,12 @@ import { getMaxCharsAndThresholdForAppend, getTextForApiSubmission } from '../..
 
 export class UpdateEvidenceSecuredController extends PatchInvestigationController {
   GET = async (req: Request, res: Response) => {
-    req.journeyData.isUpdate = true
     const currentEvidenceSecured = req.journeyData.csipRecord!.referral.investigation!.evidenceSecured
     res.render('record-investigation/evidence-secured/view', {
       currentEvidenceSecured,
       evidenceSecured: res.locals.formResponses?.['evidenceSecured'],
       isUpdate: true,
+      backUrl: '../update-investigation',
       recordUuid: req.journeyData.csipRecord!.recordUuid,
       ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentEvidenceSecured),
     })
