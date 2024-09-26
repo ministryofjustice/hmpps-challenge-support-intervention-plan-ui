@@ -5,7 +5,7 @@ import {
   MESSAGE_REACTIVE_DESCRIPTION_UPDATED,
   PatchReferralController,
 } from '../../base/patchReferralController'
-import { generateSaveTimestamp, getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
+import { getMaxCharsAndThresholdForAppend, getTextForApiSubmission } from '../../../../utils/appendFieldUtils'
 
 export class UpdateReasonsController extends PatchReferralController {
   GET = async (req: Request, res: Response) => {
@@ -28,10 +28,11 @@ export class UpdateReasonsController extends PatchReferralController {
       res,
       next,
       changes: {
-        knownReasons:
-          (req.journeyData.referral!.knownReasons ?? '') +
-          generateSaveTimestamp(res.locals.user.displayName) +
+        knownReasons: getTextForApiSubmission(
+          req.journeyData.referral!.knownReasons,
+          res.locals.user.displayName,
           req.body.knownReasons,
+        ),
       },
       successMessage: req.journeyData.referral?.isProactiveReferral
         ? MESSAGE_PROACTIVE_DESCRIPTION_UPDATED

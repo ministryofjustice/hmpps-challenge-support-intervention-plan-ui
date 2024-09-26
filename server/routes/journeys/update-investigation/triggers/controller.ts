@@ -1,17 +1,17 @@
 import { NextFunction, Request, Response } from 'express'
-import { SchemaType } from '../../record-investigation/usual-behaviour-presentation/schemas'
+import { SchemaType } from '../../record-investigation/triggers/schemas'
 import { MESSAGE_INVESTIGATION_UPDATED, PatchInvestigationController } from '../../base/patchInvestigationController'
 import { getMaxCharsAndThresholdForAppend, getTextForApiSubmission } from '../../../../utils/appendFieldUtils'
 
-export class UpdateUsualBehaviourController extends PatchInvestigationController {
+export class UpdateTriggersController extends PatchInvestigationController {
   GET = async (req: Request, res: Response) => {
-    const currentPersonsUsualBehaviour = req.journeyData.csipRecord!.referral.investigation!.personsUsualBehaviour
-    res.render('record-investigation/usual-behaviour-presentation/view', {
-      currentPersonsUsualBehaviour,
-      personsUsualBehaviour: res.locals.formResponses?.['personsUsualBehaviour'],
+    const currentPersonsTrigger = req.journeyData.csipRecord!.referral.investigation!.personsTrigger
+    res.render('record-investigation/triggers/view', {
+      currentPersonsTrigger,
+      personsTrigger: res.locals.formResponses?.['personsTrigger'],
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
-      ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentPersonsUsualBehaviour),
+      ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentPersonsTrigger),
     })
   }
 
@@ -21,10 +21,10 @@ export class UpdateUsualBehaviourController extends PatchInvestigationController
       res,
       next,
       changes: {
-        personsUsualBehaviour: getTextForApiSubmission(
-          req.journeyData.investigation!.personsUsualBehaviour,
+        personsTrigger: getTextForApiSubmission(
+          req.journeyData.investigation!.personsTrigger,
           res.locals.user.displayName,
-          req.body.personsUsualBehaviour,
+          req.body.personsTrigger,
         ),
       },
       successMessage: MESSAGE_INVESTIGATION_UPDATED,

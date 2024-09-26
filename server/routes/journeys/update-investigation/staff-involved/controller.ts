@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { SchemaType } from '../../record-investigation/staff-involved/schemas'
 import { MESSAGE_INVESTIGATION_UPDATED, PatchInvestigationController } from '../../base/patchInvestigationController'
-import { generateSaveTimestamp, getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
+import { getMaxCharsAndThresholdForAppend, getTextForApiSubmission } from '../../../../utils/appendFieldUtils'
 
 export class UpdateStaffInvolvedController extends PatchInvestigationController {
   GET = async (req: Request, res: Response) => {
@@ -21,10 +21,11 @@ export class UpdateStaffInvolvedController extends PatchInvestigationController 
       res,
       next,
       changes: {
-        staffInvolved:
-          (req.journeyData.investigation!.staffInvolved ?? '') +
-          generateSaveTimestamp(res.locals.user.displayName) +
+        staffInvolved: getTextForApiSubmission(
+          req.journeyData.investigation!.staffInvolved,
+          res.locals.user.displayName,
           req.body.staffInvolved,
+        ),
       },
       successMessage: MESSAGE_INVESTIGATION_UPDATED,
     })

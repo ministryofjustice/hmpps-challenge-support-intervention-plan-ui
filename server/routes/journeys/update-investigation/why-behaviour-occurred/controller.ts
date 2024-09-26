@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { SchemaType } from '../../record-investigation/why-behaviour-occurred/schemas'
 import { MESSAGE_INVESTIGATION_UPDATED, PatchInvestigationController } from '../../base/patchInvestigationController'
-import { generateSaveTimestamp, getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
+import { getMaxCharsAndThresholdForAppend, getTextForApiSubmission } from '../../../../utils/appendFieldUtils'
 
 export class UpdateWhyBehaviourOccurredController extends PatchInvestigationController {
   GET = async (req: Request, res: Response) => {
@@ -21,10 +21,11 @@ export class UpdateWhyBehaviourOccurredController extends PatchInvestigationCont
       res,
       next,
       changes: {
-        occurrenceReason:
-          (req.journeyData.investigation!.occurrenceReason ?? '') +
-          generateSaveTimestamp(res.locals.user.displayName) +
+        occurrenceReason: getTextForApiSubmission(
+          req.journeyData.investigation!.occurrenceReason,
+          res.locals.user.displayName,
           req.body.occurrenceReason,
+        ),
       },
       successMessage: MESSAGE_INVESTIGATION_UPDATED,
     })
