@@ -39,10 +39,8 @@ context('test /update-referral/additional-information', () => {
   it('test additional info, should show chars left immediately', () => {
     navigateToTestPage()
     injectJourneyDataAndReload(uuid, {
-      csipRecord: {
-        referral: {
-          otherInformation: 'a'.repeat(3001),
-        },
+      referral: {
+        otherInformation: 'a'.repeat(3001),
       },
     })
     cy.contains(new RegExp(`you have ${4000 - 3001 - dividerText.length} characters remaining`, 'i')).should(

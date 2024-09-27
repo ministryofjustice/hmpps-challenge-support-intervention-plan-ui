@@ -55,11 +55,10 @@ context('test /update-referral/proactive-or-reactive', () => {
 
   const navigateToTestPage = () => {
     cy.signIn()
-    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-investigation/start`, {
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start`, {
       failOnStatusCode: false,
     })
-    cy.url().should('to.match', /\/update-investigation$/)
-    cy.visit(`${uuid}/update-referral/description`)
+    cy.findByRole('link', { name: /change the description of the behaviour and concerns/i }).click()
   }
 
   const checkDetailsSummary = () => {
