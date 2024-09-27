@@ -570,50 +570,6 @@ const stubCsipRecordSuccessAwaitingDecisionNoInterviews = () => {
   })
 }
 
-const stubCsipRecordSuccessAwaitingDecisionLongProtectiveFactors = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        ...csip,
-        status: 'AWAITING_DECISION',
-        referral: {
-          ...csip.referral,
-          investigation: {
-            interviews: [
-              {
-                interviewee: 'Another Person',
-                interviewDate: '2024-12-29',
-                intervieweeRole: { code: 'CODE', description: 'Witness' },
-                interviewText: 'some text',
-              },
-              {
-                interviewee: 'Some Person',
-                interviewDate: '2024-12-25',
-                intervieweeRole: { code: 'CODE', description: 'Foobar' },
-                interviewText: 'other stuff',
-              },
-            ],
-            staffInvolved: 'staff stafferson',
-            evidenceSecured: 'SomeVidence',
-            occurrenceReason: 'bananas',
-            personsUsualBehaviour: 'a great person',
-            personsTrigger: 'spiders',
-            protectiveFactors: 'a'.repeat(3000),
-          },
-        },
-      },
-    },
-  })
-}
-
 const stubCsipRecordSuccessPlanPending = () => {
   return stubFor({
     request: {
@@ -684,109 +640,6 @@ const stubCsipRecordGetSuccess = () => {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       jsonBody: csip,
-    },
-  })
-}
-
-const stubCsipRecordGetSuccessLongDescription = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        ...csip,
-        referral: {
-          ...csip.referral,
-          descriptionOfConcern: 'a'.repeat(3001),
-        },
-      },
-    },
-  })
-}
-
-const stubCsipRecordGetSuccessLongAdditionalInfo = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        ...csip,
-        referral: {
-          ...csip.referral,
-          otherInformation: 'a'.repeat(3001),
-        },
-      },
-    },
-  })
-}
-
-const stubCsipRecordGetSuccessLongReasons = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        ...csip,
-        referral: {
-          ...csip.referral,
-          knownReasons: 'a'.repeat(3001),
-        },
-      },
-    },
-  })
-}
-
-const stubCsipRecordGetSuccessLongCFComment = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        ...csip,
-        referral: {
-          ...csip.referral,
-          contributoryFactors: [
-            {
-              factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f1',
-              factorType: { code: 'CODE3', description: 'Text' },
-              comment: 'a'.repeat(3001),
-            },
-            {
-              factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f2',
-              factorType: { code: 'CODE2', description: 'Text' },
-            },
-            {
-              factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f3',
-              factorType: { code: 'CODE3', description: 'Text' },
-              comment: 'a'.repeat(10),
-            },
-          ],
-        },
-      },
     },
   })
 }
@@ -1202,7 +1055,6 @@ export default {
   stubPostPlan,
   stubCsipRecordSuccessAwaitingDecision,
   stubCsipRecordSuccessAwaitingDecisionNoInterviews,
-  stubCsipRecordSuccessAwaitingDecisionLongProtectiveFactors,
   stubCsipRecordSuccessPlanPending,
   stubPutDecision,
   stubCsipRecordPatchSuccess,
@@ -1211,9 +1063,6 @@ export default {
   stubCsipRecordGetSuccessCFEdgeCases,
   stubCsipRecordGetSuccessAfterScreeningWithReason,
   stubCsipRecordGetSuccessAfterScreeningWithoutReason,
-  stubCsipRecordGetSuccessLongDescription,
-  stubCsipRecordGetSuccessLongReasons,
-  stubCsipRecordGetSuccessLongAdditionalInfo,
   stubPatchContributoryFactorSuccess,
   stubPatchContributoryFactorFail,
   stubPostInterviewSuccess,

@@ -1,7 +1,10 @@
+import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
+import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /update-referral/reasons', () => {
+  const uuid = uuidV4()
   const title = /Add information to the reasons given for the behaviour/i
   const errorMsg = /enter the reasons given for the behaviour/i
   const dividerText = generateSaveTimestamp('John Smith')
@@ -17,6 +20,7 @@ context('test /update-referral/reasons', () => {
     cy.task('stubContribFactors')
     cy.task('stubIncidentInvolvement')
     cy.task('stubCsipRecordPatchSuccess')
+    cy.task('stubCsipRecordGetSuccess')
   })
 
   const proceedToNextPage = () => {
@@ -26,7 +30,6 @@ context('test /update-referral/reasons', () => {
   }
 
   it('test reasons, including all edge cases, proactive', () => {
-    cy.task('stubCsipRecordGetSuccess')
     navigateToTestPage()
     checkValuesPersist()
     checkValidation()
@@ -34,8 +37,14 @@ context('test /update-referral/reasons', () => {
   })
 
   it('test reasons, should show chars left immediately', () => {
-    cy.task('stubCsipRecordGetSuccessLongReasons')
     navigateToTestPage()
+    injectJourneyDataAndReload(uuid, {
+      csipRecord: {
+        referral: {
+          knownReasons: 'a'.repeat(3001),
+        },
+      },
+    })
     cy.contains(new RegExp(`you have ${4000 - 3001 - dividerText.length} characters remaining`, 'i')).should(
       'be.visible',
     )
@@ -43,10 +52,9 @@ context('test /update-referral/reasons', () => {
 
   const navigateToTestPage = () => {
     cy.signIn()
-    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
-    cy.findAllByRole('link', { name: /update referral/i })
-      .first()
-      .click()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start`, {
+      failOnStatusCode: false,
+    })
     cy.findByRole('link', { name: /Change the reasons given for the behaviour/i }).click()
     cy.url().should('to.match', /\/update-referral\/reasons#knownReasons$/)
     checkAxeAccessibility()
