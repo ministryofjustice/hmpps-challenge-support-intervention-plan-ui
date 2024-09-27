@@ -10,6 +10,7 @@ export class UpdateWhyBehaviourOccurredController extends PatchInvestigationCont
       currentOccurrenceReason,
       occurrenceReason: res.locals.formResponses?.['occurrenceReason'],
       isUpdate: true,
+      backUrl: '../update-investigation',
       recordUuid: req.journeyData.csipRecord!.recordUuid,
       ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentOccurrenceReason),
     })

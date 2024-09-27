@@ -8,7 +8,7 @@ export class ReferralReferrerController extends BaseJourneyController {
       req,
       'area-of-work',
       'Select area',
-      res.locals.formResponses?.['areaOfWork'] || req.journeyData.referral!.refererArea,
+      res.locals.formResponses?.['areaOfWork'] ?? req.journeyData.referral!.refererArea,
     )
 
     const backUrl =

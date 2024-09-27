@@ -10,6 +10,7 @@ export class UpdateUsualBehaviourController extends PatchInvestigationController
       currentPersonsUsualBehaviour,
       personsUsualBehaviour: res.locals.formResponses?.['personsUsualBehaviour'],
       isUpdate: true,
+      backUrl: '../update-investigation',
       recordUuid: req.journeyData.csipRecord!.recordUuid,
       ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentPersonsUsualBehaviour),
     })

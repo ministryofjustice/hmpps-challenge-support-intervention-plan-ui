@@ -8,7 +8,7 @@ export class UpdateReferrerController extends PatchReferralController {
       req,
       'area-of-work',
       'Select area',
-      res.locals.formResponses?.['areaOfWork'] || req.journeyData.csipRecord!.referral.refererArea,
+      res.locals.formResponses?.['areaOfWork'] ?? req.journeyData.csipRecord!.referral.refererArea,
     )
 
     res.render('referral/referrer/view', {

@@ -10,6 +10,7 @@ export class UpdateTriggersController extends PatchInvestigationController {
       currentPersonsTrigger,
       personsTrigger: res.locals.formResponses?.['personsTrigger'],
       isUpdate: true,
+      backUrl: '../update-investigation',
       recordUuid: req.journeyData.csipRecord!.recordUuid,
       ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentPersonsTrigger),
     })

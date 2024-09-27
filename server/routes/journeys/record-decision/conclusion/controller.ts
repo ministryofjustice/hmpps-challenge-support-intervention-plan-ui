@@ -7,11 +7,11 @@ export class ConclusionController extends BaseJourneyController {
     const outcomeTypeOptions = await this.getReferenceDataOptionsForRadios(
       req,
       'decision-outcome-type',
-      res.locals.formResponses?.['outcome'] || req.journeyData.decisionAndActions!.outcome,
+      res.locals.formResponses?.['outcome'] ?? req.journeyData.decisionAndActions!.outcome,
     )
 
     res.render('record-decision/conclusion/view', {
-      conclusion: res.locals.formResponses?.['conclusion'] || req.journeyData.decisionAndActions?.conclusion,
+      conclusion: res.locals.formResponses?.['conclusion'] ?? req.journeyData.decisionAndActions?.conclusion,
       outcomeTypeOptions,
       backUrl: '../record-decision',
     })

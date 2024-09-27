@@ -5,7 +5,7 @@ export class ReferralReasonsController {
   GET = async (req: Request, res: Response) => {
     res.render('referral/reasons/view', {
       isProactiveReferral: req.journeyData.referral!.isProactiveReferral,
-      knownReasons: res.locals.formResponses?.['knownReasons'] || req.journeyData.referral!.knownReasons,
+      knownReasons: res.locals.formResponses?.['knownReasons'] ?? req.journeyData.referral!.knownReasons,
       backUrl: 'description',
     })
   }

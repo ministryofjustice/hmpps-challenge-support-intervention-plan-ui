@@ -7,7 +7,7 @@ export class RecordDecisionController extends BaseJourneyController {
     const signedOffByRoleOptions = await this.getReferenceDataOptionsForRadios(
       req,
       'role',
-      res.locals.formResponses?.['signedOffByRole'] || req.journeyData.decisionAndActions!.signedOffByRole,
+      res.locals.formResponses?.['signedOffByRole'] ?? req.journeyData.decisionAndActions!.signedOffByRole,
     )
 
     res.render('record-decision/view', { signedOffByRoleOptions })

@@ -3,7 +3,7 @@ import { SchemaType } from './schemas'
 
 export class DecisionAdditionalInformationController {
   GET = async (req: Request, res: Response) => {
-    const actionOther = res.locals.formResponses?.['actionOther'] || req.journeyData.decisionAndActions!.actionOther
+    const actionOther = res.locals.formResponses?.['actionOther'] ?? req.journeyData.decisionAndActions!.actionOther
     res.render('record-decision/additional-information/view', {
       actionOther,
       backUrl: 'next-steps',
