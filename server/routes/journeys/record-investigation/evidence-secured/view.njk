@@ -1,5 +1,4 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
-{% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "partials/submitButton/macro.njk" import submitButton %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
@@ -8,7 +7,7 @@
 {% set pageTitle = "Evidence secured - " + ('Update' if isUpdate else 'Record') + " a CSIP investigation" %}
 
 {% block innerContent %}
-    <span class="govuk-caption-l">{{'Update' if isUpdate else 'Record'}} a CSIP investigation</span>
+    {% include 'base/components/investigation-caption.njk' %}
     <label for="evidenceSecured">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{'Add information on the evidence secured' if isUpdate else 'What evidence has been secured?'}}</h1>
     </label>

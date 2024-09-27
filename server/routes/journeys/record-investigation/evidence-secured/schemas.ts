@@ -3,10 +3,10 @@ import { Request, Response } from 'express'
 import { createSchema } from '../../../../middleware/validationMiddleware'
 import { getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
 
-export const schemaFactory = async (req: Request, res: Response) => {
-  const ERROR_MSG = 'Enter a description of the evidence secured'
-  const UPDATE_ERROR_MSG = 'Enter an update to the description of the evidence secured'
+const ERROR_MSG = 'Enter a description of the evidence secured'
+const UPDATE_ERROR_MSG = 'Enter an update to the description of the evidence secured'
 
+export const schemaFactory = async (req: Request, res: Response) => {
   const maxLengthChars = req.journeyData.isUpdate
     ? getMaxCharsAndThresholdForAppend(
         res.locals.user.displayName,
