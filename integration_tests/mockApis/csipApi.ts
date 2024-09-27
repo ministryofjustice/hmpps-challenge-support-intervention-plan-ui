@@ -1069,5 +1069,4 @@ export default {
   stubPostInterviewFail,
   stubPatchInterviewSuccess,
   stubPatchInterviewFail,
-  stubCsipRecordGetSuccessLongCFComment,
 }
