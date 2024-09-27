@@ -9,6 +9,7 @@ import { DevelopPlanRoutes } from './develop-an-initial-plan/routes'
 import { UpdateReferralRoutes } from './update-referral/routes'
 import { EditLogCodeRoutes } from './edit-log-code/routes'
 import { UpdateInvestigationRoutes } from './update-investigation/routes'
+import { UpdateDecisionRoutes } from './update-decision/routes'
 
 export const JourneyRoutes = (services: Services) => {
   const router = Router({ mergeParams: true })
@@ -23,6 +24,7 @@ export const JourneyRoutes = (services: Services) => {
   router.use('/', UpdateReferralRoutes({ services, path: '/update-referral' }))
   router.use('/', EditLogCodeRoutes({ services, path: '/edit-log-code' }))
   router.use('/', UpdateInvestigationRoutes({ services, path: '/update-investigation' }))
+  router.use('/', UpdateDecisionRoutes({ services, path: '/update-decision' }))
 
   if (process.env.NODE_ENV === 'e2e-test') {
     /* eslint-disable no-param-reassign */
