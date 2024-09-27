@@ -23,7 +23,7 @@
   {% endset %}
 {% endif %}
 
-{% set basePageHeader = 'CSIP ' + (updatingEntity + ' ') if updatingEntity else '' + 'for ' + (prisoner | firstNameSpaceLastName) %}
+{% set basePageHeader = 'CSIP ' + (updatingEntity + ' ' if updatingEntity else '') + 'for ' + (prisoner | firstNameSpaceLastName) %}
 
 {% block pageHeader %}
   {% if successMessage %}
