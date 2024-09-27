@@ -261,18 +261,15 @@ const stubCsipRecordPostFailure = () => {
   return stubFor({
     request: {
       method: 'POST',
-      urlPattern: '/csip-api/FAIL_POST/csip-records',
+      urlPattern: '/csip-api/prisoners/[a-zA-Z0-9]*/csip-records',
     },
     response: {
-      status: 200,
+      status: 400,
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       jsonBody: {
-        status: 400,
-        errorCode: null,
         userMessage: "Validation failure: Couldn't read request body",
-        moreInfo: null,
       },
     },
   })
