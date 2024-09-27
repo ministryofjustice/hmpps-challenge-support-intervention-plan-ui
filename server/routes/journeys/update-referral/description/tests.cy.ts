@@ -1,7 +1,10 @@
+import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
 context('test /update-referral/proactive-or-reactive', () => {
+  const uuid = uuidV4()
   const title = /Describe the behaviour and the concerns relating to the behaviour/i
   const errorMsg = /enter a description of the behaviour and concerns/i
   const dividerText = generateSaveTimestamp('John Smith')
@@ -17,6 +20,7 @@ context('test /update-referral/proactive-or-reactive', () => {
     cy.task('stubContribFactors')
     cy.task('stubIncidentInvolvement')
     cy.task('stubCsipRecordPatchSuccess')
+    cy.task('stubCsipRecordGetSuccess')
   })
 
   const proceedToNextPage = () => {
@@ -26,7 +30,6 @@ context('test /update-referral/proactive-or-reactive', () => {
   }
 
   it('test description, including all edge cases, proactive', () => {
-    cy.task('stubCsipRecordGetSuccess')
     navigateToTestPage()
     cy.url().should('to.match', /\/update-referral\/description#descriptionOfConcern$/)
     checkAxeAccessibility()
@@ -37,8 +40,14 @@ context('test /update-referral/proactive-or-reactive', () => {
   })
 
   it('test description, should show chars left immediately', () => {
-    cy.task('stubCsipRecordGetSuccessLongDescription')
     navigateToTestPage()
+    injectJourneyDataAndReload(uuid, {
+      csipRecord: {
+        referral: {
+          descriptionOfConcern: 'a'.repeat(3001),
+        },
+      },
+    })
     cy.contains(new RegExp(`you have ${4000 - 3001 - dividerText.length} characters remaining`, 'i')).should(
       'be.visible',
     )
@@ -46,11 +55,11 @@ context('test /update-referral/proactive-or-reactive', () => {
 
   const navigateToTestPage = () => {
     cy.signIn()
-    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
-    cy.findAllByRole('link', { name: /update referral/i })
-      .first()
-      .click()
-    cy.findByRole('link', { name: /Change the description of the behaviour and concerns/i }).click()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-investigation/start`, {
+      failOnStatusCode: false,
+    })
+    cy.url().should('to.match', /\/update-investigation$/)
+    cy.visit(`${uuid}/update-referral/description`)
   }
 
   const checkDetailsSummary = () => {

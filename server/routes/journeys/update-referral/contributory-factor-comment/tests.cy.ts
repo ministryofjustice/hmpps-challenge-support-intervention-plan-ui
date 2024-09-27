@@ -1,4 +1,5 @@
 import { v4 as uuidV4 } from 'uuid'
+import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /update-referral/contributory-factor-comment', () => {
   const uuid = uuidV4()
@@ -13,7 +14,7 @@ context('test /update-referral/contributory-factor-comment', () => {
     cy.task('stubIntervieweeRoles')
     cy.task('stubContribFactors')
     cy.task('stubIncidentInvolvement')
-    cy.task('stubCsipRecordGetSuccessLongCFComment')
+    cy.task('stubCsipRecordGetSuccess')
     cy.signIn()
   })
 
@@ -57,6 +58,28 @@ context('test /update-referral/contributory-factor-comment', () => {
 
   const navigateToTestPage = () => {
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start`)
+    injectJourneyDataAndReload(uuid, {
+      csipRecord: {
+        referral: {
+          contributoryFactors: [
+            {
+              factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f1',
+              factorType: { code: 'CODE3', description: 'Text' },
+              comment: 'a'.repeat(3001),
+            },
+            {
+              factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f2',
+              factorType: { code: 'CODE2', description: 'Text' },
+            },
+            {
+              factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f3',
+              factorType: { code: 'CODE3', description: 'Text' },
+              comment: 'a'.repeat(10),
+            },
+          ],
+        },
+      },
+    })
   }
 
   const checkValidation = () => {
