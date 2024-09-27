@@ -1,30 +1,35 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
-{% from "govuk/components/details/macro.njk" import govukDetails %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Evidence secured - Record a CSIP investigation" %}
+{% set pageTitle = "Evidence secured - " + ('Update' if isUpdate else 'Record') + " a CSIP investigation" %}
 
 {% block innerContent %}
-    <span class="govuk-caption-l">Record a CSIP investigation</span>
+    {% include 'base/components/investigation-caption.njk' %}
     <label for="evidenceSecured">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">What evidence has been secured?</h1>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{'Add information on the evidence secured' if isUpdate else 'What evidence has been secured?'}}</h1>
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {% if currentEvidenceSecured %}
+            {{ govukInsetText({
+                html: currentEvidenceSecured | escape | boldAppendStamp | nl2br
+        }) }}
+        {% endif %}
         {{ govukCharacterCount({
-            maxlength: 4000,
+            maxlength: maxLengthChars or 4000,
             rows: 5,
-            threshold: "75",
+            threshold: threshold or "75",
             id: "evidenceSecured",
             name: "evidenceSecured",
             value: evidenceSecured,
             errorMessage: validationErrors | findError('evidenceSecured')
         }) }}
-        {{ govukButton({
-            text: "Continue",
-            preventDoubleClick: true
+        {{ submitButton({
+            text: "Confirm and save" if isUpdate else "Continue",
+            alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
         }) }}
     </form>
 {% endblock %}

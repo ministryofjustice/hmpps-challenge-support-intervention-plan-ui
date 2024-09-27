@@ -44,6 +44,9 @@ context('test /record-investigation/evidence-secured', () => {
     cy.findByRole('link', { name: /^back/i })
       .should('have.attr', 'href')
       .and('match', /record-investigation$/)
+    getInputTextbox().clear().type('a'.repeat(3001), { delay: 0 })
+    cy.findByText('You have 999 characters remaining').should('be.visible')
+    getInputTextbox().clear()
   }
 
   const validateErrorMessage = () => {

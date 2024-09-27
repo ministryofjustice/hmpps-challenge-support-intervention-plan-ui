@@ -8,6 +8,8 @@ export class ProtectiveFactorsController {
     res.render('record-investigation/protective-factors/view', {
       protectiveFactors,
       backUrl: '../record-investigation',
+      maxLengthChars: 4000,
+      threshold: '75',
     })
   }
 

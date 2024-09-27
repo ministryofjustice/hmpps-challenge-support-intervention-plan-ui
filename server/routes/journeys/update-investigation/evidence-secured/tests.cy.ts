@@ -1,11 +1,20 @@
 import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 
-context('test /update-investigation/staff-involved', () => {
+context('test /update-investigation/evidence-secured', () => {
   const uuid = uuidV4()
 
-  const getInputTextbox = () =>
-    cy.findByRole('textbox', { name: 'Add information on the staff involved in the investigation' })
+  const title = { name: 'Add information on the evidence secured' }
+
+  const ERRORS = {
+    EMPTY: { name: /Enter an update to the description of the evidence secured/i },
+    MAX: { name: /Description of the evidence secured must be [0-9,]+ characters or less/i },
+  }
+
+  const SUCCESS_MESSAGE = 'You’ve updated the investigation information.'
+
+  const getInputTextbox = () => cy.findByRole('textbox', title)
   const getContinueButton = () => cy.findByRole('button', { name: /Confirm and save/ })
 
   beforeEach(() => {
@@ -22,11 +31,40 @@ context('test /update-investigation/staff-involved', () => {
     navigateToTestPage()
     checkAxeAccessibility()
 
-    cy.url().should('to.match', /\/staff-involved$/)
+    cy.url().should('to.match', /evidence-secured$/)
 
     validatePageContents()
     validateErrorMessage()
     proceedToNextScreen()
+  })
+
+  it('should show chars left immediately when existing text is over 3000 chars', () => {
+    navigateToTestPage()
+    injectJourneyDataAndReload(uuid, {
+      csipRecord: {
+        referral: {
+          investigation: {
+            evidenceSecured: 'a'.repeat(3001),
+          },
+        },
+      },
+    })
+    cy.contains('You have 942 characters remaining').should('be.visible')
+    cy.get('.govuk-inset-text').should('be.visible')
+  })
+
+  it('should not show inset text when text is initially blank', () => {
+    navigateToTestPage()
+    injectJourneyDataAndReload(uuid, {
+      csipRecord: {
+        referral: {
+          investigation: {
+            evidenceSecured: '',
+          },
+        },
+      },
+    })
+    cy.get('.govuk-inset-text').should('not.exist')
   })
 
   it('should handle API errors', () => {
@@ -36,7 +74,7 @@ context('test /update-investigation/staff-involved', () => {
     getInputTextbox().clear().type('some text')
     getContinueButton().click()
 
-    cy.url().should('to.match', /\/staff-involved$/)
+    cy.url().should('to.match', /evidence-secured$/)
     cy.findByText('Simulated Error for E2E testing').should('be.visible')
   })
 
@@ -45,15 +83,13 @@ context('test /update-investigation/staff-involved', () => {
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-investigation/start`, {
       failOnStatusCode: false,
     })
-    cy.url().should('to.match', /\/update-investigation$/)
-    cy.visit(`${uuid}/update-investigation/staff-involved`)
+    cy.url().should('to.match', /update-investigation$/)
+    cy.visit(`${uuid}/update-investigation/evidence-secured`)
   }
 
   const validatePageContents = () => {
-    cy.findByRole('heading', { name: 'Add information on the staff involved in the investigation' }).should(
-      'be.visible',
-    )
-    cy.findByText('staff stafferson').should('be.visible')
+    cy.findByRole('heading', title).should('be.visible')
+    cy.findByText('SomeVidence').should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /^back/i })
       .should('have.attr', 'href')
@@ -67,18 +103,14 @@ context('test /update-investigation/staff-involved', () => {
   const validateErrorMessage = () => {
     getInputTextbox().clear()
     getContinueButton().click()
-    cy.findByRole('link', { name: /Enter an update to the names of staff involved in the investigation/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', ERRORS.EMPTY).should('be.visible').click()
     getInputTextbox().should('be.focused')
 
     getInputTextbox().type('a'.repeat(4001), {
       delay: 0,
     })
     getContinueButton().click()
-    cy.findByRole('link', { name: /Names of staff involved in the investigation must be [0-9,]+ characters or less/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', ERRORS.MAX).should('be.visible').click()
     cy.findAllByText(/You have [0-9,]+ characters too many/)
       .filter(':visible')
       .should('have.length.of.at.least', 1)
@@ -86,9 +118,7 @@ context('test /update-investigation/staff-involved', () => {
 
     getInputTextbox().clear().type('  ')
     getContinueButton().click()
-    cy.findByRole('link', { name: /Enter an update to the names of staff involved in the investigation/i })
-      .should('be.visible')
-      .click()
+    cy.findByRole('link', ERRORS.EMPTY).should('be.visible').click()
     getInputTextbox().should('be.focused')
   }
 
@@ -96,6 +126,6 @@ context('test /update-investigation/staff-involved', () => {
     getInputTextbox().clear().type("<script>alert('xss');</script>")
     getContinueButton().click()
     cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
-    cy.findByText('You’ve updated the investigation information.').should('be.visible')
+    cy.findByText(SUCCESS_MESSAGE).should('be.visible')
   }
 })
