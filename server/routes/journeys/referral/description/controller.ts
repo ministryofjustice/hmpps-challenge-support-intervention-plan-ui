@@ -6,7 +6,7 @@ export class ReferralDescriptionController {
     res.render('referral/description/view', {
       isProactiveReferral: req.journeyData.referral!.isProactiveReferral,
       descriptionOfConcern:
-        res.locals.formResponses?.['descriptionOfConcern'] || req.journeyData.referral!.descriptionOfConcern,
+        res.locals.formResponses?.['descriptionOfConcern'] ?? req.journeyData.referral!.descriptionOfConcern,
       backUrl: 'involvement',
       maxLengthChars: 4000,
       threshold: '75',

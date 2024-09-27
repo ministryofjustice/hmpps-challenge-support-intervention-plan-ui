@@ -8,7 +8,7 @@ export class NewContributoryFactorCommentController extends BaseJourneyControlle
   GET = async (req: Request, res: Response) => {
     res.render('referral/contributory-factor-comment/view', {
       factorDescription: req.journeyData.referral!.contributoryFactorSubJourney!.factorType!.description,
-      comment: res.locals.formResponses?.['comment'] || req.journeyData.referral!.contributoryFactorSubJourney!.comment,
+      comment: res.locals.formResponses?.['comment'] ?? req.journeyData.referral!.contributoryFactorSubJourney!.comment,
       backUrl: 'add-contributory-factor',
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,

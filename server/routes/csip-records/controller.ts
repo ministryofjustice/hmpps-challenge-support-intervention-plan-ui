@@ -164,6 +164,7 @@ export class CsipRecordController {
 
     res.render('csip-records/view', {
       status: record.status,
+      updatingEntity: record.plan ? null : 'referral',
       shouldShowTabs: hasInvestigation(record.status),
       record,
       decision,

@@ -4,7 +4,7 @@ import { SchemaType } from './schemas'
 export class OccurrenceReasonController {
   GET = async (req: Request, res: Response) => {
     const occurrenceReason =
-      res.locals.formResponses?.['occurrenceReason'] || req.journeyData.investigation!.occurrenceReason
+      res.locals.formResponses?.['occurrenceReason'] ?? req.journeyData.investigation!.occurrenceReason
     res.render('record-investigation/why-behaviour-occurred/view', {
       occurrenceReason,
       backUrl: '../record-investigation',

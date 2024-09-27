@@ -10,8 +10,8 @@ export class DevelopPlanController {
         : res.locals.formResponses?.['isCaseManager'] === 'true'
 
     const isCaseManager = formResponseIsCaseManager ?? req.journeyData.plan!.isCaseManager
-    const caseManager = res.locals.formResponses?.['caseManager'] || req.journeyData.plan!.caseManager
-    const reasonForPlan = res.locals.formResponses?.['reasonForPlan'] || req.journeyData.plan!.reasonForPlan
+    const caseManager = res.locals.formResponses?.['caseManager'] ?? req.journeyData.plan!.caseManager
+    const reasonForPlan = res.locals.formResponses?.['reasonForPlan'] ?? req.journeyData.plan!.reasonForPlan
 
     res.render('develop-an-initial-plan/view', { isCaseManager, caseManager, reasonForPlan })
   }

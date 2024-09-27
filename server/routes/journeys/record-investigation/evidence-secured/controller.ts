@@ -4,7 +4,7 @@ import { SchemaType } from './schemas'
 export class EvidenceSecuredController {
   GET = async (req: Request, res: Response) => {
     const evidenceSecured =
-      res.locals.formResponses?.['evidenceSecured'] || req.journeyData.investigation?.evidenceSecured
+      res.locals.formResponses?.['evidenceSecured'] ?? req.journeyData.investigation?.evidenceSecured
     res.render('record-investigation/evidence-secured/view', {
       evidenceSecured,
       backUrl: '../record-investigation',

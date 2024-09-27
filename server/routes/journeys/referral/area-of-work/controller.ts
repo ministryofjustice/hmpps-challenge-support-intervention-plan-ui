@@ -8,7 +8,7 @@ export class ReferralAreaOfWorkController extends BaseJourneyController {
       req,
       'area-of-work',
       'Select area',
-      res.locals.formResponses?.['refererArea'] || req.journeyData.referral!.refererArea,
+      res.locals.formResponses?.['refererArea'] ?? req.journeyData.referral!.refererArea,
     )
     const backUrl =
       req.journeyData.isCheckAnswers && !req.journeyData.referral!.onBehalfOfSubJourney

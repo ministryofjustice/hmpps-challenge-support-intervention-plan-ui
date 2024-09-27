@@ -3,7 +3,7 @@ import { SchemaType } from './schemas'
 
 export class StaffInvolvedController {
   GET = async (req: Request, res: Response) => {
-    const staffInvolved = res.locals.formResponses?.['staffInvolved'] || req.journeyData.investigation!.staffInvolved
+    const staffInvolved = res.locals.formResponses?.['staffInvolved'] ?? req.journeyData.investigation!.staffInvolved
     res.render('record-investigation/staff-involved/view', {
       staffInvolved,
       backUrl: '../record-investigation',

@@ -7,13 +7,13 @@ export class ScreenController extends BaseJourneyController {
     const outcomeTypeItems = await this.getReferenceDataOptionsForRadios(
       req,
       'screening-outcome-type',
-      res.locals.formResponses?.['outcomeType'] || req.journeyData.saferCustodyScreening?.outcomeType,
+      res.locals.formResponses?.['outcomeType'] ?? req.journeyData.saferCustodyScreening?.outcomeType,
     )
 
     res.render('screen/view', {
       outcomeTypeItems,
       reasonForDecision:
-        res.locals.formResponses?.['reasonForDecision'] || req.journeyData.saferCustodyScreening?.reasonForDecision,
+        res.locals.formResponses?.['reasonForDecision'] ?? req.journeyData.saferCustodyScreening?.reasonForDecision,
     })
   }
 

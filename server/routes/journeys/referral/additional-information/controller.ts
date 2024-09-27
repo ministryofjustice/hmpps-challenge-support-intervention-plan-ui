@@ -4,7 +4,7 @@ import { SchemaType } from './schemas'
 export class ReferralAdditionalInformationController {
   GET = async (req: Request, res: Response) => {
     const otherInformation =
-      res.locals.formResponses?.['otherInformation'] || req.journeyData.referral!.otherInformation
+      res.locals.formResponses?.['otherInformation'] ?? req.journeyData.referral!.otherInformation
     res.render('referral/additional-information/view', {
       otherInformation,
       backUrl: 'safer-custody',

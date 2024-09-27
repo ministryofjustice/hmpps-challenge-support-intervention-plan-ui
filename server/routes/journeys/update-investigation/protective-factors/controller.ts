@@ -10,6 +10,7 @@ export class UpdateProtectiveFactorsController extends PatchInvestigationControl
       currentProtectiveFactors,
       protectiveFactors: res.locals.formResponses?.['protectiveFactors'],
       isUpdate: true,
+      backUrl: '../update-investigation',
       recordUuid: req.journeyData.csipRecord!.recordUuid,
       ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentProtectiveFactors),
     })
