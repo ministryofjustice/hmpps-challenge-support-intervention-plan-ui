@@ -5,6 +5,7 @@ import { UpdateInvestigationController } from './controller'
 import { UpdateStaffInvolvedRoutes } from './staff-involved/routes'
 import { UpdateUsualBehaviourRoutes } from './usual-behaviour-presentation/routes'
 import { UpdateWhyBehaviourOccurredRoutes } from './why-behaviour-occurred/routes'
+import { UpdateEvidenceSecuredRoutes } from './evidence-secured/routes'
 import { UpdateTriggersRoutes } from './triggers/routes'
 import { UpdateProtectiveFactorsRoutes } from './protective-factors/routes'
 
@@ -17,6 +18,7 @@ function Routes({ csipApiService, prisonerSearchService }: Services) {
   router.use('/staff-involved', UpdateStaffInvolvedRoutes(csipApiService))
   router.use('/usual-behaviour-presentation', UpdateUsualBehaviourRoutes(csipApiService))
   router.use('/why-behaviour-occurred', UpdateWhyBehaviourOccurredRoutes(csipApiService))
+  router.use('/evidence-secured', UpdateEvidenceSecuredRoutes(csipApiService))
   router.use('/triggers', UpdateTriggersRoutes(csipApiService))
   router.use('/protective-factors', UpdateProtectiveFactorsRoutes(csipApiService))
 
