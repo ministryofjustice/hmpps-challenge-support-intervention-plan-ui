@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import type PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
 import { BaseJourneyController } from '../base/controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
+import { interviewSorter } from '../../../utils/sorters'
 
 export class UpdateInvestigationController extends BaseJourneyController {
   constructor(
@@ -18,13 +19,7 @@ export class UpdateInvestigationController extends BaseJourneyController {
     const { referral } = record
 
     const interviews = record.referral!.investigation?.interviews
-      ? referral!.investigation!.interviews.sort(
-          (intA, intB) =>
-            intA.interviewDate.localeCompare(intB.interviewDate) ||
-            -+!intA.interviewText + +!intB.interviewText ||
-            (intA.interviewText && intB.interviewText && intB.interviewText.localeCompare(intA.interviewText)) ||
-            intB.interviewUuid.localeCompare(intA.interviewUuid),
-        )
+      ? referral!.investigation!.interviews.sort(interviewSorter)
       : undefined
 
     const investigation = {

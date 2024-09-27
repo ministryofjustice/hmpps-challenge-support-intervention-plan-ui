@@ -4,6 +4,7 @@ import type PrisonerSearchService from '../../../services/prisonerSearch/prisone
 import { BaseJourneyController } from '../base/controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import { ordinalNumber, sentenceCase, getNonUndefinedProp } from '../../../utils/utils'
+import { interviewSorter } from '../../../utils/sorters'
 
 const hasInvestigation = (status: components['schemas']['CsipRecord']['status']) => {
   return !(['REFERRAL_PENDING', 'REFERRAL_SUBMITTED', 'INVESTIGATION_PENDING'] as (typeof status)[]).includes(status)
@@ -117,13 +118,7 @@ export class UpdateReferralController extends BaseJourneyController {
 
     const interviews = record.referral!.investigation?.interviews
     if (interviews) {
-      investigation.interviews = interviews.sort(
-        (intA, intB) =>
-          intA.interviewDate.localeCompare(intB.interviewDate) ||
-          -+!intA.interviewText + +!intB.interviewText ||
-          (intA.interviewText && intB.interviewText && intB.interviewText.localeCompare(intA.interviewText)) ||
-          intB.interviewUuid.localeCompare(intA.interviewUuid),
-      )
+      investigation.interviews = interviews.sort(interviewSorter)
     }
 
     const involvementFilter = (itm: { key: { text: string } }) =>
