@@ -28,7 +28,7 @@
                 </ul>'
             }) }}
         {% endif %}
-        {% if isUpdate and currentProtectiveFactors %}
+        {% if currentProtectiveFactors %}
             {{ govukInsetText({
                 html: currentProtectiveFactors | escape | boldAppendStamp | nl2br
             }) }}

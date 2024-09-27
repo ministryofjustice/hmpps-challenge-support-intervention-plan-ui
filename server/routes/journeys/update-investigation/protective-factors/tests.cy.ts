@@ -1,5 +1,6 @@
 import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
+import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
 context('test /update-investigation/protective-factors', () => {
   const uuid = uuidV4()
@@ -14,10 +15,10 @@ context('test /update-investigation/protective-factors', () => {
     cy.task('stubGetPrisoner')
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
-    cy.task('stubCsipRecordSuccessAwaitingDecision')
   })
 
   it('should try out all cases', () => {
+    cy.task('stubCsipRecordSuccessAwaitingDecision')
     cy.task('stubPatchInvestigationSuccess')
     navigateToTestPage()
     checkAxeAccessibility()
@@ -29,7 +30,19 @@ context('test /update-investigation/protective-factors', () => {
     proceedToNextScreen()
   })
 
+  it('should try out lots of text existing already', () => {
+    cy.task('stubCsipRecordSuccessAwaitingDecisionLongProtectiveFactors')
+    cy.task('stubPatchInvestigationSuccess')
+    navigateToTestPage()
+    cy.url().should('to.match', /\/protective-factors$/)
+
+    cy.findAllByText(`You have ${1000 - generateSaveTimestamp('John Smith').length} characters remaining`).should(
+      'be.visible',
+    )
+  })
+
   it('should handle API errors', () => {
+    cy.task('stubCsipRecordSuccessAwaitingDecision')
     cy.task('stubPatchInvestigationFail')
     navigateToTestPage()
 
