@@ -49,7 +49,6 @@ export class UpdateInterviewController extends PatchInvestigationController {
     if (req.journeyData.investigation!.interviews![index]) {
       return this.updateInterview({
         req,
-        res,
         next,
         body: {
           interviewee: req.body.interviewee,
@@ -63,7 +62,6 @@ export class UpdateInterviewController extends PatchInvestigationController {
 
     return this.addInterview({
       req,
-      res,
       next,
       body: {
         interviewee: req.body.interviewee,

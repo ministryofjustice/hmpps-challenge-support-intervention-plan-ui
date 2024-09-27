@@ -18,7 +18,6 @@ export class UpdateWhyBehaviourOccurredController extends PatchInvestigationCont
   checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, res: Response, next: NextFunction) =>
     this.submitChanges({
       req,
-      res,
       next,
       changes: {
         occurrenceReason: getTextForApiSubmission(

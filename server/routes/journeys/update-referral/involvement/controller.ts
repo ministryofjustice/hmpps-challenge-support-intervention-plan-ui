@@ -31,10 +31,9 @@ export class UpdateInvolvementController extends PatchReferralController {
     })
   }
 
-  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, res: Response, next: NextFunction) =>
+  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, _res: Response, next: NextFunction) =>
     this.submitChanges({
       req,
-      res,
       next,
       changes: {
         incidentInvolvementCode: req.body.involvementType.code,

@@ -18,7 +18,6 @@ export class UpdateTriggersController extends PatchInvestigationController {
   checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, res: Response, next: NextFunction) =>
     this.submitChanges({
       req,
-      res,
       next,
       changes: {
         personsTrigger: getTextForApiSubmission(

@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
-import { SanitisedError } from '../../../../sanitisedError'
-import { FLASH_KEY__VALIDATION_ERRORS } from '../../../../utils/constants'
 
 export class PlanCheckAnswersController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
@@ -20,7 +18,7 @@ export class PlanCheckAnswersController extends BaseJourneyController {
     })
   }
 
-  checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction) => {
+  checkSubmitToAPI = async (req: Request, _res: Response, next: NextFunction) => {
     const plan = req.journeyData.plan!
     try {
       await this.csipApiService.createPlan(req, {
@@ -33,20 +31,10 @@ export class PlanCheckAnswersController extends BaseJourneyController {
         })),
       })
       req.journeyData.journeyCompleted = true
+      next()
     } catch (e) {
-      if ((e as SanitisedError).data) {
-        const errorRespData = (e as SanitisedError).data as Record<string, string | unknown>
-        req.flash(
-          FLASH_KEY__VALIDATION_ERRORS,
-          JSON.stringify({
-            plan: [errorRespData?.['userMessage'] as string],
-          }),
-        )
-      }
-      res.redirect('back')
-      return
+      next(e)
     }
-    next()
   }
 
   POST = async (_req: Request, res: Response) => {

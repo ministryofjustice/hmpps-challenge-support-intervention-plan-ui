@@ -30,6 +30,7 @@ import populateValidationErrors from './middleware/populateValidationErrors'
 import breadcrumbs from './middleware/breadcrumbs'
 import './sentry'
 import sentryMiddleware from './middleware/sentryMiddleware'
+import { handleApiError } from './middleware/handleApiError'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -78,6 +79,7 @@ export default function createApp(services: Services): express.Application {
   app.use(routes(services))
   if (config.sentry.dsn) Sentry.setupExpressErrorHandler(app)
   app.use((_req, res) => res.notFound())
+  app.use(handleApiError)
   app.use(errorHandler(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'e2e-test'))
 
   return app

@@ -1,9 +1,8 @@
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request } from 'express'
 import { BaseJourneyController } from './controller'
-import { SanitisedError } from '../../../sanitisedError'
 import { getNonUndefinedProp } from '../../../utils/utils'
 import { components } from '../../../@types/csip'
-import { FLASH_KEY__CSIP_SUCCESS_MESSAGE, FLASH_KEY__VALIDATION_ERRORS } from '../../../utils/constants'
+import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../../utils/constants'
 
 export const MESSAGE_REFERRAL_DETAILS_UPDATED = 'You’ve updated the referral details.'
 export const MESSAGE_REACTIVE_DETAILS_UPDATED = 'You’ve updated the incident details.'
@@ -29,13 +28,11 @@ type UpdateReferralSuccessMessage =
 export class PatchReferralController extends BaseJourneyController {
   submitChanges = async <T>({
     req,
-    res,
     next,
     changes,
     successMessage,
   }: {
     req: Request<unknown, unknown, T>
-    res: Response
     next: NextFunction
     changes: Partial<components['schemas']['UpdateReferral']>
     successMessage: UpdateReferralSuccessMessage
@@ -69,20 +66,10 @@ export class PatchReferralController extends BaseJourneyController {
           ...changes,
         },
       })
+      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, successMessage)
+      next()
     } catch (e) {
-      if ((e as SanitisedError).data) {
-        const errorRespData = (e as SanitisedError).data as Record<string, string | unknown>
-        req.flash(
-          FLASH_KEY__VALIDATION_ERRORS,
-          JSON.stringify({
-            referral: [errorRespData?.['userMessage'] as string],
-          }),
-        )
-      }
-      res.redirect('back')
-      return
+      next(e)
     }
-    req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, successMessage)
-    next()
   }
 }

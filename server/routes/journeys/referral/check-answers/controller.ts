@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
-import { SanitisedError } from '../../../../sanitisedError'
-import { FLASH_KEY__VALIDATION_ERRORS } from '../../../../utils/constants'
 
 export class ReferralCheckAnswersController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
@@ -18,7 +16,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
     res.render('referral/check-answers/view', { referral, referrerDetailsFilter, involvementFilter })
   }
 
-  checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction) => {
+  checkSubmitToAPI = async (req: Request, _res: Response, next: NextFunction) => {
     const prisoner = req.journeyData.prisoner!
     const referral = req.journeyData.referral!
     try {
@@ -47,20 +45,10 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
         },
       })
       req.journeyData.journeyCompleted = true
+      next()
     } catch (e) {
-      if ((e as SanitisedError).data) {
-        const errorRespData = (e as SanitisedError).data as Record<string, string | unknown>
-        req.flash(
-          FLASH_KEY__VALIDATION_ERRORS,
-          JSON.stringify({
-            referral: [errorRespData?.['userMessage'] as string],
-          }),
-        )
-      }
-      res.redirect('back')
-      return
+      next(e)
     }
-    next()
   }
 
   POST = async (_req: Request, res: Response): Promise<void> => {

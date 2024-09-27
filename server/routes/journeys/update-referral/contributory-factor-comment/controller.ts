@@ -29,7 +29,6 @@ export class UpdateContributoryFactorsCommentController extends UpdateReferralCo
 
     return this.updateContributoryFactor(
       req,
-      res,
       next,
       selectedCf,
       selectedCf.factorType.code,

@@ -11,10 +11,9 @@ export class UpdateProactiveOrReactiveController extends PatchReferralController
     })
   }
 
-  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, res: Response, next: NextFunction) =>
+  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, _res: Response, next: NextFunction) =>
     this.submitChanges({
       req,
-      res,
       next,
       changes: { isProactiveReferral: req.body.isProactiveReferral },
       successMessage: MESSAGE_REFERRAL_DETAILS_UPDATED,
