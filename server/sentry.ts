@@ -4,7 +4,7 @@ import config from './config'
 if (config.sentry.dsn) {
   Sentry.init({
     dsn: config.sentry.dsn,
-    environment: config.environmentName,
+    environment: config.sentry.environment,
     tracesSampleRate: config.sentry.tracesSampleRate,
   })
 }

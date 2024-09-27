@@ -1,10 +1,5 @@
-import { NextFunction, Request, Response } from 'express'
-import { SanitisedError } from '../../../sanitisedError'
-import {
-  FLASH_KEY__CSIP_SUCCESS_MESSAGE,
-  FLASH_KEY__FORM_RESPONSES,
-  FLASH_KEY__VALIDATION_ERRORS,
-} from '../../../utils/constants'
+import { NextFunction, Request } from 'express'
+import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../../utils/constants'
 import { MESSAGE_CONTRIBUTORY_FACTOR_UPDATED, PatchReferralController } from './patchReferralController'
 import { ContributoryFactor } from '../../../@types/express'
 import { getNonUndefinedProp } from '../../../utils/utils'
@@ -22,7 +17,6 @@ export class UpdateReferralContributoryFactorController extends PatchReferralCon
 
   updateContributoryFactor = async (
     req: Request,
-    res: Response,
     next: NextFunction,
     selectedCf: ContributoryFactor,
     factorTypeCode: string,
@@ -33,21 +27,10 @@ export class UpdateReferralContributoryFactorController extends PatchReferralCon
         factorTypeCode,
         ...getNonUndefinedProp({ comment: comment || selectedCf.comment }, 'comment'),
       })
+      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_CONTRIBUTORY_FACTOR_UPDATED)
+      next()
     } catch (e) {
-      if ((e as SanitisedError).data) {
-        const errorRespData = (e as SanitisedError).data as Record<string, string | unknown>
-        req.flash(
-          FLASH_KEY__VALIDATION_ERRORS,
-          JSON.stringify({
-            referral: [errorRespData?.['userMessage'] as string],
-          }),
-        )
-        req.flash(FLASH_KEY__FORM_RESPONSES, JSON.stringify(req.body))
-      }
-      return res.redirect('back')
+      next(e)
     }
-
-    req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_CONTRIBUTORY_FACTOR_UPDATED)
-    return next()
   }
 }

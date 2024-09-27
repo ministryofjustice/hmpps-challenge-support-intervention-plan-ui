@@ -4,6 +4,7 @@ import type PrisonerSearchService from '../../../services/prisonerSearch/prisone
 import { BaseJourneyController } from '../base/controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import { ordinalNumber, sentenceCase, getNonUndefinedProp } from '../../../utils/utils'
+import { interviewSorter } from '../../../utils/sorters'
 
 const hasInvestigation = (status: components['schemas']['CsipRecord']['status']) => {
   return !(['REFERRAL_PENDING', 'REFERRAL_SUBMITTED', 'INVESTIGATION_PENDING'] as (typeof status)[]).includes(status)
@@ -117,13 +118,7 @@ export class UpdateReferralController extends BaseJourneyController {
 
     const interviews = record.referral!.investigation?.interviews
     if (interviews) {
-      investigation.interviews = interviews.sort((intA, intB) => {
-        const dif = new Date(intA.interviewDate).getTime() - new Date(intB.interviewDate).getTime()
-        if (dif !== 0) {
-          return dif
-        }
-        return intB.interviewText!.localeCompare(intA.interviewText!)
-      })
+      investigation.interviews = interviews.sort(interviewSorter)
     }
 
     const involvementFilter = (itm: { key: { text: string } }) =>
@@ -136,7 +131,7 @@ export class UpdateReferralController extends BaseJourneyController {
       case 'REFERRAL_SUBMITTED':
         secondaryButton = {
           label: 'Cancel',
-          link: `/csip-record/${record.recordUuid}`,
+          link: `/csip-records/${record.recordUuid}`,
         }
         break
       case 'PLAN_PENDING':

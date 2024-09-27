@@ -7,6 +7,7 @@ import { UpdateUsualBehaviourRoutes } from './usual-behaviour-presentation/route
 import { UpdateWhyBehaviourOccurredRoutes } from './why-behaviour-occurred/routes'
 import { UpdateEvidenceSecuredRoutes } from './evidence-secured/routes'
 import { UpdateTriggersRoutes } from './triggers/routes'
+import { UpdateInterviewRoutes } from './interview-details/routes'
 import { UpdateProtectiveFactorsRoutes } from './protective-factors/routes'
 
 function Routes({ csipApiService, prisonerSearchService }: Services) {
@@ -20,6 +21,7 @@ function Routes({ csipApiService, prisonerSearchService }: Services) {
   router.use('/why-behaviour-occurred', UpdateWhyBehaviourOccurredRoutes(csipApiService))
   router.use('/evidence-secured', UpdateEvidenceSecuredRoutes(csipApiService))
   router.use('/triggers', UpdateTriggersRoutes(csipApiService))
+  router.use('/interview-details/:index', UpdateInterviewRoutes(csipApiService))
   router.use('/protective-factors', UpdateProtectiveFactorsRoutes(csipApiService))
 
   return router

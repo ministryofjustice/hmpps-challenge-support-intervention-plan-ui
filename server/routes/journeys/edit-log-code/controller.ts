@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { BaseJourneyController } from '../base/controller'
-import { SanitisedError } from '../../../sanitisedError'
-import { FLASH_KEY__CSIP_SUCCESS_MESSAGE, FLASH_KEY__VALIDATION_ERRORS } from '../../../utils/constants'
+import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../../utils/constants'
 import { SchemaType } from './schemas'
 import { getNonUndefinedProp } from '../../../utils/utils'
 
@@ -15,7 +14,7 @@ export class EditLogCodeController extends BaseJourneyController {
     })
   }
 
-  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, res: Response, next: NextFunction) => {
+  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, _res: Response, next: NextFunction) => {
     const csipRecord = req.journeyData.csipRecord!
     try {
       await this.csipApiService.updateCsipRecord(req as Request, {
@@ -43,21 +42,11 @@ export class EditLogCodeController extends BaseJourneyController {
           ),
         },
       })
+      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_LOG_CODE_UPDATED)
+      next()
     } catch (e) {
-      if ((e as SanitisedError).data) {
-        const errorRespData = (e as SanitisedError).data as Record<string, string | unknown>
-        req.flash(
-          FLASH_KEY__VALIDATION_ERRORS,
-          JSON.stringify({
-            referral: [errorRespData?.['userMessage'] as string],
-          }),
-        )
-      }
-      res.redirect('back')
-      return
+      next(e)
     }
-    req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_LOG_CODE_UPDATED)
-    next()
   }
 
   POST = async (req: Request, res: Response) => {

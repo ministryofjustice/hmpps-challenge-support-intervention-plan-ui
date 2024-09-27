@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import type PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
 import { BaseJourneyController } from '../base/controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
+import { interviewSorter } from '../../../utils/sorters'
 
 export class UpdateInvestigationController extends BaseJourneyController {
   constructor(
@@ -18,13 +19,7 @@ export class UpdateInvestigationController extends BaseJourneyController {
     const { referral } = record
 
     const interviews = record.referral!.investigation?.interviews
-      ? referral!.investigation!.interviews.sort((intA, intB) => {
-          const dif = new Date(intA.interviewDate).getTime() - new Date(intB.interviewDate).getTime()
-          if (dif !== 0) {
-            return dif
-          }
-          return intB.interviewText!.localeCompare(intA.interviewText!)
-        })
+      ? referral!.investigation!.interviews.sort(interviewSorter)
       : undefined
 
     const investigation = {
@@ -35,7 +30,7 @@ export class UpdateInvestigationController extends BaseJourneyController {
 
     const secondaryButton = {
       label: 'Cancel',
-      link: `/csip-record/${record.recordUuid}`,
+      link: `/csip-records/${record.recordUuid}`,
     }
 
     req.journeyData.isUpdate = true

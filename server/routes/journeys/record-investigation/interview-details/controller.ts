@@ -19,14 +19,14 @@ export class InterviewDetailsController extends BaseJourneyController {
     )
     return res.render('record-investigation/interview-details/view', {
       interviewText:
-        res.locals.formResponses?.['interviewText'] ||
+        res.locals.formResponses?.['interviewText'] ??
         req.journeyData.investigation?.interviews?.[index]?.interviewText,
       intervieweeRoleOptions,
       interviewDate:
-        res.locals.formResponses?.['interviewDate'] ||
+        res.locals.formResponses?.['interviewDate'] ??
         formatInputDate(req.journeyData.investigation?.interviews?.[index]?.interviewDate),
       interviewee:
-        res.locals.formResponses?.['interviewee'] || req.journeyData.investigation?.interviews?.[index]?.interviewee,
+        res.locals.formResponses?.['interviewee'] ?? req.journeyData.investigation?.interviews?.[index]?.interviewee,
       backUrl: '../interviews-summary',
     })
   }

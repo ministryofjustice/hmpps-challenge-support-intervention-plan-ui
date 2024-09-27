@@ -4,6 +4,7 @@ import CsipApiService from '../../services/csipApi/csipApiService'
 import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
 import { components } from '../../@types/csip'
 import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../utils/constants'
+import { interviewSorter } from '../../utils/sorters'
 
 const hasInvestigation = (status: components['schemas']['CsipRecord']['status']) => {
   return !(['REFERRAL_PENDING', 'REFERRAL_SUBMITTED', 'INVESTIGATION_PENDING'] as (typeof status)[]).includes(status)
@@ -27,13 +28,7 @@ export class CsipRecordController {
 
     const interviews = record.referral!.investigation?.interviews
     if (interviews) {
-      investigation!.interviews = interviews.sort((intA, intB) => {
-        const dif = new Date(intA.interviewDate).getTime() - new Date(intB.interviewDate).getTime()
-        if (dif !== 0) {
-          return dif
-        }
-        return intB.interviewText!.localeCompare(intA.interviewText!)
-      })
+      investigation!.interviews = interviews.sort(interviewSorter)
     }
 
     const decision = record.referral!.decisionAndActions

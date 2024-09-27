@@ -26,7 +26,7 @@ function Routes(services: Services) {
   router.use('/triggers', TriggersRoutes())
   router.use('/protective-factors', ProtectiveFactorsRoutes())
   router.use('/interviews-summary', InterviewsSummaryRoutes())
-  router.use('/interview-details', InterviewDetailsRoutes(services.csipApiService))
+  router.use('/interview-details/:index', InterviewDetailsRoutes(services.csipApiService))
   router.use('/delete-interview/:index', DeleteInterviewRoutes())
   router.use('/check-answers', InvestigationCheckAnswersRoutes(services.csipApiService))
   router.use('/confirmation', ConfirmationRoutes())

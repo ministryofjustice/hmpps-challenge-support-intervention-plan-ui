@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
-import { SanitisedError } from '../../../../sanitisedError'
 import { todayString } from '../../../../utils/datetimeUtils'
-import { FLASH_KEY__VALIDATION_ERRORS } from '../../../../utils/constants'
 
 export class ScreenCheckAnswersController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
@@ -26,20 +24,10 @@ export class ScreenCheckAnswersController extends BaseJourneyController {
       })
       req.journeyData.csipRecord = await this.csipApiService.getCsipRecord(req, req.journeyData.csipRecord!.recordUuid)
       req.journeyData.journeyCompleted = true
+      next()
     } catch (e) {
-      if ((e as SanitisedError).data) {
-        const errorRespData = (e as SanitisedError).data as Record<string, string | unknown>
-        req.flash(
-          FLASH_KEY__VALIDATION_ERRORS,
-          JSON.stringify({
-            saferCustodyScreening: [errorRespData?.['userMessage'] as string],
-          }),
-        )
-      }
-      res.redirect('back')
-      return
+      next(e)
     }
-    next()
   }
 
   POST = async (_req: Request, res: Response) => {

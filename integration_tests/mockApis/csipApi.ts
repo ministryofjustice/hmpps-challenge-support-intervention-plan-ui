@@ -261,18 +261,15 @@ const stubCsipRecordPostFailure = () => {
   return stubFor({
     request: {
       method: 'POST',
-      urlPattern: '/csip-api/FAIL_POST/csip-records',
+      urlPattern: '/csip-api/prisoners/[a-zA-Z0-9]*/csip-records',
     },
     response: {
-      status: 200,
+      status: 400,
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       jsonBody: {
-        status: 400,
-        errorCode: null,
         userMessage: "Validation failure: Couldn't read request body",
-        moreInfo: null,
       },
     },
   })
@@ -519,13 +516,13 @@ const stubCsipRecordSuccessAwaitingDecision = () => {
               {
                 interviewee: 'Another Person',
                 interviewDate: '2024-12-29',
-                intervieweeRole: { code: 'CODE', description: 'Witness' },
+                intervieweeRole: { code: 'A', description: 'Role1' },
                 interviewText: 'some text',
               },
               {
                 interviewee: 'Some Person',
                 interviewDate: '2024-12-25',
-                intervieweeRole: { code: 'CODE', description: 'Foobar' },
+                intervieweeRole: { code: 'B', description: 'Role2' },
                 interviewText: 'other stuff',
               },
             ],
@@ -594,7 +591,7 @@ const stubCsipRecordSuccessPlanPending = () => {
               {
                 interviewee: 'Some Person',
                 interviewDate: '2024-12-25',
-                intervieweeRole: { code: 'CODE', description: 'Witness' },
+                intervieweeRole: { code: 'B', description: 'Role2' },
                 interviewText: 'some text',
               },
             ],
@@ -890,6 +887,70 @@ const stubPatchContributoryFactorFail = () => {
   })
 }
 
+const stubPostInterviewSuccess = () => {
+  return stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation/interviews',
+    },
+    response: {
+      status: 201,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {},
+    },
+  })
+}
+
+const stubPostInterviewFail = () => {
+  return stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation/interviews',
+    },
+    response: {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
+    },
+  })
+}
+
+const stubPatchInterviewSuccess = () => {
+  return stubFor({
+    request: {
+      method: 'PATCH',
+      urlPattern: '/csip-api/csip-records/referral/investigation/interviews/[a-zA-Z0-9-]*',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {},
+    },
+  })
+}
+
+const stubPatchInterviewFail = () => {
+  return stubFor({
+    request: {
+      method: 'PATCH',
+      urlPattern: '/csip-api/csip-records/referral/investigation/interviews/[a-zA-Z0-9-]*',
+    },
+    response: {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
+    },
+  })
+}
+
 export const csip = {
   recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
   prisonNumber: 'A1111AA',
@@ -1004,4 +1065,8 @@ export default {
   stubCsipRecordGetSuccessAfterScreeningWithoutReason,
   stubPatchContributoryFactorSuccess,
   stubPatchContributoryFactorFail,
+  stubPostInterviewSuccess,
+  stubPostInterviewFail,
+  stubPatchInterviewSuccess,
+  stubPatchInterviewFail,
 }
