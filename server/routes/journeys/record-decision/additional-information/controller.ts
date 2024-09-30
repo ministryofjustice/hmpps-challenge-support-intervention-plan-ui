@@ -7,6 +7,8 @@ export class DecisionAdditionalInformationController {
     res.render('record-decision/additional-information/view', {
       actionOther,
       backUrl: 'next-steps',
+      maxLengthChars: 4000,
+      threshold: '75',
     })
   }
 
