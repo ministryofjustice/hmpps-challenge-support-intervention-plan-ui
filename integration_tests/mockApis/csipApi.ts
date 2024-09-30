@@ -823,6 +823,38 @@ const stubPatchInvestigationFail = () => {
   })
 }
 
+const stubPutDecisionSuccess = () => {
+  return stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/decision-and-actions',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {},
+    },
+  })
+}
+
+const stubPutDecisionFail = () => {
+  return stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/decision-and-actions',
+    },
+    response: {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
+    },
+  })
+}
+
 const stubPostPlan = () => {
   return stubFor({
     request: {
@@ -1069,4 +1101,6 @@ export default {
   stubPostInterviewFail,
   stubPatchInterviewSuccess,
   stubPatchInterviewFail,
+  stubPutDecisionSuccess,
+  stubPutDecisionFail,
 }
