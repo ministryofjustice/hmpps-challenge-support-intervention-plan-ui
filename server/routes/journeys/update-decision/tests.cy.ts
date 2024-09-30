@@ -9,14 +9,24 @@ context('test /update-decision', () => {
     cy.task('stubComponents')
     cy.task('stubDecisionSignerRoles')
     cy.task('stubDecisionOutcomeType')
-    cy.task('stubCsipRecordSuccessPlanPending')
   })
 
   it('should render the update decision screen', () => {
+    cy.task('stubCsipRecordSuccessPlanPending')
     navigateToTestPage()
     cy.url().should('to.match', /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-decision$/)
     checkAxeAccessibility()
     validatePageContents()
+  })
+
+  it('should redirect to csip-records screen if CSIP record is invalid for this journey', () => {
+    cy.task('stubCsipRecordSuccessCsipOpen')
+    cy.signIn()
+    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/investigation$/)
+
+    cy.visit(`csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-decision/start`)
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/investigation$/)
   })
 
   const navigateToTestPage = () => {

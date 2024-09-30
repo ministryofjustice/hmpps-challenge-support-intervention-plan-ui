@@ -2,13 +2,9 @@ import { Request, Response } from 'express'
 
 import CsipApiService from '../../services/csipApi/csipApiService'
 import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
-import { components } from '../../@types/csip'
 import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../utils/constants'
 import { interviewSorter } from '../../utils/sorters'
-
-const hasInvestigation = (status: components['schemas']['CsipRecord']['status']) => {
-  return !(['REFERRAL_PENDING', 'REFERRAL_SUBMITTED', 'INVESTIGATION_PENDING'] as (typeof status)[]).includes(status)
-}
+import logger from '../../../logger'
 
 export class CsipRecordController {
   constructor(
@@ -19,6 +15,7 @@ export class CsipRecordController {
   private getRecordInfo = async (req: Request) => {
     const { recordUuid } = req.params
     const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
+    logger.info(record)
     const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
     const referral = {
       createdAt: record.createdAt,
@@ -58,7 +55,7 @@ export class CsipRecordController {
     const { recordUuid } = req.params
     const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
 
-    if (hasInvestigation(record.status)) {
+    if (record.referral.investigation) {
       res.redirect(`/csip-records/${recordUuid}/investigation`)
       return
     }
@@ -81,7 +78,7 @@ export class CsipRecordController {
     res.render('csip-records/view', {
       isUpdate: true,
       status: record.status,
-      shouldShowTabs: hasInvestigation(record.status),
+      shouldShowTabs: !!investigation,
       record,
       decision,
       investigation,
@@ -178,7 +175,7 @@ export class CsipRecordController {
     res.render('csip-records/view', {
       status: record.status,
       updatingEntity: record.plan ? null : 'referral',
-      shouldShowTabs: hasInvestigation(record.status),
+      shouldShowTabs: !!investigation,
       record,
       decision,
       investigation,

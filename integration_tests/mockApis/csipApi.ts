@@ -628,6 +628,65 @@ const stubCsipRecordSuccessPlanPending = () => {
   })
 }
 
+const stubCsipRecordSuccessCsipOpen = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        ...csip,
+        status: 'CSIP_OPEN',
+        referral: {
+          ...csip.referral,
+          investigation: {
+            interviews: [
+              {
+                interviewee: 'Some Person',
+                interviewDate: '2024-12-25',
+                intervieweeRole: { code: 'B', description: 'Role2' },
+                interviewText: 'some text',
+              },
+            ],
+            staffInvolved: 'staff stafferson',
+            evidenceSecured: 'SomeVidence',
+            occurrenceReason: 'bananas',
+            personsUsualBehaviour: 'a great person',
+            personsTrigger: 'spiders',
+            protectiveFactors: 'SomeFactors',
+          },
+          decisionAndActions: {
+            conclusion: 'dec-conc',
+            outcome: { code: 'ACC', description: 'Another option' },
+            signedOffByRole: {
+              code: 'A',
+              description: 'prison officer',
+            },
+            recordedBy: 'some person',
+            recordedByDisplayName: 'some person longer',
+            date: '2024-08-01',
+            nextSteps: `stuff up
+            and there
+            
+            whilst also being down here`,
+            actions: ['OPEN_CSIP_ALERT'],
+            actionOther: `some action
+            with another one
+            
+            a final action`,
+          },
+        },
+        plan: {},
+      },
+    },
+  })
+}
+
 const stubCsipRecordGetSuccess = () => {
   return stubFor({
     request: {
@@ -676,10 +735,58 @@ const stubCsipRecordGetSuccessAfterScreeningWithoutReason = () => {
   })
 }
 
-const csipRecordWithScreeningOutcome = (reason: string) => {
+const stubCsipRecordGetSuccessAfterScreeningNFA = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: csipRecordWithScreeningOutcome('', 'NO_FURTHER_ACTION'),
+    },
+  })
+}
+
+const stubCsipRecordGetSuccessAfterScreeningACCT = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: csipRecordWithScreeningOutcome('', 'ACCT_SUPPORT'),
+    },
+  })
+}
+
+const stubCsipRecordGetSuccessAfterScreeningSupportOutsideCsip = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: csipRecordWithScreeningOutcome('', 'SUPPORT_OUTSIDE_CSIP'),
+    },
+  })
+}
+
+const csipRecordWithScreeningOutcome = (reason: string, status: string = 'INVESTIGATION_PENDING') => {
   return {
     ...csip,
-    status: 'INVESTIGATION_PENDING',
+    status,
     referral: {
       ...csip.referral,
       saferCustodyScreeningOutcome: {
@@ -1088,6 +1195,7 @@ export default {
   stubCsipRecordSuccessAwaitingDecision,
   stubCsipRecordSuccessAwaitingDecisionNoInterviews,
   stubCsipRecordSuccessPlanPending,
+  stubCsipRecordSuccessCsipOpen,
   stubPutDecision,
   stubCsipRecordPatchSuccess,
   stubCsipRecordPatchFail,
@@ -1095,6 +1203,9 @@ export default {
   stubCsipRecordGetSuccessCFEdgeCases,
   stubCsipRecordGetSuccessAfterScreeningWithReason,
   stubCsipRecordGetSuccessAfterScreeningWithoutReason,
+  stubCsipRecordGetSuccessAfterScreeningNFA,
+  stubCsipRecordGetSuccessAfterScreeningACCT,
+  stubCsipRecordGetSuccessAfterScreeningSupportOutsideCsip,
   stubPatchContributoryFactorSuccess,
   stubPatchContributoryFactorFail,
   stubPostInterviewSuccess,

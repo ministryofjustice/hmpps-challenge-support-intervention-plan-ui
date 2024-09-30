@@ -34,6 +34,16 @@ context('test /update-investigation', () => {
     cy.get('.govuk-summary-card').should('have.length', 0)
   })
 
+  it('should redirect to csip-records screen if CSIP record is invalid for this journey', () => {
+    cy.task('stubCsipRecordGetSuccessAfterScreeningACCT')
+    cy.signIn()
+    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/referral$/)
+
+    cy.visit(`csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-investigation/start`)
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/referral$/)
+  })
+
   const checkInterviews = () => {
     cy.get('.govuk-summary-card').should('have.length', 2)
     cy.get('.govuk-summary-card')
