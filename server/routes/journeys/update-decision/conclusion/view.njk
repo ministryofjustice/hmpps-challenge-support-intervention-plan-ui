@@ -14,9 +14,11 @@
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        {{ govukInsetText({
-            html: currentConclusion | escape | boldAppendStamp | nl2br
-        }) }}
+        {% if currentConclusion %}
+            {{ govukInsetText({
+                html: currentConclusion | escape | boldAppendStamp | nl2br
+            }) }}
+        {% endif %}
         {{ govukCharacterCount({
             maxlength: maxLengthChars,
             rows: 5,
