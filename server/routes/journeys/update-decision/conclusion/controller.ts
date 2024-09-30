@@ -12,6 +12,7 @@ export class UpdateConclusionController extends PatchDecisionController {
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
       ...getMaxCharsAndThresholdForAppend(res.locals.user.displayName, currentConclusion),
+      backUrl: `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
     })
   }
 

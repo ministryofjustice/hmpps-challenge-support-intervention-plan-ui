@@ -80,6 +80,9 @@ context('test /update-decision/conclusion', () => {
     cy.findByText(/Include the name and role of the staff member signing off on the decision/i).should('not.exist')
     cy.findAllByRole('radio').should('have.length', 0)
     cy.title().should('equal', 'Conclusion - Update a CSIP investigation decision - DPS')
+    cy.findByRole('link', { name: /^back/i })
+      .should('have.attr', 'href')
+      .and('include', 'csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550')
   }
 
   const validateErrorMessage = () => {
