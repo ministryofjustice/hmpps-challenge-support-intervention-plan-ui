@@ -88,7 +88,9 @@
     {% if decision %}
       {% include './components/decision.njk' %}
     {% endif %}
-    {% include './components/investigation.njk' %}
+    {% if not isUpdate or not decision %}
+      {% include './components/investigation.njk' %}
+    {% endif %}
   {% endif %}
 
   <form method="post" action="/csip-records/{{ recordUuid }}">
@@ -103,7 +105,7 @@
       }) }}
     {% endif %}
     {% if secondaryButton %}
-      <a class="govuk-link govuk-body" href="{{ secondaryButton.link }}">{{ secondaryButton.label }}</a>
+      <a class="govuk-link govuk-body govuk-link--no-visited-state" href="{{ secondaryButton.link }}">{{ secondaryButton.label }}</a>
     {% endif %}
   </div>
   </form>

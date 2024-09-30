@@ -14,6 +14,9 @@ export class UpdateDecisionController extends BaseJourneyController {
 
   UPDATE = async (req: Request, res: Response) => {
     const record = req.journeyData.csipRecord!
+    if (!record.referral.decisionAndActions || record.plan) {
+      return res.redirect(`/csip-records/${record.recordUuid}`)
+    }
 
     const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
     const decision = record.referral!.decisionAndActions!
@@ -30,7 +33,7 @@ export class UpdateDecisionController extends BaseJourneyController {
       link: `/csip-records/${record.recordUuid}`,
     }
 
-    res.render('csip-records/view', {
+    return res.render('csip-records/view', {
       updatingEntity: 'investigation decision',
       isUpdate: true,
       referralTabSelected: false,

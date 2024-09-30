@@ -130,6 +130,22 @@ export class CsipRecordController {
           label: 'Develop initial plan',
           action: 'plan',
         }
+        if (decision) {
+          secondaryButton = {
+            label: 'Update decision',
+            link: `/csip-record/${recordUuid}/update-decision/start`,
+          }
+        }
+        break
+      case 'SUPPORT_OUTSIDE_CSIP':
+      case 'ACCT_SUPPORT':
+      case 'NO_FURTHER_ACTION':
+        if (decision) {
+          secondaryButton = {
+            label: 'Update decision',
+            link: `/csip-record/${recordUuid}/update-decision/start`,
+          }
+        }
         break
       case 'INVESTIGATION_PENDING':
         actionButton = {
@@ -137,9 +153,6 @@ export class CsipRecordController {
           action: 'investigation',
         }
         break
-      case 'SUPPORT_OUTSIDE_CSIP':
-      case 'ACCT_SUPPORT':
-      case 'NO_FURTHER_ACTION':
       case 'AWAITING_DECISION':
         actionButton = {
           label: 'Record decision',

@@ -1,6 +1,18 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
-<h1 class="govuk-heading-l govuk-!-margin-bottom-7">Investigation decision</h1>
+
+{% if not isUpdate %}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Investigation decision</h1>
+    </div>
+    {% if secondaryButton and secondaryButton.label == 'Update decision' %}
+      <div class="govuk-summary-list govuk-summary-list__actions">
+        <a class="govuk-link govuk-link--no-visited-state" href="{{secondaryButton.link}}">{{ secondaryButton.label }}</a>
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
 
 {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-9",
@@ -34,24 +46,54 @@
           text: 'Reason for decision'
         },
         value: {
-          html: decision.conclusion | escape | nl2br
-        }
+          html: (decision.conclusion or 'Not provided') | escape | boldAppendStamp | nl2br
+        },
+        actions: {
+        items: [
+          {
+            href: "update-decision/conclusion#conclusion",
+            text: "Add information",
+            visuallyHiddenText: "to the description of the reasons for the decision",
+            classes: "govuk-link--no-visited-state"
+          }
+        ]
+      } if isUpdate else undefined
       },
       {
         key: {
           text: 'Comments on next steps'
         },
         value: {
-          html: (decision.nextSteps or 'Not provided') | escape | nl2br
-        }
+          html: (decision.nextSteps or 'Not provided') | escape | boldAppendStamp | nl2br
+        },
+        actions: {
+        items: [
+          {
+            href: "update-decision/next-steps#nextSteps",
+            text: "Add information",
+            visuallyHiddenText: "to the comments on next steps",
+            classes: "govuk-link--no-visited-state"
+          }
+        ]
+      } if isUpdate else undefined
       },
       {
         key: {
           text: 'Additional information'
         },
         value: {
-          html: (decision.actionOther or 'Not provided') | escape | nl2br
-        }
+          html: (decision.actionOther or 'Not provided') | escape | boldAppendStamp | nl2br
+        },
+        actions: {
+        items: [
+          {
+            href: "update-decision/additional-information#actionOther",
+            text: "Add information",
+            visuallyHiddenText: "to the additional information relating to the decision",
+            classes: "govuk-link--no-visited-state"
+          }
+        ]
+      } if isUpdate else undefined
       },
       {
         key: {
@@ -64,4 +106,6 @@
     ]
 }) }}
 
-<hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
+{% if not isUpdate %}
+  <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
+{% endif %}

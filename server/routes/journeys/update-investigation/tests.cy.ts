@@ -1,3 +1,5 @@
+import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+
 context('test /update-investigation', () => {
   beforeEach(() => {
     cy.task('reset')
@@ -13,7 +15,7 @@ context('test /update-investigation', () => {
     navigateToTestPage()
 
     goToUpdatePage()
-
+    checkAxeAccessibility()
     cy.findByRole('button', { name: /add another interview/i }).should('be.visible')
 
     checkInterviews()

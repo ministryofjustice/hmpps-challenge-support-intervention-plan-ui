@@ -7,7 +7,7 @@
         </div>
         {% if status == 'REFERRAL_SUBMITTED' and secondaryButton %}
             <div class="govuk-summary-list govuk-summary-list__actions">
-                <a class="govuk-link govuk-link--no-visited-state" href="{{secondaryButton.link}}">Update referral</a>
+                <a class="govuk-link govuk-link--no-visited-state" href="{{secondaryButton.link}}">{{ secondaryButton.label }}</a>
             </div>
         {% endif %}
     </div>
