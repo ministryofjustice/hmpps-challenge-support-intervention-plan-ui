@@ -3,6 +3,7 @@ import { Services } from '../../../services'
 import { JourneyRouter } from '../base/routes'
 import { UpdateDecisionController } from './controller'
 import { UpdateConclusionRoutes } from './conclusion/routes'
+import { UpdateAdditionalInformationRoutes } from './additional-information/routes'
 
 function Routes({ csipApiService, prisonerSearchService }: Services) {
   const { router, get } = JourneyRouter()
@@ -11,6 +12,7 @@ function Routes({ csipApiService, prisonerSearchService }: Services) {
   get('/', updateController.UPDATE)
 
   router.use('/conclusion', UpdateConclusionRoutes(csipApiService))
+  router.use('/additional-information', UpdateAdditionalInformationRoutes(csipApiService))
 
   return router
 }
