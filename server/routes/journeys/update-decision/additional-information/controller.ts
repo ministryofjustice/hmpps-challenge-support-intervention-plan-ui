@@ -24,7 +24,7 @@ export class UpdateAdditionalInformationController extends PatchDecisionControll
         actionOther: getTextForApiSubmission(
           req.journeyData.decisionAndActions!.actionOther,
           res.locals.user.displayName,
-          req.body.actionOther,
+          req.body.actionOther!,
         ),
       },
     })

@@ -20,7 +20,11 @@ export const schemaFactory = async (req: Request, res: Response) => {
     actionOther: z
       .string({ message: req.journeyData.isUpdate ? UPDATE_ERROR_MSG : ERROR_MSG })
       .max(maxLengthChars, TOO_LONG_ERROR_MSG(Boolean(req.journeyData.isUpdate), maxLengthChars))
-      .refine(val => val && val.trim().length > 0, req.journeyData.isUpdate ? UPDATE_ERROR_MSG : ERROR_MSG),
+      .refine(
+        val => (val && val.trim().length > 0) || !req.journeyData.isUpdate,
+        req.journeyData.isUpdate ? UPDATE_ERROR_MSG : ERROR_MSG,
+      )
+      .transform(val => (val?.trim().length ? val : null)),
   })
 }
 
