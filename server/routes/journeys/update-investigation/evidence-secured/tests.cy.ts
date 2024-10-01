@@ -1,6 +1,7 @@
 import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
+import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
 context('test /update-investigation/evidence-secured', () => {
   const uuid = uuidV4()
@@ -8,8 +9,8 @@ context('test /update-investigation/evidence-secured', () => {
   const title = { name: 'Add information on the evidence secured' }
 
   const ERRORS = {
-    EMPTY: { name: /Enter an update to the description of the evidence secured/i },
-    MAX: { name: /Description of the evidence secured must be [0-9,]+ characters or less/i },
+    EMPTY: { name: /Enter an update on the evidence secured/i },
+    MAX: { name: /Update to the evidence secured must be [0-9,]+ characters or less/i },
   }
 
   const SUCCESS_MESSAGE = 'You’ve updated the investigation information.'
@@ -44,12 +45,14 @@ context('test /update-investigation/evidence-secured', () => {
       csipRecord: {
         referral: {
           investigation: {
-            evidenceSecured: 'a'.repeat(3001),
+            evidenceSecured: 'a'.repeat(3000),
           },
         },
       },
     })
-    cy.contains('You have 942 characters remaining').should('be.visible')
+    cy.contains(`You have ${1000 - generateSaveTimestamp('John Smith').length} characters remaining`).should(
+      'be.visible',
+    )
     cy.get('.govuk-inset-text').should('be.visible')
   })
 

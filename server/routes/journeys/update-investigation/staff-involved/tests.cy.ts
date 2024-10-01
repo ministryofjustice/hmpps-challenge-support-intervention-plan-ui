@@ -67,7 +67,7 @@ context('test /update-investigation/staff-involved', () => {
   const validateErrorMessage = () => {
     getInputTextbox().clear()
     getContinueButton().click()
-    cy.findByRole('link', { name: /Enter an update to the names of staff involved in the investigation/i })
+    cy.findByRole('link', { name: /Enter an update on the staff involved in the investigation/i })
       .should('be.visible')
       .click()
     getInputTextbox().should('be.focused')
@@ -76,7 +76,7 @@ context('test /update-investigation/staff-involved', () => {
       delay: 0,
     })
     getContinueButton().click()
-    cy.findByRole('link', { name: /Names of staff involved in the investigation must be [0-9,]+ characters or less/i })
+    cy.findByRole('link', { name: /Update to the staff involved must be [0-9,]+ characters or less/i })
       .should('be.visible')
       .click()
     cy.findAllByText(/You have [0-9,]+ characters too many/)
@@ -86,7 +86,7 @@ context('test /update-investigation/staff-involved', () => {
 
     getInputTextbox().clear().type('  ')
     getContinueButton().click()
-    cy.findByRole('link', { name: /Enter an update to the names of staff involved in the investigation/i })
+    cy.findByRole('link', { name: /Enter an update on the staff involved in the investigation/i })
       .should('be.visible')
       .click()
     getInputTextbox().should('be.focused')
