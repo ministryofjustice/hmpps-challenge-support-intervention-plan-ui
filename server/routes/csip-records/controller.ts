@@ -2,13 +2,8 @@ import { Request, Response } from 'express'
 
 import CsipApiService from '../../services/csipApi/csipApiService'
 import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
-import { components } from '../../@types/csip'
 import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../utils/constants'
 import { interviewSorter } from '../../utils/sorters'
-
-const hasInvestigation = (status: components['schemas']['CsipRecord']['status']) => {
-  return !(['REFERRAL_PENDING', 'REFERRAL_SUBMITTED', 'INVESTIGATION_PENDING'] as (typeof status)[]).includes(status)
-}
 
 export class CsipRecordController {
   constructor(
@@ -58,7 +53,7 @@ export class CsipRecordController {
     const { recordUuid } = req.params
     const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
 
-    if (hasInvestigation(record.status)) {
+    if (record.referral.investigation) {
       res.redirect(`/csip-records/${recordUuid}/investigation`)
       return
     }
@@ -81,7 +76,7 @@ export class CsipRecordController {
     res.render('csip-records/view', {
       isUpdate: true,
       status: record.status,
-      shouldShowTabs: hasInvestigation(record.status),
+      shouldShowTabs: !!investigation,
       record,
       decision,
       investigation,
@@ -130,6 +125,22 @@ export class CsipRecordController {
           label: 'Develop initial plan',
           action: 'plan',
         }
+        if (decision) {
+          secondaryButton = {
+            label: 'Update decision',
+            link: `/csip-record/${recordUuid}/update-decision/start`,
+          }
+        }
+        break
+      case 'SUPPORT_OUTSIDE_CSIP':
+      case 'ACCT_SUPPORT':
+      case 'NO_FURTHER_ACTION':
+        if (decision) {
+          secondaryButton = {
+            label: 'Update decision',
+            link: `/csip-record/${recordUuid}/update-decision/start`,
+          }
+        }
         break
       case 'INVESTIGATION_PENDING':
         actionButton = {
@@ -137,9 +148,6 @@ export class CsipRecordController {
           action: 'investigation',
         }
         break
-      case 'SUPPORT_OUTSIDE_CSIP':
-      case 'ACCT_SUPPORT':
-      case 'NO_FURTHER_ACTION':
       case 'AWAITING_DECISION':
         actionButton = {
           label: 'Record decision',
@@ -165,7 +173,7 @@ export class CsipRecordController {
     res.render('csip-records/view', {
       status: record.status,
       updatingEntity: record.plan ? null : 'referral',
-      shouldShowTabs: hasInvestigation(record.status),
+      shouldShowTabs: !!investigation,
       record,
       decision,
       investigation,

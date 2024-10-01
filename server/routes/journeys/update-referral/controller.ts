@@ -4,11 +4,6 @@ import type PrisonerSearchService from '../../../services/prisonerSearch/prisone
 import { BaseJourneyController } from '../base/controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import { ordinalNumber, sentenceCase, getNonUndefinedProp } from '../../../utils/utils'
-import { interviewSorter } from '../../../utils/sorters'
-
-const hasInvestigation = (status: components['schemas']['CsipRecord']['status']) => {
-  return !(['REFERRAL_PENDING', 'REFERRAL_SUBMITTED', 'INVESTIGATION_PENDING'] as (typeof status)[]).includes(status)
-}
 
 type APIContributoryFactor = components['schemas']['ContributoryFactor']
 
@@ -86,6 +81,9 @@ export class UpdateReferralController extends BaseJourneyController {
 
   UPDATE = async (req: Request, res: Response) => {
     const record = req.journeyData.csipRecord!
+    if (record.status !== 'REFERRAL_SUBMITTED') {
+      return res.redirect(`/csip-records/${record.recordUuid}`)
+    }
 
     const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
     const { referral } = record
@@ -107,66 +105,31 @@ export class UpdateReferralController extends BaseJourneyController {
       isStaffAssaulted: Boolean(referral.isStaffAssaulted),
       ...getNonUndefinedProp(referral, 'assaultedStaffName'),
     }
+    req.journeyData.isUpdate = true
 
     const contributoryFactorOptions = await this.getReferenceDataOptionsForCheckboxes(req, 'contributory-factor-type')
     const uniqueContributoryFactors = new Set(contributoryFactorOptions.map(cf => cf.value))
-
     const uniqueSelectedContributoryFactors = new Set(referral.contributoryFactors.map(cf => cf.factorType.code))
     const canAddMoreContributoryFactors = uniqueSelectedContributoryFactors.size < uniqueContributoryFactors.size
-
-    const investigation = referral.investigation!
-
-    const interviews = record.referral!.investigation?.interviews
-    if (interviews) {
-      investigation.interviews = interviews.sort(interviewSorter)
-    }
 
     const involvementFilter = (itm: { key: { text: string } }) =>
       referral.assaultedStaffName || itm.key.text !== 'Names of staff assaulted'
 
-    let secondaryButton
-    switch (record.status) {
-      case 'REFERRAL_PENDING':
-        break
-      case 'REFERRAL_SUBMITTED':
-        secondaryButton = {
-          label: 'Cancel',
-          link: `/csip-records/${record.recordUuid}`,
-        }
-        break
-      case 'PLAN_PENDING':
-        break
-      case 'INVESTIGATION_PENDING':
-        break
-      case 'SUPPORT_OUTSIDE_CSIP':
-      case 'ACCT_SUPPORT':
-      case 'NO_FURTHER_ACTION':
-      case 'AWAITING_DECISION':
-        break
-      case 'CSIP_OPEN':
-        break
-      case 'CSIP_CLOSED':
-      case 'UNKNOWN':
-      default:
-        break
+    const secondaryButton = {
+      label: 'Cancel',
+      link: `/csip-records/${record.recordUuid}`,
     }
 
-    req.journeyData.isUpdate = true
-
-    res.render('csip-records/view', {
+    return res.render('csip-records/view', {
       contributoryFactors: convertCfsToSummaryRows(record, contributoryFactorOptions),
       canAddMoreContributoryFactors,
       isUpdate: true,
       updatingEntity: 'referral',
       status: record.status,
-      shouldShowTabs: hasInvestigation(record.status),
-      decision: record.referral!.decisionAndActions,
-      investigation,
       recordUuid: record.recordUuid,
       referralTabSelected: true,
       prisoner,
       referral,
-      screening: record.referral!.saferCustodyScreeningOutcome,
       involvementFilter,
       showBreadcrumbs: true,
       secondaryButton,

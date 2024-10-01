@@ -63,7 +63,7 @@ context('test /update-investigation/triggers', () => {
   const validateErrorMessage = () => {
     getInputTextbox().clear()
     getContinueButton().click()
-    cy.findByRole('link', { name: /Enter an update to the description of the prisoner’s triggers/i })
+    cy.findByRole('link', { name: /Enter an update about the prisoner’s triggers/i })
       .should('be.visible')
       .click()
     getInputTextbox().should('be.focused')
@@ -72,7 +72,7 @@ context('test /update-investigation/triggers', () => {
       delay: 0,
     })
     getContinueButton().click()
-    cy.findByRole('link', { name: /Description of the prisoner’s triggers must be [0-9,]+ characters or less/i })
+    cy.findByRole('link', { name: /Update about the prisoner’s triggers must be [0-9,]+ characters or less/i })
       .should('be.visible')
       .click()
     cy.findAllByText(/You have [0-9,]+ characters too many/)
@@ -82,7 +82,7 @@ context('test /update-investigation/triggers', () => {
 
     getInputTextbox().clear().type('  ')
     getContinueButton().click()
-    cy.findByRole('link', { name: /Enter an update to the description of the prisoner’s triggers/i })
+    cy.findByRole('link', { name: /Enter an update about the prisoner’s triggers/i })
       .should('be.visible')
       .click()
     getInputTextbox().should('be.focused')
