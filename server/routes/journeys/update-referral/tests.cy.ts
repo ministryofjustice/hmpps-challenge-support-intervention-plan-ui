@@ -8,7 +8,6 @@ context('test /update-referral', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
     cy.task('stubIntervieweeRoles')
-    cy.task('stubCsipRecordGetSuccess')
   })
 
   it('should render the update referral screen with more contrib factors available', () => {
@@ -45,6 +44,16 @@ context('test /update-referral', () => {
     goToUpdatePage()
 
     checkCfs()
+  })
+
+  it('should redirect to csip-records screen if CSIP record is invalid for this journey', () => {
+    cy.task('stubCsipRecordGetSuccessAfterScreeningNFA')
+    cy.signIn()
+    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/referral$/)
+
+    cy.visit(`csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start`)
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/referral$/)
   })
 
   const checkCfs = () => {

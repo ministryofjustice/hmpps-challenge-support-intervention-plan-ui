@@ -3,11 +3,11 @@
 {% if not isUpdate %}
     <div class="govuk-grid-row govuk-!-margin-bottom-6">
         <div class="govuk-grid-column-two-thirds">
-            <h2 class="govuk-heading-l govuk-!-margin-bottom-7">Investigation</h1>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Investigation</h1>
         </div>
         {% if status == 'AWAITING_DECISION' and secondaryButton %}
             <div class="govuk-summary-list govuk-summary-list__actions">
-                <a class="govuk-link govuk-link--no-visited-state" href="{{secondaryButton.link}}">Update investigation</a>
+                <a class="govuk-link govuk-link--no-visited-state" href="{{secondaryButton.link}}">{{ secondaryButton.label }}</a>
             </div>
         {% endif %}
     </div>
