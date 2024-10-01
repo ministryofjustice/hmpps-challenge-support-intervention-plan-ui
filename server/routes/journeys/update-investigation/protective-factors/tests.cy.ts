@@ -87,7 +87,7 @@ context('test /update-investigation/protective-factors', () => {
   const validateErrorMessage = () => {
     getInputTextbox().clear()
     getContinueButton().click()
-    cy.findByRole('link', { name: /Enter an update to the description of the prisoner’s protective factors/i })
+    cy.findByRole('link', { name: /Enter an update about protective factors for the prisoner/i })
       .should('be.visible')
       .click()
     getInputTextbox().should('be.focused')
@@ -97,7 +97,7 @@ context('test /update-investigation/protective-factors', () => {
     })
     getContinueButton().click()
     cy.findByRole('link', {
-      name: /Description of the prisoner’s protective factors must be [0-9,]+ characters or less/i,
+      name: /Update about protective factors must be [0-9,]+ characters or less/i,
     })
       .should('be.visible')
       .click()
@@ -108,7 +108,7 @@ context('test /update-investigation/protective-factors', () => {
 
     getInputTextbox().clear().type('  ')
     getContinueButton().click()
-    cy.findByRole('link', { name: /Enter an update to the description of the prisoner’s protective factors/i })
+    cy.findByRole('link', { name: /Enter an update about protective factors for the prisoner/i })
       .should('be.visible')
       .click()
     getInputTextbox().should('be.focused')

@@ -1,5 +1,6 @@
 import { v4 as uuidV4 } from 'uuid'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
+import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
 context('test /update-referral/contributory-factor-comment', () => {
   const uuid = uuidV4()
@@ -38,7 +39,9 @@ context('test /update-referral/contributory-factor-comment', () => {
   it('test comment, should show chars left immediately', () => {
     navigateToTestPage()
     goToChangingCFCommentPage(1)
-    cy.contains('You have 942 characters remaining').should('be.visible')
+    cy.contains(`You have ${1000 - generateSaveTimestamp('John Smith').length} characters remaining`).should(
+      'be.visible',
+    )
     cy.get('.govuk-inset-text').should('be.visible')
   })
 
@@ -65,7 +68,7 @@ context('test /update-referral/contributory-factor-comment', () => {
             {
               factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f1',
               factorType: { code: 'CODE3', description: 'Text' },
-              comment: 'a'.repeat(3001),
+              comment: 'a'.repeat(3000),
             },
             {
               factorUuid: 'b8dff21f-e96c-4240-aee7-28900dd910f2',
@@ -83,24 +86,25 @@ context('test /update-referral/contributory-factor-comment', () => {
   }
 
   const checkValidation = () => {
-    const limit = 3933
-    const used = 67
+    const timestampLength = generateSaveTimestamp('John Smith').length
     cy.findByRole('textbox')
       .clear()
-      .type('a'.repeat(limit + 1), {
+      .type('a'.repeat(4000 - 10 - timestampLength + 1), {
         delay: 0,
         force: true,
       })
     cy.findByRole('button', { name: /confirm and save/i }).click()
     cy.get('.govuk-error-summary a').should('have.length', 1)
 
-    cy.findByRole('link', { name: 'Comment must be 3,933 characters or less' }).should('be.visible')
+    cy.findByRole('link', {
+      name: `Comment must be ${(4000 - 10 - timestampLength).toLocaleString()} characters or less`,
+    }).should('be.visible')
     cy.contains(/you have 1 character too many/i).should('be.visible')
 
     cy.findByRole('textbox', { name: title })
       .clear()
       .type(
-        'a'.repeat(3000 - used - 1), // prefix and timestamp lengths
+        'a'.repeat(3000 - timestampLength - 10 - 1), // prefix and timestamp lengths
         {
           delay: 0,
           force: true,

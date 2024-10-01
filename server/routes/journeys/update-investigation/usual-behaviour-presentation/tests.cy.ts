@@ -65,7 +65,7 @@ context('test /update-investigation/usual-behaviour-presentation', () => {
     getInputTextbox().clear()
     getContinueButton().click()
     cy.findByRole('link', {
-      name: /Enter an update to the description of the prisoner’s usual behaviour presentation/i,
+      name: /Enter an update about the prisoner’s usual behaviour presentation/i,
     })
       .should('be.visible')
       .click()
@@ -76,7 +76,7 @@ context('test /update-investigation/usual-behaviour-presentation', () => {
     })
     getContinueButton().click()
     cy.findByRole('link', {
-      name: /Description of the prisoner’s usual behaviour presentation must be [0-9,]+ characters or less/i,
+      name: /Update to the description must be [0-9,]+ characters or less/i,
     })
       .should('be.visible')
       .click()
@@ -88,7 +88,7 @@ context('test /update-investigation/usual-behaviour-presentation', () => {
     getInputTextbox().clear().type('  ')
     getContinueButton().click()
     cy.findByRole('link', {
-      name: /Enter an update to the description of the prisoner’s usual behaviour presentation/i,
+      name: /Enter an update about the prisoner’s usual behaviour presentation/i,
     })
       .should('be.visible')
       .click()
