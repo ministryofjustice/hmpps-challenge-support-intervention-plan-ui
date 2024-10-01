@@ -1,6 +1,6 @@
 import { NextStepsController } from './controller'
 import { validate } from '../../../../middleware/validationMiddleware'
-import { schema } from './schemas'
+import { schemaFactory } from './schemas'
 import { JourneyRouter } from '../../base/routes'
 
 export const NextStepsRoutes = () => {
@@ -8,7 +8,7 @@ export const NextStepsRoutes = () => {
   const controller = new NextStepsController()
 
   get('/', controller.GET)
-  post('/', validate(schema), controller.POST)
+  post('/', validate(schemaFactory), controller.POST)
 
   return router
 }
