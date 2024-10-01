@@ -4,7 +4,6 @@ import CsipApiService from '../../services/csipApi/csipApiService'
 import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
 import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../utils/constants'
 import { interviewSorter } from '../../utils/sorters'
-import logger from '../../../logger'
 
 export class CsipRecordController {
   constructor(
@@ -15,7 +14,6 @@ export class CsipRecordController {
   private getRecordInfo = async (req: Request) => {
     const { recordUuid } = req.params
     const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
-    logger.info(record)
     const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
     const referral = {
       createdAt: record.createdAt,
