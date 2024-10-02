@@ -54,8 +54,6 @@ export class CsipRecordController {
     const { recordUuid } = req.params
     const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
 
-    console.log(`record.plan: ${Boolean(record.plan)}`)
-    console.log(`record.inves: ${Boolean(record.referral.investigation)}`)
     let tabSelected = 'referral'
     if (record.plan) {
       tabSelected = 'plan'
