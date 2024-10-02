@@ -121,6 +121,7 @@ export class UpdateReferralController extends BaseJourneyController {
     }
 
     return res.render('csip-records/view', {
+      tabSelected: 'referral',
       contributoryFactors: convertCfsToSummaryRows(record, contributoryFactorOptions),
       canAddMoreContributoryFactors,
       isUpdate: true,
