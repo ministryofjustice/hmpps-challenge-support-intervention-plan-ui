@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import CsipApiService from '../../services/csipApi/csipApiService'
 import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
 import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../utils/constants'
-import { interviewSorter } from '../../utils/sorters'
+import { identifiedNeedSorter, interviewSorter } from '../../utils/sorters'
 
 export class CsipRecordController {
   constructor(
@@ -33,7 +33,8 @@ export class CsipRecordController {
 
     const screening = record.referral!.saferCustodyScreeningOutcome
 
-    const referralTabSelected = req.url.endsWith('referral')
+    const splitUrl = req.url.split('/')
+    const tabSelected = splitUrl[splitUrl.length - 1]!
 
     return {
       contributoryFactors: referral.contributoryFactors,
@@ -45,7 +46,7 @@ export class CsipRecordController {
       investigation,
       referral,
       recordUuid,
-      referralTabSelected,
+      tabSelected,
     }
   }
 
@@ -53,11 +54,14 @@ export class CsipRecordController {
     const { recordUuid } = req.params
     const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
 
-    if (record.referral.investigation) {
-      res.redirect(`/csip-records/${recordUuid}/investigation`)
-      return
+    let tabSelected = 'referral'
+    if (record.plan) {
+      tabSelected = 'plan'
+    } else if (record.referral.investigation) {
+      tabSelected = 'investigation'
     }
-    res.redirect(`/csip-records/${recordUuid}/referral`)
+
+    res.redirect(`/csip-records/${recordUuid}/${tabSelected}`)
   }
 
   UPDATE = async (req: Request, res: Response) => {
@@ -70,7 +74,7 @@ export class CsipRecordController {
       investigation,
       referral,
       recordUuid,
-      referralTabSelected,
+      tabSelected,
     } = await this.getRecordInfo(req)
 
     res.render('csip-records/view', {
@@ -81,7 +85,7 @@ export class CsipRecordController {
       decision,
       investigation,
       recordUuid,
-      referralTabSelected,
+      tabSelected,
       prisoner,
       referral,
       screening,
@@ -101,7 +105,7 @@ export class CsipRecordController {
       investigation,
       referral,
       recordUuid,
-      referralTabSelected,
+      tabSelected,
       contributoryFactors,
     } = await this.getRecordInfo(req)
 
@@ -163,6 +167,10 @@ export class CsipRecordController {
           label: 'Record CSIP review',
           action: 'review',
         }
+        secondaryButton = {
+          label: 'Update plan',
+          link: `/csip-record/${recordUuid}/update-plan/start`,
+        }
         break
       case 'CSIP_CLOSED':
       case 'UNKNOWN':
@@ -174,11 +182,27 @@ export class CsipRecordController {
       status: record.status,
       updatingEntity: record.plan ? null : 'referral',
       shouldShowTabs: !!investigation,
+      plan: record.plan,
+      identifiedNeeds: record.plan?.identifiedNeeds.sort(identifiedNeedSorter),
+      reviews: [
+        {
+          reviewDate: '2024-05-04',
+          actions: 'some actions',
+          summary: 'a summary',
+          recordedByDisplayName: 'joe bloggs',
+        },
+        {
+          reviewDate: '2024-04-15',
+          actions: 'other stuff',
+          summary: 'even longer',
+          recordedByDisplayName: 'test testerson',
+        },
+      ],
       record,
       decision,
       investigation,
       recordUuid,
-      referralTabSelected,
+      tabSelected,
       actionButton,
       prisoner,
       referral,

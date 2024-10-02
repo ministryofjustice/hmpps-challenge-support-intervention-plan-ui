@@ -44,6 +44,7 @@ export class UpdatePlanController extends BaseJourneyController {
     }
 
     return res.render('csip-records/view', {
+      tabSelected: 'plan',
       updatingEntity: 'investigation decision',
       isUpdate: true,
       referralTabSelected: false,

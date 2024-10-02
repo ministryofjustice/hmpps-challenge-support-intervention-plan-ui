@@ -1,0 +1,151 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% if not isUpdate %}
+    <div class="govuk-grid-row govuk-!-margin-bottom-6">
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-l govuk-!-margin-bottom-7">Plan</h2>
+        </div>
+        {% if status == 'CSIP_OPEN' and secondaryButton %}
+            <div class="govuk-summary-list govuk-summary-list__actions">
+                <a class="govuk-link govuk-link--no-visited-state" href="{{secondaryButton.link}}">Update plan</a>
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
+
+<h3 class="govuk-heading-m">Case management</h3>
+
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+      {
+        key: {
+          text: 'Case Manager'
+        },
+        value: {
+          text: plan.caseManager
+        },
+        actions: {
+          items: [
+            {
+              href: "update-plan/TODO#TODO",
+              text: "Change",
+              visuallyHiddenText: "",
+              classes: "govuk-link--no-visited-state"
+            }
+          ]
+        } if isUpdate else undefined
+      },
+      {
+        key: {
+          text: 'Reason for the plan'
+        },
+        value: {
+          html: (plan.reasonForPlan or 'Not provided') | escape | boldAppendStamp | nl2br
+        },
+        actions: {
+          items: [
+            {
+              href: "update-plan/TODO#TODO",
+              text: "Change",
+              visuallyHiddenText: "",
+              classes: "govuk-link--no-visited-state"
+            }
+          ]
+        } if isUpdate else undefined
+      },
+      {
+        key: {
+          text: 'Next review date'
+        },
+        value: {
+          html: plan.firstCaseReviewDate | formatDisplayDate
+        },
+        actions: {
+          items: [
+            {
+              href: "update-plan/TODO#TODO",
+              text: "Change",
+              visuallyHiddenText: "",
+              classes: "govuk-link--no-visited-state"
+            }
+          ]
+        } if isUpdate else undefined
+      }]
+}) }}
+
+{% if not isUpdate %}
+    <div class="govuk-grid-row govuk-!-margin-bottom-6">
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-7">Identified needs</h2>
+        </div>
+        {% if status == 'CSIP_OPEN' %}
+            <div class="govuk-summary-list govuk-summary-list__actions">
+                <a class="govuk-link govuk-link--no-visited-state" href="TODO_THIS_LINK">Add, change, close or reopen</a>
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% for need in identifiedNeeds %}
+    {{ govukSummaryList({
+        card: {
+            classes: "govuk-!-margin-bottom-7" if loop.index === identifiedNeeds.length else undefined,
+            title: { text: need.identifiedNeed }
+        },
+        rows: [
+        {
+          key: {
+              text: 'Person responsible'
+          },
+          value: {
+              text: need.responsiblePerson
+          }
+        },
+        {
+          key: {
+              text: 'Target date'
+          },
+          value: {
+              text: need.targetDate | formatDisplayDate
+          }
+        },
+        {
+          key: {
+              text: 'Identified need summary'
+          },
+          value: {
+              html: need.identifiedNeed
+          }
+        },
+        {
+          key: {
+              text: 'Planned intervention'
+          },
+          value: {
+              html: (need.intervention or 'Not provided') | escape | boldAppendStamp | nl2br
+          }
+        },
+        {
+          key: {
+              text: 'Actions and progress'
+          },
+          value: {
+              html: (need.progression or 'Not provided') | escape | boldAppendStamp | nl2br
+          }
+        },
+        {
+          key: {
+              text: 'Created date'
+          },
+          value: {
+              html: need.createdDate | formatDisplayDate
+          }
+        }]
+    }) }}
+{% endfor %}
+
+{% if not identifiedNeeds.length %}
+    <p class="govuk-!-margin-bottom-8">No identified needs recorded.</p>
+{% endif %}
+
