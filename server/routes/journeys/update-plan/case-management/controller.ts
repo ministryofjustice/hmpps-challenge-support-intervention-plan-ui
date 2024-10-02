@@ -5,8 +5,8 @@ import { UpdatePlanController } from '../controller'
 export class CaseManagementController extends UpdatePlanController {
   GET = async (req: Request, res: Response) => {
     res.render('update-plan/case-management/view', {
-      reasonForPlan: res.locals.formResponses?.['reasonForPlan'] || req.journeyData.plan?.reasonForPlan,
-      caseManager: res.locals.formResponses?.['caseManager'] || req.journeyData.plan?.caseManager,
+      reasonForPlan: res.locals.formResponses?.['reasonForPlan'] ?? req.journeyData.plan?.reasonForPlan,
+      caseManager: res.locals.formResponses?.['caseManager'] ?? req.journeyData.plan?.caseManager,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
       backUrl: '../update-plan',
     })
