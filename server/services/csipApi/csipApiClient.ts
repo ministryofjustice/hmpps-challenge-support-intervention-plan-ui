@@ -117,6 +117,30 @@ export default class CsipApiClient {
     })
   }
 
+  async updatePlan(recordUuid: string, payload: components['schemas']['UpdatePlanRequest']) {
+    return this.restClient.patch<components['schemas']['Plan']>({
+      path: `/csip-records/${recordUuid}/plan`,
+      data: payload,
+    })
+  }
+
+  async createIdentifiedNeed(recordUuid: string, payload: components['schemas']['CreateIdentifiedNeedRequest']) {
+    return this.restClient.post<components['schemas']['IdentifiedNeed']>({
+      path: `/csip-records/${recordUuid}/plan/identified-needs`,
+      data: payload,
+    })
+  }
+
+  async updateIdentifiedNeed(
+    identifiedNeedUuid: string,
+    payload: components['schemas']['UpdateIdentifiedNeedRequest'],
+  ) {
+    return this.restClient.patch<components['schemas']['IdentifiedNeed']>({
+      path: `/csip-records/plan/identified-needs/${identifiedNeedUuid}/`,
+      data: payload,
+    })
+  }
+
   async updateContributoryFactor(
     factorUuid: string,
     payload: components['schemas']['UpdateContributoryFactorRequest'],

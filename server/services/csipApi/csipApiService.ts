@@ -102,6 +102,25 @@ export default class CsipApiService {
     return this.csipApiClientBuilder(req.systemClientToken).createPlan(req.journeyData.csipRecord!.recordUuid, payload)
   }
 
+  updatePlan(req: Request, payload: components['schemas']['UpdatePlanRequest']) {
+    return this.csipApiClientBuilder(req.systemClientToken).updatePlan(req.journeyData.csipRecord!.recordUuid, payload)
+  }
+
+  addIdentifiedNeed(req: Request, payload: components['schemas']['CreateIdentifiedNeedRequest']) {
+    return this.csipApiClientBuilder(req.systemClientToken).createIdentifiedNeed(
+      req.journeyData.csipRecord!.recordUuid,
+      payload,
+    )
+  }
+
+  updateIdentifiedNeed(
+    req: Request,
+    identifiedNeedUuid: string,
+    payload: components['schemas']['UpdateIdentifiedNeedRequest'],
+  ) {
+    return this.csipApiClientBuilder(req.systemClientToken).updateIdentifiedNeed(identifiedNeedUuid, payload)
+  }
+
   updateContributoryFactor(
     req: Request,
     factorUuid: string,

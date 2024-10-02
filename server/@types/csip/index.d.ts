@@ -642,7 +642,6 @@ export interface components {
       saferCustodyScreeningOutcome?: components['schemas']['SyncScreeningOutcomeRequest']
       investigation?: components['schemas']['SyncInvestigationRequest']
       decisionAndActions?: components['schemas']['SyncDecisionAndActionsRequest']
-      completed?: boolean
     }
     SyncReviewRequest: {
       /** Format: date */
@@ -1153,6 +1152,12 @@ export interface components {
     Referral: {
       /**
        * Format: date
+       * @description The date the referral was made
+       * @example 2021-09-27
+       */
+      referralDate: string
+      /**
+       * Format: date
        * @description The date the incident that motivated the CSIP referral occurred
        * @example 2021-09-27
        */
@@ -1495,15 +1500,15 @@ export interface components {
     /** @description The request for creating a CSIP Plan for a CSIP record */
     UpdatePlanRequest: {
       /** @description The case manager assigned to the CSIP plan. */
-      caseManager: string
+      caseManager?: string
       /** @description The reasons motivating the creation of a CSIP plan. */
-      reasonForPlan: string
+      reasonForPlan?: string
       /**
        * Format: date
        * @description The first date the CSIP plan should be reviewed.
        * @example 2021-09-27
        */
-      firstCaseReviewDate: string
+      firstCaseReviewDate?: string
     }
     /** @description The request body to update an interview */
     UpdateInterviewRequest: {
