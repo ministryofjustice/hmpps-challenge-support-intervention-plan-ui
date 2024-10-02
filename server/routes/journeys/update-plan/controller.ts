@@ -15,7 +15,7 @@ export class UpdatePlanController extends BaseJourneyController {
 
   UPDATE = async (req: Request, res: Response) => {
     const record = req.journeyData.csipRecord!
-    if (!record.plan) {
+    if (record.status !== 'CSIP_OPEN' || !record.plan) {
       return res.redirect(`/csip-records/${record.recordUuid}`)
     }
 
