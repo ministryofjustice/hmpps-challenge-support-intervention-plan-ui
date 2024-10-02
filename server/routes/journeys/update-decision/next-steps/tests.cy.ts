@@ -9,7 +9,7 @@ context('test /update-decision/next-steps', () => {
 
   const ERRORS = {
     EMPTY: { name: /Enter an update on next steps/i },
-    MAX: { name: /Comments on next steps must be [0-9,]+ characters or less/i },
+    MAX: { name: /Update on next steps must be [0-9,]+ characters or less/i },
   }
 
   const SUCCESS_MESSAGE = 'You’ve updated the information about the investigation decision.'
