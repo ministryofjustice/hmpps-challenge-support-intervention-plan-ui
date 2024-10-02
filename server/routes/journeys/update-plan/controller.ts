@@ -1,9 +1,11 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import type PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
 import { BaseJourneyController } from '../base/controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import { getNonUndefinedProp } from '../../../utils/utils'
 import { identifiedNeedSorter } from '../../../utils/sorters'
+import { components } from '../../../@types/csip'
+import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../../utils/constants'
 
 export class UpdatePlanController extends BaseJourneyController {
   constructor(
@@ -11,6 +13,35 @@ export class UpdatePlanController extends BaseJourneyController {
     private readonly prisonerSearchService: PrisonerSearchService,
   ) {
     super(csipApiService)
+  }
+
+  submitChanges = async <T>({
+    req,
+    next,
+    changes,
+    successMessage,
+  }: {
+    req: Request<unknown, unknown, T>
+    next: NextFunction
+    changes: Partial<components['schemas']['UpdatePlanRequest']>
+    successMessage: string
+  }) => {
+    const csipRecord = req.journeyData.csipRecord!
+
+    try {
+      await this.csipApiService.updatePlan(req as Request, {
+        ...getNonUndefinedProp(csipRecord.plan!, 'caseManager'),
+        ...getNonUndefinedProp(csipRecord.plan!, 'reasonForPlan'),
+        ...getNonUndefinedProp(csipRecord.plan!, 'firstCaseReviewDate'),
+        ...getNonUndefinedProp(csipRecord.plan!, 'reviews'),
+        ...getNonUndefinedProp(csipRecord.plan!, 'identifiedNeeds'),
+        ...changes,
+      })
+      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, successMessage)
+      next()
+    } catch (e) {
+      next(e)
+    }
   }
 
   UPDATE = async (req: Request, res: Response) => {
@@ -26,7 +57,7 @@ export class UpdatePlanController extends BaseJourneyController {
       ...getNonUndefinedProp(plan, 'caseManager'),
       ...getNonUndefinedProp(plan, 'reasonForPlan'),
       ...getNonUndefinedProp(plan, 'firstCaseReviewDate'),
-      identifiedNeeds: plan.identifiedNeeds.sort(identifiedNeedSorter).map(need => ({
+      identifiedNeeds: (plan.identifiedNeeds || []).sort(identifiedNeedSorter).map(need => ({
         identifiedNeed: need.identifiedNeed,
         responsiblePerson: need.responsiblePerson,
         createdDate: need.createdDate,

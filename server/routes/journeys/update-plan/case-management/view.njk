@@ -1,0 +1,50 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Case management - Update a plan" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Update a plan</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Case management</h1>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+        {{ govukCharacterCount({
+            label: {
+              text: "Who’s the Case Manager for " + (prisoner | firstNameSpaceLastName | possessiveComma) + " plan?",
+              classes: "govuk-label--m",
+              isPageHeading: true
+            },
+            maxlength: 100,
+            rows: 1,
+            threshold: "75",
+            id: "caseManager",
+            name: "caseManager",
+            value: caseManager,
+            classes: "govuk-input--width-30 single-row-textarea",
+            errorMessage: validationErrors | findError('caseManager')
+        }) }}
+
+        {{ govukCharacterCount({
+            label: {
+              text: "What’s the main reason why " + (prisoner | firstNameSpaceLastName) + " needs a plan?",
+              classes: "govuk-label--m",
+              isPageHeading: true
+            },
+            maxlength: 500,
+            rows: 1,
+            threshold: "75",
+            id: "reasonForPlan",
+            name: "reasonForPlan",
+            value: reasonForPlan,
+            classes: "govuk-input--width-30 single-row-textarea",
+            errorMessage: validationErrors | findError('reasonForPlan')
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}

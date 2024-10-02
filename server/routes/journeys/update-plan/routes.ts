@@ -1,3 +1,4 @@
+import { CaseManagementRoutes } from './case-management/routes'
 import StartJourneyRoutes from './start/routes'
 import { Services } from '../../../services'
 import { JourneyRouter } from '../base/routes'
@@ -8,6 +9,7 @@ function Routes({ csipApiService, prisonerSearchService }: Services) {
   const updateController = new UpdatePlanController(csipApiService, prisonerSearchService)
 
   get('/', updateController.UPDATE)
+  router.use('/case-management', CaseManagementRoutes(csipApiService, prisonerSearchService))
 
   return router
 }
