@@ -1,0 +1,55 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% if not isUpdate %}
+    <div class="govuk-grid-row govuk-!-margin-bottom-6">
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-l govuk-!-margin-bottom-7">Reviews</h1>
+        </div>
+    </div>
+{% endif %}
+
+{% if not reviews.length %}
+    <p class="govuk-!-margin-bottom-8">No reviews recorded.</p>
+{% endif %}
+
+<hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
+
+{% for review in reviews %}
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-7">Review {{ loop.index }}</h2>
+    {{ govukSummaryList({
+        rows: [
+        {
+          key: {
+              text: 'Review date'
+          },
+          value: {
+              text: review.reviewDate | formatDisplayDate
+          }
+        },
+        {
+          key: {
+              text: 'Review outcome'
+          },
+          value: {
+              text: review.actions
+          }
+        },
+        {
+          key: {
+              text: 'Review details'
+          },
+          value: {
+              html: (review.summary or 'Not provided') | escape | boldAppendStamp | nl2br
+          }
+        },
+        {
+          key: {
+              text: 'Recorded by'
+          },
+          value: {
+              text: review.recordedByDisplayName
+          }
+        }]
+    }) }}
+    <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
+{% endfor %}
