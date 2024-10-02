@@ -63,6 +63,10 @@ context('test /update-plan/case-management', () => {
       .should('have.attr', 'href')
       .and('match', /..\/update-plan$/)
 
+    cy.findByRole('link', { name: /^cancel/i })
+      .should('have.attr', 'href')
+      .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
+
     getCaseManager().should('be.visible')
 
     getReasonForPlan().should('be.visible')

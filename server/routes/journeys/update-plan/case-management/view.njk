@@ -1,6 +1,5 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
-
+{% from "partials/submitButton/macro.njk" import submitButton %}
 {% extends "partials/layout.njk" %}
 
 {% set pageTitle = "Case management - Update a plan" %}
@@ -42,9 +41,9 @@
             classes: "govuk-input--width-30 single-row-textarea",
             errorMessage: validationErrors | findError('reasonForPlan')
         }) }}
-        {{ govukButton({
-            text: "Continue",
-            preventDoubleClick: true
+        {{ submitButton({
+            text: "Confirm and save",
+            alternativeHyperlinkHref: "/csip-records/" + recordUuid
         }) }}
     </form>
 {% endblock %}
