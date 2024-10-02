@@ -27,7 +27,7 @@
             value: nextSteps,
             hint: {
                 classes: 'govuk-!-margin-bottom-7',
-                html: '' if isUpdate else '
+                html: '
             <p>Actions to consider include: </p>
             <ul class="govuk-body">
                 <li>opening a CSIP alert</li>
@@ -39,7 +39,7 @@
                 <li>a SIM referral</li>
             </ul>
             '
-            },
+            } if not isUpdate else undefined,
             errorMessage: validationErrors | findError('nextSteps')
         }) }}
         {{ submitButton({

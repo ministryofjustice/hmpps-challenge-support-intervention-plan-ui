@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { SchemaType } from '../../record-decision/next-steps/schemas'
-import { generateSaveTimestamp, getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
+import { getMaxCharsAndThresholdForAppend, getTextForApiSubmission } from '../../../../utils/appendFieldUtils'
 import { PatchDecisionController } from '../../base/patchDecisionController'
 
 export class UpdateNextStepsController extends PatchDecisionController {
@@ -22,10 +22,11 @@ export class UpdateNextStepsController extends PatchDecisionController {
       req,
       next,
       changes: {
-        nextSteps:
-          (req.journeyData.decisionAndActions!.nextSteps ?? '') +
-          generateSaveTimestamp(res.locals.user.displayName) +
-          req.body.nextSteps,
+        nextSteps: getTextForApiSubmission(
+          req.journeyData.decisionAndActions!.nextSteps,
+          res.locals.user.displayName,
+          req.body.nextSteps!,
+        ),
       },
     })
 
