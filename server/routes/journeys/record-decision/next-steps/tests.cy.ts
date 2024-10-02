@@ -53,7 +53,7 @@ context('test /record-decision/next-steps', () => {
     })
     getContinueButton().click()
 
-    cy.findByRole('link', { name: /Comments on next steps must be 4,000 characters or less/i })
+    cy.findByRole('link', { name: /Update on next steps must be 4,000 characters or less/i })
       .should('be.visible')
       .click()
 
