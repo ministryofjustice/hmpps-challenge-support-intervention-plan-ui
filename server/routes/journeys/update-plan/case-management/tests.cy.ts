@@ -7,7 +7,7 @@ context('test /update-plan/case-management', () => {
   const START_URL = `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-plan/start`
   const PAGE_URL = `${uuid}/update-plan/case-management`
 
-  const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
+  const getContinueButton = () => cy.findByRole('button', { name: /Confirm and save/ })
   const getCaseManager = () => cy.findByRole('textbox', { name: 'Who’s the Case Manager for Testname User’s plan?' })
 
   const resetInputs = () => {
