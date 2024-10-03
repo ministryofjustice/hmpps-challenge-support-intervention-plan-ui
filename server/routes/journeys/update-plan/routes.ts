@@ -9,7 +9,7 @@ function Routes({ csipApiService, prisonerSearchService }: Services) {
   const updateController = new UpdatePlanController(csipApiService, prisonerSearchService)
 
   get('/', updateController.UPDATE)
-  router.use('/case-management', CaseManagementRoutes(csipApiService, prisonerSearchService))
+  router.use('/case-management', CaseManagementRoutes(csipApiService))
 
   return router
 }

@@ -298,7 +298,7 @@ const stubCsipRecordPostSuccess = () => {
       saferCustodyScreeningOutcome: null,
       decisionAndActions: null,
     },
-    plan: null,
+    plan: [],
   })
 }
 

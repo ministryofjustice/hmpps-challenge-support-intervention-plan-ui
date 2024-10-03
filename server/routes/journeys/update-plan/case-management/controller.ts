@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import { SchemaType } from './schemas'
-import { UpdatePlanController } from '../controller'
+import { PatchPlanController } from '../../base/patchPlanController'
 
-export class CaseManagementController extends UpdatePlanController {
+export class CaseManagementController extends PatchPlanController {
   GET = async (req: Request, res: Response) => {
     res.render('update-plan/case-management/view', {
       reasonForPlan: res.locals.formResponses?.['reasonForPlan'] ?? req.journeyData.plan?.reasonForPlan,
