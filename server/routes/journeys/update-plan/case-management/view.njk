@@ -18,11 +18,11 @@
             },
             maxlength: 100,
             rows: 1,
-            threshold: "75",
+            threshold: "100",
             id: "caseManager",
             name: "caseManager",
             value: caseManager,
-            classes: "govuk-input--width-30 single-row-textarea",
+            classes: "govuk-input--width-10 single-row-textarea",
             errorMessage: validationErrors | findError('caseManager')
         }) }}
 
@@ -34,11 +34,11 @@
             },
             maxlength: 500,
             rows: 1,
-            threshold: "75",
+            threshold: "100",
             id: "reasonForPlan",
             name: "reasonForPlan",
             value: reasonForPlan,
-            classes: "govuk-input--width-30 single-row-textarea",
+            classes: "single-row-textarea",
             errorMessage: validationErrors | findError('reasonForPlan')
         }) }}
         {{ submitButton({
