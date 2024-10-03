@@ -11,26 +11,30 @@
             </div>
         {% endif %}
     </div>
+{% else %}
+    <p class="govuk-!-margin-bottom-8">
+        <strong>CSIP log code:</strong> {{ record.logCode or "Not provided" }}
+    </p>
 {% endif %}
 
-<h3 class="govuk-heading-m">Case management</h3>
+<h2 class="govuk-heading-m">Case management</h2>
 
 {{ govukSummaryList({
-    classes: "govuk-!-margin-bottom-7",
+    classes: "govuk-!-margin-bottom-9",
     rows: [
       {
         key: {
           text: 'Case Manager'
         },
         value: {
-          text: plan.caseManager
+          text: plan.caseManager or 'Not provided'
         },
         actions: {
           items: [
             {
               href: "update-plan/case-management#caseManager",
               text: "Change",
-              visuallyHiddenText: "",
+              visuallyHiddenText: "the Case Manager",
               classes: "govuk-link--no-visited-state"
             }
           ]
@@ -48,7 +52,7 @@
             {
               href: "update-plan/case-management#reasonForPlan",
               text: "Change",
-              visuallyHiddenText: "",
+              visuallyHiddenText: "the reason for the plan",
               classes: "govuk-link--no-visited-state"
             }
           ]
@@ -59,14 +63,14 @@
           text: 'Next review date'
         },
         value: {
-          html: plan.firstCaseReviewDate | formatDisplayDate
+          html: (plan.firstCaseReviewDate | formatDisplayDate) or 'Not provided'
         },
         actions: {
           items: [
             {
-              href: "update-plan/TODO#TODO",
+              href: "update-plan/next-review-date#firstCaseReviewDate",
               text: "Change",
-              visuallyHiddenText: "",
+              visuallyHiddenText: "the next review date",
               classes: "govuk-link--no-visited-state"
             }
           ]
@@ -74,18 +78,18 @@
       }]
 }) }}
 
-{% if not isUpdate %}
-    <div class="govuk-grid-row govuk-!-margin-bottom-6">
-        <div class="govuk-grid-column-two-thirds">
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-7">Identified needs</h2>
-        </div>
-        {% if status == 'CSIP_OPEN' %}
-            <div class="govuk-summary-list govuk-summary-list__actions">
-                <a class="govuk-link govuk-link--no-visited-state" href="TODO_THIS_LINK">Add, change, close or reopen</a>
-            </div>
-        {% endif %}
+<hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-8">
+
+<div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-7">Identified needs</h2>
     </div>
-{% endif %}
+    {% if status == 'CSIP_OPEN' %}
+        <div class="govuk-summary-list govuk-summary-list__actions">
+            <a class="govuk-link govuk-link--no-visited-state" href="/csip-record/{{ recordUuid }}/update-plan/identified-needs/start">{{ identifiedNeeds | identifiedNeedsActionLabel }}<span class="govuk-visually-hidden"> the identified needs</span></a>
+        </div>
+    {% endif %}
+</div>
 
 {% for need in identifiedNeeds %}
     {{ govukSummaryList({
@@ -115,7 +119,7 @@
               text: 'Identified need summary'
           },
           value: {
-              html: need.identifiedNeed
+              html: (need.identifiedNeed or 'Not provided') | escape | boldAppendStamp | nl2br
           }
         },
         {

@@ -6,7 +6,15 @@
 
 {% set fullWidth = true %}
 
-{% set pageTitle = ("Update a CSIP " + updatingEntity) if isUpdate else "CSIP record - CSIP" %}
+
+
+{% switch updatingEntity %}
+{% case 'plan' %}
+  {% set pageTitle = "Update a plan - CSIP" %}
+{% default %}
+  {% set pageTitle = ("Update a CSIP " + updatingEntity) if isUpdate else "CSIP record - CSIP" %}
+{% endswitch %}
+
 {% extends "partials/layout.njk" %}
 
 {% if actionButton %}
@@ -23,7 +31,14 @@
   {% endset %}
 {% endif %}
 
-{% set basePageHeader = 'CSIP ' + (updatingEntity + ' ' if updatingEntity else '') + 'for ' + (prisoner | firstNameSpaceLastName) %}
+{% switch (updatingEntity or 'null') %}
+  {% case 'null' %}
+    {% set basePageHeader = 'CSIP for ' + (prisoner | firstNameSpaceLastName) %}
+  {% case 'plan' %}
+    {% set basePageHeader = (prisoner | firstNameSpaceLastName | possessiveComma) + ' plan' %}
+  {% default %}
+    {% set basePageHeader = 'CSIP ' + updatingEntity + ' for ' + (prisoner | firstNameSpaceLastName) %}
+{% endswitch %}
 
 {% block pageHeader %}
   {% if successMessage %}
@@ -33,18 +48,22 @@
     }) }}
   {% endif %}
 
-  {{ mojPageHeaderActions({
-    classes: 'govuk-!-margin-bottom-3',
-    heading: {
-      text: 'Update ' + basePageHeader if isUpdate else basePageHeader,
-      classes: 'govuk-heading-xl'
-    },
-    items: [{
-      html: actionButtonHtml,
-      classes: 'govuk-!-display-none'
-    }] if actionButton else []
-  }) }}
-  <hr class="govuk-section-break govuk-section-break--visible">
+  {% if isUpdate %}
+    <h1 class="govuk-heading-l">Update {{ basePageHeader }}</h1>
+  {% else %}
+    {{ mojPageHeaderActions({
+      classes: 'govuk-!-margin-bottom-3',
+      heading: {
+        text: basePageHeader,
+        classes: 'govuk-heading-xl'
+      },
+      items: [{
+        html: actionButtonHtml,
+        classes: 'govuk-!-display-none'
+      }] if actionButton else []
+    }) }}
+    <hr class="govuk-section-break govuk-section-break--visible">
+  {% endif %}
 {% endblock %}
 
 {% block innerContent %}

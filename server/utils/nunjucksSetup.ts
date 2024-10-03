@@ -9,7 +9,7 @@ import { buildErrorSummaryList, customErrorOrderBuilder, findError } from '../mi
 import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
 import { YES_NO_ANSWER } from '../routes/journeys/referral/safer-custody/schemas'
 import logger from '../../logger'
-import { csipStatusDisplayText, csipStatusTagClass } from './csipDisplayTextUtils'
+import { csipStatusDisplayText, csipStatusTagClass, identifiedNeedsActionLabel } from './csipDisplayTextUtils'
 import { firstNameSpaceLastName, personDateOfBirth, personProfileName } from './miniProfileUtils'
 
 export default function nunjucksSetup(app: express.Express): void {
@@ -69,6 +69,7 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('boldAppendStamp', boldAppendStamp)
   njkEnv.addFilter('csipStatusDisplayText', csipStatusDisplayText)
   njkEnv.addFilter('csipStatusTagClass', csipStatusTagClass)
+  njkEnv.addFilter('identifiedNeedsActionLabel', identifiedNeedsActionLabel)
   njkEnv.addGlobal('todayStringGBFormat', todayStringGBFormat)
   njkEnv.addGlobal('YesNoDontKnow', YES_NO_ANSWER.enum)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
