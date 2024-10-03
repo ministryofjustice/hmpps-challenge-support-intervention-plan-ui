@@ -18,6 +18,12 @@ context('test errorHandler', () => {
     cy.findByText(/sorry, there is a problem with the service/i).should('be.visible')
   })
 
+  it('should say page not found when 404', () => {
+    cy.signIn()
+    cy.visit(`${uuid}/foobar`, { failOnStatusCode: false })
+    cy.findByRole('heading', { name: /Page not found/i }).should('be.visible')
+  })
+
   it('should go to the custom error page when invalid data causes an error', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubAreaOfWork')

@@ -1,27 +1,29 @@
 {% from "moj/components/date-picker/macro.njk" import mojDatePicker %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = identifiedNeeds.length %}
-{% set pageTitle = "Set a date for the next CSIP review - Develop an initial plan" %}
+{% set pageTitle = "Set a date for the next CSIP review - " + ("Update a" if isUpdate else "Develop an initial") + " plan" %}
 
 {% block innerContent %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <span class="govuk-caption-l">Develop an initial plan</span>
-            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Set a date for the next CSIP review</h1>
+            {% include 'base/components/plan-caption.njk' %}
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{'Change the date of the next CSIP review' if isUpdate else 'Set a date for the next CSIP review'}}</h1>
         </div>
     </div>
 
-    {{ govukDetails({
-        summaryText: "Help with setting a review date",
-        html: '
-        <p>Choose a plan that’s consistent with the targets and dates in ' + (prisoner | firstNameSpaceLastName | possessiveComma | escape) + ' plan</p>
-        <p>If there’s anything upcoming that could be triggering for ' + (prisoner | firstNameSpaceLastName | escape) + ', it might be useful to set the review date before this.</p>
-        '
-    }) }}
+    {% if not isUpdate %}
+        {{ govukDetails({
+            summaryText: "Help with setting a review date",
+            html: '
+            <p>Choose a plan that’s consistent with the targets and dates in ' + (prisoner | firstNameSpaceLastName | possessiveComma | escape) + ' plan</p>
+            <p>If there’s anything upcoming that could be triggering for ' + (prisoner | firstNameSpaceLastName | escape) + ', it might be useful to set the review date before this.</p>
+            '
+        }) }}
+    {% endif %}
 
     
     <form method="post">
@@ -38,9 +40,9 @@
             classes: 'hmpps-datepicker--fixed-width govuk-body',
             minDate: todayStringGBFormat()
         }) }}
-        {{ govukButton({
-            text: "Continue",
-            preventDoubleClick: true
+        {{ submitButton({
+            text: "Confirm and save" if isUpdate else "Continue",
+            alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
         }) }}
     </form>    
 {% endblock %}

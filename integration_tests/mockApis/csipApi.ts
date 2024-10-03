@@ -701,6 +701,38 @@ const stubPostInterviewFail = () => {
   })
 }
 
+const stubPatchPlanSuccess = () => {
+  return stubFor({
+    request: {
+      method: 'PATCH',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/plan',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {},
+    },
+  })
+}
+
+const stubPatchPlanFail = () => {
+  return stubFor({
+    request: {
+      method: 'PATCH',
+      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/plan',
+    },
+    response: {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
+    },
+  })
+}
+
 const stubPatchInterviewSuccess = () => {
   return createBasicHttpStub('PATCH', '/csip-api/csip-records/referral/investigation/interviews/[a-zA-Z0-9-]*', 200)
 }
@@ -836,4 +868,5 @@ export default {
   stubPutDecisionSuccess,
   stubPutDecisionFail,
   stubPatchPlanSuccess,
+  stubPatchPlanFail,
 }
