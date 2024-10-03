@@ -4,6 +4,7 @@ import { components } from '../../../@types/csip'
 import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../../utils/constants'
 import { getNonUndefinedProp } from '../../../utils/utils'
 
+const MESSAGE_PLAN_UPDATED = 'You’ve updated the case management information.'
 const MESSAGE_IDENTIFIED_NEED_UPDATED = 'You’ve updated the identified needs information.'
 
 export class PatchPlanController extends BaseJourneyController {
@@ -11,12 +12,10 @@ export class PatchPlanController extends BaseJourneyController {
     req,
     next,
     changes,
-    successMessage,
   }: {
     req: Request<unknown, unknown, T>
     next: NextFunction
     changes: Partial<components['schemas']['UpdatePlanRequest']>
-    successMessage: string
   }) => {
     const plan = req.journeyData.csipRecord!.plan!
 
@@ -27,7 +26,7 @@ export class PatchPlanController extends BaseJourneyController {
         ...getNonUndefinedProp(plan, 'firstCaseReviewDate'),
         ...changes,
       })
-      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, successMessage)
+      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_PLAN_UPDATED)
       next()
     } catch (e) {
       next(e)

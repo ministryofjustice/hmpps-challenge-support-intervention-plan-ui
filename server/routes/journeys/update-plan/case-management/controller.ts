@@ -20,7 +20,6 @@ export class CaseManagementController extends PatchPlanController {
         reasonForPlan: req.body.reasonForPlan,
         caseManager: req.body.caseManager,
       },
-      successMessage: 'You’ve updated the case management information.',
     })
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
