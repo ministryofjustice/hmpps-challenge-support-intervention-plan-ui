@@ -1,833 +1,573 @@
 import { stubFor } from './wiremock'
 import { YES_NO_ANSWER } from '../../server/routes/journeys/referral/safer-custody/schemas'
 
-const stubAreaOfWork = () => {
+const createBasicHttpStub = (method: string, urlPattern: string, status: number, jsonBody: object = {}) => {
   return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/reference-data/area-of-work',
-    },
+    request: { method, urlPattern },
     response: {
-      status: 200,
+      status,
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      jsonBody: [
-        {
-          code: 'A',
-          description: 'AreaA',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-        {
-          code: 'B',
-          description: 'AreaB',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-      ],
+      jsonBody,
     },
   })
+}
+
+const stubAreaOfWork = () => {
+  return createBasicHttpStub('GET', '/csip-api/reference-data/area-of-work', 200, [
+    {
+      code: 'A',
+      description: 'AreaA',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
+    },
+    {
+      code: 'B',
+      description: 'AreaB',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
+    },
+  ])
 }
 
 const stubIncidentLocation = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/reference-data/incident-location',
+  return createBasicHttpStub('GET', '/csip-api/reference-data/incident-location', 200, [
+    {
+      code: 'A',
+      description: 'LocationA',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
     },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: [
-        {
-          code: 'A',
-          description: 'LocationA',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-        {
-          code: 'B',
-          description: 'LocationB',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-      ],
+    {
+      code: 'B',
+      description: 'LocationB',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
     },
-  })
+  ])
 }
 
 const stubIncidentType = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/reference-data/incident-type',
+  return createBasicHttpStub('GET', '/csip-api/reference-data/incident-type', 200, [
+    {
+      code: 'A',
+      description: 'TypeA',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
     },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: [
-        {
-          code: 'A',
-          description: 'TypeA',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-        {
-          code: 'B',
-          description: 'TypeB',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-      ],
+    {
+      code: 'B',
+      description: 'TypeB',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
     },
-  })
+  ])
 }
 
 const stubIntervieweeRoles = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/reference-data/interviewee-role',
+  return createBasicHttpStub('GET', '/csip-api/reference-data/interviewee-role', 200, [
+    {
+      code: 'A',
+      description: 'Role1',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
     },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: [
-        {
-          code: 'A',
-          description: 'Role1',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-        {
-          code: 'B',
-          description: 'Role2',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-      ],
+    {
+      code: 'B',
+      description: 'Role2',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
     },
-  })
+  ])
 }
 
 const stubDecisionSignerRoles = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/reference-data/role',
+  return createBasicHttpStub('GET', '/csip-api/reference-data/role', 200, [
+    {
+      code: 'A',
+      description: 'SignerRole1',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
     },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: [
-        {
-          code: 'A',
-          description: 'SignerRole1',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-        {
-          code: 'B',
-          description: 'SignerRole2',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-      ],
+    {
+      code: 'B',
+      description: 'SignerRole2',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
     },
-  })
+  ])
 }
 
 const stubOneContribFactor = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/reference-data/contributory-factor-type',
+  return createBasicHttpStub('GET', '/csip-api/reference-data/contributory-factor-type', 200, [
+    {
+      code: 'A',
+      description: 'text',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
     },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: [
-        {
-          code: 'A',
-          description: 'text',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-      ],
-    },
-  })
+  ])
 }
 
 const stubContribFactors = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/reference-data/contributory-factor-type',
+  return createBasicHttpStub('GET', '/csip-api/reference-data/contributory-factor-type', 200, [
+    {
+      code: 'CODE1',
+      description: 'Factor1',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
     },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: [
-        {
-          code: 'CODE1',
-          description: 'Factor1',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-        {
-          code: 'CODE2',
-          description: 'Factor2',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-        {
-          code: 'CODE3',
-          description: 'Factor3',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-        {
-          code: 'CODE4',
-          description: 'Factor4',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-        {
-          code: `A<>"'&`,
-          description: 'Factor5',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-      ],
+    {
+      code: 'CODE2',
+      description: 'Factor2',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
     },
-  })
+    {
+      code: 'CODE3',
+      description: 'Factor3',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
+    },
+    {
+      code: 'CODE4',
+      description: 'Factor4',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
+    },
+    {
+      code: `A<>"'&`,
+      description: 'Factor5',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
+    },
+  ])
 }
 
 const stubIncidentInvolvement = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/reference-data/incident-involvement',
+  return createBasicHttpStub('GET', '/csip-api/reference-data/incident-involvement', 200, [
+    {
+      code: 'CODE1',
+      description: 'Factor1',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
     },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: [
-        {
-          code: 'CODE1',
-          description: 'Factor1',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-        {
-          code: 'CODE2',
-          description: 'Factor2',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-        {
-          code: 'CODE3',
-          description: 'Factor3',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-        {
-          code: 'CODE4',
-          description: 'Factor4',
-          createdAt: new Date().toISOString(),
-          createdBy: 'foobar',
-        },
-      ],
+    {
+      code: 'CODE2',
+      description: 'Factor2',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
     },
-  })
+    {
+      code: 'CODE3',
+      description: 'Factor3',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
+    },
+    {
+      code: 'CODE4',
+      description: 'Factor4',
+      createdAt: new Date().toISOString(),
+      createdBy: 'foobar',
+    },
+  ])
 }
 
 const stubCsipRecordPostFailure = () => {
-  return stubFor({
-    request: {
-      method: 'POST',
-      urlPattern: '/csip-api/prisoners/[a-zA-Z0-9]*/csip-records',
-    },
-    response: {
-      status: 400,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        userMessage: "Validation failure: Couldn't read request body",
-      },
-    },
+  return createBasicHttpStub('POST', '/csip-api/prisoners/[a-zA-Z0-9]*/csip-records', 400, {
+    userMessage: "Validation failure: Couldn't read request body",
   })
 }
 
 const stubCsipRecordPostSuccess = () => {
-  return stubFor({
-    request: {
-      method: 'POST',
-      urlPattern: '/csip-api/prisoners/[a-zA-Z0-9]*/csip-records',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        recordUuid: 'a1a1aaa1-aa11-1aaa-111a-1aa1111aaaa1',
-        prisonNumber: 'A1111AA',
-        prisonCodeWhenRecorded: 'AAA',
-        logCode: null,
-        createdAt: '2024-07-22T13:03:12',
-        createdBy: 'A_USER',
-        createdByDisplayName: 'Test User',
+  return createBasicHttpStub('POST', '/csip-api/prisoners/[a-zA-Z0-9]*/csip-records', 200, {
+    recordUuid: 'a1a1aaa1-aa11-1aaa-111a-1aa1111aaaa1',
+    prisonNumber: 'A1111AA',
+    prisonCodeWhenRecorded: 'AAA',
+    logCode: null,
+    createdAt: '2024-07-22T13:03:12',
+    createdBy: 'A_USER',
+    createdByDisplayName: 'Test User',
+    lastModifiedAt: null,
+    lastModifiedBy: null,
+    lastModifiedByDisplayName: null,
+    referral: {
+      incidentDate: '2024-07-01',
+      incidentTime: '12:24:00',
+      incidentType: {
+        code: 'AAA',
+        description: 'Incident desc',
+        listSequence: 99,
+        createdAt: '2018-10-27T18:11:30',
+        createdBy: 'SYS_USER',
         lastModifiedAt: null,
         lastModifiedBy: null,
-        lastModifiedByDisplayName: null,
-        referral: {
-          incidentDate: '2024-07-01',
-          incidentTime: '12:24:00',
-          incidentType: {
-            code: 'AAA',
-            description: 'Incident desc',
-            listSequence: 99,
-            createdAt: '2018-10-27T18:11:30',
-            createdBy: 'SYS_USER',
-            lastModifiedAt: null,
-            lastModifiedBy: null,
-            deactivatedAt: null,
-            deactivatedBy: null,
-          },
-          incidentLocation: {
-            code: 'BBB',
-            description: 'Incident desc B',
-            listSequence: 99,
-            createdAt: '2018-10-27T18:11:30',
-            createdBy: 'SYS_USER',
-            lastModifiedAt: null,
-            lastModifiedBy: null,
-            deactivatedAt: null,
-            deactivatedBy: null,
-          },
-          referredBy: 'test person',
-          refererArea: {
-            code: 'AAA',
-            description: 'Referer desc',
-            listSequence: 99,
-            createdAt: '2018-10-27T18:11:30',
-            createdBy: 'SYS_USER',
-            lastModifiedAt: null,
-            lastModifiedBy: null,
-            deactivatedAt: null,
-            deactivatedBy: null,
-          },
-          referralSummary: null,
-          isProactiveReferral: false,
-          isStaffAssaulted: true,
-          assaultedStaffName: 'test assaultee',
-          releaseDate: null,
-          incidentInvolvement: {
-            code: 'AA',
-            description: 'Involvement desc',
-            listSequence: 99,
-            createdAt: '2018-10-30T16:00:46',
-            createdBy: 'FOO_BAR',
-            lastModifiedAt: null,
-            lastModifiedBy: null,
-            deactivatedAt: null,
-            deactivatedBy: null,
-          },
-          descriptionOfConcern: 'a description of the incident',
-          knownReasons: 'some reasons for the incident',
-          otherInformation: 'additional info',
-          isSaferCustodyTeamInformed: 'YES',
-          isReferralComplete: null,
-          contributoryFactors: [
-            {
-              factorUuid: '459cc64f-61c3-45d7-88f2-174d5bc77f26',
-              factorType: {
-                code: 'AAA',
-                description: 'AAA desc',
-                listSequence: 99,
-                createdAt: '2018-10-27T18:11:30',
-                createdBy: 'OMS_OWNER',
-                lastModifiedAt: null,
-                lastModifiedBy: null,
-                deactivatedAt: null,
-                deactivatedBy: null,
-              },
-              comment: 'comment A',
-              createdAt: '2024-07-22T13:03:12',
-              createdBy: 'TEST_USER',
-              createdByDisplayName: 'FOO',
-              lastModifiedAt: null,
-              lastModifiedBy: null,
-              lastModifiedByDisplayName: null,
-            },
-            {
-              factorUuid: '4ee74212-f257-46f9-8139-d70e8756b678',
-              factorType: {
-                code: 'BBB',
-                description: 'BBB DESC',
-                listSequence: 99,
-                createdAt: '2018-10-27T18:11:30',
-                createdBy: 'SYS_USER',
-                lastModifiedAt: null,
-                lastModifiedBy: null,
-                deactivatedAt: null,
-                deactivatedBy: null,
-              },
-              comment: 'comment b',
-              createdAt: '2024-07-22T13:03:12',
-              createdBy: 'TEST_USER',
-              createdByDisplayName: 'FOO',
-              lastModifiedAt: null,
-              lastModifiedBy: null,
-              lastModifiedByDisplayName: null,
-            },
-          ],
-          investigation: null,
-          saferCustodyScreeningOutcome: null,
-          decisionAndActions: null,
-        },
-        plan: null,
+        deactivatedAt: null,
+        deactivatedBy: null,
       },
+      incidentLocation: {
+        code: 'BBB',
+        description: 'Incident desc B',
+        listSequence: 99,
+        createdAt: '2018-10-27T18:11:30',
+        createdBy: 'SYS_USER',
+        lastModifiedAt: null,
+        lastModifiedBy: null,
+        deactivatedAt: null,
+        deactivatedBy: null,
+      },
+      referredBy: 'test person',
+      refererArea: {
+        code: 'AAA',
+        description: 'Referer desc',
+        listSequence: 99,
+        createdAt: '2018-10-27T18:11:30',
+        createdBy: 'SYS_USER',
+        lastModifiedAt: null,
+        lastModifiedBy: null,
+        deactivatedAt: null,
+        deactivatedBy: null,
+      },
+      referralSummary: null,
+      isProactiveReferral: false,
+      isStaffAssaulted: true,
+      assaultedStaffName: 'test assaultee',
+      releaseDate: null,
+      incidentInvolvement: {
+        code: 'AA',
+        description: 'Involvement desc',
+        listSequence: 99,
+        createdAt: '2018-10-30T16:00:46',
+        createdBy: 'FOO_BAR',
+        lastModifiedAt: null,
+        lastModifiedBy: null,
+        deactivatedAt: null,
+        deactivatedBy: null,
+      },
+      descriptionOfConcern: 'a description of the incident',
+      knownReasons: 'some reasons for the incident',
+      otherInformation: 'additional info',
+      isSaferCustodyTeamInformed: 'YES',
+      isReferralComplete: null,
+      contributoryFactors: [
+        {
+          factorUuid: '459cc64f-61c3-45d7-88f2-174d5bc77f26',
+          factorType: {
+            code: 'AAA',
+            description: 'AAA desc',
+            listSequence: 99,
+            createdAt: '2018-10-27T18:11:30',
+            createdBy: 'OMS_OWNER',
+            lastModifiedAt: null,
+            lastModifiedBy: null,
+            deactivatedAt: null,
+            deactivatedBy: null,
+          },
+          comment: 'comment A',
+          createdAt: '2024-07-22T13:03:12',
+          createdBy: 'TEST_USER',
+          createdByDisplayName: 'FOO',
+          lastModifiedAt: null,
+          lastModifiedBy: null,
+          lastModifiedByDisplayName: null,
+        },
+        {
+          factorUuid: '4ee74212-f257-46f9-8139-d70e8756b678',
+          factorType: {
+            code: 'BBB',
+            description: 'BBB DESC',
+            listSequence: 99,
+            createdAt: '2018-10-27T18:11:30',
+            createdBy: 'SYS_USER',
+            lastModifiedAt: null,
+            lastModifiedBy: null,
+            deactivatedAt: null,
+            deactivatedBy: null,
+          },
+          comment: 'comment b',
+          createdAt: '2024-07-22T13:03:12',
+          createdBy: 'TEST_USER',
+          createdByDisplayName: 'FOO',
+          lastModifiedAt: null,
+          lastModifiedBy: null,
+          lastModifiedByDisplayName: null,
+        },
+      ],
+      investigation: null,
+      saferCustodyScreeningOutcome: null,
+      decisionAndActions: null,
     },
+    plan: [],
   })
 }
 
 const stubCsipRecordPatchSuccess = () => {
-  return stubFor({
-    request: {
-      method: 'PATCH',
-      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {},
-    },
-  })
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*', 200, {})
 }
 
 const stubCsipRecordPatchFail = () => {
-  return stubFor({
-    request: {
-      method: 'PATCH',
-      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*',
-    },
-    response: {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
-    },
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*', 500, {
+    userMessage: 'Simulated Error for E2E testing',
   })
 }
 
 const stubContributoryFactorPostSuccess = () => {
-  return stubFor({
-    request: {
-      method: 'POST',
-      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/contributory-factors',
-    },
-    response: {
-      status: 201,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {},
-    },
-  })
+  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/contributory-factors', 201, {})
 }
 
 const stubDecisionOutcomeType = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/reference-data/decision-outcome-type',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: [
-        { code: 'ACC', description: 'Another option' },
-        { code: 'NFA', description: 'No further action' },
-      ],
-    },
-  })
+  return createBasicHttpStub('GET', '/csip-api/reference-data/decision-outcome-type', 200, [
+    { code: 'ACC', description: 'Another option' },
+    { code: 'NFA', description: 'No further action' },
+  ])
 }
 
 const stubScreeningOutcomeType = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/reference-data/screening-outcome-type',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: [
-        { code: 'ACC', description: 'Another option' },
-        { code: 'NFA', description: 'No further action' },
-      ],
-    },
-  })
+  return createBasicHttpStub('GET', '/csip-api/reference-data/screening-outcome-type', 200, [
+    { code: 'ACC', description: 'Another option' },
+    { code: 'NFA', description: 'No further action' },
+  ])
 }
 
 const stubCsipRecordSuccessAwaitingDecision = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        ...csip,
-        status: 'AWAITING_DECISION',
-        referral: {
-          ...csip.referral,
-          investigation: {
-            interviews: [
-              {
-                interviewee: 'Another Person',
-                interviewDate: '2024-12-29',
-                intervieweeRole: { code: 'A', description: 'Role1' },
-                interviewText: 'some text',
-              },
-              {
-                interviewee: 'Some Person',
-                interviewDate: '2024-12-25',
-                intervieweeRole: { code: 'B', description: 'Role2' },
-                interviewText: 'other stuff',
-              },
-            ],
-            staffInvolved: 'staff stafferson',
-            evidenceSecured: 'SomeVidence',
-            occurrenceReason: 'bananas',
-            personsUsualBehaviour: 'a great person',
-            personsTrigger: 'spiders',
-            protectiveFactors: 'SomeFactors',
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
+    ...csip,
+    status: 'AWAITING_DECISION',
+    referral: {
+      ...csip.referral,
+      investigation: {
+        interviews: [
+          {
+            interviewee: 'Another Person',
+            interviewDate: '2024-12-29',
+            intervieweeRole: { code: 'A', description: 'Role1' },
+            interviewText: 'some text',
           },
-        },
+          {
+            interviewee: 'Some Person',
+            interviewDate: '2024-12-25',
+            intervieweeRole: { code: 'B', description: 'Role2' },
+            interviewText: 'other stuff',
+          },
+        ],
+        staffInvolved: 'staff stafferson',
+        evidenceSecured: 'SomeVidence',
+        occurrenceReason: 'bananas',
+        personsUsualBehaviour: 'a great person',
+        personsTrigger: 'spiders',
+        protectiveFactors: 'SomeFactors',
       },
     },
   })
 }
 
 const stubCsipRecordSuccessAwaitingDecisionNoInterviews = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        ...csip,
-        status: 'AWAITING_DECISION',
-        referral: {
-          ...csip.referral,
-          investigation: {
-            interviews: [],
-            staffInvolved: 'staff stafferson',
-            evidenceSecured: 'SomeVidence',
-            occurrenceReason: 'bananas',
-            personsUsualBehaviour: 'a great person',
-            personsTrigger: 'spiders',
-            protectiveFactors: 'SomeFactors',
-          },
-        },
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
+    ...csip,
+    status: 'AWAITING_DECISION',
+    referral: {
+      ...csip.referral,
+      investigation: {
+        interviews: [],
+        staffInvolved: 'staff stafferson',
+        evidenceSecured: 'SomeVidence',
+        occurrenceReason: 'bananas',
+        personsUsualBehaviour: 'a great person',
+        personsTrigger: 'spiders',
+        protectiveFactors: 'SomeFactors',
       },
     },
   })
 }
 
 const stubCsipRecordSuccessPlanPending = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        ...csip,
-        status: 'PLAN_PENDING',
-        referral: {
-          ...csip.referral,
-          investigation: {
-            interviews: [
-              {
-                interviewee: 'Some Person',
-                interviewDate: '2024-12-25',
-                intervieweeRole: { code: 'B', description: 'Role2' },
-                interviewText: 'some text',
-              },
-            ],
-            staffInvolved: 'staff stafferson',
-            evidenceSecured: 'SomeVidence',
-            occurrenceReason: 'bananas',
-            personsUsualBehaviour: 'a great person',
-            personsTrigger: 'spiders',
-            protectiveFactors: 'SomeFactors',
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
+    ...csip,
+    status: 'PLAN_PENDING',
+    referral: {
+      ...csip.referral,
+      investigation: {
+        interviews: [
+          {
+            interviewee: 'Some Person',
+            interviewDate: '2024-12-25',
+            intervieweeRole: { code: 'B', description: 'Role2' },
+            interviewText: 'some text',
           },
-          decisionAndActions: {
-            conclusion: 'dec-conc',
-            outcome: { code: 'ACC', description: 'Another option' },
-            signedOffByRole: {
-              code: 'A',
-              description: 'prison officer',
-            },
-            recordedBy: 'some person',
-            recordedByDisplayName: 'some person longer',
-            date: '2024-08-01',
-            nextSteps: `stuff up
+        ],
+        staffInvolved: 'staff stafferson',
+        evidenceSecured: 'SomeVidence',
+        occurrenceReason: 'bananas',
+        personsUsualBehaviour: 'a great person',
+        personsTrigger: 'spiders',
+        protectiveFactors: 'SomeFactors',
+      },
+      decisionAndActions: {
+        conclusion: 'dec-conc',
+        outcome: { code: 'ACC', description: 'Another option' },
+        signedOffByRole: {
+          code: 'A',
+          description: 'prison officer',
+        },
+        recordedBy: 'some person',
+        recordedByDisplayName: 'some person longer',
+        date: '2024-08-01',
+        nextSteps: `stuff up
             and there
             
             whilst also being down here`,
-            actions: ['OPEN_CSIP_ALERT'],
-            actionOther: `some action
+        actions: ['OPEN_CSIP_ALERT'],
+        actionOther: `some action
             with another one
             
             a final action`,
-          },
-        },
       },
     },
   })
 }
 
 const stubCsipRecordSuccessCsipOpen = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        ...csip,
-        status: 'CSIP_OPEN',
-        referral: {
-          ...csip.referral,
-          investigation: {
-            interviews: [
-              {
-                interviewee: 'Some Person',
-                interviewDate: '2024-12-25',
-                intervieweeRole: { code: 'B', description: 'Role2' },
-                interviewText: 'some text',
-              },
-            ],
-            staffInvolved: 'staff stafferson',
-            evidenceSecured: 'SomeVidence',
-            occurrenceReason: 'bananas',
-            personsUsualBehaviour: 'a great person',
-            personsTrigger: 'spiders',
-            protectiveFactors: 'SomeFactors',
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
+    ...csip,
+    status: 'CSIP_OPEN',
+    referral: {
+      ...csip.referral,
+      investigation: {
+        interviews: [
+          {
+            interviewee: 'Some Person',
+            interviewDate: '2024-12-25',
+            intervieweeRole: { code: 'B', description: 'Role2' },
+            interviewText: 'some text',
           },
-          decisionAndActions: {
-            conclusion: 'dec-conc',
-            outcome: { code: 'ACC', description: 'Another option' },
-            signedOffByRole: {
-              code: 'A',
-              description: 'prison officer',
-            },
-            recordedBy: 'some person',
-            recordedByDisplayName: 'some person longer',
-            date: '2024-08-01',
-            nextSteps: `stuff up
+        ],
+        staffInvolved: 'staff stafferson',
+        evidenceSecured: 'SomeVidence',
+        occurrenceReason: 'bananas',
+        personsUsualBehaviour: 'a great person',
+        personsTrigger: 'spiders',
+        protectiveFactors: 'SomeFactors',
+      },
+      decisionAndActions: {
+        conclusion: 'dec-conc',
+        outcome: { code: 'ACC', description: 'Another option' },
+        signedOffByRole: {
+          code: 'A',
+          description: 'prison officer',
+        },
+        recordedBy: 'some person',
+        recordedByDisplayName: 'some person longer',
+        date: '2024-08-01',
+        nextSteps: `stuff up
             and there
             
             whilst also being down here`,
-            actions: ['OPEN_CSIP_ALERT'],
-            actionOther: `some action
+        actions: ['OPEN_CSIP_ALERT'],
+        actionOther: `some action
             with another one
             
             a final action`,
-          },
-        },
-        plan: {
-          reviews: [
-            {
-              reviewDate: '2024-04-05',
-              actions: 'some actions',
-              summary: 'a summary',
-              recordedByDisplayName: 'joe bloggs',
-            },
-            {
-              reviewDate: '2024-04-15',
-              actions: 'other stuff',
-              summary: 'even longer',
-              recordedByDisplayName: 'test testerson',
-            },
-          ],
-          caseManager: 'some person',
-          reasonForPlan: 'plan reason',
-          firstCaseReviewDate: '2024-05-25',
-          identifiedNeeds: [
-            {
-              identifiedNeed: 'closed need',
-              responsiblePerson: 'joe bloggs',
-              createdDate: '2024-04-01',
-              targetDate: '2024-06-02',
-              closedDate: '2024-05-01',
-              intervention: 'we need to do things',
-              progression: null,
-            },
-            {
-              identifiedNeed: 'second need',
-              responsiblePerson: 'foo barerson',
-              createdDate: '2024-04-01',
-              targetDate: '2024-06-01',
-              closedDate: null,
-              intervention: 'int1',
-              progression: 'almost there',
-            },
-            {
-              identifiedNeed: 'first need',
-              responsiblePerson: 'test testerson',
-              createdDate: '2024-03-01',
-              targetDate: '2024-04-02',
-              closedDate: null,
-              intervention: 'get it sorted',
-              progression: 'progression done',
-            },
-          ],
-        },
       },
+    },
+    plan: {
+      reviews: [
+        {
+          reviewDate: '2024-04-05',
+          actions: 'some actions',
+          summary: 'a summary',
+          recordedByDisplayName: 'joe bloggs',
+        },
+        {
+          reviewDate: '2024-04-15',
+          actions: 'other stuff',
+          summary: 'even longer',
+          recordedByDisplayName: 'test testerson',
+        },
+      ],
+      caseManager: 'some person',
+      reasonForPlan: 'plan reason',
+      firstCaseReviewDate: '2024-05-25',
+      identifiedNeeds: [
+        {
+          identifiedNeed: 'closed need',
+          responsiblePerson: 'joe bloggs',
+          createdDate: '2024-04-01',
+          targetDate: '2024-06-02',
+          closedDate: '2024-05-01',
+          intervention: 'we need to do things',
+          progression: null,
+        },
+        {
+          identifiedNeed: 'second need',
+          responsiblePerson: 'foo barerson',
+          createdDate: '2024-04-01',
+          targetDate: '2024-06-01',
+          closedDate: null,
+          intervention: 'int1',
+          progression: 'almost there',
+        },
+        {
+          identifiedNeed: 'first need',
+          responsiblePerson: 'test testerson',
+          createdDate: '2024-03-01',
+          targetDate: '2024-04-02',
+          closedDate: null,
+          intervention: 'get it sorted',
+          progression: 'progression done',
+        },
+      ],
     },
   })
 }
 
 const stubCsipRecordGetSuccess = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: csip,
-    },
-  })
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, csip)
 }
 
 const stubCsipRecordGetSuccessAfterScreeningWithReason = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: csipRecordWithScreeningOutcome('a very well thought out reason'),
-    },
-  })
+  return createBasicHttpStub(
+    'GET',
+    '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    200,
+    csipRecordWithScreeningOutcome('a very well thought out reason'),
+  )
 }
 
 const stubCsipRecordGetSuccessAfterScreeningWithoutReason = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: csipRecordWithScreeningOutcome(''),
-    },
-  })
+  return createBasicHttpStub(
+    'GET',
+    '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    200,
+    csipRecordWithScreeningOutcome(''),
+  )
 }
 
 const stubCsipRecordGetSuccessAfterScreeningNFA = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: csipRecordWithScreeningOutcome('', 'NO_FURTHER_ACTION'),
-    },
-  })
+  return createBasicHttpStub(
+    'GET',
+    '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    200,
+    csipRecordWithScreeningOutcome('', 'NO_FURTHER_ACTION'),
+  )
 }
 
 const stubCsipRecordGetSuccessAfterScreeningACCT = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: csipRecordWithScreeningOutcome('', 'ACCT_SUPPORT'),
-    },
-  })
+  return createBasicHttpStub(
+    'GET',
+    '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    200,
+    csipRecordWithScreeningOutcome('', 'ACCT_SUPPORT'),
+  )
 }
 
 const stubCsipRecordGetSuccessAfterScreeningSupportOutsideCsip = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: csipRecordWithScreeningOutcome('', 'SUPPORT_OUTSIDE_CSIP'),
-    },
-  })
+  return createBasicHttpStub(
+    'GET',
+    '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    200,
+    csipRecordWithScreeningOutcome('', 'SUPPORT_OUTSIDE_CSIP'),
+  )
 }
 
 const csipRecordWithScreeningOutcome = (reason: string, status: string = 'INVESTIGATION_PENDING') => {
@@ -848,292 +588,126 @@ const csipRecordWithScreeningOutcome = (reason: string, status: string = 'INVEST
 }
 
 const stubCsipRecordGetSuccessCFEdgeCases = () => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        ...csip,
-        referral: {
-          ...csip.referral,
-          contributoryFactors: [
-            {
-              factorType: { code: 'B', description: 'TextB' },
-              factorUuid: '111-bbb',
-              comment: `commentB`,
-            },
-            {
-              factorType: { code: 'A', description: 'TextA' },
-              factorUuid: '111-aaa',
-              comment: 'commentA',
-            },
-            {
-              factorType: { code: 'C', description: 'TextC1' },
-              factorUuid: '111-ccc',
-              comment: 'commentC',
-            },
-            {
-              factorType: { code: 'C', description: 'TextC1' },
-              factorUuid: '111-ccc',
-              comment: 'AcommentC',
-            },
-            {
-              factorType: { code: 'C', description: 'TextC3' },
-              factorUuid: '111-ccc',
-            },
-            {
-              factorType: { code: 'D', description: 'TextD1' },
-              factorUuid: '111-ccc',
-            },
-            {
-              factorType: { code: 'D', description: 'TextD2' },
-              factorUuid: '111-ccc',
-            },
-          ],
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
+    ...csip,
+    referral: {
+      ...csip.referral,
+      contributoryFactors: [
+        {
+          factorType: { code: 'B', description: 'TextB' },
+          factorUuid: '111-bbb',
+          comment: `commentB`,
         },
-      },
+        {
+          factorType: { code: 'A', description: 'TextA' },
+          factorUuid: '111-aaa',
+          comment: 'commentA',
+        },
+        {
+          factorType: { code: 'C', description: 'TextC1' },
+          factorUuid: '111-ccc',
+          comment: 'commentC',
+        },
+        {
+          factorType: { code: 'C', description: 'TextC1' },
+          factorUuid: '111-ccc',
+          comment: 'AcommentC',
+        },
+        {
+          factorType: { code: 'C', description: 'TextC3' },
+          factorUuid: '111-ccc',
+        },
+        {
+          factorType: { code: 'D', description: 'TextD1' },
+          factorUuid: '111-ccc',
+        },
+        {
+          factorType: { code: 'D', description: 'TextD2' },
+          factorUuid: '111-ccc',
+        },
+      ],
     },
   })
 }
 
 const stubPostSaferCustodyScreening = () => {
-  return stubFor({
-    request: {
-      method: 'POST',
-      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/safer-custody-screening',
+  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/safer-custody-screening', 200, {
+    outcome: {
+      code: 'string',
+      description: 'string',
+      listSequence: 3,
+      deactivatedAt: '2024-08-02T10:16:01.374Z',
     },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        outcome: {
-          code: 'string',
-          description: 'string',
-          listSequence: 3,
-          deactivatedAt: '2024-08-02T10:16:01.374Z',
-        },
-        recordedBy: 'string',
-        recordedByDisplayName: 'string',
-        date: '2021-09-27',
-        reasonForDecision: 'string',
-      },
-    },
+    recordedBy: 'string',
+    recordedByDisplayName: 'string',
+    date: '2021-09-27',
+    reasonForDecision: 'string',
   })
 }
 
 const stubPostInvestigation = () => {
-  return stubFor({
-    request: {
-      method: 'POST',
-      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {},
-    },
-  })
+  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation', 200)
 }
 
 const stubPatchInvestigationSuccess = () => {
-  return stubFor({
-    request: {
-      method: 'PATCH',
-      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {},
-    },
-  })
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation', 200)
 }
 
 const stubPatchInvestigationFail = () => {
-  return stubFor({
-    request: {
-      method: 'PATCH',
-      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation',
-    },
-    response: {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
-    },
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation', 500, {
+    userMessage: 'Simulated Error for E2E testing',
   })
 }
 
 const stubPutDecisionSuccess = () => {
-  return stubFor({
-    request: {
-      method: 'PUT',
-      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/decision-and-actions',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {},
-    },
-  })
+  return createBasicHttpStub('PUT', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/decision-and-actions', 200)
 }
 
 const stubPutDecisionFail = () => {
-  return stubFor({
-    request: {
-      method: 'PUT',
-      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/decision-and-actions',
-    },
-    response: {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
-    },
+  return createBasicHttpStub('PUT', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/decision-and-actions', 500, {
+    userMessage: 'Simulated Error for E2E testing',
   })
 }
 
 const stubPostPlan = () => {
-  return stubFor({
-    request: {
-      method: 'POST',
-      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/plan',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {},
-    },
-  })
+  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/plan', 200)
+}
+
+const stubPatchPlanSuccess = () => {
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*/plan', 200)
 }
 
 const stubPutDecision = () => {
-  return stubFor({
-    request: {
-      method: 'PUT',
-      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/decision-and-actions',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {},
-    },
-  })
+  return createBasicHttpStub('PUT', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/decision-and-actions', 200)
 }
 
 const stubPatchContributoryFactorSuccess = () => {
-  return stubFor({
-    request: {
-      method: 'PATCH',
-      urlPattern: '/csip-api/csip-records/referral/contributory-factors/[a-zA-Z0-9-]*',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {},
-    },
-  })
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/referral/contributory-factors/[a-zA-Z0-9-]*', 200)
 }
 
 const stubPatchContributoryFactorFail = () => {
-  return stubFor({
-    request: {
-      method: 'PATCH',
-      urlPattern: '/csip-api/csip-records/referral/contributory-factors/[a-zA-Z0-9-]*',
-    },
-    response: {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
-    },
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/referral/contributory-factors/[a-zA-Z0-9-]*', 500, {
+    userMessage: 'Simulated Error for E2E testing',
   })
 }
 
 const stubPostInterviewSuccess = () => {
-  return stubFor({
-    request: {
-      method: 'POST',
-      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation/interviews',
-    },
-    response: {
-      status: 201,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {},
-    },
-  })
+  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation/interviews', 201)
 }
 
 const stubPostInterviewFail = () => {
-  return stubFor({
-    request: {
-      method: 'POST',
-      urlPattern: '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation/interviews',
-    },
-    response: {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
-    },
+  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation/interviews', 500, {
+    userMessage: 'Simulated Error for E2E testing',
   })
 }
 
 const stubPatchInterviewSuccess = () => {
-  return stubFor({
-    request: {
-      method: 'PATCH',
-      urlPattern: '/csip-api/csip-records/referral/investigation/interviews/[a-zA-Z0-9-]*',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {},
-    },
-  })
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/referral/investigation/interviews/[a-zA-Z0-9-]*', 200)
 }
 
 const stubPatchInterviewFail = () => {
-  return stubFor({
-    request: {
-      method: 'PATCH',
-      urlPattern: '/csip-api/csip-records/referral/investigation/interviews/[a-zA-Z0-9-]*',
-    },
-    response: {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: { userMessage: 'Simulated Error for E2E testing' },
-    },
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/referral/investigation/interviews/[a-zA-Z0-9-]*', 500, {
+    userMessage: 'Simulated Error for E2E testing',
   })
 }
 
@@ -1261,4 +835,5 @@ export default {
   stubPatchInterviewFail,
   stubPutDecisionSuccess,
   stubPutDecisionFail,
+  stubPatchPlanSuccess,
 }
