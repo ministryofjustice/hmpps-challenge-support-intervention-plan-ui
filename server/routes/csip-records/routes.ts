@@ -11,6 +11,8 @@ export const CsipRecordRoutes = ({ csipApiService, prisonerSearchService }: Serv
   get('/', controller.GET_BASE)
   get('/referral', controller.GET)
   get('/investigation', controller.GET)
+  get('/plan', controller.GET)
+  get('/reviews', controller.GET)
   post('/', controller.POST)
   get('/update-referral', updateReferralController.UPDATE)
 

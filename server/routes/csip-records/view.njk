@@ -65,32 +65,41 @@
     {{ mojSubNavigation({
       label: 'Sub navigation',
       items: [{
+        text: 'Plan',
+        href: 'plan',
+        active: tabSelected == 'plan'
+      }, {
+        text: 'Reviews',
+        href: 'reviews',
+        active: tabSelected == 'reviews'
+      },{
         text: 'Investigation',
         href: 'investigation',
-        active: referralTabSelected == false
+        active: tabSelected == 'investigation'
       }, {
         text: 'Referral',
         href: 'referral',
-        active: referralTabSelected == true
+        active: tabSelected == 'referral'
       }]
     }) }}
   {% endif %}
 
   
 
-  {% if referralTabSelected %}
+  {% if tabSelected == 'referral' %}
     {% if screening %}
       {% include './components/screening.njk' %}
     {% endif %}
-
     {% include './components/referral.njk' %}
-  {% else %}
+  {% elif tabSelected == 'investigation' %}
     {% if decision %}
       {% include './components/decision.njk' %}
     {% endif %}
-    {% if not isUpdate or not decision %}
-      {% include './components/investigation.njk' %}
-    {% endif %}
+    {% include './components/investigation.njk' %}
+  {% elif tabSelected == 'plan' %}
+    {% include './components/plan.njk' %}
+  {% elif tabSelected == 'reviews' %}
+    {% include './components/reviews.njk' %}
   {% endif %}
 
   <form method="post" action="/csip-records/{{ recordUuid }}">

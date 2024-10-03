@@ -23,10 +23,10 @@ context('test /update-decision', () => {
     cy.task('stubCsipRecordSuccessCsipOpen')
     cy.signIn()
     cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
-    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/investigation$/)
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/plan$/)
 
     cy.visit(`csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-decision/start`)
-    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/investigation$/)
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/plan$/)
   })
 
   const navigateToTestPage = () => {

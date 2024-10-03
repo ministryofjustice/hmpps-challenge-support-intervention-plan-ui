@@ -468,6 +468,56 @@ const stubCsipRecordSuccessCsipOpen = () => {
             with another one
             
             a final action`,
+          },
+        },
+        plan: {
+          reviews: [
+            {
+              reviewDate: '2024-04-05',
+              actions: 'some actions',
+              summary: 'a summary',
+              recordedByDisplayName: 'joe bloggs',
+            },
+            {
+              reviewDate: '2024-04-15',
+              actions: 'other stuff',
+              summary: 'even longer',
+              recordedByDisplayName: 'test testerson',
+            },
+          ],
+          caseManager: 'some person',
+          reasonForPlan: 'plan reason',
+          firstCaseReviewDate: '2024-05-25',
+          identifiedNeeds: [
+            {
+              identifiedNeed: 'closed need',
+              responsiblePerson: 'joe bloggs',
+              createdDate: '2024-04-01',
+              targetDate: '2024-06-02',
+              closedDate: '2024-05-01',
+              intervention: 'we need to do things',
+              progression: null,
+            },
+            {
+              identifiedNeed: 'second need',
+              responsiblePerson: 'foo barerson',
+              createdDate: '2024-04-01',
+              targetDate: '2024-06-01',
+              closedDate: null,
+              intervention: 'int1',
+              progression: 'almost there',
+            },
+            {
+              identifiedNeed: 'first need',
+              responsiblePerson: 'test testerson',
+              createdDate: '2024-03-01',
+              targetDate: '2024-04-02',
+              closedDate: null,
+              intervention: 'get it sorted',
+              progression: 'progression done',
+            },
+          ],
+        },
       },
     },
     plan: {},

@@ -39,6 +39,7 @@ export class UpdateInvestigationController extends BaseJourneyController {
     req.journeyData.isUpdate = true
 
     return res.render('csip-records/view', {
+      tabSelected: 'investigation',
       newInterviewIndex: (investigation!.interviews || []).length + 1,
       updatingEntity: 'investigation',
       isUpdate: true,
