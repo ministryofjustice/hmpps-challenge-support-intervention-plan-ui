@@ -25,8 +25,6 @@ export class PatchPlanController extends BaseJourneyController {
         ...getNonUndefinedProp(plan, 'caseManager'),
         ...getNonUndefinedProp(plan, 'reasonForPlan'),
         ...getNonUndefinedProp(plan, 'firstCaseReviewDate'),
-        ...getNonUndefinedProp(plan, 'reviews'),
-        ...getNonUndefinedProp(plan, 'identifiedNeeds'),
         ...changes,
       })
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, successMessage)
