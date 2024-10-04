@@ -17,7 +17,11 @@ function Routes({ csipApiService, prisonerSearchService }: Services) {
 export const UpdatePlanRoutes = ({ services, path }: { services: Services; path: string }) => {
   const { router } = JourneyRouter()
 
-  router.use('/csip-record/:csipRecordId/update-plan/start', StartJourneyRoutes(services))
+  router.use('/csip-record/:csipRecordId/update-plan/start', StartJourneyRoutes(services, '/update-plan'))
+  router.use(
+    '/csip-record/:csipRecordId/update-plan/identified-needs/start',
+    StartJourneyRoutes(services, '/update-plan/identified-needs'),
+  )
   router.use(path, Routes(services))
 
   return router

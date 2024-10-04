@@ -45,11 +45,13 @@ export class UpdatePlanController extends BaseJourneyController {
 
     return res.render('csip-records/view', {
       tabSelected: 'plan',
-      updatingEntity: 'investigation decision',
+      updatingEntity: 'plan',
       isUpdate: true,
       referralTabSelected: false,
       status: record.status,
+      record,
       plan,
+      identifiedNeeds: plan.identifiedNeeds.sort(identifiedNeedSorter),
       recordUuid: record.recordUuid,
       prisoner,
       showBreadcrumbs: true,

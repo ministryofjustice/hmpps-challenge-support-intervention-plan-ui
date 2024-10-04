@@ -1,4 +1,5 @@
 import { CsipRecord } from '../@types/csip/csipApiTypes'
+import { components } from '../@types/csip'
 
 export const csipStatusDisplayText = (csipRecord: CsipRecord) => {
   switch (csipRecord.status) {
@@ -54,4 +55,18 @@ export const csipStatusTagClass = (csipRecord: CsipRecord) => {
     default:
       throw new Error(`Unrecognised CSIP status: ${csipRecord.status}`)
   }
+}
+
+export const identifiedNeedsActionLabel = (needs: components['schemas']['IdentifiedNeed'][]) => {
+  if (needs.length === 0) {
+    return 'Add'
+  }
+  const openNeedsCount = needs.filter(need => !need.closedDate).length
+  if (openNeedsCount === 0) {
+    return 'Add or reopen'
+  }
+  if (openNeedsCount === needs.length) {
+    return 'Add, change or close'
+  }
+  return 'Add, change, close or reopen'
 }
