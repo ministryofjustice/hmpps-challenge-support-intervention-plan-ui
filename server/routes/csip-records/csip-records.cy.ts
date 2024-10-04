@@ -156,6 +156,7 @@ context('test /csip-records', () => {
       .eq(0)
       .within(() => {
         cy.findByRole('heading', { name: 'first need' }).should('be.visible')
+        cy.findByText('Open').should('be.visible')
         cy.findByText('progression done').should('be.visible')
         cy.findByText('get it sorted').should('be.visible')
         cy.findByText('test testerson').should('be.visible')
@@ -166,6 +167,7 @@ context('test /csip-records', () => {
       .eq(1)
       .within(() => {
         cy.findByRole('heading', { name: 'second need' }).should('be.visible')
+        cy.findByText('Open').should('be.visible')
         cy.findByText('almost there').should('be.visible')
         cy.findByText('int1').should('be.visible')
         cy.findByText('foo barerson').should('be.visible')
@@ -176,6 +178,7 @@ context('test /csip-records', () => {
       .eq(2)
       .within(() => {
         cy.findByRole('heading', { name: 'closed need' }).should('be.visible')
+        cy.findByText('Closed').should('be.visible')
         cy.findByText('Not provided').should('be.visible')
         cy.findByText('we need to do things').should('be.visible')
         cy.findByText('joe bloggs').should('be.visible')

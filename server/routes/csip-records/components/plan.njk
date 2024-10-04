@@ -91,7 +91,14 @@
     {{ govukSummaryList({
         card: {
             classes: "govuk-!-margin-bottom-7" if loop.index === identifiedNeeds.length else undefined,
-            title: { text: need.identifiedNeed }
+            title: { 
+              text: need.identifiedNeed
+            },
+            actions: {
+              items: [{
+                html: '<strong class="govuk-tag">' + ('Closed' if need.closedDate else 'Open') + '</strong>'
+              }]
+            }
         },
         rows: [
         {
@@ -102,6 +109,14 @@
               text: need.responsiblePerson
           }
         },
+        {
+          key: {
+            text: 'Closed date'
+          },
+          value: {
+            text: need.closedDate | formatDisplayDate
+          }
+        } if need.closedDate else undefined,
         {
           key: {
               text: 'Target date'
