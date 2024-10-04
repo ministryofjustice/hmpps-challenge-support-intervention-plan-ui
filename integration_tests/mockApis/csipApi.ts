@@ -701,6 +701,12 @@ const stubPostInterviewFail = () => {
   })
 }
 
+const stubPatchPlanFail = () => {
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*/plan', 500, {
+    userMessage: 'Simulated Error for E2E testing',
+  })
+}
+
 const stubPatchInterviewSuccess = () => {
   return createBasicHttpStub('PATCH', '/csip-api/csip-records/referral/investigation/interviews/[a-zA-Z0-9-]*', 200)
 }
@@ -836,4 +842,5 @@ export default {
   stubPutDecisionSuccess,
   stubPutDecisionFail,
   stubPatchPlanSuccess,
+  stubPatchPlanFail,
 }
