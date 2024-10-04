@@ -19,7 +19,7 @@ export class UpdateNextReviewDateController extends PatchPlanController {
       req,
       next,
       changes: {
-        firstCaseReviewDate: req.body.firstCaseReviewDate!,
+        firstCaseReviewDate: req.body.firstCaseReviewDate,
       },
     })
 
