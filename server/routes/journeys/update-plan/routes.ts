@@ -15,7 +15,7 @@ function Routes({ csipApiService }: Services) {
   get('/', updateController.UPDATE)
   router.use('/case-management', CaseManagementRoutes(csipApiService))
   router.use('/next-review-date', UpdateNextReviewDateRoutes(csipApiService))
-  
+
   // update identified needs journeys
   router.use('/identified-needs', UpdateIdentifiedNeedsRoutes(csipApiService))
   router.use('/update-intervention-details/:identifiedNeedUuid', UpdateInterventionDetailsRoutes(csipApiService))

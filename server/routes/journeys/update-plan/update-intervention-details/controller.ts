@@ -16,7 +16,7 @@ export class UpdateInterventionDetailsController extends PatchPlanController {
       responsiblePerson: res.locals.formResponses?.['responsiblePerson'] ?? identifiedNeed.responsiblePerson,
       targetDate: res.locals.formResponses?.['targetDate'] ?? formatInputDate(identifiedNeed.targetDate),
       recordUuid: req.journeyData.csipRecord!.recordUuid,
-      backUrl: '../update-plan',
+      backUrl: '../identified-needs',
     })
   }
 
