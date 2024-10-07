@@ -1,15 +1,11 @@
 import { Request, Response } from 'express'
-import type PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
 import { BaseJourneyController } from '../base/controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import { getNonUndefinedProp } from '../../../utils/utils'
 import { identifiedNeedSorter } from '../../../utils/sorters'
 
 export class UpdatePlanController extends BaseJourneyController {
-  constructor(
-    override readonly csipApiService: CsipApiService,
-    private readonly prisonerSearchService: PrisonerSearchService,
-  ) {
+  constructor(override readonly csipApiService: CsipApiService) {
     super(csipApiService)
   }
 
@@ -19,7 +15,6 @@ export class UpdatePlanController extends BaseJourneyController {
       return res.redirect(`/csip-records/${record.recordUuid}`)
     }
 
-    const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
     const plan = record.plan!
 
     req.journeyData.plan = {
@@ -51,9 +46,9 @@ export class UpdatePlanController extends BaseJourneyController {
       status: record.status,
       record,
       plan,
-      identifiedNeeds: plan.identifiedNeeds.sort(identifiedNeedSorter),
+      identifiedNeeds: req.journeyData.plan.identifiedNeeds,
       recordUuid: record.recordUuid,
-      prisoner,
+      prisoner: req.journeyData.prisoner,
       showBreadcrumbs: true,
       secondaryButton,
     })

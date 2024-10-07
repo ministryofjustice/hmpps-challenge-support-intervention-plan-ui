@@ -1,0 +1,147 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% extends "partials/layout.njk" %}
+
+{% block innerContent %}
+  <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Update identified needs in {{ prisoner | firstNameSpaceLastName | possessiveComma }} plan</h2>
+
+  <p class="govuk-!-margin-bottom-8">
+    <strong>CSIP log code:</strong> {{ record.logCode or "Not provided" }}
+  </p>
+
+  {% for need in identifiedNeeds %}
+      {{ govukSummaryList({
+          card: {
+              classes: "govuk-!-margin-bottom-7" if loop.index === identifiedNeeds.length else undefined,
+              title: { text: need.identifiedNeed },
+              actions: {
+                items: [{
+                  html: '<strong class="govuk-tag">' + ('Closed' if need.closedDate else 'Open') + '</strong>'
+                }]
+              }
+          },
+          rows: [
+          {
+            key: {
+                text: 'Person responsible'
+            },
+            value: {
+                text: need.responsiblePerson
+            },
+            actions: {
+              items: [
+                {
+                  href: "update-plan/intervention-details/" + need.identifiedNeedUuid + "#responsiblePerson",
+                  text: "Change",
+                  visuallyHiddenText: "the person responsible",
+                  classes: "govuk-link--no-visited-state"
+                }
+              ]
+            } if not need.closedDate else undefined
+          },
+          {
+            key: {
+              text: 'Closed date'
+            },
+            value: {
+              text: need.closedDate | formatDisplayDate
+            }
+          } if need.closedDate else undefined,
+          {
+            key: {
+                text: 'Target date'
+            },
+            value: {
+                text: need.targetDate | formatDisplayDate
+            },
+            actions: {
+              items: [
+                {
+                  href: "update-plan/intervention-details/" + need.identifiedNeedUuid + "#targetDate",
+                  text: "Change",
+                  visuallyHiddenText: "the target date",
+                  classes: "govuk-link--no-visited-state"
+                }
+              ]
+            } if not need.closedDate else undefined
+          },
+          {
+            key: {
+                text: 'Identified need summary'
+            },
+            value: {
+                html: (need.identifiedNeed or 'Not provided') | escape | boldAppendStamp | nl2br
+            },
+            actions: {
+              items: [
+                {
+                  href: "update-plan/intervention-details/" + need.identifiedNeedUuid + "#identifiedNeed",
+                  text: "Change",
+                  visuallyHiddenText: "the summary of the identified need",
+                  classes: "govuk-link--no-visited-state"
+                }
+              ]
+            } if not need.closedDate else undefined
+          },
+          {
+            key: {
+                text: 'Planned intervention'
+            },
+            value: {
+                html: (need.intervention or 'Not provided') | escape | boldAppendStamp | nl2br
+            },
+            actions: {
+              items: [
+                {
+                  href: "update-plan/intervention-details/" + need.identifiedNeedUuid + "#intervention",
+                  text: "Add information",
+                  visuallyHiddenText: "to the planned intervention",
+                  classes: "govuk-link--no-visited-state"
+                }
+              ]
+            } if not need.closedDate else undefined
+          },
+          {
+            key: {
+                text: 'Actions and progress'
+            },
+            value: {
+                html: (need.progression or 'Not provided') | escape | boldAppendStamp | nl2br
+            },
+            actions: {
+              items: [
+                {
+                  href: "update-plan/intervention-details/" + need.identifiedNeedUuid + "#progression",
+                  text: "Add information",
+                  visuallyHiddenText: "to the actions and progress",
+                  classes: "govuk-link--no-visited-state"
+                }
+              ]
+            } if not need.closedDate else undefined
+          },
+          {
+            key: {
+                text: 'Created date'
+            },
+            value: {
+                html: need.createdDate | formatDisplayDate
+            }
+          }]
+      }) }}
+  {% endfor %}
+
+  {% if not identifiedNeeds.length %}
+      <p class="govuk-!-margin-bottom-8">No identified needs recorded.</p>
+  {% endif %}
+
+  {{ govukButton ({
+    classes: "govuk-!-margin-bottom-7 govuk-button--secondary",
+    text: "Add identified need" if not investigation.interviews.length else "Add another identified need",
+    href: "update-plan/summarise-identified-need/"
+  }) }}
+
+  <div class="govuk-summary-list">
+    <a class="govuk-link govuk-link--no-visited-state" href="{{secondaryButton.link}}">{{ secondaryButton.label }}</a>
+  </div>
+{% endblock %}
