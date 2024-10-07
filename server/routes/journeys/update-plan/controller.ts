@@ -48,7 +48,6 @@ export class UpdatePlanController extends BaseJourneyController {
       plan,
       identifiedNeeds: req.journeyData.plan.identifiedNeeds,
       recordUuid: record.recordUuid,
-      prisoner: req.journeyData.prisoner,
       showBreadcrumbs: true,
       secondaryButton,
     })

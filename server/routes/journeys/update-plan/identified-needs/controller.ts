@@ -33,7 +33,6 @@ export class UpdateIdentifiedNeedsController extends PatchPlanController {
       identifiedNeeds: req.journeyData!.plan!.identifiedNeeds,
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
-      backUrl: '../update-plan',
       secondaryButton,
     })
   }
