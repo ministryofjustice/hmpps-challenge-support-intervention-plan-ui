@@ -17,7 +17,8 @@
               title: { text: need.identifiedNeed },
               actions: {
                 items: [{
-                  html: '<strong class="govuk-tag">' + ('Closed' if need.closedDate else 'Open') + '</strong>'
+                  text: "Reopen" if need.closedDate else "Close",
+                  href: '../update-plan/' + ('reopen' if need.closedDate else 'close' ) + '-identified-need/' + need.identifiedNeedUuid
                 }]
               }
           },
