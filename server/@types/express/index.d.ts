@@ -112,6 +112,7 @@ export type IdentifiedNeed = {
   closedDate: string | null
   intervention: string
   progression: string | null
+  identifiedNeedUuid?: string // only exist in Update journey
 }
 
 export declare global {

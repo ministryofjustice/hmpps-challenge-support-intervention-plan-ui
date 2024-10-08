@@ -490,6 +490,7 @@ const stubCsipRecordSuccessCsipOpen = () => {
       nextCaseReviewDate: '2024-05-25',
       identifiedNeeds: [
         {
+          identifiedNeedUuid: 'a0000000-f7b1-4c56-bec8-69e390eb0001',
           identifiedNeed: 'closed need',
           responsiblePerson: 'joe bloggs',
           createdDate: '2024-04-01',
@@ -499,6 +500,7 @@ const stubCsipRecordSuccessCsipOpen = () => {
           progression: null,
         },
         {
+          identifiedNeedUuid: 'a0000000-f7b1-4c56-bec8-69e390eb0002',
           identifiedNeed: 'second need',
           responsiblePerson: 'foo barerson',
           createdDate: '2024-04-01',
@@ -508,6 +510,7 @@ const stubCsipRecordSuccessCsipOpen = () => {
           progression: 'almost there',
         },
         {
+          identifiedNeedUuid: 'a0000000-f7b1-4c56-bec8-69e390eb0003',
           identifiedNeed: 'first need',
           responsiblePerson: 'test testerson',
           createdDate: '2024-03-01',
@@ -677,6 +680,10 @@ const stubPatchPlanSuccess = () => {
   return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*/plan', 200)
 }
 
+const stubPatchIdentifiedNeedSuccess = () => {
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/plan/identified-needs/[a-zA-Z0-9-]*', 200)
+}
+
 const stubPutDecision = () => {
   return createBasicHttpStub('PUT', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/decision-and-actions', 200)
 }
@@ -703,6 +710,12 @@ const stubPostInterviewFail = () => {
 
 const stubPatchPlanFail = () => {
   return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*/plan', 500, {
+    userMessage: 'Simulated Error for E2E testing',
+  })
+}
+
+const stubPatchIdentifiedNeedFail = () => {
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/plan/identified-needs/[a-zA-Z0-9-]*', 500, {
     userMessage: 'Simulated Error for E2E testing',
   })
 }
@@ -843,4 +856,6 @@ export default {
   stubPutDecisionFail,
   stubPatchPlanSuccess,
   stubPatchPlanFail,
+  stubPatchIdentifiedNeedSuccess,
+  stubPatchIdentifiedNeedFail,
 }

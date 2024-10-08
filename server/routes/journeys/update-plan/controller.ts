@@ -29,6 +29,7 @@ export class UpdatePlanController extends BaseJourneyController {
         intervention: need.intervention,
         closedDate: need.closedDate ?? null,
         progression: need.progression ?? null,
+        identifiedNeedUuid: need.identifiedNeedUuid,
       })),
     }
     req.journeyData.isUpdate = true

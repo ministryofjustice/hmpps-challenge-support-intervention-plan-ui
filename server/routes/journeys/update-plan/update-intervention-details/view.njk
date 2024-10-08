@@ -1,13 +1,13 @@
 {% from "moj/components/date-picker/macro.njk" import mojDatePicker %}
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Intervention details - Develop an initial plan" %}
+{% set pageTitle = "Intervention details - Update a plan" %}
 
 {% block innerContent %}
-    <span class="govuk-caption-l">Develop an initial plan</span>
+    <span class="govuk-caption-l">Update a plan</span>
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Intervention details</h1>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
@@ -16,22 +16,6 @@
         <h1 class="govuk-heading-s govuk-!-margin-0">Identified need summary:</h1>
         <p>{{ identifiedNeed }}</p>
     </div>
-
-        {{ govukCharacterCount({
-            label: {
-              text: "What’s the planned intervention for this identified need?",
-              classes: "govuk-label--m",
-              isPageHeading: true
-            },
-            maxlength: 4000,
-            rows: 5,
-            threshold: "75",
-            id: "intervention",
-            name: "intervention",
-            value: intervention,
-            errorMessage: validationErrors | findError('intervention')
-        }) }}
-
         {{ govukCharacterCount({
             label: {
               text: "Who’s responsible for taking action?",
@@ -69,9 +53,9 @@
             },
             errorMessage: validationErrors | findError('targetDate')
         }) }}
-        {{ govukButton({
-            text: "Continue",
-            preventDoubleClick: true
+        {{ submitButton({
+            text: "Confirm and save",
+            alternativeHyperlinkHref: "/csip-records/" + recordUuid
         }) }}
     </form>
 {% endblock %}
