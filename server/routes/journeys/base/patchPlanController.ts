@@ -23,7 +23,7 @@ export class PatchPlanController extends BaseJourneyController {
       await this.csipApiService.updatePlan(req as Request, {
         ...getNonUndefinedProp(plan, 'caseManager'),
         ...getNonUndefinedProp(plan, 'reasonForPlan'),
-        ...getNonUndefinedProp(plan, 'firstCaseReviewDate'),
+        ...getNonUndefinedProp(plan, 'nextCaseReviewDate'),
         ...changes,
       })
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_PLAN_UPDATED)

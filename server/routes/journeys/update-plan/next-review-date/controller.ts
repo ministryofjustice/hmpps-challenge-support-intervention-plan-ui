@@ -6,8 +6,8 @@ import { formatInputDate } from '../../../../utils/datetimeUtils'
 export class UpdateNextReviewDateController extends PatchPlanController {
   GET = async (req: Request, res: Response) => {
     res.render('develop-an-initial-plan/next-review-date/view', {
-      firstCaseReviewDate:
-        res.locals.formResponses?.['firstCaseReviewDate'] ?? formatInputDate(req.journeyData.plan?.firstCaseReviewDate),
+      nextCaseReviewDate:
+        res.locals.formResponses?.['nextCaseReviewDate'] ?? formatInputDate(req.journeyData.plan?.nextCaseReviewDate),
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
       backUrl: '../update-plan',
@@ -19,7 +19,7 @@ export class UpdateNextReviewDateController extends PatchPlanController {
       req,
       next,
       changes: {
-        firstCaseReviewDate: req.body.firstCaseReviewDate,
+        nextCaseReviewDate: req.body.nextCaseReviewDate,
       },
     })
 

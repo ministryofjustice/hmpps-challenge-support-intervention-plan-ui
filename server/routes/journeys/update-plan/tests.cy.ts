@@ -56,7 +56,7 @@ context('test /update-plan', () => {
     cy.findByRole('link', { name: /Change the next review date/i })
       .should('be.visible')
       .and('have.attr', 'href')
-      .and('match', /\/next-review-date#firstCaseReviewDate$/)
+      .and('match', /\/next-review-date#nextCaseReviewDate/)
     cy.findByRole('link', { name: /Add, change, close or reopen the identified needs/i })
       .should('be.visible')
       .and('have.attr', 'href')

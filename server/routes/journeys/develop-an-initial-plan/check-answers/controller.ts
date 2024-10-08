@@ -23,7 +23,7 @@ export class PlanCheckAnswersController extends BaseJourneyController {
     try {
       await this.csipApiService.createPlan(req, {
         caseManager: plan.caseManager!,
-        firstCaseReviewDate: plan.firstCaseReviewDate!,
+        nextCaseReviewDate: plan.nextCaseReviewDate!,
         reasonForPlan: plan.reasonForPlan!,
         identifiedNeeds: plan.identifiedNeeds!.map(({ progression, closedDate, ...identifiedNeed }) => ({
           ...identifiedNeed,

@@ -63,12 +63,12 @@
           text: 'Next review date'
         },
         value: {
-          html: (plan.firstCaseReviewDate | formatDisplayDate) or 'Not provided'
+          html: (plan.nextCaseReviewDate | formatDisplayDate) or 'Not provided'
         },
         actions: {
           items: [
             {
-              href: "update-plan/next-review-date#firstCaseReviewDate",
+              href: "update-plan/next-review-date#nextCaseReviewDate",
               text: "Change",
               visuallyHiddenText: "the next review date",
               classes: "govuk-link--no-visited-state"

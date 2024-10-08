@@ -20,7 +20,7 @@ export class UpdatePlanController extends BaseJourneyController {
     req.journeyData.plan = {
       ...getNonUndefinedProp(plan, 'caseManager'),
       ...getNonUndefinedProp(plan, 'reasonForPlan'),
-      ...getNonUndefinedProp(plan, 'firstCaseReviewDate'),
+      ...getNonUndefinedProp(plan, 'nextCaseReviewDate'),
       identifiedNeeds: plan.identifiedNeeds.sort(identifiedNeedSorter).map(need => ({
         identifiedNeed: need.identifiedNeed,
         responsiblePerson: need.responsiblePerson,

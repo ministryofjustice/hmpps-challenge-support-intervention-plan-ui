@@ -29,14 +29,14 @@
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {{ mojDatePicker({
-            id: "firstCaseReviewDate",
-            name: "firstCaseReviewDate",
+            id: "nextCaseReviewDate",
+            name: "nextCaseReviewDate",
             label: {
                 html: '<h2 class="govuk-heading-m">When will you next review the plan with ' + (prisoner | firstNameSpaceLastName | escape) + '?</h2>'
             },
             hint: "For example, 24/9/2024",
-            value: firstCaseReviewDate,
-            errorMessage: validationErrors | findError('firstCaseReviewDate'),
+            value: nextCaseReviewDate,
+            errorMessage: validationErrors | findError('nextCaseReviewDate'),
             classes: 'hmpps-datepicker--fixed-width govuk-body',
             minDate: todayStringGBFormat()
         }) }}
