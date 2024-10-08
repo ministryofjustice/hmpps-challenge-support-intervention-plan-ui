@@ -8,13 +8,13 @@ export class NextReviewDateController {
 
     res.render('develop-an-initial-plan/next-review-date/view', {
       backUrl,
-      firstCaseReviewDate:
-        res.locals.formResponses?.['firstCaseReviewDate'] || formatInputDate(req.journeyData.plan!.firstCaseReviewDate),
+      nextCaseReviewDate:
+        res.locals.formResponses?.['nextCaseReviewDate'] || formatInputDate(req.journeyData.plan!.nextCaseReviewDate),
     })
   }
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
-    req.journeyData.plan!.firstCaseReviewDate = req.body.firstCaseReviewDate
+    req.journeyData.plan!.nextCaseReviewDate = req.body.nextCaseReviewDate
     req.journeyData.plan!.isComplete = true
     res.redirect('check-answers')
   }

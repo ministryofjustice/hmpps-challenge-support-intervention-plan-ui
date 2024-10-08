@@ -21,7 +21,7 @@ context('test /develop-an-initial-plan/confirmation', () => {
     cy.visit(START_URL, { failOnStatusCode: false })
     injectJourneyDataAndReload(uuid, {
       plan: {
-        firstCaseReviewDate: '2023-12-25',
+        nextCaseReviewDate: '2023-12-25',
       },
     })
     cy.visit(PAGE_URL)

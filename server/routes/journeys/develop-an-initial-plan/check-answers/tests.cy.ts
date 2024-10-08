@@ -72,7 +72,7 @@ context('test /record-investigation/check-answers', () => {
     cy.contains('dt', 'Reason for the plan').next().should('include.text', 'differentreason')
 
     cy.findByRole('link', { name: /change the next review date/i }).click()
-    cy.url().should('to.match', /develop-an-initial-plan\/next-review-date#firstCaseReviewDate/i)
+    cy.url().should('to.match', /develop-an-initial-plan\/next-review-date#nextCaseReviewDate/i)
     const today = new Date()
     cy.findByRole('textbox', { name: /When will you next review the plan with Testname User\?/i })
       .clear()
@@ -149,7 +149,7 @@ context('test /record-investigation/check-answers', () => {
           },
         ],
         caseManager: 'manager foobar',
-        firstCaseReviewDate: '2024-08-25',
+        nextCaseReviewDate: '2024-08-25',
         isCaseManager: false,
         isComplete: true,
         reasonForPlan: 'plan reason',

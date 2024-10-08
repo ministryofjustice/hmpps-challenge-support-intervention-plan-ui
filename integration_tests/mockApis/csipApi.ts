@@ -487,7 +487,7 @@ const stubCsipRecordSuccessCsipOpen = () => {
       ],
       caseManager: 'some person',
       reasonForPlan: 'plan reason',
-      firstCaseReviewDate: '2024-05-25',
+      nextCaseReviewDate: '2024-05-25',
       identifiedNeeds: [
         {
           identifiedNeedUuid: 'a0000000-f7b1-4c56-bec8-69e390eb0001',

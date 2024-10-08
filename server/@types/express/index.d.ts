@@ -99,7 +99,7 @@ export type Plan = Partial<{
   isCaseManager: boolean
   caseManager: string
   reasonForPlan: string
-  firstCaseReviewDate: string
+  nextCaseReviewDate: string
   identifiedNeeds: IdentifiedNeed[]
   isComplete: boolean
 }>
