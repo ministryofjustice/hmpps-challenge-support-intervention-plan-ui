@@ -20,6 +20,7 @@ export class UpdateIdentifiedNeedsController extends PatchPlanController {
         intervention: need.intervention,
         closedDate: need.closedDate ?? null,
         progression: need.progression ?? null,
+        identifiedNeedUuid: need.identifiedNeedUuid,
       })),
     }
     req.journeyData.isUpdate = true
@@ -34,6 +35,8 @@ export class UpdateIdentifiedNeedsController extends PatchPlanController {
       isUpdate: true,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
       secondaryButton,
+      record,
+      showBreadcrumbs: true,
     })
   }
 }

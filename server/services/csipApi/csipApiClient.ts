@@ -136,7 +136,7 @@ export default class CsipApiClient {
     payload: components['schemas']['UpdateIdentifiedNeedRequest'],
   ) {
     return this.restClient.patch<components['schemas']['IdentifiedNeed']>({
-      path: `/csip-records/plan/identified-needs/${identifiedNeedUuid}/`,
+      path: `/csip-records/plan/identified-needs/${identifiedNeedUuid}`,
       data: payload,
     })
   }

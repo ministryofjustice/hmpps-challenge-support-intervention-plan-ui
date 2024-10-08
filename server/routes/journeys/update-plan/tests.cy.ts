@@ -57,7 +57,7 @@ context('test /update-plan', () => {
       .should('be.visible')
       .and('have.attr', 'href')
       .and('match', /\/next-review-date#firstCaseReviewDate$/)
-    cy.findByRole('link', { name: /Add, change, close or reopen the identified needs/i })
+    cy.findByRole('link', { name: /Add, change, close or reopen identified needs/i })
       .should('be.visible')
       .and('have.attr', 'href')
       .and('match', /\/csip-record\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/update-plan\/identified-needs\/start$/)
