@@ -4,10 +4,10 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Intervention details - Develop an initial plan" %}
+{% set pageTitle = "Intervention details - Update a plan" if isUpdate else "Intervention details - Develop an initial plan" %}
 
 {% block innerContent %}
-    <span class="govuk-caption-l">Develop an initial plan</span>
+    {% include 'base/components/plan-caption.njk' %}
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Intervention details</h1>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
