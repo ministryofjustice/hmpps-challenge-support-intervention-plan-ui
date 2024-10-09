@@ -147,7 +147,7 @@
 
   {{ govukButton ({
     classes: "govuk-!-margin-bottom-7 govuk-button--secondary",
-    text: "Add identified need" if not investigation.interviews.length else "Add another identified need",
+    text: "Add identified need" if not identifiedNeeds.length else "Add another identified need",
     href: "summarise-identified-need"
   }) }}
 
