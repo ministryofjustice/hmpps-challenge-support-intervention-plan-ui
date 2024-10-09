@@ -27,13 +27,13 @@ generic-service:
 
   # Environment variables to load into the deployment
   env:
-    NODE_ENV: "production"
-    REDIS_ENABLED: "true"
-    REDIS_TLS_ENABLED: "true"
-    TOKEN_VERIFICATION_ENABLED: "true"
-    APPLICATIONINSIGHTS_CONNECTION_STRING: "InstrumentationKey=$(APPINSIGHTS_INSTRUMENTATIONKEY);IngestionEndpoint=https://northeurope-0.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/"
-    AUDIT_SQS_REGION: "eu-west-2"
-    AUDIT_SERVICE_NAME: "UNASSIGNED" # Your audit service name
+    NODE_ENV: 'production'
+    REDIS_ENABLED: 'true'
+    REDIS_TLS_ENABLED: 'true'
+    TOKEN_VERIFICATION_ENABLED: 'true'
+    APPLICATIONINSIGHTS_CONNECTION_STRING: 'InstrumentationKey=$(APPINSIGHTS_INSTRUMENTATIONKEY);IngestionEndpoint=https://northeurope-0.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/'
+    AUDIT_SQS_REGION: 'eu-west-2'
+    AUDIT_SERVICE_NAME: 'UNASSIGNED' # Your audit service name
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:
@@ -43,10 +43,10 @@ generic-service:
   namespace_secrets:
     hmpps-challenge-support-intervention-plan-ui:
       APPINSIGHTS_INSTRUMENTATIONKEY: "APPINSIGHTS_INSTRUMENTATIONKEY"
-      SIGN_IN_CLIENT_ID: "SIGN_IN_CLIENT_ID"
-      SIGN_IN_CLIENT_SECRET: "SIGN_IN_CLIENT_SECRET"
-      SYSTEM_CLIENT_ID: "SYSTEM_CLIENT_ID"
-      SYSTEM_CLIENT_SECRET: "SYSTEM_CLIENT_SECRET"
+      AUTH_CODE_CLIENT_ID: "SIGN_IN_CLIENT_ID"
+      AUTH_CODE_CLIENT_SECRET: "SIGN_IN_CLIENT_SECRET"
+      CLIENT_CREDS_CLIENT_ID: "SYSTEM_CLIENT_ID"
+      CLIENT_CREDS_CLIENT_SECRET: "SYSTEM_CLIENT_SECRET"
       SESSION_SECRET: "SESSION_SECRET"
     elasticache-redis:
       REDIS_HOST: "primary_endpoint_address"

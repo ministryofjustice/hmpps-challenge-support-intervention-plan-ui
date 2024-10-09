@@ -11,7 +11,7 @@ export default abstract class Page {
     return new constructor()
   }
 
-  constructor(
+  protected constructor(
     private readonly title: string,
     private readonly config: PageConfig = { skipA11yCheck: false },
   ) {
