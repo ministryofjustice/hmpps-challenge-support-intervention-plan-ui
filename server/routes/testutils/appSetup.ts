@@ -3,7 +3,6 @@ import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
 import routes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
 import errorHandler from '../../errorHandler'
-import * as auth from '../../authentication/auth'
 import type { Services } from '../../services'
 import AuditService from '../../services/auditService'
 import { HmppsUser } from '../../interfaces/hmppsUser'
@@ -134,6 +133,5 @@ export function appWithAllRoutes({
   validationErrors?: Locals['validationErrors']
   journeyData?: Omit<JourneyData, 'instanceUnixEpoch'>
 }): Express {
-  auth.default.authenticationMiddleware = () => (_req, _res, next) => next()
   return appSetup(services as Services, production, userSupplier, uuid, requestCaptor, validationErrors, journeyData)
 }

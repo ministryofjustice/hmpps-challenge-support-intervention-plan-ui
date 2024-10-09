@@ -146,6 +146,10 @@ export declare global {
       appInsightsConnectionString?: string
       appInsightsApplicationName?: string
       buildNumber?: string
+      asset_path: string
+      applicationName: string
+      environmentName: string
+      environmentNameColour: string
     }
   }
 }

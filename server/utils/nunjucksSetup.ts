@@ -8,18 +8,18 @@ import config from '../config'
 import { buildErrorSummaryList, customErrorOrderBuilder, findError } from '../middleware/validationMiddleware'
 import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
 import { YES_NO_ANSWER } from '../routes/journeys/referral/safer-custody/schemas'
-import logger from '../../logger'
 import { csipStatusDisplayText, csipStatusTagClass, identifiedNeedsActionLabel } from './csipDisplayTextUtils'
 import { firstNameSpaceLastName, personDateOfBirth, personProfileName } from './miniProfileUtils'
+import logger from '../../logger'
 
 export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')
 
-  app.locals['asset_path'] = '/assets/'
+  app.locals.asset_path = '/assets/'
   const packageJson = path.join(__dirname, '../../../package.json')
-  app.locals['applicationName'] = JSON.parse(fs.readFileSync(packageJson).toString())['name']
-  app.locals['environmentName'] = config.environmentName
-  app.locals['environmentNameColour'] = config.environmentName === 'PRE-PRODUCTION' ? 'govuk-tag--green' : ''
+  app.locals.applicationName = JSON.parse(fs.readFileSync(packageJson).toString())['name']
+  app.locals.environmentName = config.environmentName
+  app.locals.environmentNameColour = config.environmentName === 'PRE-PRODUCTION' ? 'govuk-tag--green' : ''
   app.locals.appInsightsConnectionString = config.appInsightsConnectionString
   app.locals.buildNumber = config.buildNumber
 
@@ -30,7 +30,7 @@ export default function nunjucksSetup(app: express.Express): void {
     assetManifest = JSON.parse(fs.readFileSync(assetMetadataPath, 'utf8'))
   } catch (e) {
     if (process.env.NODE_ENV !== 'test') {
-      logger.error('Could not read asset manifest file')
+      logger.error(`Could not read asset manifest file: ${e}`)
     }
   }
 
