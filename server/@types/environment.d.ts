@@ -6,6 +6,7 @@ declare global {
       REDIS_PORT: string
       REDIS_AUTH_TOKEN: string
       APPLICATIONINSIGHTS_CONNECTION_STRING: string
+      NO_HTTPS?: string
     }
   }
 }
