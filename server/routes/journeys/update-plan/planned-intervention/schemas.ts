@@ -5,8 +5,8 @@ import { getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldU
 
 const INTERVENTION_REQUIRED_MSG = 'Enter an update on the planned intervention'
 
-const TOO_LONG_ERROR_MSG = (isUpdate: boolean | undefined, maxLengthChars: number) =>
-  `${isUpdate ? 'Update to the planned intervention' : 'Planned intervention for the identified need'} must be ${maxLengthChars.toLocaleString()} characters or less`
+const TOO_LONG_ERROR_MSG = (maxLengthChars: number) =>
+  `Update to the planned intervention must be ${maxLengthChars.toLocaleString()} characters or less`
 
 export const schemaFactory = async (req: Request, res: Response) => {
   const { identifiedNeedUuid } = req.params
@@ -21,7 +21,7 @@ export const schemaFactory = async (req: Request, res: Response) => {
   return createSchema({
     intervention: z
       .string({ message: INTERVENTION_REQUIRED_MSG })
-      .max(4000, TOO_LONG_ERROR_MSG(req.journeyData.isUpdate, maxLengthChars))
+      .max(4000, TOO_LONG_ERROR_MSG(maxLengthChars))
       .refine(val => val?.trim().length > 0, { message: INTERVENTION_REQUIRED_MSG }),
   })
 }
