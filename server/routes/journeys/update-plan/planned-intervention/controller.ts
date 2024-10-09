@@ -8,7 +8,6 @@ export class UpdatePlannedInterventionController extends PatchPlanController {
   GET = async (req: Request, res: Response) => {
     const identifiedNeed = this.getSelectedIdentifiedNeed(req)
     const currentIntervention = identifiedNeed?.intervention
-    console.log(`currentIntervention: ${currentIntervention}`)
     res.render('update-plan/planned-intervention/view', {
       currentIntervention,
       intervention: res.locals.formResponses?.['intervention'],
