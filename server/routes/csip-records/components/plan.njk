@@ -100,7 +100,7 @@
             },
             actions: {
               items: [{
-                html: '<strong class="govuk-tag">' + ('Closed' if need.closedDate else 'Open') + '</strong>'
+                html: '<strong class="govuk-tag govuk-tag--grey">Closed</strong>' if need.closedDate else '<strong class="govuk-tag">Open</strong>'
               }]
             }
         },

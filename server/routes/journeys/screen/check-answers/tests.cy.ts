@@ -41,7 +41,7 @@ context('test /screen/check-answers', () => {
       .click()
 
     cy.url().should('to.match', /screen#reasonForDecision$/)
-    cy.findByRole('textbox').clear().type('new text')
+    cy.findByRole('textbox').clear().type('new text', { delay: 0 })
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.contains('dt', 'Reasons for decision').next().should('include.text', `new text`)
 

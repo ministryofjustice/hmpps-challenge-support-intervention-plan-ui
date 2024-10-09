@@ -82,7 +82,7 @@ context('Make a Referral Journey', () => {
         force: true,
       })
     cy.contains(/you have 1,000 characters remaining/i).should('be.visible')
-    cy.findByRole('textbox', { name: proactive ? proactiveTitle : reactiveTitle }).type('a')
+    cy.findByRole('textbox', { name: proactive ? proactiveTitle : reactiveTitle }).type('a', { delay: 0 })
     cy.contains(/you have 999 characters remaining/i).should('be.visible')
     cy.findByRole('textbox', { name: proactive ? proactiveTitle : reactiveTitle }).type('a'.repeat(999), {
       delay: 0,

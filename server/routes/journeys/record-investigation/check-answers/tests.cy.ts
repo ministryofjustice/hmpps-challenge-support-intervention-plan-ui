@@ -40,7 +40,7 @@ context('test /record-investigation/check-answers', () => {
     cy.url().should('to.match', /interview-details\/1#interviewText$/)
     cy.findByRole('textbox', { name: /Comments \(optional\)/ })
       .clear()
-      .type('new comments')
+      .type('new comments', { delay: 0 })
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.url().should('to.match', /interviews-summary(#[A-z]+)?$/)
     cy.findByRole('button', { name: /Continue/i }).click()
@@ -53,7 +53,7 @@ context('test /record-investigation/check-answers', () => {
       .should('be.visible')
       .click()
     cy.url().should('to.match', /staff-involved(#[A-z]+)?$/)
-    cy.findByRole('textbox').clear().type('new text')
+    cy.findByRole('textbox').clear().type('new text', { delay: 0 })
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.contains('dt', 'Staff involved in the investigation').next().should('include.text', 'new text')
 
@@ -64,7 +64,7 @@ context('test /record-investigation/check-answers', () => {
       .should('be.visible')
       .click()
     cy.url().should('to.match', /why-behaviour-occurred(#[A-z]+)?$/)
-    cy.findByRole('textbox').clear().type('new text')
+    cy.findByRole('textbox').clear().type('new text', { delay: 0 })
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.contains('dt', 'Why the behaviour occurred').next().should('include.text', 'new text')
 
@@ -75,7 +75,7 @@ context('test /record-investigation/check-answers', () => {
       .should('be.visible')
       .click()
     cy.url().should('to.match', /evidence-secured(#[A-z]+)?$/)
-    cy.findByRole('textbox').clear().type('new text')
+    cy.findByRole('textbox').clear().type('new text', { delay: 0 })
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.contains('dt', 'Evidence secured').next().should('include.text', 'new text')
 
@@ -86,7 +86,7 @@ context('test /record-investigation/check-answers', () => {
       .should('be.visible')
       .click()
     cy.url().should('to.match', /usual-behaviour-presentation(#[A-z]+)?$/)
-    cy.findByRole('textbox').clear().type('new text')
+    cy.findByRole('textbox').clear().type('new text', { delay: 0 })
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.contains('dt', 'Usual behaviour presentation').next().should('include.text', 'new text')
 
@@ -95,7 +95,7 @@ context('test /record-investigation/check-answers', () => {
       .should('be.visible')
       .click()
     cy.url().should('to.match', /triggers(#[A-z]+)?$/)
-    cy.findByRole('textbox').clear().type('new text')
+    cy.findByRole('textbox').clear().type('new text', { delay: 0 })
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.contains('dt', 'Triggers').next().should('include.text', 'new text')
 
@@ -106,7 +106,7 @@ context('test /record-investigation/check-answers', () => {
       .should('be.visible')
       .click()
     cy.url().should('to.match', /protective-factors(#[A-z]+)?$/)
-    cy.findByRole('textbox').clear().type('new text')
+    cy.findByRole('textbox').clear().type('new text', { delay: 0 })
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.contains('dt', 'Protective factors').next().should('include.text', 'new text')
 

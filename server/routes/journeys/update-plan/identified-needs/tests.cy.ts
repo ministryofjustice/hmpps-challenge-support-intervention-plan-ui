@@ -59,7 +59,7 @@ context('test /update-plan/identified-needs', () => {
         cy.findByRole('link', { name: /Add information to the actions and progress \(first need\)/i }).should(
           'be.visible',
         )
-        cy.findByRole('link', { name: /Close \(first need\)/ }).should('be.visible')
+        cy.findByRole('link', { name: /Close the identified need "first need"/ }).should('be.visible')
       })
     cy.get('.govuk-summary-card')
       .eq(1)
@@ -81,7 +81,7 @@ context('test /update-plan/identified-needs', () => {
         cy.findByRole('link', { name: /Add information to the actions and progress \(second need\)/i }).should(
           'be.visible',
         )
-        cy.findByRole('link', { name: /Close \(second need\)/ }).should('be.visible')
+        cy.findByRole('link', { name: /Close the identified need "second need"/ }).should('be.visible')
       })
     cy.get('.govuk-summary-card')
       .eq(2)
@@ -97,7 +97,7 @@ context('test /update-plan/identified-needs', () => {
         cy.findByRole('link', { name: /Change the summary of the identified need/i }).should('not.exist')
         cy.findByRole('link', { name: /Add information to the planned intervention/i }).should('not.exist')
         cy.findByRole('link', { name: /Add information to the actions and progress/i }).should('not.exist')
-        cy.findByRole('link', { name: /Reopen \(closed need\)/ }).should('be.visible')
+        cy.findByRole('link', { name: /Reopen the identified need "closed need"/ }).should('be.visible')
       })
   }
 })

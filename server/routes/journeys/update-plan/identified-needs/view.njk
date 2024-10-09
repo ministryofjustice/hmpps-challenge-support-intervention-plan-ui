@@ -27,6 +27,7 @@
               actions: {
                 items: [{
                   text: "Reopen" if need.closedDate else "Close",
+                  visuallyHiddenText: 'the identified need "' +  need.identifiedNeed + '"',
                   href: ('reopen' if need.closedDate else 'close' ) + '-identified-need/' + need.identifiedNeedUuid
                 }]
               }

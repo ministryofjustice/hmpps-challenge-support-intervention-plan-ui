@@ -1,0 +1,95 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = true %}
+{% set pageTitle = "Close identified need - Update a plan" %}
+
+{% block innerContent %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Update a plan</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Are you sure you want to close this identified need?</h1>
+        </div>
+    </div>
+
+    {{ govukSummaryList({
+        card: {
+            title: { text: identifiedNeed.identifiedNeed }
+        },
+        card: {
+            title: { text: identifiedNeed.identifiedNeed },
+            actions: {
+                items: [{
+                    html: '<strong class="govuk-tag govuk-tag--grey">Closed</strong>' if identifiedNeed.closedDate else '<strong class="govuk-tag">Open</strong>'
+                }]
+            }
+        },
+        rows: [
+            {
+                key: {
+                text: 'Person responsible'
+            },
+                value: {
+                text: identifiedNeed.responsiblePerson
+            }
+            },
+            {
+                key: {
+                text: 'Closed date'
+            },
+                value: {
+                text: identifiedNeed.closedDate | formatDisplayDate
+            }
+            } if identifiedNeed.closedDate else undefined,
+            {
+                key: {
+                text: 'Target date'
+            },
+                value: {
+                text: identifiedNeed.targetDate | formatDisplayDate
+            }
+            },
+            {
+                key: {
+                text: 'Identified need summary'
+            },
+                value: {
+                html: (identifiedNeed.identifiedNeed or 'Not provided') | escape | boldAppendStamp | nl2br
+            }
+            },
+            {
+                key: {
+                text: 'Planned intervention'
+            },
+                value: {
+                html: (identifiedNeed.intervention or 'Not provided') | escape | boldAppendStamp | nl2br
+            }
+            },
+            {
+                key: {
+                text: 'Actions and progress'
+            },
+                value: {
+                html: (identifiedNeed.progression or 'Not provided') | escape | boldAppendStamp | nl2br
+            }
+            },
+            {
+                key: {
+                text: 'Created date'
+            },
+                value: {
+                html: identifiedNeed.createdDate | formatDisplayDate
+            }
+            }]
+    }) }}
+
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ submitButton({
+            text: "Close need",
+            alternativeHyperlinkHref: "/csip-records/" + recordUuid
+        }) }}
+    </form>
+{% endblock %}

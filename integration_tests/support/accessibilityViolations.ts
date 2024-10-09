@@ -24,6 +24,13 @@ export const checkAxeAccessibility = () => {
     ],
   } as Spec)
   cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
+  checkStyleRules()
+}
+
+const checkStyleRules = () => {
+  // No un-curly apostrophes in text
+  cy.findByText(/[\s\S]*'[\s\S]*/i).should('not.exist')
 }
 
 export default {
