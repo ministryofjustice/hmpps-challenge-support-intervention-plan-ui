@@ -73,6 +73,11 @@ context('test /update-plan/intervention-details', () => {
     getIntervention().should('be.visible')
     getResponsiblePerson().should('be.visible')
     getTargetDate().should('be.visible')
+
+    getIntervention().clear().type('a'.repeat(2999), { delay: 0 })
+    cy.contains(/you have [0-9,]+ characters? remaining/i).should('not.be.visible')
+    getIntervention().clear().type('a'.repeat(3000), { delay: 0 })
+    cy.contains(/you have 1,000 characters remaining/i).should('be.visible')
   }
 
   const validateErrorsMandatory = () => {
