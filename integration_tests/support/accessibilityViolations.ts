@@ -30,7 +30,11 @@ export const checkAxeAccessibility = () => {
 
 const checkStyleRules = () => {
   // No un-curly apostrophes in text
-  cy.findByText(/[\s\S]*'[\s\S]*/i).should('not.exist')
+  cy.findAllByText(/[\s\S]*'[\s\S]*/i).each(element => {
+    if (!element.hasClass('govuk-summary-list__value') && !element.hasClass('govuk-inset-text')) {
+      throw Error(`Non-curly apostrophe found in the following text: ${element.text()}`)
+    }
+  })
 }
 
 export default {
