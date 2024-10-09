@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
 import { formatInputDate } from '../../../../utils/datetimeUtils'
-import { parseIndex } from '../subJourneyUtils'
+import { parseIdentifiedNeedIndex } from '../subJourneyUtils'
 import { IdentifiedNeed } from '../../../../@types/express'
 
 export class InterventionDetailsController {
   GET = async (req: Request, res: Response) => {
-    const { success, isNew, index } = parseIndex(req)
+    const { success, isNew, index } = parseIdentifiedNeedIndex(req)
 
     if (!success) {
       return res.notFound()
@@ -41,7 +41,7 @@ export class InterventionDetailsController {
   }
 
   POST = async (req: Request<Record<string, string>, unknown, SchemaType>, res: Response) => {
-    const { success, isNew, index } = parseIndex(req)
+    const { success, isNew, index } = parseIdentifiedNeedIndex(req)
 
     if (!success) {
       return res.redirect('back')

@@ -131,3 +131,6 @@ integration_tests/screenshots/
 
 # Sentry Config File
 .env.sentry-build-plugin
+
+# wiremock 
+wiremock.jar

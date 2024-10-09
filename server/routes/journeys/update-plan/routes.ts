@@ -8,6 +8,7 @@ import { UpdateInterventionDetailsRoutes } from './update-intervention-details/r
 import { UpdateIdentifiedNeedsRoutes } from './identified-needs/routes'
 import { UpdatePlannedInterventionRoutes } from './planned-intervention/routes'
 import { NewInterventionDetailsRoutes } from './intervention-details/routes'
+import { UpdateIdentifiedNeedRoutes } from './update-identified-need/routes'
 
 function Routes({ csipApiService }: Services) {
   const { router, get } = JourneyRouter()
@@ -20,6 +21,7 @@ function Routes({ csipApiService }: Services) {
 
   // update identified needs journeys
   router.use('/identified-needs', UpdateIdentifiedNeedsRoutes(csipApiService))
+  router.use('/update-identified-need/:identifiedNeedUuid', UpdateIdentifiedNeedRoutes(csipApiService))
   router.use('/update-intervention-details/:identifiedNeedUuid', UpdateInterventionDetailsRoutes(csipApiService))
   router.use('/update-planned-intervention/:identifiedNeedUuid', UpdatePlannedInterventionRoutes(csipApiService))
 

@@ -2,11 +2,11 @@ import { Request, Response } from 'express'
 import { format } from 'date-fns'
 import { SchemaType } from './schemas'
 import { IdentifiedNeed } from '../../../../@types/express'
-import { parseIndex } from '../subJourneyUtils'
+import { parseIdentifiedNeedIndex } from '../subJourneyUtils'
 
 export class RecordActionsProgressController {
   GET = async (req: Request, res: Response) => {
-    const { success, isNew, index } = parseIndex(req)
+    const { success, isNew, index } = parseIdentifiedNeedIndex(req)
 
     if (!success) {
       return res.notFound()
@@ -30,7 +30,7 @@ export class RecordActionsProgressController {
   }
 
   POST = async (req: Request<Record<string, string>, unknown, SchemaType>, res: Response) => {
-    const { success, isNew, index } = parseIndex(req)
+    const { success, isNew, index } = parseIdentifiedNeedIndex(req)
     if (!success) {
       return res.redirect('back')
     }
