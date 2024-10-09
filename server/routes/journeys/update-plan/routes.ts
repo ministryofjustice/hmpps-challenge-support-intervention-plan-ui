@@ -6,6 +6,7 @@ import { UpdatePlanController } from './controller'
 import { UpdateNextReviewDateRoutes } from './next-review-date/routes'
 import { UpdateInterventionDetailsRoutes } from './update-intervention-details/routes'
 import { UpdateIdentifiedNeedsRoutes } from './identified-needs/routes'
+import { UpdatePlannedInterventionRoutes } from './planned-intervention/routes'
 import { NewInterventionDetailsRoutes } from './intervention-details/routes'
 
 function Routes({ csipApiService }: Services) {
@@ -20,6 +21,7 @@ function Routes({ csipApiService }: Services) {
   // update identified needs journeys
   router.use('/identified-needs', UpdateIdentifiedNeedsRoutes(csipApiService))
   router.use('/update-intervention-details/:identifiedNeedUuid', UpdateInterventionDetailsRoutes(csipApiService))
+  router.use('/update-planned-intervention/:identifiedNeedUuid', UpdatePlannedInterventionRoutes(csipApiService))
 
   // add new identified need journey
   router.use('/intervention-details', NewInterventionDetailsRoutes())
