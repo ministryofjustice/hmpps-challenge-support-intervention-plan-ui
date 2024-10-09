@@ -1,6 +1,6 @@
 import { Request } from 'express'
 
-export const parseIndex = (req: Request) => {
+export const parseIdentifiedNeedIndex = (req: Request) => {
   const index = Number(req.params['index']) - 1
   return {
     success: !Number.isNaN(index) && (req.journeyData.plan!.identifiedNeeds || []).length >= index,

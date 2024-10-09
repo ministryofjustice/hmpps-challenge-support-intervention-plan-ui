@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
-import { parseIndex } from '../subJourneyUtils'
+import { parseIdentifiedNeedIndex } from '../subJourneyUtils'
 
 export class SummariseIdentifiedNeedController {
   GET = async (req: Request, res: Response) => {
-    const { success, isNew, index } = parseIndex(req)
+    const { success, isNew, index } = parseIdentifiedNeedIndex(req)
 
     if (!success) {
       return res.notFound()
@@ -23,7 +23,7 @@ export class SummariseIdentifiedNeedController {
   }
 
   POST = async (req: Request<Record<string, string>, unknown, SchemaType>, res: Response) => {
-    const { success, isNew, index } = parseIndex(req)
+    const { success, isNew, index } = parseIdentifiedNeedIndex(req)
     if (!success) {
       return res.redirect('back')
     }
