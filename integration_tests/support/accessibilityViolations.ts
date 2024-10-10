@@ -1,4 +1,5 @@
 import { Result, Spec } from 'axe-core'
+import { fail } from 'assert'
 
 const logAccessibilityViolations = (violations: Result[]) => {
   cy.task('logAccessibilityViolationsSummary', `Accessibility violations detected: ${violations.length}`)
@@ -30,10 +31,16 @@ export const checkAxeAccessibility = () => {
 
 const checkStyleRules = () => {
   // No un-curly apostrophes in text
+  cy.get('body').then(body => {
+    body.append(`<div class="govuk-summary-list__value test-dummy-div">'</div>`)
+  })
   cy.findAllByText(/[\s\S]*'[\s\S]*/i).each(element => {
     if (!element.hasClass('govuk-summary-list__value') && !element.hasClass('govuk-inset-text')) {
-      throw Error(`Non-curly apostrophe found in the following text: ${element.text()}`)
+      fail(`Non-curly apostrophe found in the following text: ${element.text()}`)
     }
+  })
+  cy.get('.test-dummy-div').then(dummyDiv => {
+    dummyDiv.remove()
   })
 }
 
