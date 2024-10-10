@@ -4,10 +4,10 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Record any actions or progress - Develop an initial plan" %}
+{% set pageTitle = "Record any actions or progress - " + ("Update a plan" if isUpdate else "Develop an initial plan") %}
 
 {% block innerContent %}
-    <span class="govuk-caption-l">Develop an initial plan</span>
+    {% include 'base/components/plan-caption.njk' %}
     <label for="progression">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Record any actions or progress (optional)</h1>
     </label>
