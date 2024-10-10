@@ -97,10 +97,10 @@ context('test /update-investigation', () => {
     cy.findByRole('link', { name: /add information on the staff involved in the investigation/i }).should('be.visible')
     cy.findByRole('link', { name: /add information on the evidence secured/i }).should('be.visible')
     cy.findByRole('link', { name: /add information on why the behaviour occurred/i }).should('be.visible')
-    cy.findByRole('link', { name: /add information about the prisoner's usual behaviour presentation/i }).should(
+    cy.findByRole('link', { name: /add information about the prisoner’s usual behaviour presentation/i }).should(
       'be.visible',
     )
-    cy.findByRole('link', { name: /add information about the prisoner's triggers/i }).should('be.visible')
-    cy.findByRole('link', { name: /add information about the prisoner's protective factors/i }).should('be.visible')
+    cy.findByRole('link', { name: /add information about the prisoner’s triggers/i }).should('be.visible')
+    cy.findByRole('link', { name: /add information about the prisoner’s protective factors/i }).should('be.visible')
   }
 })

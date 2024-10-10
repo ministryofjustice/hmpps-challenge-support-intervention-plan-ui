@@ -31,17 +31,14 @@ export const checkAxeAccessibility = () => {
 
 const checkStyleRules = () => {
   // No un-curly apostrophes in text
-  cy.get('body').then(body => {
-    body.append(`<div class="govuk-summary-list__value test-dummy-div">'</div>`)
-  })
-  cy.findAllByText(/[\s\S]*'[\s\S]*/i).each(element => {
-    if (!element.hasClass('govuk-summary-list__value') && !element.hasClass('govuk-inset-text')) {
+  cy.contains('*', `'`)
+    .should('have.length.gte', 0)
+    .each(element => {
+      if (element.hasClass('govuk-summary-list__value') || element.hasClass('govuk-inset-text')) {
+        return
+      }
       fail(`Non-curly apostrophe found in the following text: ${element.text()}`)
-    }
-  })
-  cy.get('.test-dummy-div').then(dummyDiv => {
-    dummyDiv.remove()
-  })
+    })
 }
 
 export default {
