@@ -217,9 +217,9 @@ const fillInformationReactiveNotOnBehalf = () => {
   cy.url().should('include', '/details')
   cy.findByRole('heading', { name: /incident details/i }).should('be.visible')
   cy.findByRole('heading', { name: /When was the incident\?/i }).should('be.visible')
-  cy.findByRole('textbox', { name: /date of incident/i }).type('06/07/2024')
-  cy.findByRole('textbox', { name: /hour/i }).type('12')
-  cy.findByRole('textbox', { name: /minute/i }).type('24')
+  cy.findByRole('textbox', { name: /date of incident/i }).type('06/07/2024', { delay: 0 })
+  cy.findByRole('textbox', { name: /hour/i }).type('12', { delay: 0 })
+  cy.findByRole('textbox', { name: /minute/i }).type('24', { delay: 0 })
   cy.findByRole('combobox', { name: /where did the incident occur\?/i }).select('LocationB')
   cy.findByRole('combobox', { name: /what was the incident type\?/i }).select('TypeA')
   checkAxeAccessibility()
@@ -229,7 +229,7 @@ const fillInformationReactiveNotOnBehalf = () => {
   cy.findByRole('heading', { name: /incident involvement/i }).should('be.visible')
   cy.findByRole('radio', { name: /factor1/i }).click()
   cy.findByRole('radio', { name: /yes/i }).click()
-  cy.findByRole('textbox', { name: /names of staff assaulted/i }).type('TestStaff Member')
+  cy.findByRole('textbox', { name: /names of staff assaulted/i }).type('TestStaff Member', { delay: 0 })
   checkAxeAccessibility()
   cy.findByRole('button', { name: /continue/i }).click()
 
@@ -247,6 +247,7 @@ const fillInformationReactiveNotOnBehalf = () => {
   })
   cy.findByRole('textbox', { name: /Describe the incident and the concerns relating to the incident/i }).type(
     'incident concerns foobar123',
+    { delay: 0 },
   )
   checkAxeAccessibility()
   cy.findByRole('button', { name: /continue/i }).click()
@@ -255,6 +256,7 @@ const fillInformationReactiveNotOnBehalf = () => {
   cy.findByRole('heading', { name: /what reasons have been given for the incident\?/i }).should('be.visible')
   cy.findByRole('textbox', { name: /what reasons have been given for the incident/i }).type(
     'incident reasons foobar123',
+    { delay: 0 },
   )
   checkAxeAccessibility()
   cy.findByRole('button', { name: /continue/i }).click()
@@ -280,7 +282,9 @@ const fillInformationReactiveNotOnBehalf = () => {
     .should('be.visible')
     .click()
   cy.url().should('include', '/code1-comment')
-  cy.findByRole('textbox', { name: /add a comment on factor1 factors \(optional\)/i }).type('factor comment')
+  cy.findByRole('textbox', { name: /add a comment on factor1 factors \(optional\)/i }).type('factor comment', {
+    delay: 0,
+  })
   cy.findByRole('button', { name: /continue/i }).click()
   cy.url().should('include', '/contributory-factors-comments')
   cy.findByRole('link', { name: /edit comment/i }).should('be.visible')
@@ -295,7 +299,7 @@ const fillInformationReactiveNotOnBehalf = () => {
 
   cy.url().should('include', '/additional-information')
   cy.findByRole('heading', { name: /add additional information \(optional\)/i }).should('be.visible')
-  cy.findByRole('textbox', { name: /add additional information \(optional\)/i }).type('additional info')
+  cy.findByRole('textbox', { name: /add additional information \(optional\)/i }).type('additional info', { delay: 0 })
   checkAxeAccessibility()
 }
 
@@ -310,7 +314,7 @@ const goFromFirstScreenToCheckYourAnswersPage = () => {
   cy.findByRole('button', { name: /continue/i }).click()
   cy.findByRole('button', { name: /continue/i }).click()
   cy.findByRole('button', { name: /continue/i }).click()
-  cy.findByRole('textbox', { name: /add additional information \(optional\)/i }).type('additional info')
+  cy.findByRole('textbox', { name: /add additional information \(optional\)/i }).type('additional info', { delay: 0 })
   cy.findByRole('button', { name: /continue/i }).click()
   cy.url().should('include', '/check-answers')
   checkAxeAccessibility()
@@ -323,7 +327,7 @@ const changeAnswersOnCYAPage = () => {
     .click()
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
   cy.findByRole('textbox', { name: /What’s their name?/i }).clear()
-  cy.findByRole('textbox', { name: /What’s their name?/i }).type('Joe Doe')
+  cy.findByRole('textbox', { name: /What’s their name?/i }).type('Joe Doe', { delay: 0 })
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Name of referrer').next().should('include.text', 'Joe Doe')
 
@@ -374,7 +378,9 @@ const changeAnswersOnCYAPage = () => {
     .should('be.visible')
     .click()
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
-  cy.findByRole('textbox', { name: /add a comment on factor2 factors \(optional\)/i }).type('factor two comment')
+  cy.findByRole('textbox', { name: /add a comment on factor2 factors \(optional\)/i }).type('factor two comment', {
+    delay: 0,
+  })
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Comment on factor2').next().should('include.text', 'factor two comment')
 
@@ -393,7 +399,9 @@ const changeAnswersOnCYAPage = () => {
     .click()
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
   cy.findByRole('textbox', { name: /add additional information \(optional\)/i }).clear()
-  cy.findByRole('textbox', { name: /add additional information \(optional\)/i }).type('other additional info')
+  cy.findByRole('textbox', { name: /add additional information \(optional\)/i }).type('other additional info', {
+    delay: 0,
+  })
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Other information relating to this referral')
     .next()
@@ -407,7 +415,7 @@ const changeAnswersOnCYAProactiveSection = () => {
     .click()
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
   cy.findByRole('textbox', { name: /Date of occurrence/i }).clear()
-  cy.findByRole('textbox', { name: /Date of occurrence/i }).type('05/05/2024')
+  cy.findByRole('textbox', { name: /Date of occurrence/i }).type('05/05/2024', { delay: 0 })
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Date of occurrence').next().should('include.text', '05 May 2024')
 
@@ -418,8 +426,8 @@ const changeAnswersOnCYAProactiveSection = () => {
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
   cy.findByRole('textbox', { name: /hour/i }).clear()
   cy.findByRole('textbox', { name: /minute/i }).clear()
-  cy.findByRole('textbox', { name: /hour/i }).type('23')
-  cy.findByRole('textbox', { name: /minute/i }).type('59')
+  cy.findByRole('textbox', { name: /hour/i }).type('23', { delay: 0 })
+  cy.findByRole('textbox', { name: /minute/i }).type('59', { delay: 0 })
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Time of occurrence').next().should('include.text', '23:59')
 
@@ -456,7 +464,7 @@ const changeAnswersOnCYAProactiveSection = () => {
     .click()
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
   cy.findByRole('textbox', { name: /names of staff assaulted/i }).clear()
-  cy.findByRole('textbox', { name: /names of staff assaulted/i }).type('Test, Member')
+  cy.findByRole('textbox', { name: /names of staff assaulted/i }).type('Test, Member', { delay: 0 })
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Names of staff assaulted').next().should('include.text', 'Test, Member')
 
@@ -479,6 +487,7 @@ const changeAnswersOnCYAProactiveSection = () => {
   cy.findByRole('textbox', { name: /Describe the behaviour and the concerns relating to the behaviour/i }).clear()
   cy.findByRole('textbox', { name: /Describe the behaviour and the concerns relating to the behaviour/i }).type(
     'incident concerns foobar456',
+    { delay: 0 },
   )
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Description of behaviour and concerns')
@@ -493,6 +502,7 @@ const changeAnswersOnCYAProactiveSection = () => {
   cy.findByRole('textbox', { name: /what reasons have been given for the behaviour/i }).clear()
   cy.findByRole('textbox', { name: /what reasons have been given for the behaviour/i }).type(
     'incident reasons foobar456',
+    { delay: 0 },
   )
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Reasons given for the behaviour').next().should('include.text', 'incident reasons foobar456')
@@ -505,7 +515,7 @@ const changeAnswersOnCYAReactiveSection = () => {
     .click()
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
   cy.findByRole('textbox', { name: /Date of incident/i }).clear()
-  cy.findByRole('textbox', { name: /Date of incident/i }).type('06/06/2024')
+  cy.findByRole('textbox', { name: /Date of incident/i }).type('06/06/2024', { delay: 0 })
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Date of incident').next().should('include.text', '06 June 2024')
 
@@ -553,7 +563,7 @@ const changeAnswersOnCYAReactiveSection = () => {
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
   cy.findByRole('radio', { name: /yes/i }).click()
   cy.findByRole('textbox', { name: /names of staff assaulted/i }).clear()
-  cy.findByRole('textbox', { name: /names of staff assaulted/i }).type('Test, Member')
+  cy.findByRole('textbox', { name: /names of staff assaulted/i }).type('Test, Member', { delay: 0 })
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Staff assaulted').next().should('include.text', 'Yes')
 
@@ -563,7 +573,7 @@ const changeAnswersOnCYAReactiveSection = () => {
     .click()
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
   cy.findByRole('textbox', { name: /names of staff assaulted/i }).clear()
-  cy.findByRole('textbox', { name: /names of staff assaulted/i }).type('Test Member')
+  cy.findByRole('textbox', { name: /names of staff assaulted/i }).type('Test Member', { delay: 0 })
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Names of staff assaulted').next().should('include.text', 'Test Member')
 
@@ -575,6 +585,7 @@ const changeAnswersOnCYAReactiveSection = () => {
   cy.findByRole('textbox', { name: /Describe the incident and the concerns relating to the incident/i }).clear()
   cy.findByRole('textbox', { name: /Describe the incident and the concerns relating to the incident/i }).type(
     'incident concerns foobar789',
+    { delay: 0 },
   )
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Description of incident and concerns').next().should('include.text', 'incident concerns foobar789')
@@ -587,6 +598,7 @@ const changeAnswersOnCYAReactiveSection = () => {
   cy.findByRole('textbox', { name: /what reasons have been given for the incident/i }).clear()
   cy.findByRole('textbox', { name: /what reasons have been given for the incident/i }).type(
     'incident reasons foobar789',
+    { delay: 0 },
   )
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Reasons given for the incident').next().should('include.text', 'incident reasons foobar789')
