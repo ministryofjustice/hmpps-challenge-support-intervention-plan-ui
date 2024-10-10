@@ -3,8 +3,6 @@ import { SchemaType } from '../../develop-an-initial-plan/record-actions-progres
 
 export class NewActionsProgressionController {
   GET = async (req: Request, res: Response) => {
-    req.journeyData.plan!.identifiedNeedSubJourney ??= {}
-
     return res.render('develop-an-initial-plan/record-actions-progress/view', {
       progression:
         res.locals.formResponses?.['progression'] ?? req.journeyData.plan!.identifiedNeedSubJourney!.progression,
