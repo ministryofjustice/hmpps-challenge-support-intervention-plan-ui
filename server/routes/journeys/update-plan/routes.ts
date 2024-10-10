@@ -10,6 +10,7 @@ import { UpdatePlannedInterventionRoutes } from './planned-intervention/routes'
 import { NewInterventionDetailsRoutes } from './intervention-details/routes'
 import { UpdateIdentifiedNeedRoutes } from './update-identified-need/routes'
 import { UpdateActionsProgressRoutes } from './update-actions-progress/routes'
+import { NewIdentifiedNeedRoutes } from './summarise-identified-need/routes'
 
 function Routes({ csipApiService }: Services) {
   const { router, get } = JourneyRouter()
@@ -28,6 +29,7 @@ function Routes({ csipApiService }: Services) {
   router.use('/update-actions-progress/:identifiedNeedUuid', UpdateActionsProgressRoutes(csipApiService))
 
   // add new identified need journey
+  router.use('/summarise-identified-need', NewIdentifiedNeedRoutes())
   router.use('/intervention-details', NewInterventionDetailsRoutes())
 
   return router
