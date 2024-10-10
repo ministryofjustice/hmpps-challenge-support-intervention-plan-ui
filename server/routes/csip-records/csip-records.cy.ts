@@ -134,7 +134,7 @@ context('test /csip-records', () => {
         cy.findByText('some actions').should('be.visible')
         cy.findByText('a summary').should('be.visible')
         cy.findByText('joe bloggs').should('be.visible')
-        cy.findByText('04 May 2024').should('be.visible')
+        cy.findByText('05 April 2024').should('be.visible')
       })
     cy.findByRole('heading', { name: 'Review 2' }).should('be.visible')
     cy.get('dl')
