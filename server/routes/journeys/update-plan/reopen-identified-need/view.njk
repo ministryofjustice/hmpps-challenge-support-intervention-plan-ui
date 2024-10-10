@@ -1,0 +1,88 @@
+{% from "partials/submitButton/macro.njk" import submitButton %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Reopen identified need - Update a plan" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Update a plan</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Are you sure you want to reopen this identified need?</h1>
+    {{ govukSummaryList({
+        card: {
+            classes: "govuk-!-margin-bottom-7",
+            title: { 
+              text: need.identifiedNeed
+            },
+            actions: {
+              items: [{
+                html: '<strong class="govuk-tag govuk-tag--grey">Closed</strong>' if need.closedDate else '<strong class="govuk-tag">Open</strong>'
+              }]
+            }
+        },
+        rows: [
+        {
+          key: {
+              text: 'Person responsible'
+          },
+          value: {
+              text: need.responsiblePerson
+          }
+        },
+        {
+          key: {
+            text: 'Closed date'
+          },
+          value: {
+            text: need.closedDate | formatDisplayDate
+          }
+        } if need.closedDate else undefined,
+        {
+          key: {
+              text: 'Target date'
+          },
+          value: {
+              text: need.targetDate | formatDisplayDate
+          }
+        },
+        {
+          key: {
+              text: 'Identified need summary'
+          },
+          value: {
+              html: (need.identifiedNeed or 'Not provided') | escape | boldAppendStamp | nl2br
+          }
+        },
+        {
+          key: {
+              text: 'Planned intervention'
+          },
+          value: {
+              html: (need.intervention or 'Not provided') | escape | boldAppendStamp | nl2br
+          }
+        },
+        {
+          key: {
+              text: 'Actions and progress'
+          },
+          value: {
+              html: (need.progression or 'Not provided') | escape | boldAppendStamp | nl2br
+          }
+        },
+        {
+          key: {
+              text: 'Created date'
+          },
+          value: {
+              html: need.createdDate | formatDisplayDate
+          }
+        }]
+    }) }}
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ submitButton({
+            text: "Reopen need",
+            alternativeHyperlinkHref: "/csip-records/" + recordUuid
+        }) }}
+    </form>
+{% endblock %}
