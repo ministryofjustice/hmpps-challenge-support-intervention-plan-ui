@@ -184,20 +184,7 @@ export class CsipRecordController {
       shouldShowTabs: !!investigation,
       plan: record.plan,
       identifiedNeeds: record.plan?.identifiedNeeds.sort(identifiedNeedSorter),
-      reviews: [
-        {
-          reviewDate: '2024-05-04',
-          actions: 'some actions',
-          summary: 'a summary',
-          recordedByDisplayName: 'joe bloggs',
-        },
-        {
-          reviewDate: '2024-04-15',
-          actions: 'other stuff',
-          summary: 'even longer',
-          recordedByDisplayName: 'test testerson',
-        },
-      ],
+      reviews: record.plan?.reviews,
       record,
       decision,
       investigation,

@@ -1,0 +1,38 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Actions and progress - Update a Plan" %}
+
+{% block innerContent %}
+    {% include 'base/components/plan-caption.njk' %}
+    <label for="progression">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{'Add information to actions and progress'}}</h1>
+    </label>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+        {% if currentActionsProgress %}
+            {{ govukInsetText({
+                html: currentActionsProgress | escape | boldAppendStamp | nl2br
+        }) }}
+        {% endif %}
+
+        {{ govukCharacterCount({
+            maxlength: maxLengthChars,
+            rows: 5,
+            threshold: threshold,
+            id: "progression",
+            name: "progression",
+            value: progression,
+            errorMessage: validationErrors | findError('progression')
+        }) }}
+
+        {{ submitButton({
+            text: "Confirm and save",
+            alternativeHyperlinkHref: "/csip-records/" + recordUuid
+        }) }}
+    </form>
+{% endblock %}
