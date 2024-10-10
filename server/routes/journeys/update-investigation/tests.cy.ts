@@ -51,7 +51,7 @@ context('test /update-investigation', () => {
       .within(() => {
         cy.findByRole('heading', { name: /interview with some person/i }).should('be.visible')
         cy.get('dd').contains('Some Person').should('be.visible')
-        cy.findByRole('link', { name: /change the interviewee's name \(interview with some person\)/i }).should(
+        cy.findByRole('link', { name: /change the interviewee’s name \(interview with some person\)/i }).should(
           'be.visible',
         )
         cy.findByRole('link', {
