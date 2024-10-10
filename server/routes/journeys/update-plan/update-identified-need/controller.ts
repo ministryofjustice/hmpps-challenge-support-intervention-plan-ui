@@ -10,11 +10,11 @@ export class UpdateIdentifiedNeedController extends PatchPlanController {
       return res.notFound()
     }
 
-    return res.render('develop-an-initial-plan/summarise-identified-need/view', {
+    return res.render('update-plan/update-identified-need/view', {
       identifiedNeed: res.locals.formResponses?.['identifiedNeed'] ?? identifiedNeed.identifiedNeed,
-      isUpdate: true,
       backUrl: '../identified-needs',
       recordUuid: req.journeyData.csipRecord!.recordUuid,
+      isUpdate: true,
     })
   }
 

@@ -3,19 +3,16 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Summarise the identified need - " + ("Update a plan" if isUpdate else "Develop an initial plan") %}
+{% set pageTitle = "Summarise the identified need - Update a plan" %}
 
 {% block innerContent %}
     {% include 'base/components/plan-caption.njk' %}
     <label for="identifiedNeed">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Summarise the identified need</h1>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Change the identified need summary</h1>
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {{ govukCharacterCount({
-            hint: {
-                text: "This is a short description for your records."
-            },
             maxlength: 1000,
             rows: 1,
             threshold: "100",
@@ -26,7 +23,8 @@
             errorMessage: validationErrors | findError('identifiedNeed')
         }) }}
         {{ submitButton({
-            text: "Continue"
+            text: "Confirm and save",
+            alternativeHyperlinkHref: ("/csip-records/" + recordUuid)
         }) }}
     </form>
 {% endblock %}
