@@ -5,10 +5,19 @@ import { PatchPlanController } from '../../base/patchPlanController'
 import { getMaxCharsAndThresholdForAppend, getTextForApiSubmission } from '../../../../utils/appendFieldUtils'
 
 export class UpdateActionsProgressController extends PatchPlanController {
-  GET = async (req: Request, res: Response) => {
+  GET = async (req: Request, res: Response, next: NextFunction) => {
     const identifiedNeed = this.getSelectedIdentifiedNeed(req)
+
+    if (!identifiedNeed) {
+      return res.notFound()
+    }
+
+    if (identifiedNeed.closedDate) {
+      return next(Error(`Identified need with uuid: ${identifiedNeed.identifiedNeedUuid} is already closed`))
+    }
+
     const currentActionsProgress = identifiedNeed?.progression
-    res.render('update-plan/update-actions-progress/view', {
+    return res.render('update-plan/update-actions-progress/view', {
       currentActionsProgress,
       progression: res.locals.formResponses?.['progression'],
       isUpdate: true,

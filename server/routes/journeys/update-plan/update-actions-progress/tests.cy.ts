@@ -2,7 +2,6 @@ import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
-import { IdentifiedNeed } from '../../../../@types/express'
 
 context('test /update-actions-progress/:uuid', () => {
   const uuid = uuidV4()
@@ -24,6 +23,7 @@ context('test /update-actions-progress/:uuid', () => {
     navigateToTestPage()
     checkAxeAccessibility()
 
+    cy.visit(`${uuid}/update-plan/update-actions-progress/a0000000-f7b1-4c56-bec8-69e390eb0002`)
     cy.url().should('to.match', /\/update-actions-progress\/[a-zA-Z0-9-]+$/)
 
     validatePageContents()
@@ -35,20 +35,23 @@ context('test /update-actions-progress/:uuid', () => {
     cy.task('stubPatchIdentifiedNeedSuccess')
     navigateToTestPage()
     injectJourneyDataAndReload(uuid, {
-      plan: {
-        identifiedNeeds: [
-          {
-            identifiedNeed: 'first need',
-            responsiblePerson: 'test testerson',
-            createdDate: '2024-03-01',
-            targetDate: '2024-04-02',
-            intervention: 'int',
-            progression: 'a'.repeat(3000),
-            identifiedNeedUuid: 'big-123',
-          } as IdentifiedNeed,
-        ],
+      csipRecord: {
+        plan: {
+          identifiedNeeds: [
+            {
+              identifiedNeed: 'first need',
+              responsiblePerson: 'test testerson',
+              createdDate: '2024-03-01',
+              targetDate: '2024-04-02',
+              intervention: 'int',
+              progression: 'a'.repeat(3000),
+              identifiedNeedUuid: 'big-123',
+            },
+          ],
+        },
       },
     })
+    cy.visit(`${uuid}/update-plan/update-actions-progress/big-123`)
     cy.url().should('to.match', /\/update-actions-progress\/[a-zA-Z0-9-]+$/)
 
     cy.findAllByText(`You have ${1000 - generateSaveTimestamp('John Smith').length} characters remaining`).should(
@@ -56,9 +59,51 @@ context('test /update-actions-progress/:uuid', () => {
     )
   })
 
+  it('should try out with closed need', () => {
+    cy.task('stubPatchIdentifiedNeedSuccess')
+    navigateToTestPage()
+    injectJourneyDataAndReload(uuid, {
+      csipRecord: {
+        plan: {
+          identifiedNeeds: [
+            {
+              identifiedNeed: 'first need',
+              responsiblePerson: 'test testerson',
+              createdDate: '2024-03-01',
+              targetDate: '2024-04-02',
+              intervention: 'int',
+              progression: 'foobar',
+              identifiedNeedUuid: 'big-123',
+              closedDate: '2024-05-03',
+            },
+          ],
+        },
+      },
+    })
+    cy.visit(`${uuid}/update-plan/update-actions-progress/big-123`, {
+      failOnStatusCode: false,
+    })
+    cy.url().should('to.match', /\/update-actions-progress\/[a-zA-Z0-9-]+$/)
+
+    cy.findAllByText(`Sorry, there is a problem with the service`).should('be.visible')
+  })
+
+  it('should try out with missing need', () => {
+    cy.task('stubPatchIdentifiedNeedSuccess')
+    navigateToTestPage()
+    cy.visit(`${uuid}/update-plan/update-actions-progress/big-123`, {
+      failOnStatusCode: false,
+    })
+
+    cy.url().should('to.match', /\/update-actions-progress\/[a-zA-Z0-9-]+$/)
+
+    cy.findAllByText(`Page not found`).should('be.visible')
+  })
+
   it('should handle API errors', () => {
     cy.task('stubPatchIdentifiedNeedFail')
     navigateToTestPage()
+    cy.visit(`${uuid}/update-plan/update-actions-progress/a0000000-f7b1-4c56-bec8-69e390eb0002`)
 
     getInputTextbox().clear().type('some text')
     getContinueButton().click()
@@ -73,7 +118,6 @@ context('test /update-actions-progress/:uuid', () => {
       failOnStatusCode: false,
     })
     cy.url().should('to.match', /\/identified-needs$/)
-    cy.visit(`${uuid}/update-plan/update-actions-progress/big-123`)
   }
 
   const validatePageContents = () => {
