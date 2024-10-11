@@ -107,10 +107,11 @@ export class PatchPlanController extends BaseJourneyController {
       need => need.identifiedNeedUuid === identifiedNeedUuid,
     )!
 
+    const { closedDate, ...openIdenitifiedNeed } = identifiedNeed
+
     try {
       await this.csipApiService.updateIdentifiedNeed(req as Request, identifiedNeedUuid, {
-        ...identifiedNeed,
-        closedDate: null,
+        ...openIdenitifiedNeed,
       })
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_IDENTIFIED_NEED_REOPENED)
       next()

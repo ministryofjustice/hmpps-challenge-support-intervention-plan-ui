@@ -29,6 +29,31 @@ context('test /updatel-plan/reopen-identified-need', () => {
     cy.findByText('You’ve reopened an identified need in this plan.').should('be.visible')
   })
 
+  it('should error when a need is not closed', () => {
+    navigateToTestPage()
+    cy.visit(
+      `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-plan/reopen-identified-need/a0000000-f7b1-4c56-bec8-69e390eb0003`,
+      { failOnStatusCode: false },
+    )
+
+    checkAxeAccessibility()
+
+    cy.findByText('Page not found')
+  })
+
+  it('should error when a need is not found', () => {
+    navigateToTestPage()
+    cy.visit(
+      `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-plan/reopen-identified-need/somethingidk`,
+      { failOnStatusCode: false },
+    )
+    cy.url().should('to.match', /reopen-identified-need\/[a-zA-Z0-9-]*/i)
+
+    checkAxeAccessibility()
+
+    cy.findByText('Page not found')
+  })
+
   it('should handle API errors', () => {
     cy.task('stubPatchIdentifiedNeedFail')
     navigateToTestPage()
