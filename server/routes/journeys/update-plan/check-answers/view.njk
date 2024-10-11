@@ -117,9 +117,8 @@
         <div class="govuk-button-group">
             {{ submitButton({
                 text: "Confirm and save",
-                alternativeHyperlinkHref: "/csip-records/" + recordUuid
+                alternativeHyperlinkHref: csipRecordUrl
             }) }}
-            <a class="govuk-link govuk-link--no-visited-state" href="{{ csipRecordUrl }}">Cancel</a>
         </div>
     </form>
 {% endblock %}
