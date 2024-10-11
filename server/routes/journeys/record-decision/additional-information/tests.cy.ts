@@ -66,7 +66,7 @@ context('test /record-decision/additional-information', () => {
   }
 
   const proceedToNextScreen = () => {
-    getInputTextbox().clear().type("<script>alert('xss');</script>")
+    getInputTextbox().clear().type("<script>alert('xss');</script>", { delay: 0 })
     cy.findByRole('button', { name: 'Continue' }).click()
     cy.url().should('to.match', /\/check-answers$/)
   }

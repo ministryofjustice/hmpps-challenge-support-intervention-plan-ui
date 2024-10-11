@@ -33,7 +33,7 @@ context('Make a Referral Journey', () => {
   })
 
   const goBackCheckValuesSaved = () => {
-    cy.findByRole('textbox', { name: /names of staff assaulted/i }).type('staff stafferson')
+    cy.findByRole('textbox', { name: /names of staff assaulted/i }).type('staff stafferson', { delay: 0 })
     cy.findByRole('button', { name: /continue/i }).click()
     cy.url().should('include', 'description')
 
@@ -98,7 +98,7 @@ context('Make a Referral Journey', () => {
 
     cy.findByRole('radio', { name: /yes/i }).click()
     cy.findByRole('button', { name: /continue/i }).click()
-    cy.findByRole('textbox', { name: /names of staff assaulted/i }).type('staff stafferson')
+    cy.findByRole('textbox', { name: /names of staff assaulted/i }).type('staff stafferson', { delay: 0 })
     cy.findByRole('button', { name: /continue/i }).click()
     cy.get('p')
       .contains(/Enter the names of staff assaulted/i)

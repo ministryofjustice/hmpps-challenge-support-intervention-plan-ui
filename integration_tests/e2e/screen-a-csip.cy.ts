@@ -34,7 +34,7 @@ context('Screen a CSIP Referral Journey', () => {
     cy.url().should('include', '/screen')
     getNfaRadio().click()
     checkAxeAccessibility()
-    getDescribeTextbox().type('no action needed')
+    getDescribeTextbox().type('no action needed', { delay: 0 })
     getContinueButton().click()
 
     cy.url().should('include', '/screen/check-answers')
@@ -43,7 +43,7 @@ context('Screen a CSIP Referral Journey', () => {
     getChangeLink().click()
 
     cy.url().should('include', '/screen')
-    getDescribeTextbox().type('modified')
+    getDescribeTextbox().type('modified', { delay: 0 })
     getContinueButton().click()
 
     cy.url().should('include', '/screen/check-answers')
@@ -78,7 +78,7 @@ context('Screen a CSIP Referral Journey', () => {
 
     cy.url().should('include', '/screen')
     getNfaRadio().should('not.be.checked')
-    getDescribeTextbox().type('no action needed')
+    getDescribeTextbox().type('no action needed', { delay: 0 })
     cy.findByRole('button', { name: /continue/i }).click()
 
     cy.url().should('include', '/screen')
@@ -93,7 +93,7 @@ context('Screen a CSIP Referral Journey', () => {
     cy.url().should('include', '/screen')
     getNfaRadio().click()
     checkAxeAccessibility()
-    getDescribeTextbox().type('no action needed')
+    getDescribeTextbox().type('no action needed', { delay: 0 })
     cy.findByRole('button', { name: /continue/i }).click()
 
     cy.url().should('include', '/screen/check-answers')

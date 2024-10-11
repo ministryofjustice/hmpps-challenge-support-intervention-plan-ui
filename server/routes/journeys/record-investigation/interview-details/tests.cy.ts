@@ -97,13 +97,13 @@ context('test /record-investigation/interview-details', () => {
 
   const validateErrorMessageInterviewDate = () => {
     resetInputs()
-    getInterviewDate().clear().type('31/02/2024')
+    getInterviewDate().clear().type('31/02/2024', { delay: 0 })
     getContinueButton().click()
 
     cy.findAllByText('Date of interview must be a real date').should('have.length', 2)
     getInterviewDate().should('have.value', '31/02/2024')
 
-    getInterviewDate().clear().type('01/01/2124')
+    getInterviewDate().clear().type('01/01/2124', { delay: 0 })
     getContinueButton().click()
 
     cy.findAllByText('Date of the interview must be today or in the past').should('have.length', 2)
@@ -135,9 +135,9 @@ context('test /record-investigation/interview-details', () => {
   }
 
   const completeInputs = () => {
-    getInterviewDate().clear().type('01/01/2021')
-    getIntervieweeName().clear().type('John Smith')
-    getInterviewText().clear().type('Interviewee comment')
+    getInterviewDate().clear().type('01/01/2021', { delay: 0 })
+    getIntervieweeName().clear().type('John Smith', { delay: 0 })
+    getInterviewText().clear().type('Interviewee comment', { delay: 0 })
     getIntervieweeRole().click()
   }
 

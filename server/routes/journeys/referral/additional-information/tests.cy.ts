@@ -35,7 +35,7 @@ context('Make a Referral Journey', () => {
     cy.url().should('include', 'check-answers')
 
     cy.go('back')
-    cy.findByRole('textbox').type('aaa')
+    cy.findByRole('textbox').type('aaa', { delay: 0 })
     cy.findByRole('button', { name: /continue/i }).click()
     cy.go('back')
     cy.findByRole('textbox').should('have.value', 'aaa')
@@ -58,7 +58,7 @@ context('Make a Referral Journey', () => {
       force: true,
     })
     cy.contains(/you have 1,000 characters remaining/i).should('be.visible')
-    cy.findByRole('textbox').type('a')
+    cy.findByRole('textbox').type('a', { delay: 0 })
     cy.contains(/you have 999 characters remaining/i).should('be.visible')
     cy.findByRole('textbox').type('a'.repeat(999), {
       delay: 0,

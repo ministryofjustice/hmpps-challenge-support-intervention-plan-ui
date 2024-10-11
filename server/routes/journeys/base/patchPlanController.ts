@@ -4,9 +4,11 @@ import { components } from '../../../@types/csip'
 import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../../utils/constants'
 import { getNonUndefinedProp } from '../../../utils/utils'
 import { IdentifiedNeed } from '../../../@types/express'
+import { todayString } from '../../../utils/datetimeUtils'
 
 const MESSAGE_PLAN_UPDATED = 'You’ve updated the case management information.'
 const MESSAGE_IDENTIFIED_NEED_UPDATED = 'You’ve updated the identified needs information.'
+const MESSAGE_IDENTIFIED_NEED_CLOSED = 'You’ve closed an identified need in this plan.'
 
 export class PatchPlanController extends BaseJourneyController {
   getSelectedIdentifiedNeed = (req: Request): IdentifiedNeed | undefined => {
@@ -60,6 +62,31 @@ export class PatchPlanController extends BaseJourneyController {
         ...changes,
       })
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_IDENTIFIED_NEED_UPDATED)
+      next()
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  closeIdentifiedNeed = async <T>({
+    req,
+    next,
+    identifiedNeedUuid,
+  }: {
+    req: Request<unknown, unknown, T>
+    next: NextFunction
+    identifiedNeedUuid: string
+  }) => {
+    const identifiedNeed = req.journeyData.csipRecord!.plan!.identifiedNeeds.find(
+      need => need.identifiedNeedUuid === identifiedNeedUuid,
+    )!
+
+    try {
+      await this.csipApiService.updateIdentifiedNeed(req as Request, identifiedNeedUuid, {
+        ...identifiedNeed,
+        closedDate: todayString(),
+      })
+      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_IDENTIFIED_NEED_CLOSED)
       next()
     } catch (e) {
       next(e)

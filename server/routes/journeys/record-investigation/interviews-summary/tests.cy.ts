@@ -72,7 +72,7 @@ context('test /record-investigation/interviews-summary', () => {
     cy.go('back')
 
     cy.contains('dt', 'Interviewee').next().should('include.text', 'Some Person')
-    cy.findByRole('link', { name: /change the interviewee's name for interview 1/i })
+    cy.findByRole('link', { name: /change the interviewee’s name for interview 1/i })
       .should('be.visible')
       .click()
     cy.url().should('to.match', /interview-details\/1#interviewee$/)
@@ -86,7 +86,7 @@ context('test /record-investigation/interviews-summary', () => {
     cy.go('back')
 
     cy.contains('dt', 'Role').next().should('include.text', 'Witness')
-    cy.findByRole('link', { name: /change the interviewee's role for interview 1/i })
+    cy.findByRole('link', { name: /change the interviewee’s role for interview 1/i })
       .should('be.visible')
       .click()
     cy.url().should('to.match', /interview-details\/1#intervieweeRole$/)

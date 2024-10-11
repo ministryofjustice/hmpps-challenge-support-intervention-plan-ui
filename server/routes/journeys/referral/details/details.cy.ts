@@ -41,9 +41,9 @@ context('Make a Referral Journey', () => {
     cy.findByRole('textbox', { name: /hour/i }).should('have.value', '')
     cy.findByRole('textbox', { name: /minute/i }).should('have.value', '')
 
-    cy.findByRole('textbox', { name: /date of incident/i }).type('25/12/2001')
-    cy.findByRole('textbox', { name: /hour/i }).type('23')
-    cy.findByRole('textbox', { name: /minute/i }).type('23')
+    cy.findByRole('textbox', { name: /date of incident/i }).type('25/12/2001', { delay: 0 })
+    cy.findByRole('textbox', { name: /hour/i }).type('23', { delay: 0 })
+    cy.findByRole('textbox', { name: /minute/i }).type('23', { delay: 0 })
     cy.findByRole('button', { name: /continue/i }).click()
   }
 
@@ -63,8 +63,8 @@ context('Make a Referral Journey', () => {
     cy.findByRole('combobox', { name: /what’s the main concern\?/i }).should('have.value', 'A')
 
     cy.findByRole('textbox', { name: /date of occurrence/i }).clear()
-    cy.findByRole('textbox', { name: /hour/i }).type('52')
-    cy.findByRole('textbox', { name: /minute/i }).type('52')
+    cy.findByRole('textbox', { name: /hour/i }).type('52', { delay: 0 })
+    cy.findByRole('textbox', { name: /minute/i }).type('52', { delay: 0 })
     cy.findByRole('combobox', { name: /where was the most recent occurrence of the behaviour\?/i }).select(0)
     cy.findByRole('combobox', { name: /what’s the main concern\?/i }).select(0)
     cy.findByRole('button', { name: /continue/i }).click()
@@ -78,13 +78,13 @@ context('Make a Referral Journey', () => {
 
   const checkDatepickerEdgeCases = () => {
     // Select valid options for all other inputs
-    cy.findByRole('textbox', { name: /hour/i }).type('23')
-    cy.findByRole('textbox', { name: /minute/i }).type('23')
+    cy.findByRole('textbox', { name: /hour/i }).type('23', { delay: 0 })
+    cy.findByRole('textbox', { name: /minute/i }).type('23', { delay: 0 })
     cy.findByRole('combobox', { name: /what was the incident type\?/i }).select(1)
     cy.findByRole('combobox', { name: /where did the incident occur\?/i }).select(1)
 
     // Invalid date check
-    cy.findByRole('textbox', { name: /date of incident/i }).type('35/07/2024')
+    cy.findByRole('textbox', { name: /date of incident/i }).type('35/07/2024', { delay: 0 })
     cy.findByRole('button', { name: /continue/i }).click()
     cy.findByRole('link', { name: /date of the incident must be a real date/i }).should('be.visible')
     cy.get('.govuk-error-summary a').should('have.length', 1)
@@ -95,6 +95,7 @@ context('Make a Referral Journey', () => {
     const tomorrow = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate() + 1)) // this will tick over if today is last day of month
     cy.findByRole('textbox', { name: /date of incident/i }).type(
       `${tomorrow.getDate()}/${tomorrow.getMonth() + 1}/${tomorrow.getFullYear()}`,
+      { delay: 0 },
     )
     cy.findByRole('button', { name: /continue/i }).click()
     cy.findByRole('link', { name: /date of the incident must be today or in the past/i }).should('be.visible')
@@ -123,7 +124,7 @@ context('Make a Referral Journey', () => {
 
   const submitCheckErrorMessagesDisappear = () => {
     // Get all error messages to appear
-    cy.findByRole('textbox', { name: /hour/i }).type('25')
+    cy.findByRole('textbox', { name: /hour/i }).type('25', { delay: 0 })
     cy.findByRole('button', { name: /continue/i }).click()
     cy.get('.govuk-error-summary a').should('have.length', 4)
 
@@ -156,7 +157,7 @@ context('Make a Referral Journey', () => {
 
     // Check date error message disappears
     cy.findByRole('combobox', { name: /where did the incident occur\?/i }).select(0)
-    cy.findByRole('textbox', { name: /date of incident/i }).type('01/01/2024')
+    cy.findByRole('textbox', { name: /date of incident/i }).type('01/01/2024', { delay: 0 })
     cy.findByRole('button', { name: /continue/i }).click()
     cy.findByRole('link', { name: /enter a time using the 24-hour clock/i }).should('be.visible')
     cy.findByRole('link', { name: /enter the date of the incident/i }).should('not.exist')
@@ -168,8 +169,8 @@ context('Make a Referral Journey', () => {
     // Check time error message disappears
     cy.findByRole('textbox', { name: /date of incident/i }).clear()
     cy.findByRole('textbox', { name: /hour/i }).clear()
-    cy.findByRole('textbox', { name: /hour/i }).type('23')
-    cy.findByRole('textbox', { name: /minute/i }).type('24')
+    cy.findByRole('textbox', { name: /hour/i }).type('23', { delay: 0 })
+    cy.findByRole('textbox', { name: /minute/i }).type('24', { delay: 0 })
     cy.findByRole('button', { name: /continue/i }).click()
     cy.findByRole('link', { name: /enter a time using the 24-hour clock/i }).should('not.exist')
     cy.findByRole('textbox', { name: /hour/i }).should('have.value', '23')
