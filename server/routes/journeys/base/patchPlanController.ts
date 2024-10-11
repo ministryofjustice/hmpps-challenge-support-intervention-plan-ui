@@ -9,6 +9,7 @@ import { todayString } from '../../../utils/datetimeUtils'
 const MESSAGE_PLAN_UPDATED = 'You’ve updated the case management information.'
 const MESSAGE_IDENTIFIED_NEED_UPDATED = 'You’ve updated the identified needs information.'
 const MESSAGE_IDENTIFIED_NEED_CLOSED = 'You’ve closed an identified need in this plan.'
+const MESSAGE_IDENTIFIED_NEED_REOPENED = 'You’ve reopened an identified need in this plan.'
 
 export class PatchPlanController extends BaseJourneyController {
   getSelectedIdentifiedNeed = (req: Request): IdentifiedNeed | undefined => {
@@ -87,6 +88,30 @@ export class PatchPlanController extends BaseJourneyController {
         closedDate: todayString(),
       })
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_IDENTIFIED_NEED_CLOSED)
+      next()
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  reopenIdentifiedNeed = async <T>({
+    req,
+    next,
+    identifiedNeedUuid,
+  }: {
+    req: Request<unknown, unknown, T>
+    next: NextFunction
+    identifiedNeedUuid: string
+  }) => {
+    const identifiedNeed = req.journeyData.csipRecord!.plan!.identifiedNeeds.find(
+      need => need.identifiedNeedUuid === identifiedNeedUuid,
+    )!
+
+    const { closedDate, ...openIdentifiedNeed } = identifiedNeed
+
+    try {
+      await this.csipApiService.updateIdentifiedNeed(req as Request, identifiedNeedUuid, openIdentifiedNeed)
+      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_IDENTIFIED_NEED_REOPENED)
       next()
     } catch (e) {
       next(e)
