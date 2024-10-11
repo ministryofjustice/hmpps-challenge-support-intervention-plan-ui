@@ -11,6 +11,7 @@ import { EditLogCodeRoutes } from './edit-log-code/routes'
 import { UpdateInvestigationRoutes } from './update-investigation/routes'
 import { UpdateDecisionRoutes } from './update-decision/routes'
 import { UpdatePlanRoutes } from './update-plan/routes'
+import { RecordReviewRoutes } from './record-review/routes'
 
 export const JourneyRoutes = (services: Services) => {
   const router = Router({ mergeParams: true })
@@ -27,6 +28,7 @@ export const JourneyRoutes = (services: Services) => {
   router.use('/', UpdateInvestigationRoutes({ services, path: '/update-investigation' }))
   router.use('/', UpdateDecisionRoutes({ services, path: '/update-decision' }))
   router.use('/', UpdatePlanRoutes({ services, path: '/update-plan' }))
+  router.use('/', RecordReviewRoutes({ services, path: '/record-review' }))
 
   if (process.env.NODE_ENV === 'e2e-test') {
     /* eslint-disable no-param-reassign */

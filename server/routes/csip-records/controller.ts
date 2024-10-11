@@ -220,7 +220,7 @@ export class CsipRecordController {
         res.redirect(`/csip-record/${recordUuid}/record-decision/start`)
         break
       case 'review':
-        res.redirect(`back`)
+        res.redirect(`/csip-record/${recordUuid}/record-review/start`)
         break
       default:
         res.redirect('back')
