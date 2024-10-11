@@ -730,6 +730,16 @@ const stubPatchInterviewFail = () => {
   })
 }
 
+const stubPostIdentifiedNeedSuccess = () => {
+  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/plan/identified-needs', 201)
+}
+
+const stubPostIdentifiedNeedFail = () => {
+  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/plan/identified-needs', 500, {
+    userMessage: 'Simulated Error for E2E testing',
+  })
+}
+
 export const csip = {
   recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
   prisonNumber: 'A1111AA',
@@ -858,4 +868,6 @@ export default {
   stubPatchPlanFail,
   stubPatchIdentifiedNeedSuccess,
   stubPatchIdentifiedNeedFail,
+  stubPostIdentifiedNeedSuccess,
+  stubPostIdentifiedNeedFail,
 }
