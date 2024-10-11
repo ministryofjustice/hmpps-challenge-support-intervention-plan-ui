@@ -1,16 +1,15 @@
 import { NextFunction, Request, Response } from 'express'
-import { format } from 'date-fns'
 import { BaseJourneyController } from '../../base/controller'
 import { getNonUndefinedProp } from '../../../../utils/utils'
 import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../../../utils/constants'
+import { todayString } from '../../../../utils/datetimeUtils'
 
 export class NewIdentifiedNeedCheckAnswersController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
     req.journeyData.isCheckAnswers = true
 
-    const { plan } = req.journeyData
     res.render('update-plan/check-answers/view', {
-      need: plan!.identifiedNeedSubJourney,
+      need: req.journeyData.plan!.identifiedNeedSubJourney,
       csipRecordUrl: `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
     })
   }
@@ -23,8 +22,7 @@ export class NewIdentifiedNeedCheckAnswersController extends BaseJourneyControll
         intervention: need.intervention!,
         responsiblePerson: need.responsiblePerson!,
         targetDate: need.targetDate!,
-        createdDate: format(new Date(), 'yyyy-MM-dd'),
-        ...getNonUndefinedProp(need, 'closedDate'),
+        createdDate: todayString(),
         ...getNonUndefinedProp(need, 'progression'),
       })
       req.journeyData.journeyCompleted = true
