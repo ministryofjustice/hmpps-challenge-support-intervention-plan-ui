@@ -28,7 +28,7 @@ export class NewIdentifiedNeedCheckAnswersController extends BaseJourneyControll
         ...getNonUndefinedProp(need, 'progression'),
       })
       req.journeyData.journeyCompleted = true
-      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, `You've added another identified need to this plan.`)
+      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, `You’ve added another identified need to this plan.`)
       next()
     } catch (e) {
       next(e)

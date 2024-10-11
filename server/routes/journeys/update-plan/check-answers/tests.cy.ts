@@ -37,13 +37,13 @@ context('test /update-plan/check-answers', () => {
 
     getContinueButton().click()
 
-    cy.url().should('to.match', /\/check-answers\/[a-zA-Z0-9-]+$/)
+    cy.url().should('to.match', /\/check-answers$/)
     cy.findByText('Simulated Error for E2E testing').should('be.visible')
   })
 
   const validateChangeLinks = () => {
     cy.findByRole('link', { name: /change the person responsible/i }).click()
-    cy.url().should('to.match', /intervention-details\/#responsiblePerson/i)
+    cy.url().should('to.match', /intervention-details#responsiblePerson/i)
     cy.findByRole('textbox', { name: /Who’s responsible for taking action\?/i })
       .clear()
       .type('person123')
@@ -51,7 +51,7 @@ context('test /update-plan/check-answers', () => {
     cy.contains('dt', 'Person responsible').next().should('include.text', 'person123')
 
     cy.findByRole('link', { name: /change the target date/i }).click()
-    cy.url().should('to.match', /intervention-details\/#targetDate/i)
+    cy.url().should('to.match', /intervention-details#targetDate/i)
     const targetDate = addDays(startOfTomorrow(), 5)
     cy.findByRole('textbox', { name: /What’s the target date for progress\?/i })
       .clear()
@@ -97,7 +97,8 @@ context('test /update-plan/check-answers', () => {
 
   const navigateToTestPage = () => {
     cy.signIn()
-    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-plan/start`)
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-plan/identified-needs/start`)
+    cy.findByRole('button', { name: /add another identified need/i }).click()
     injectJourneyDataAndReload(uuid, {
       plan: {
         identifiedNeedSubJourney: {
@@ -116,6 +117,7 @@ context('test /update-plan/check-answers', () => {
 
   const continueToConfirmation = () => {
     cy.findByRole('button', { name: /Confirm and save/i }).click()
-    cy.url().should('to.match', /\/confirmation(#[A-z]+)?$/)
+    cy.url().should('to.match', /\/csip-records\/[A-z0-9-]+/)
+    cy.findByText('You’ve added another identified need to this plan.').should('be.visible')
   }
 })
