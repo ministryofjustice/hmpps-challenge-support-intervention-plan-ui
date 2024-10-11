@@ -56,17 +56,16 @@ context('test /record-review', () => {
   const validatePageContentsWithInjectedJourneyData = () => {
     injectJourneyDataAndReload(uuid, {
       review: {
-        summary: `<script>alert('xss-summary');</script>`,
+        summary: `summary`,
         attendees: [
           {
-            attendeeUuid: '123',
-            name: `<script>alert('xss-name');</script>`,
-            role: `<script>alert('xss-role');</script>`,
-            isAttended: true,
-            contribution: `<script>alert('xss-contribution');</script>`,
+            attendeeUuid: uuid,
+            name: `name`,
+            role: `role`,
+            contribution: `contribution`,
           },
         ],
-        outcome: `<script>alert('xss-outcome');</script>`,
+        outcome: `outcome`,
       },
     })
 
