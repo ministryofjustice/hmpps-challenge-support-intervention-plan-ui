@@ -1695,7 +1695,7 @@ export interface components {
        * @description The date the identified need was resolved or closed.
        * @example 2021-09-27
        */
-      closedDate?: string | null
+      closedDate?: string
       /** @description The planned intervention for the identified need. */
       intervention: string
       /** @description How the plan to address the identified need is progressing. */
