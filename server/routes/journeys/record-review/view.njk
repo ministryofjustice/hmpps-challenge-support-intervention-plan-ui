@@ -1,0 +1,60 @@
+{% from "govuk/components/task-list/macro.njk" import govukTaskList %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Record a CSIP review" %}
+
+{% set completedStatus = { text: "Completed" } %}
+{% set incompleteStatus = { tag: { text: "Incomplete", classes: "govuk-tag--blue" } } %}
+{% set notReadyStatus = { text: "Cannot save yet", classes: "govuk-task-list__status--cannot-start-yet" } %}
+{% set formCompleted = review.summary and review.attendees and review.outcome %}
+
+{% block innerContent %}
+  <span class="govuk-caption-l">Record a CSIP review</span>
+  <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Record information about the review</h1>
+  <p class="govuk-body govuk-!-margin-bottom-8"><strong>CSIP log code: </strong>{{ logCode }}</p>
+  <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-7">
+
+  {{ govukTaskList({
+    classes: "govuk-!-margin-bottom-7",
+    items: [
+      {
+        title: {
+          text: "Details of the review",
+          classes: "govuk-link--no-visited-state"
+        },
+        classes: "custom-task-list-first-row",
+        href: "record-review/details",
+        status: completedStatus if review.summary else incompleteStatus
+      },
+      {
+        title: {
+          text: "Participants and contributions",
+          classes: "govuk-link--no-visited-state"
+        },
+        classes: "custom-task-list-first-row",
+        href: "record-review/participants-summary",
+        status: completedStatus if review.attendees else incompleteStatus
+      },
+      {
+        title: {
+          text: "Outcome",
+          classes: "govuk-link--no-visited-state"
+        },
+        classes: "custom-task-list-first-row",
+        href: "record-review/outcome",
+        status: completedStatus if review.outcome else incompleteStatus
+      },
+      {
+        title: {
+          text: "Check and save report",
+          classes: "govuk-link--no-visited-state" if formCompleted else undefined
+        },
+        classes: "custom-task-list-first-row",
+        href: "record-review/check-answers" if formCompleted else undefined,
+        status: incompleteStatus if formCompleted else notReadyStatus
+      }
+    ]
+  }) }}
+
+{% endblock %}

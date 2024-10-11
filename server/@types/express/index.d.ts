@@ -31,6 +31,7 @@ export type JourneyData = {
   hasValidationErrors?: boolean
   journeyCompleted?: boolean
   isUpdate?: boolean
+  review?: Review
 }
 
 export type PrisonerSummary = Prisoner
@@ -102,6 +103,7 @@ export type Plan = Partial<{
   nextCaseReviewDate: string
   identifiedNeeds: IdentifiedNeed[]
   isComplete: boolean
+  reviews: Review[]
 }>
 
 export type IdentifiedNeed = {
@@ -114,6 +116,27 @@ export type IdentifiedNeed = {
   progression: string | null
   identifiedNeedUuid?: string // only exist in Update journey
 }
+
+export type Review = Partial<{
+  reviewUuid: string
+  reviewSequence: number
+  reviewDate: string
+  nextReviewDate: string
+  csipClosedDate: string
+  summary: string
+  // actions array in backend
+  outcome: string
+  attendees: Attendee[]
+  attendeesSubJourney: Partial<Attendee>
+}>
+
+export type Attendee = Partial<{
+  attendeeUuid: string
+  name: string
+  role: string
+  isAttended: boolean
+  contribution: string
+}>
 
 export declare global {
   namespace Express {

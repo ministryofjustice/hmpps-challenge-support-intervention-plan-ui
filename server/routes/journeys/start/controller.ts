@@ -41,6 +41,7 @@ export class StartJourneyController {
       req.journeyData.investigation = {}
       req.journeyData.decisionAndActions = {}
       req.journeyData.plan = {}
+      req.journeyData.review = {}
       req.journeyData.prisoner = await this.prisonerSearchService.getPrisonerDetails(req, csip.prisonNumber as string)
 
       return res.redirect(`/${journeyId}${url}`)
