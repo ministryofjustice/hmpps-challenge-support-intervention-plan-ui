@@ -1,0 +1,54 @@
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Update review details - Update a CSIP review" if isUpdate else "Enter review details - Record a CSIP review" %}
+
+{% block innerContent %}
+    {% include 'base/components/review-caption.njk' %}
+    <label for="summary">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">
+            {% if isUpdate %}
+                Update details on the review
+            {% else %}
+                Enter details of the review
+            {% endif %}
+        </h1>
+    </label>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {% if not isUpdate %}
+            {{ govukDetails({
+                summaryText: "What type of information to include",
+                html: '
+                <p>You could include: </p>
+                <ul>
+                  <li>a description of the review process or minutes from a review meeting</li>
+                  <li>a summary of progress on each identified need</li>
+                  <li>information on any set-backs or changes in risk</li>
+                </ul>'
+            }) }}
+        {% endif %}
+        {% if isUpdate and currentSummary %}
+            {{ govukInsetText({
+                html: currentSummary | escape | boldAppendStamp | nl2br
+            }) }}
+        {% endif %}
+        {{ govukCharacterCount({
+            maxlength: maxLengthChars,
+            rows: 12,
+            threshold: threshold,
+            id: "summary",
+            name: "summary",
+            value: summary,
+            errorMessage: validationErrors | findError('summary')
+        }) }}
+        {{ submitButton({
+            text: "Confirm and save" if isUpdate else "Continue",
+            alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
+        }) }}
+    </form>
+{% endblock %}
