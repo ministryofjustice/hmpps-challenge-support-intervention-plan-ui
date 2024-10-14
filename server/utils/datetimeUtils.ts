@@ -6,7 +6,7 @@ const DATE_FORMAT_GB = new Intl.DateTimeFormat('en-GB', {
   day: '2-digit',
 })
 
-const DATE_FORMAT_GB_VERBOSE = new Intl.DateTimeFormat('en-GB', {
+export const DATE_FORMAT_GB_VERBOSE = new Intl.DateTimeFormat('en-GB', {
   year: 'numeric',
   month: 'long',
   day: '2-digit',

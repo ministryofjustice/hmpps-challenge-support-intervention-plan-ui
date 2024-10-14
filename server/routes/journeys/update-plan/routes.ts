@@ -14,6 +14,7 @@ import { UpdateActionsProgressRoutes } from './update-actions-progress/routes'
 import { ReopenIdentifiedNeedRoutes } from './reopen-identified-need/routes'
 import { NewIdentifiedNeedRoutes } from './summarise-identified-need/routes'
 import { NewActionsProgressionRoutes } from './record-actions-progress/routes'
+import { NewIdentifiedNeedCheckAnswersRoutes } from './check-answers/routes'
 
 function Routes({ csipApiService }: Services) {
   const { router, get } = JourneyRouter()
@@ -37,6 +38,7 @@ function Routes({ csipApiService }: Services) {
   router.use('/summarise-identified-need', NewIdentifiedNeedRoutes())
   router.use('/intervention-details', NewInterventionDetailsRoutes())
   router.use('/record-actions-progress', NewActionsProgressionRoutes())
+  router.use('/check-answers', NewIdentifiedNeedCheckAnswersRoutes(csipApiService))
 
   return router
 }

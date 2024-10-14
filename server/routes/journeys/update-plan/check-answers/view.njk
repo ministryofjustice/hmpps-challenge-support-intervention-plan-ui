@@ -1,0 +1,122 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = true %}
+{% set pageTitle = "Check answers - Update a plan" %}
+
+{% block innerContent %}
+
+    <div class="govuk-grid-row govuk-!-margin-bottom-7">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-l">Update a plan</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check your answers before adding this new identified need</h1>
+        </div>
+    </div>
+
+    {{ govukSummaryList({
+          card: {
+              title: { text: need.identifiedNeed }
+          },
+          rows: [
+          {
+            key: {
+                text: 'Person responsible'
+            },
+            value: {
+                text: need.responsiblePerson
+            },
+            actions: {
+              items: [
+                {
+                  href: "intervention-details#responsiblePerson",
+                  text: "Change",
+                  visuallyHiddenText: "the person responsible",
+                  classes: "govuk-link--no-visited-state"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+                text: 'Target date'
+            },
+            value: {
+                text: need.targetDate | formatDisplayDate
+            },
+            actions: {
+              items: [
+                {
+                  href: "intervention-details#targetDate",
+                  text: "Change",
+                  visuallyHiddenText: "the target date",
+                  classes: "govuk-link--no-visited-state"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+                text: 'Identified need summary'
+            },
+            value: {
+                html: (need.identifiedNeed or 'Not provided') | escape | boldAppendStamp | nl2br
+            },
+            actions: {
+              items: [
+                {
+                  href: "summarise-identified-need#identifiedNeed",
+                  text: "Change",
+                  visuallyHiddenText: "the summary of the identified need",
+                  classes: "govuk-link--no-visited-state"
+                }
+              ]
+            } if not need.closedDate else undefined
+          },
+          {
+            key: {
+                text: 'Planned intervention'
+            },
+            value: {
+                html: (need.intervention or 'Not provided') | escape | boldAppendStamp | nl2br
+            },
+            actions: {
+              items: [
+                {
+                  href: "intervention-details#intervention",
+                  text: "Add information",
+                  visuallyHiddenText: "to the planned intervention",
+                  classes: "govuk-link--no-visited-state"
+                }
+              ]
+            } if not need.closedDate else undefined
+          },
+          {
+            key: {
+                text: 'Actions and progress'
+            },
+            value: {
+                html: (need.progression or 'Not provided') | escape | boldAppendStamp | nl2br
+            },
+            actions: {
+              items: [
+                {
+                  href: "record-actions-progress#progression",
+                  text: "Add information",
+                  visuallyHiddenText: "to the actions and progress",
+                  classes: "govuk-link--no-visited-state"
+                }
+              ]
+            } if not need.closedDate else undefined
+          }]
+      }) }}
+
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ submitButton({
+            text: "Confirm and save",
+            alternativeHyperlinkHref: csipRecordUrl
+        }) }}
+    </form>
+{% endblock %}
