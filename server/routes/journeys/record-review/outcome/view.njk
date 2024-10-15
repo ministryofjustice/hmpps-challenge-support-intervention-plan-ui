@@ -1,0 +1,37 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Outcome - Record a CSIP review" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Record a CSIP review</span>
+    <label for="outcome">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">What’s the outcome of this review?</h1>
+    </label>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukRadios({
+            id: "outcome",
+            name: "outcome",
+            items: [
+                {
+                    value: "REMAIN_ON_CSIP",
+                    text: "Keep the prisoner on the plan",
+                    checked: outcome === "REMAIN_ON_CSIP"
+                }, 
+                {
+                    value: "CLOSE_CSIP",
+                    text: "Close the CSIP",
+                    checked: outcome === "CLOSE_CSIP"
+                }
+            ],
+            errorMessage: validationErrors | findError('outcome')
+        }) }}
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}

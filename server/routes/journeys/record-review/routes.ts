@@ -4,6 +4,8 @@ import { JourneyRouter } from '../base/routes'
 import { RecordReviewController } from './controller'
 import { SummaryRoutes } from './details/routes'
 
+import { OutcomeRoutes } from './outcome/routes'
+
 function Routes({ csipApiService }: Services) {
   const { router, get } = JourneyRouter()
   const controller = new RecordReviewController(csipApiService)
@@ -11,6 +13,7 @@ function Routes({ csipApiService }: Services) {
   get('/', controller.GET)
 
   router.use('/details', SummaryRoutes())
+  router.use('/outcome', OutcomeRoutes())
 
   return router
 }
