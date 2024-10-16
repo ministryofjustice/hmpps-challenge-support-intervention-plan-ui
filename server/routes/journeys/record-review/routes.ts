@@ -7,6 +7,8 @@ import { ParticipantsSummaryRoutes } from './participants-summary/routes'
 
 import { OutcomeRoutes } from './outcome/routes'
 
+import { NextReviewDateRoutes } from './next-review-date/routes'
+
 function Routes({ csipApiService }: Services) {
   const { router, get } = JourneyRouter()
   const controller = new RecordReviewController(csipApiService)
@@ -17,6 +19,7 @@ function Routes({ csipApiService }: Services) {
   router.use('/outcome', OutcomeRoutes())
   router.use('/participants-summary', ParticipantsSummaryRoutes())
 
+  router.use('/next-review-date', NextReviewDateRoutes())
   return router
 }
 
