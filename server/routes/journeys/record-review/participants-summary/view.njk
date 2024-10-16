@@ -19,7 +19,7 @@
                 actions: {
                     items: [
                         {
-                            href: 'delete-participant/' + attendee.attendeeUuid,
+                            href: 'delete-participant/' + loop.index,
                             text: "Delete",
                             visuallyHiddenText: "the information about the participant",
                             classes: "govuk-link--no-visited-state"
@@ -37,7 +37,7 @@
                 actions: {
                     items: [
                         {
-                            href: 'participant-contribution-details/' + attendee.attendeeUuid + '#name',
+                            href: 'participant-contribution-details/' + loop.index + '#name',
                             text: "Change",
                             visuallyHiddenText: "the participant’s name",
                             classes: "govuk-link--no-visited-state"
@@ -54,7 +54,7 @@
                 actions: {
                     items: [
                         {
-                            href: 'participant-contribution-details/' + attendee.attendeeUuid + '#role',
+                            href: 'participant-contribution-details/' + loop.index + '#role',
                             text: "Change",
                             visuallyHiddenText: "the participant’s role",
                             classes: "govuk-link--no-visited-state"
@@ -71,7 +71,7 @@
                 actions: {
                     items: [
                         {
-                            href: 'participant-contribution-details/' + attendee.attendeeUuid + '#isAttended',
+                            href: 'participant-contribution-details/' + loop.index + '#isAttended',
                             text: "Change",
                             visuallyHiddenText: "whether the participant attended the review meeting in person or not",
                             classes: "govuk-link--no-visited-state"
@@ -88,7 +88,7 @@
                 actions: {
                     items: [
                         {
-                            href: 'participant-contribution-details/' + attendee.attendeeUuid + '#contribution',
+                            href: 'participant-contribution-details/' + loop.index + '#contribution',
                             text: "Change",
                             visuallyHiddenText: "the description of the participant’s contribution to the review",
                             classes: "govuk-link--no-visited-state"
