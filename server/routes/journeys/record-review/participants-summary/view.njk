@@ -106,7 +106,7 @@
 
     {{ govukButton({
         text: "Add another participant" if attendees.length else "Add participant",
-        href: "participant-contribution-details",
+        href: "participant-contribution-details/" + newAttendeeIndex,
         classes: "govuk-button--secondary",
         preventDoubleClick: true
     }) }}

@@ -6,6 +6,7 @@ import { SummaryRoutes } from './details/routes'
 import { ParticipantsSummaryRoutes } from './participants-summary/routes'
 
 import { OutcomeRoutes } from './outcome/routes'
+import { ParticipantDetailsRoutes } from './participant-contribution-details/routes'
 
 function Routes({ csipApiService }: Services) {
   const { router, get } = JourneyRouter()
@@ -16,6 +17,7 @@ function Routes({ csipApiService }: Services) {
   router.use('/details', SummaryRoutes())
   router.use('/outcome', OutcomeRoutes())
   router.use('/participants-summary', ParticipantsSummaryRoutes())
+  router.use('/participant-contribution-details/:index', ParticipantDetailsRoutes(csipApiService))
 
   return router
 }
