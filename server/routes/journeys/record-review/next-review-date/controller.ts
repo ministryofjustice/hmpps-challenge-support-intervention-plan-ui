@@ -6,7 +6,7 @@ export class NextReviewDateController {
   GET = async (req: Request, res: Response) => {
     res.render('record-review/next-review-date/view', {
       nextReviewDate:
-        res.locals.formResponses?.['nextReviewDate'] || formatInputDate(req.journeyData.review?.nextReviewDate),
+        res.locals.formResponses?.['nextReviewDate'] ?? formatInputDate(req.journeyData.review?.nextReviewDate),
       backUrl: 'outcome',
     })
   }
