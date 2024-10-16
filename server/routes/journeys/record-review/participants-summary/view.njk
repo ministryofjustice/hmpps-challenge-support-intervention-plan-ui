@@ -1,0 +1,120 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = attendees.length %}
+{% set pageTitle = "Participant and contribution details - Record a CSIP review" %}
+
+{% block innerContent %}
+    {% include 'base/components/review-caption.njk' %}
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Log participants and contributions to the review</h1>
+    </div>
+
+    {% for attendee in attendees %}
+        {{ govukSummaryList({
+            card: {
+                title: { text: "Participant: " + attendee.name },
+                actions: {
+                    items: [
+                        {
+                            href: 'delete-participant/' + loop.index,
+                            text: "Delete",
+                            visuallyHiddenText: "the information about the participant",
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            },
+            rows: [{
+                key: {
+                    text: 'Name'
+                },
+                value: {
+                    text: attendee.name
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'participant-contribution-details/' + loop.index + '#name',
+                            text: "Change",
+                            visuallyHiddenText: "the participant’s name",
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            },{
+                key: {
+                    text: 'Role'
+                },
+                value: {
+                    text: attendee.role
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'participant-contribution-details/' + loop.index + '#role',
+                            text: "Change",
+                            visuallyHiddenText: "the participant’s role",
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            },{
+                key: {
+                    text: 'Attended in person'
+                },
+                value: {
+                    text: 'Yes' if attendee.isAttended else 'No'
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'participant-contribution-details/' + loop.index + '#isAttended',
+                            text: "Change",
+                            visuallyHiddenText: "whether the participant attended the review meeting in person or not",
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            },{
+                key: {
+                    text: 'Contribution'
+                },
+                value: {
+                    text: (attendee.contribution or 'Not provided') | escape | boldAppendStamp | nl2br
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'participant-contribution-details/' + loop.index + '#contribution',
+                            text: "Change",
+                            visuallyHiddenText: "the description of the participant’s contribution to the review",
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            }]
+        }) }}
+    {% endfor %}
+
+    {% if not attendees.length %}
+        <p class="govuk-!-margin-bottom-8">No participants recorded.</p>
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-8">
+    {% endif %}
+
+    {{ govukButton({
+        text: "Add another participant" if attendees.length else "Add participant",
+        href: "participant-contribution-details",
+        classes: "govuk-button--secondary",
+        preventDoubleClick: true
+    }) }}
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukButton({
+            text: "Continue",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}
