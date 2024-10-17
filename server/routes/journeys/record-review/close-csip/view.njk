@@ -1,0 +1,35 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Close CSIP - Record a CSIP review" %}
+
+{% block innerContent %}
+    <span class="govuk-caption-l">Record a CSIP review</span>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Are you sure you want to record the final review and close this CSIP?</h1>
+    {% if openIdentifiedNeeds %}
+        {{ govukWarningText({
+            text: "There " + ("open identified need" | isArePlural(openIdentifiedNeeds)) + " in " + prisoner | firstNameSpaceLastName | possessiveComma + " plan. These will be closed when you close the CSIP.",
+            iconFallbackText: "Warning"
+        }) }}
+    {% endif %}
+
+    <p>It’s important that the plan is up to date before you record the final review.</p>
+    <p>You will not be able to add or change any information after closing the CSIP.</p>
+
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukButton({
+            text: "Yes, close CSIP",
+            preventDoubleClick: true,
+            classes: "govuk-button--warning govuk-!-margin-right-3"
+        }) }}
+        {{ govukButton({
+            text: "No, change the outcome",
+            href: backUrl,
+            classes: "govuk-button--secondary",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}
