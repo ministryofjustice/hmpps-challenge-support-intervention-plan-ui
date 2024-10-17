@@ -3,19 +3,22 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set fullWidth = attendees.length %}
+{% set fullWidth = true %}
 {% set pageTitle = "Participant and contribution details - Record a CSIP review" %}
 
 {% block innerContent %}
-    {% include 'base/components/review-caption.njk' %}
-    <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Log participants and contributions to the review</h1>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% include 'base/components/review-caption.njk' %}
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Log participants and contributions to the review</h1>
+        </div>
     </div>
 
     {% for attendee in attendees %}
         {{ govukSummaryList({
             card: {
                 title: { text: "Participant: " + attendee.name },
+                classes: "govuk-!-margin-bottom-7" if loop.index === attendees.length else undefined,
                 actions: {
                     items: [
                         {
@@ -101,7 +104,6 @@
 
     {% if not attendees.length %}
         <p class="govuk-!-margin-bottom-8">No participants recorded.</p>
-        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-8">
     {% endif %}
 
     {{ govukButton({

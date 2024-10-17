@@ -1,0 +1,59 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Delete participant - Record a CSIP review " %}
+
+{% block innerContent %}
+    {% include 'base/components/review-caption.njk' %}
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Are you sure you want to delete the information about this participant?</h1>
+    {{ govukSummaryList({
+        card: {
+            title: { text: "Participant: " + attendee.name }
+        },
+        rows: [{
+            key: {
+                text: 'Name'
+            },
+            value: {
+                text: attendee.name
+            }
+        },{
+            key: {
+                text: 'Role'
+            },
+            value: {
+                text: attendee.role
+            }
+        },{
+            key: {
+                text: 'Attended in person'
+            },
+            value: {
+                text: 'Yes' if attendee.isAttended else 'No'
+            }
+        },{
+            key: {
+                text: 'Contribution'
+            },
+            value: {
+                text: (attendee.contribution or 'Not provided') | escape | boldAppendStamp | nl2br
+            }
+        }]
+    }) }}
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {{ govukButton({
+            text: "Yes, delete it",
+            preventDoubleClick: true,
+            classes: "govuk-button--warning"
+        }) }}
+        {{ govukButton({
+            text: "No, do not delete it",
+            href: backUrl,
+            classes: "govuk-button--secondary",
+            preventDoubleClick: true
+        }) }}
+    </form>
+{% endblock %}
