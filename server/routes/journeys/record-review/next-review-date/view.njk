@@ -1,5 +1,6 @@
 {% from "moj/components/date-picker/macro.njk" import mojDatePicker %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% extends "partials/layout.njk" %}
 
@@ -10,7 +11,13 @@
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Set a date for the next CSIP review</h1>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-
+        {{ govukDetails({
+            summaryText: "Help with setting a review date",
+            html: '
+            <p>Choose a review date that’s consistent with the targets and dates in ' + (prisoner | firstNameSpaceLastName | possessiveComma) + ' plan.</p>
+            <p>If there’s anything upcoming that could be triggering for ' + (prisoner | firstNameSpaceLastName) + ', it might be useful to set the review date before this.</p>
+            '
+        }) }}
         {{ mojDatePicker({
             label: {
               text: "When will you next review the plan with " + (prisoner | firstNameSpaceLastName) + "?",
