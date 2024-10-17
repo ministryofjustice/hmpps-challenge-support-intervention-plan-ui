@@ -22,7 +22,8 @@ context('test /record-review/participants-summary', () => {
     cy.findByRole('heading', { name: /Log participants and contributions to the review/ }).should('be.visible')
     cy.findByText(/No participants recorded./).should('be.visible')
 
-    proceedToAddParticipant('Add participant')
+    cy.findByRole('button', { name: 'Add participant' }).click()
+    cy.url().should('to.match', /\/participant-contribution-details\/1$/)
     cy.go('back')
 
     assertPageWithSubmittedReview()
@@ -30,7 +31,8 @@ context('test /record-review/participants-summary', () => {
 
     cy.findByText(/No participant recorded./).should('not.exist')
 
-    proceedToAddParticipant('Add another participant')
+    cy.findByRole('button', { name: 'Add another participant' }).click()
+    cy.url().should('to.match', /\/participant-contribution-details\/2$/)
     cy.go('back')
 
     continueToTaskList()
@@ -41,11 +43,6 @@ context('test /record-review/participants-summary', () => {
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-review/start`)
     cy.url().should('to.match', /\/record-review$/)
     cy.findByRole('link', { name: /Participants and contributions/i }).click()
-  }
-
-  const proceedToAddParticipant = (buttonName: string) => {
-    cy.findByRole('button', { name: buttonName }).click()
-    cy.url().should('to.match', /\/participant-contribution-details$/)
   }
 
   const assertPageWithSubmittedReview = () => {

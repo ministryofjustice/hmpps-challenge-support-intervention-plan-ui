@@ -6,6 +6,7 @@ import { SummaryRoutes } from './details/routes'
 import { ParticipantsSummaryRoutes } from './participants-summary/routes'
 
 import { OutcomeRoutes } from './outcome/routes'
+import { ParticipantDetailsRoutes } from './participant-contribution-details/routes'
 
 import { NextReviewDateRoutes } from './next-review-date/routes'
 
@@ -18,6 +19,7 @@ function Routes({ csipApiService }: Services) {
   router.use('/details', SummaryRoutes())
   router.use('/outcome', OutcomeRoutes())
   router.use('/participants-summary', ParticipantsSummaryRoutes())
+  router.use('/participant-contribution-details/:index', ParticipantDetailsRoutes(csipApiService))
 
   router.use('/next-review-date', NextReviewDateRoutes())
   return router

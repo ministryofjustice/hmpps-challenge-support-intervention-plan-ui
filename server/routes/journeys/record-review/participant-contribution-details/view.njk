@@ -1,0 +1,94 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "moj/components/date-picker/macro.njk" import mojDatePicker %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Participant and contribution details - Update a CSIP review" if isUpdate else "Participant and contribution details - Record a CSIP review " %}
+
+{% block innerContent %}
+    {% include 'base/components/review-caption.njk' %}
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Participant and contribution details</h1>
+    <form method="post">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+        {{ govukCharacterCount({
+            label: {
+              text: "What’s the participant’s name?",
+              classes: "govuk-label--m",
+              isPageHeading: true
+            },
+            hint: {
+                text: "For example, the prisoner or a staff member supporting the prisoner."
+            },
+            maxlength: 100,
+            rows: 1,
+            threshold: "100",
+            id: "name",
+            name: "name",
+            value: name,
+            classes: "govuk-input--width-30 single-row-textarea",
+            errorMessage: validationErrors | findError('name')
+        }) }}
+
+        {{ govukCharacterCount({
+            label: {
+              text: "What’s their role?",
+              classes: "govuk-label--m",
+              isPageHeading: true
+            },
+            maxlength: 50,
+            rows: 1,
+            threshold: "100",
+            id: "role",
+            name: "role",
+            value: role,
+            classes: "govuk-input--width-30 single-row-textarea",
+            errorMessage: validationErrors | findError('role')
+        }) }}
+
+        {{ govukRadios({
+            fieldset: {
+                legend: {
+                    text: "Did this participant attend the review meeting in person?",
+                    classes: "govuk-fieldset__legend--m"
+                }
+            },
+            id: "isAttended",
+            name: "isAttended",
+            items: [
+                {
+                    value: 'true',
+                    text: 'Yes',
+                    checked: isAttended === "true"
+                },
+                {
+                    value: 'false',
+                    text: 'No',
+                    checked: isAttended === "false"
+                }
+            ],
+            errorMessage: validationErrors | findError('isAttended')
+        }) }}
+
+        {{ govukCharacterCount({
+            label: {
+              text: "What did they contribute to the review? (optional)",
+              classes: "govuk-label--m",
+              isPageHeading: true
+            },
+            maxlength: 4000,
+            rows: 5,
+            threshold: "75",
+            id: "contribution",
+            name: "contribution",
+            value: contribution,
+            errorMessage: validationErrors | findError('contribution')
+        }) }}
+        {{ submitButton({
+            text: "Confirm and save" if isUpdate else "Continue",
+            alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
+        }) }}
+    </form>
+{% endblock %}
