@@ -21,6 +21,7 @@ export class ParticipantDetailsController extends BaseJourneyController {
         attendeeIsAttended = 'false'
       }
     }
+
     return res.render('record-review/participant-contribution-details/view', {
       name: res.locals.formResponses?.['name'] ?? attendee?.name,
       role: res.locals.formResponses?.['role'] ?? attendee?.role,
@@ -33,18 +34,16 @@ export class ParticipantDetailsController extends BaseJourneyController {
   POST = async (req: Request<Record<string, string>, unknown, SchemaType>, res: Response) => {
     const index = Number(req.params['index']) - 1
 
-    if (Number.isNaN(index)) {
+    if (isInvalidNeedIndex(index, req)) {
       return res.notFound()
     }
 
-    if (!req.journeyData.review?.attendees) {
-      req.journeyData.review!.attendees = []
-    }
+    req.journeyData.review!.attendees ??= []
 
     req.journeyData.review!.attendees[Number(index)] = {
       name: req.body.name,
       role: req.body.role,
-      isAttended: req.body.isAttended === 'true',
+      isAttended: req.body.isAttended,
       ...getNonUndefinedProp(req.body, 'contribution'),
     }
 

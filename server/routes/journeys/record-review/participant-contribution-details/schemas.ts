@@ -24,7 +24,8 @@ export const schemaFactory = () => async () => {
     isAttended: z
       .string({ message: IS_ATTENDED_REQUIRED_MSG })
       .trim()
-      .refine(val => ['false', 'true'].includes(val), { message: IS_ATTENDED_REQUIRED_MSG }),
+      .refine(val => ['false', 'true'].includes(val), { message: IS_ATTENDED_REQUIRED_MSG })
+      .transform(val => val === 'true'),
 
     contribution: z
       .string()
