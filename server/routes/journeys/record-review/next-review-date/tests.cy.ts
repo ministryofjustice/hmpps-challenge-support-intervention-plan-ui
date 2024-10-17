@@ -48,9 +48,9 @@ context('test /record-review/next-review-date', () => {
 
     cy.findByText('Record a CSIP review').should('be.visible')
 
-    cy.findByText('Help with setting a review date').should('be.visible')
+    cy.findByText('Help with setting a review date').should('be.visible').click()
 
-    cy.findByText('Choose a review date that’s consistent with the targets and dates in Testname User plan.').should(
+    cy.findByText('Choose a review date that’s consistent with the targets and dates in Testname User’s plan.').should(
       'be.visible',
     )
 
