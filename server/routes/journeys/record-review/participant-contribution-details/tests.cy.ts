@@ -98,8 +98,11 @@ context('test /record-review/participant-contribution-details', () => {
     resetInputs()
     cy.findByRole('radio', { name: /yes/i }).click()
     getContinueButton().click()
-
     cy.findByRole('radio', { name: /yes/i }).should('be.checked')
+
+    cy.findByRole('radio', { name: /no/i }).click()
+    getContinueButton().click()
+    cy.findByRole('radio', { name: /no/i }).should('be.checked')
   }
 
   const validateErrorMessagesTextInputTooLong = () => {

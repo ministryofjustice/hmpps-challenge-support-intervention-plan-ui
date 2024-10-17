@@ -13,10 +13,6 @@ export class ParticipantDetailsController extends BaseJourneyController {
 
     const attendee = req.journeyData.review!.attendees?.[index]
 
-    if (!attendee && index > (req.journeyData.review!.attendees?.length || 0)) {
-      return res.notFound()
-    }
-
     let attendeeIsAttended: string | undefined
     if (attendee?.isAttended !== undefined) {
       if (attendee?.isAttended === true) {
