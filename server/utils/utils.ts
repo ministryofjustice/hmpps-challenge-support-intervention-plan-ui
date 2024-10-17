@@ -86,3 +86,11 @@ export const boldAppendStamp = (val: string) => {
 
   return res.join('')
 }
+
+export const isArePlural = (str: string, number: number) => {
+  if (number === 1) {
+    return `is 1 ${str}`
+  }
+
+  return `are ${number} ${str}s`
+}
