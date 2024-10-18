@@ -36,6 +36,8 @@ export default function routes(services: Services): Router {
       /record-actions-progress\/\d+$/,
       /intervention-details\/\d+$/,
       /delete-identified-need\/\d+$/,
+      /participant-contribution-details\/\d+$/,
+      /delete-participant\/\d+$/,
     ]),
   )
   router.use(journeyStateMachine())

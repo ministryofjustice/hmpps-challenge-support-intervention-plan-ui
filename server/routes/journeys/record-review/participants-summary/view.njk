@@ -112,11 +112,13 @@
         classes: "govuk-button--secondary",
         preventDoubleClick: true
     }) }}
-    <form method="post">
-        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        {{ govukButton({
-            text: "Continue",
-            preventDoubleClick: true
-        }) }}
-    </form>
+    {% if attendees.length %}
+        <form method="post">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+            {{ govukButton({
+                text: "Continue",
+                preventDoubleClick: true
+            }) }}
+        </form>
+    {% endif %}
 {% endblock %}
