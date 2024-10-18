@@ -9,6 +9,7 @@ import { DeleteParticipantRoutes } from './delete-participant/routes'
 import { ParticipantDetailsRoutes } from './participant-contribution-details/routes'
 import { NextReviewDateRoutes } from './next-review-date/routes'
 import { CloseCsipRoutes } from './close-csip/routes'
+import { ConfirmationRoutes } from './confirmation/routes'
 
 function Routes({ csipApiService }: Services) {
   const { router, get } = JourneyRouter()
@@ -23,6 +24,7 @@ function Routes({ csipApiService }: Services) {
   router.use('/participant-contribution-details/:index', ParticipantDetailsRoutes(csipApiService))
   router.use('/next-review-date', NextReviewDateRoutes())
   router.use('/close-csip', CloseCsipRoutes())
+  router.use('/confirmation', ConfirmationRoutes())
 
   return router
 }

@@ -1,0 +1,22 @@
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Confirmation - Record a CSIP investigation" %}
+
+{% block innerContent %}
+    {{ govukPanel({
+        titleText: ("Review recorded and CSIP closed" if planClosed else "CSIP review recorded") + " for " + (prisoner | firstNameSpaceLastName)
+    }) }}
+
+    <h1 class="govuk-heading-m">What to do next</h1>
+    <p class="govuk-body">Make sure the people responsible for supporting the prisoner are informed that the plan has been {{ "closed" if planClosed else "reviewed" }}.</p>
+    <p>
+        <a href="/csip-record/{{ recordUuid }}/plan" class="govuk-link govuk-link--no-visited-state">View the {{ ("closed plan" if planClosed else "plan for " + prisoner | firstNameSpaceLastName) }}</a>
+    </p>
+    {% if not planClosed %}
+        <p>
+            <a href="/manage-csips" class="govuk-link govuk-link--no-visited-state">View all CSIPs</a>
+        </p>
+    {% endif %}
+{% endblock %}
