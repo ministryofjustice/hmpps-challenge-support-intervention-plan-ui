@@ -1,21 +1,35 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% if not isUpdate %}
     <div class="govuk-grid-row govuk-!-margin-bottom-6">
         <div class="govuk-grid-column-two-thirds">
-            <h2 class="govuk-heading-l govuk-!-margin-bottom-7">Reviews</h1>
+            <h1 class="govuk-heading-l">Reviews</h1>
         </div>
+        {% if reviews.length > 1 %}
+            <div class="govuk-summary-list govuk-summary-list__actions">
+                <a class="govuk-link govuk-link--no-visited-state" href="/csip-record/{{ recordUuid }}/update-review/start">Update most recent review</a>
+            </div>
+        {% endif %}
     </div>
 {% endif %}
 
 {% if not reviews.length %}
     <p class="govuk-!-margin-bottom-8">No reviews recorded.</p>
+    <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
 {% endif %}
 
-<hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
-
 {% for review in reviews %}
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-7">Review {{ loop.index }}</h2>
+    <div class="govuk-grid-row govuk-!-margin-bottom-7">
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-m">Review {{ loop.index }}:</h2>
+        </div>
+        {% if loop.index == reviews.length %}
+            <div class="govuk-summary-list govuk-summary-list__actions">
+                <a class="govuk-link govuk-link--no-visited-state" href="/csip-record/{{ recordUuid }}/update-review/start">Update review</a>
+            </div>
+        {% endif %}
+    </div>
     {{ govukSummaryList({
         rows: [
         {
@@ -31,7 +45,7 @@
               text: 'Review outcome'
           },
           value: {
-              text: review.actions
+              text: "Close the CSIP" if review.csipClosedDate else "Keep the prisoner on a plan"
           }
         },
         {
@@ -51,5 +65,50 @@
           }
         }]
     }) }}
+
+    {% set contributions %}
+        {% for attendee in review.attendees %}
+            {{ govukSummaryList({
+                card: {
+                    title: { text: "Participant: " + (attendee.name or loop.index) }
+                },
+                rows: [{
+                    key: {
+                        text: 'Name'
+                    },
+                    value: {
+                        text: attendee.name or 'Not provided'
+                    }
+                },{
+                    key: {
+                        text: 'Role'
+                    },
+                    value: {
+                        text: attendee.role or 'Not provided'
+                    }
+                },{
+                    key: {
+                        text: 'Attended in person'
+                    },
+                    value: {
+                        text: 'Yes' if attendee.isAttended else 'No'
+                    }
+                },{
+                    key: {
+                        text: 'Contribution'
+                    },
+                    value: {
+                        text: (attendee.contribution or 'Not provided') | escape | boldAppendStamp | nl2br
+                    }
+                }]
+            }) }}
+        {% endfor %}
+    {% endset %}
+
+    {{ govukDetails({
+        summaryText: "Show contributions",
+        html: contributions
+    }) }}
+
     <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
 {% endfor %}

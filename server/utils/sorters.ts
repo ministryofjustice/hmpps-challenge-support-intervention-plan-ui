@@ -14,3 +14,8 @@ export const identifiedNeedSorter = (
   a.createdDate.localeCompare(b.createdDate) || // 2. sort by ascending Create Date, if tie then
   a.identifiedNeed.localeCompare(b.identifiedNeed) || // 3. sort by title alphabetically, if tie then
   a.identifiedNeedUuid.localeCompare(b.identifiedNeedUuid) // 4. sort by UUID alphabetically
+
+export const attendeeSorter = (a: components['schemas']['Attendee'], b: components['schemas']['Attendee']) =>
+  Number(!a.name) - Number(!b.name) || // 1. sort nullish name to bottom, if tie then
+  (a.name && b.name && a.name.localeCompare(b.name)) || // 2. sort by non-null name alphabetically, if tie then
+  a.attendeeUuid.localeCompare(b.attendeeUuid) // 3. sort by UUID alphabetically

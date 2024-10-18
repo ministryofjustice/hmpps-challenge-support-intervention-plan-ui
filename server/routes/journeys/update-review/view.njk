@@ -1,0 +1,33 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = true %}
+{% set pageTitle = "Update the most recent review" if reviewCount > 1 else "Update the most recent review" %}
+
+{% block pageHeader %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">Update the {% if reviewCount > 1 %}most recent{% endif %} review in {{ prisoner | firstNameSpaceLastName | possessiveComma }} plan</h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block innerContent %}
+  <p class="govuk-!-margin-bottom-8">
+    <strong>CSIP log code:</strong> {{ record.logCode or "Not provided" }}
+  </p>
+
+
+
+  {{ govukButton ({
+    classes: "govuk-!-margin-bottom-7 govuk-button--secondary",
+    text: "Add participant" if not attendees.length else "Add another participant",
+    href: "update-review/participant-contribution-details"
+  }) }}
+
+  <div class="govuk-summary-list">
+    <a class="govuk-link govuk-link--no-visited-state" href="{{secondaryButton.link}}">{{ secondaryButton.label }}</a>
+  </div>
+{% endblock %}

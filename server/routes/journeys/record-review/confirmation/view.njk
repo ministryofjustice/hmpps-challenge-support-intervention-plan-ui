@@ -12,7 +12,7 @@
     <h1 class="govuk-heading-m">What to do next</h1>
     <p class="govuk-body">Make sure the people responsible for supporting the prisoner are informed that the plan has been {{ "closed" if planClosed else "reviewed" }}.</p>
     <p>
-        <a href="/csip-record/{{ recordUuid }}/plan" class="govuk-link govuk-link--no-visited-state">View the {{ ("closed plan" if planClosed else "plan for " + prisoner | firstNameSpaceLastName) }}</a>
+        <a href="/csip-records/{{ recordUuid }}/plan" class="govuk-link govuk-link--no-visited-state">View the {{ ("closed plan" if planClosed else "plan for " + prisoner | firstNameSpaceLastName) }}</a>
     </p>
     {% if not planClosed %}
         <p>
