@@ -24,6 +24,7 @@ export class ReviewCheckAnswersController extends BaseJourneyController {
         summary: review.summary!,
         ...(action === 'CLOSE_CSIP' ? { csipClosedDate: format(new Date(), 'yyyy-MM-dd') } : {}),
         recordedBy: res.locals.user.username,
+        reviewDate: format(new Date(), 'yyyy-MM-dd'),
         recordedByDisplayName: res.locals.user.displayName,
         attendees: (review.attendees || []).map(attendee => ({
           contribution: attendee.contribution!,
