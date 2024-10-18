@@ -128,11 +128,4 @@ export default class CsipApiService {
   ) {
     return this.csipApiClientBuilder(req.systemClientToken).updateContributoryFactor(factorUuid, payload)
   }
-
-  createReview(req: Request, payload: components['schemas']['CreateReviewRequest']) {
-    return this.csipApiClientBuilder(req.systemClientToken).createReview(
-      req.journeyData.csipRecord!.recordUuid,
-      payload,
-    )
-  }
 }

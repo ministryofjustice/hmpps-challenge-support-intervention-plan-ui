@@ -150,11 +150,4 @@ export default class CsipApiClient {
       data: payload,
     })
   }
-
-  async createReview(recordUuid: string, payload: components['schemas']['CreateReviewRequest']) {
-    return this.restClient.post<components['schemas']['Review']>({
-      path: `/csip-records/${recordUuid}/plan/reviews`,
-      data: payload,
-    })
-  }
 }
