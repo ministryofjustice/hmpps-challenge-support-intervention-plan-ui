@@ -25,7 +25,9 @@ context('test /record-review/close-csip', () => {
     cy.visit(START_URL, { failOnStatusCode: false })
     cy.visit(PAGE_URL)
 
-    cy.get('.govuk-grid-column-two-thirds').children().should('have.length', 5)
+    cy.findByText(
+      /There (are|is) \d open identified needs? in Testname User's plan. These will be closed when you close the CSIP./,
+    ).should('not.exist')
 
     checkAxeAccessibility()
     validatePageContents()
