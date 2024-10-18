@@ -30,12 +30,14 @@ export default function routes(services: Services): Router {
       /referrer$/,
       /area-of-work$/,
       /check-answers$/,
-      /interview-details\/\d+$/,
+      /interview-details\/\d+(#[A-z]+)?$/,
       /delete-interview\/\d+$/,
-      /summarise-identified-need\/\d+$/,
-      /record-actions-progress\/\d+$/,
-      /intervention-details\/\d+$/,
+      /summarise-identified-need\/\d+(#[A-z]+)?$/,
+      /record-actions-progress\/\d+(#[A-z]+)?$/,
+      /intervention-details\/\d+(#[A-z]+)?$/,
       /delete-identified-need\/\d+$/,
+      /participant-contribution-details\/\d+(#[A-z]+)?$/,
+      /delete-participant\/\d+$/,
     ]),
   )
   router.use(journeyStateMachine())
