@@ -3,14 +3,15 @@
 
 {% extends "partials/layout.njk" %}
 
+{% set identifiedNeedsText = "is 1 open identified need" if openIdentifiedNeeds == 1 else "are " + openIdentifiedNeeds + " open identified needs" %}
 {% set pageTitle = "Close CSIP - Record a CSIP review" %}
 
 {% block innerContent %}
     <span class="govuk-caption-l">Record a CSIP review</span>
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Are you sure you want to record the final review and close this CSIP?</h1>
-    {% if showWarning %}
+    {% if openIdentifiedNeeds %}
         {{ govukWarningText({
-            text: needsPrepend + " in " + prisoner | firstNameSpaceLastName | possessiveComma + " plan. These will be closed when you close the CSIP.",
+            text: "There " + identifiedNeedsText + " in " + prisoner | firstNameSpaceLastName | possessiveComma + " plan. These will be closed when you close the CSIP.",
             iconFallbackText: "Warning"
         }) }}
     {% endif %}
