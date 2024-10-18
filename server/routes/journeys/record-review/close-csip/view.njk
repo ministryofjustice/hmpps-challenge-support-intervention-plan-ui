@@ -8,9 +8,9 @@
 {% block innerContent %}
     <span class="govuk-caption-l">Record a CSIP review</span>
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Are you sure you want to record the final review and close this CSIP?</h1>
-    {% if openIdentifiedNeeds %}
+    {% if showWarning %}
         {{ govukWarningText({
-            text: "There " + ("open identified need" | isArePlural(openIdentifiedNeeds)) + " in " + prisoner | firstNameSpaceLastName | possessiveComma + " plan. These will be closed when you close the CSIP.",
+            text: needsPrepend + " in " + prisoner | firstNameSpaceLastName | possessiveComma + " plan. These will be closed when you close the CSIP.",
             iconFallbackText: "Warning"
         }) }}
     {% endif %}

@@ -3,7 +3,7 @@ import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
-import { boldAppendStamp, convertToTitleCase, initialiseName, isArePlural, sentenceCase } from './utils'
+import { boldAppendStamp, convertToTitleCase, initialiseName, sentenceCase } from './utils'
 import config from '../config'
 import { buildErrorSummaryList, customErrorOrderBuilder, findError } from '../middleware/validationMiddleware'
 import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
@@ -75,5 +75,4 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addGlobal('YesNoDontKnow', YES_NO_ANSWER.enum)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
   njkEnv.addFilter('substring', (str: string, start: number, end?: number) => str && str.substring(start, end))
-  njkEnv.addFilter('isArePlural', isArePlural)
 }
