@@ -62,24 +62,13 @@ context('test /update-review', () => {
       .click()
   }
 
-  const validatePageContents = (hasOnlyOneReviewWithMultipleAttendees: boolean) => {
-    if (hasOnlyOneReviewWithMultipleAttendees) {
+  const validatePageContents = (hasOnlyOneReview: boolean) => {
+    if (hasOnlyOneReview) {
       cy.title().should('to.match', /Update the review - CSIP - DPS/)
       cy.findByRole('heading', { name: /Update the review of Testname User’s plan/ }).should('be.visible')
-
-      cy.findByText('Why can’t I delete this participant?').should('not.exist')
-      cy.findByRole('link', { name: `Delete the information about the participant (Participant: Attendee Name)` })
-        .should('be.visible')
-        .and('have.attr', 'href')
-        .and('match', /\/delete-participant\/attendee-uuid-1$/)
     } else {
       cy.title().should('to.match', /Update the most recent review - CSIP - DPS/)
       cy.findByRole('heading', { name: /Update the most recent review of Testname User’s plan/ }).should('be.visible')
-
-      cy.findByText('Why can’t I delete this participant?').should('be.visible')
-      cy.findByRole('link', {
-        name: `Delete the information about the participant (Participant: Attendee Name)`,
-      }).should('not.exist')
     }
 
     cy.findByRole('link', { name: /cancel/i })

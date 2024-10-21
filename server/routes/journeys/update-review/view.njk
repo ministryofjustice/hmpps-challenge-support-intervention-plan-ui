@@ -107,23 +107,7 @@
         {{ govukSummaryList({
             card: {
                 title: { text: "Participant: " + attendee.name },
-                classes: "govuk-!-margin-bottom-8" if loop.index === attendees.length else undefined,
-                actions: {
-                    items: [
-                        {
-                            href: 'update-review/delete-participant/' + attendee.attendeeUuid,
-                            text: "Delete",
-                            visuallyHiddenText: "the information about the participant",
-                            classes: "govuk-link--no-visited-state"
-                        }
-                    ]
-                } if attendees.length > 1 else {
-                    items: [
-                        {
-                            html: '<strong class="disabled-card-action">Cannot be deleted</strong>'
-                        }
-                    ]
-                }
+                classes: "govuk-!-margin-bottom-8" if loop.index === attendees.length else undefined
             },
             rows: [{
                 key: {
@@ -197,23 +181,17 @@
         }) }}
     {% endfor %}
 
-    {% if attendees.length == 1 %}
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-                {{ govukDetails({
-                    summaryText: "Why can’t I delete this participant?",
-                    html: '
-            <p>At least one participant needs to be recorded in each CSIP review.</p>
-            <p>To remove information about this participant, you can either:</p>
-            <ul>
-            <li>overwrite the participant information using the ‘Change’ links</li>
-            <li>add another participant and then delete this participant</li>
-            </ul>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {{ govukDetails({
+                summaryText: "How can I delete a participant?",
+                html: '
+            <p>It’s not possible to delete participants recorded in a CSIP review.</p>
+            <p>To remove information about a participant, you can overwrite the participant information using the ‘Change’ links.</p>
             '
-                }) }}
-            </div>
+            }) }}
         </div>
-    {% endif %}
+    </div>
 
   {{ govukButton ({
     classes: "govuk-!-margin-bottom-7 govuk-button--secondary",
