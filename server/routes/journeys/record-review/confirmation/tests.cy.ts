@@ -53,7 +53,7 @@ context('test /record-review/confirmation', () => {
       cy.findByRole('link', { name: /View the closed plan/i }).should('be.visible')
       cy.findByRole('link', { name: /View the closed plan/i })
         .should('have.attr', 'href')
-        .and('include', `csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/plan`)
+        .and('include', `csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550/plan`)
       cy.findByRole('link', { name: /View all CSIPs/i }).should('not.exist')
     } else {
       cy.findByText(

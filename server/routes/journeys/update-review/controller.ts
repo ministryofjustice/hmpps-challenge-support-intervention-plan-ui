@@ -19,7 +19,7 @@ export class UpdateReviewController extends BaseJourneyController {
       return res.redirect(`/csip-records/${record.recordUuid}`)
     }
 
-    const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
+    req.journeyData.prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
     const review = record.plan.reviews.reduce(
       (prev, cur) => (prev!.reviewSequence > cur.reviewSequence ? prev : cur),
       record.plan.reviews[0],
@@ -41,16 +41,11 @@ export class UpdateReviewController extends BaseJourneyController {
     }
 
     return res.render('update-review/view', {
-      tabSelected: 'review',
-      updatingEntity: 'review',
-      isUpdate: true,
-      referralTabSelected: false,
       status: record.status,
       reviewCount: record.plan.reviews.length,
       review,
       attendees: review.attendees.sort(attendeeSorter),
       recordUuid: record.recordUuid,
-      prisoner,
       showBreadcrumbs: true,
       secondaryButton,
     })

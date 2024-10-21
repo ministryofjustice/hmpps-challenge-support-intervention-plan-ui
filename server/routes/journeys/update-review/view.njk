@@ -1,15 +1,16 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "Update the most recent review" if reviewCount > 1 else "Update the most recent review" %}
+{% set pageTitle = "Update the most recent review - CSIP" if reviewCount > 1 else "Update the review - CSIP" %}
 
 {% block pageHeader %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-l">Update the {% if reviewCount > 1 %}most recent{% endif %} review in {{ prisoner | firstNameSpaceLastName | possessiveComma }} plan</h1>
+            <h1 class="govuk-heading-l">Update the {% if reviewCount > 1 %}most recent{% endif %} review of {{ prisoner | firstNameSpaceLastName | possessiveComma }} plan</h1>
         </div>
     </div>
 {% endblock %}
@@ -19,7 +20,200 @@
     <strong>CSIP log code:</strong> {{ record.logCode or "Not provided" }}
   </p>
 
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-6">Review information</h2>
+    {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-7",
+        rows: [
+            {
+                key: {
+                text: "Review date"
+            },
+                value: {
+                html: (review.reviewDate | formatDisplayDate) or 'Not provided'
+            }
+            },
+            {
+                key: {
+                text: "Recorded by"
+            },
+                value: {
+                html: review.recordedByDisplayName
+            }
+            },
+            {
+                key: {
+                text: "Review details"
+            },
+                value: {
+                html: (review.summary or 'Not provided') | escape | nl2br
+            },
+                actions: {
+                items: [
+                    {
+                        href: "update-review/details#summary",
+                        text: "Change",
+                        visuallyHiddenText: "the details of the review",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Review outcome"
+            },
+                value: {
+                text: "Close the CSIP" if review.csipClosedDate else "Keep the prisoner on a plan"
+            },
+                actions: {
+                items: [
+                    {
+                        href: "update-review/outcome#outcome",
+                        text: "Change",
+                        visuallyHiddenText: "the review outcome",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            },
+            {
+                key: {
+                text: "Next review date"
+            },
+                value: {
+                html: (review.nextReviewDate | formatDisplayDate) or 'Not provided'
+            },
+                actions: {
+                items: [
+                    {
+                        href: "update-review/next-review-date#nextReviewDate",
+                        text: "Change",
+                        visuallyHiddenText: "the next review date",
+                        classes: "govuk-link--no-visited-state"
+                    }
+                ]
+            }
+            }
+        ]
+    }) }}
 
+    <div class="govuk-grid-row govuk-!-margin-bottom-6">
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-m">Participants and contributions</h2>
+        </div>
+    </div>
+
+    {% for attendee in attendees %}
+        {{ govukSummaryList({
+            card: {
+                title: { text: "Participant: " + attendee.name },
+                classes: "govuk-!-margin-bottom-8" if loop.index === attendees.length else undefined,
+                actions: {
+                    items: [
+                        {
+                            href: 'update-review/delete-participant/' + attendee.attendeeUuid,
+                            text: "Delete",
+                            visuallyHiddenText: "the information about the participant",
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                } if attendees.length > 1 else {
+                    items: [
+                        {
+                            html: '<strong class="disabled-card-action">Cannot be deleted</strong>'
+                        }
+                    ]
+                }
+            },
+            rows: [{
+                key: {
+                    text: 'Name'
+                },
+                value: {
+                    text: attendee.name or 'Not provided'
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'update-review/participant-contribution-details/' + attendee.attendeeUuid + '#name',
+                            text: "Change",
+                            visuallyHiddenText: "the participant’s name",
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            },{
+                key: {
+                    text: 'Role'
+                },
+                value: {
+                    text: attendee.role or 'Not provided'
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'update-review/participant-contribution-details/' + attendee.attendeeUuid + '#role',
+                            text: "Change",
+                            visuallyHiddenText: "the participant’s role",
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            },{
+                key: {
+                    text: 'Attended in person'
+                },
+                value: {
+                    text: 'Yes' if attendee.isAttended === true else ('No' if attendee.isAttended === false else 'Not provided')
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'update-review/participant-contribution-details/' + attendee.attendeeUuid + '#isAttended',
+                            text: "Change",
+                            visuallyHiddenText: "whether the participant attended the review meeting in person or not",
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            },{
+                key: {
+                    text: 'Contribution'
+                },
+                value: {
+                    html: (attendee.contribution or 'Not provided') | escape | boldAppendStamp | nl2br
+                },
+                actions: {
+                    items: [
+                        {
+                            href: 'update-review/participant-contribution-details/' + attendee.attendeeUuid + '#contribution',
+                            text: "Change",
+                            visuallyHiddenText: "the description of the participant’s contribution to the review",
+                            classes: "govuk-link--no-visited-state"
+                        }
+                    ]
+                }
+            }]
+        }) }}
+    {% endfor %}
+
+    {% if attendees.length == 1 %}
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                {{ govukDetails({
+                    summaryText: "Why can’t I delete this participant?",
+                    html: '
+            <p>At least one participant needs to be recorded in each CSIP review.</p>
+            <p>To remove information about this participant, you can either:</p>
+            <ul>
+            <li>overwrite the participant information using the ‘Change’ links</li>
+            <li>add another participant and then delete this participant</li>
+            </ul>
+            '
+                }) }}
+            </div>
+        </div>
+    {% endif %}
 
   {{ govukButton ({
     classes: "govuk-!-margin-bottom-7 govuk-button--secondary",

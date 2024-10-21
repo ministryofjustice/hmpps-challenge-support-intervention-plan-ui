@@ -118,7 +118,7 @@
                     text: 'Contribution'
                 },
                 value: {
-                    text: (attendee.contribution or 'Not provided') | escape | boldAppendStamp | nl2br
+                    html: (attendee.contribution or 'Not provided') | escape | boldAppendStamp | nl2br
                 }
             }]
         }) }}

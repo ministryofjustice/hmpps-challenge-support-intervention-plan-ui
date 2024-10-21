@@ -127,7 +127,7 @@ context('test /csip-records', () => {
   const checkReviews = () => {
     cy.findByRole('link', { name: /reviews/i }).click()
     cy.findByRole('heading', { name: /reviews/i }).should('be.visible')
-    cy.findByRole('heading', { name: 'Review 1' }).should('be.visible')
+    cy.findByRole('heading', { name: 'Review 1:' }).should('be.visible')
     cy.get('dl')
       .eq(0)
       .within(() => {
