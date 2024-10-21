@@ -135,4 +135,12 @@ export default class CsipApiService {
       payload,
     )
   }
+
+  updateReview(req: Request, payload: components['schemas']['UpdateReviewRequest']) {
+    return this.csipApiClientBuilder(req.systemClientToken).updateReview(req.journeyData.review!.reviewUuid!, payload)
+  }
+
+  updateAttendee(req: Request, attendeeUuid: string, payload: components['schemas']['UpdateAttendeeRequest']) {
+    return this.csipApiClientBuilder(req.systemClientToken).updateAttendee(attendeeUuid, payload)
+  }
 }

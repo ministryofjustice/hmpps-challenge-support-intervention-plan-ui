@@ -11,3 +11,11 @@
 .custom-task-list-first-row {
   border-top: 0!important;
 }
+
+.disabled-card-action {
+  color: #505a5f;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: default;
+  display: inline-block;
+}

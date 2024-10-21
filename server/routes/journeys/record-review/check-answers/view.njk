@@ -90,7 +90,7 @@
         {{ govukSummaryList({
             card: {
                 title: { text: "Participant: " + attendee.name },
-                classes: "govuk-!-margin-bottom-8" if loop.index === attendees.length else undefined
+                classes: "govuk-!-margin-bottom-8" if loop.index === review.attendees.length else undefined
             },
             rows: [{
                 key: {
@@ -118,24 +118,21 @@
                     text: 'Contribution'
                 },
                 value: {
-                    text: (attendee.contribution or 'Not provided') | escape | boldAppendStamp | nl2br
+                    html: (attendee.contribution or 'Not provided') | escape | boldAppendStamp | nl2br
                 }
             }]
         }) }}
     {% endfor %}
 
-    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-7">
-
-    
-
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {% if closingCsip %}
+            {{ govukWarningText({
+                text: "You will not be able to add or change any information after closing the CSIP."
+            }) }}
+        {% endif %}
         <div class="govuk-button-group">
             {% if closingCsip %}
-                {{ govukWarningText({
-                    text: "You will not be able to add or change any information after closing the CSIP."
-                }) }}
-
                 {{ govukButton({
                     text: "Record review and close CSIP",
                     preventDoubleClick: true,
