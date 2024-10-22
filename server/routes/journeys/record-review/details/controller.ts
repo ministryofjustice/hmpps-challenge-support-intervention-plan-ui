@@ -7,8 +7,6 @@ export class SummaryController {
     res.render('record-review/details/view', {
       summary,
       backUrl: '../record-review',
-      maxLengthChars: 4000,
-      threshold: '75',
     })
   }
 

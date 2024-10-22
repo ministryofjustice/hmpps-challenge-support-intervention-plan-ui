@@ -19,7 +19,7 @@ export class UpdateDetailsController extends PatchReviewController {
       req,
       next,
       changes: {
-        summary: req.body.summary ?? '',
+        summary: req.body.summary,
       },
     })
 

@@ -15,10 +15,10 @@ context('test /update-review/details', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
     cy.task('stubCsipRecordGetSuccess')
-    cy.task('stubPatchReviewSuccess')
   })
 
   it('should try out all cases', () => {
+    cy.task('stubPatchReviewSuccess')
     navigateToTestPage()
     cy.url().should('to.match', /\/details$/)
     checkAxeAccessibility()
@@ -26,6 +26,16 @@ context('test /update-review/details', () => {
     validatePageContents()
     validateErrorMessage()
     proceedToNextScreen()
+  })
+
+  it('should handle patch failure', () => {
+    cy.task('stubPatchReviewFail')
+    navigateToTestPage()
+    cy.url().should('to.match', /\/details$/)
+    checkAxeAccessibility()
+
+    getContinueButton().click()
+    cy.findByRole('heading', { name: /Sorry, there is a problem with the service/ }).should('be.visible')
   })
 
   const navigateToTestPage = () => {

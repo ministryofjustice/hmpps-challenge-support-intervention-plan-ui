@@ -765,7 +765,11 @@ const stubPostIdentifiedNeedFail = () => {
 }
 
 const stubPatchReviewSuccess = () => {
-  return createBasicHttpStub('PATCH', '/csip-api/csip-records/plan/reviews/[a-zA-Z0-9-]+-[a-zA-Z0-9-]+', 200)
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/plan/reviews/[a-zA-Z0-9-]+', 200)
+}
+
+const stubPatchReviewFail = () => {
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/plan/reviews/[a-zA-Z0-9-]+', 500)
 }
 
 export const csip = {
@@ -900,4 +904,5 @@ export default {
   stubPostIdentifiedNeedFail,
   stubPostReview,
   stubPatchReviewSuccess,
+  stubPatchReviewFail,
 }
