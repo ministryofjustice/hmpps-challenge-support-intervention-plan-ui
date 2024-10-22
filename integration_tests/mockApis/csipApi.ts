@@ -764,6 +764,10 @@ const stubPostIdentifiedNeedFail = () => {
   })
 }
 
+const stubPatchReviewSuccess = () => {
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/plan/reviews/[a-zA-Z0-9-]+-[a-zA-Z0-9-]+', 200)
+}
+
 export const csip = {
   recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
   prisonNumber: 'A1111AA',
@@ -895,4 +899,5 @@ export default {
   stubPostIdentifiedNeedSuccess,
   stubPostIdentifiedNeedFail,
   stubPostReview,
+  stubPatchReviewSuccess,
 }
