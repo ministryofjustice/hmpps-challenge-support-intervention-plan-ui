@@ -6,8 +6,8 @@ import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../../utils/constants'
 import { getNonUndefinedProp } from '../../../utils/utils'
 import { IdentifiedNeed } from '../../../@types/express'
 
-const MESSAGE_REVIEW_UPDATED = 'You’ve updated the review details.'
-const MESSAGE_MOST_RECENT_REVIEW_UPDATED = 'You’ve updated the review details for the most recent review.'
+export const MESSAGE_REVIEW_UPDATED = 'You’ve updated the review details.'
+export const MESSAGE_MOST_RECENT_REVIEW_UPDATED = 'You’ve updated the review details for the most recent review.'
 
 export class PatchReviewController extends BaseJourneyController {
   getSelectedIdentifiedNeed = (req: Request): IdentifiedNeed | undefined => {

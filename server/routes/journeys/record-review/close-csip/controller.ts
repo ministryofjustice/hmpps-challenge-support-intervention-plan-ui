@@ -8,7 +8,12 @@ export class CloseCsipController {
     })
   }
 
-  POST = async (_req: Request<unknown, unknown, unknown>, res: Response) => {
+  POST = async (req: Request, res: Response) => {
+    if (req.journeyData.review!.outcomeSubJourney?.outcome) {
+      req.journeyData.review!.outcome = req.journeyData.review!.outcomeSubJourney.outcome
+      delete req.journeyData.review!.outcomeSubJourney
+    }
+    delete req.journeyData.review!.nextReviewDate
     res.redirect('check-answers')
   }
 }
