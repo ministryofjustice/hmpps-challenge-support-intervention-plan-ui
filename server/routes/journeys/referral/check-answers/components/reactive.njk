@@ -136,8 +136,8 @@
                     }
                 ]
             }
-            }
-        ] | filterBy(involvementFilter)
+            } if referral.isStaffAssaulted else undefined
+        ]
     }) }}
 
     <h1 class="govuk-heading-m">Incident description</h1>

@@ -28,9 +28,6 @@ export class CsipRecordController {
 
     const decision = record.referral!.decisionAndActions
 
-    const involvementFilter = (itm: { key: { text: string } }) =>
-      referral.assaultedStaffName || itm.key.text !== 'Names of staff assaulted'
-
     const screening = record.referral!.saferCustodyScreeningOutcome
 
     const splitUrl = req.url.split('/')
@@ -42,7 +39,6 @@ export class CsipRecordController {
       prisoner,
       decision,
       screening,
-      involvementFilter,
       investigation,
       referral,
       recordUuid,
@@ -64,36 +60,6 @@ export class CsipRecordController {
     res.redirect(`/csip-records/${recordUuid}/${tabSelected}`)
   }
 
-  UPDATE = async (req: Request, res: Response) => {
-    const {
-      record,
-      prisoner,
-      decision,
-      screening,
-      involvementFilter,
-      investigation,
-      referral,
-      recordUuid,
-      tabSelected,
-    } = await this.getRecordInfo(req)
-
-    res.render('csip-records/view', {
-      isUpdate: true,
-      status: record.status,
-      shouldShowTabs: !!investigation,
-      record,
-      decision,
-      investigation,
-      recordUuid,
-      tabSelected,
-      prisoner,
-      referral,
-      screening,
-      involvementFilter,
-      showBreadcrumbs: true,
-    })
-  }
-
   GET = async (req: Request, res: Response) => {
     req.journeyData.isUpdate = false
     const {
@@ -101,7 +67,6 @@ export class CsipRecordController {
       prisoner,
       decision,
       screening,
-      involvementFilter,
       investigation,
       referral,
       recordUuid,
@@ -113,6 +78,10 @@ export class CsipRecordController {
     let secondaryButton
     switch (record.status) {
       case 'REFERRAL_PENDING':
+        secondaryButton = {
+          label: 'Update referral',
+          link: `/csip-record/${recordUuid}/update-referral/start`,
+        }
         break
       case 'REFERRAL_SUBMITTED':
         actionButton = {
@@ -200,7 +169,6 @@ export class CsipRecordController {
       referral,
       screening,
       contributoryFactors,
-      involvementFilter,
       showBreadcrumbs: true,
       secondaryButton,
       successMessage: req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE)[0],

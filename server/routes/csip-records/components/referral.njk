@@ -5,7 +5,7 @@
         <div class="govuk-grid-column-two-thirds">
             <h2 class="govuk-heading-l">Referral</h2>
         </div>
-        {% if status == 'REFERRAL_SUBMITTED' and secondaryButton %}
+        {% if secondaryButton and secondaryButton.label == 'Update referral' %}
             <div class="govuk-summary-list govuk-summary-list__actions">
                 <a class="govuk-link govuk-link--no-visited-state" href="{{secondaryButton.link}}">{{ secondaryButton.label }}</a>
             </div>

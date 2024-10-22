@@ -88,7 +88,7 @@
                 text: "Prisoner involvement"
             },
             value: {
-                text: referral.incidentInvolvement.description
+                text: referral.incidentInvolvement.description if referral.incidentInvolvement else 'Not provided'
             },
             actions: {
                 items: [
@@ -124,7 +124,7 @@
                 text: "Names of staff assaulted"
             },
             value: {
-                text: referral.assaultedStaffName or ''
+                text: referral.assaultedStaffName or 'Not provided'
             },
             actions: {
                 items: [
@@ -136,8 +136,8 @@
                     }
                 ]
             } if isUpdate else undefined
-        }
-    ] | filterBy(involvementFilter)
+        } if referral.isStaffAssaulted else undefined
+    ]
 }) }}
 
 <h1 class="govuk-heading-m">Behaviour description</h1>
@@ -149,7 +149,7 @@
                 text: "Description of behaviour and concerns"
             },
             value: {
-                html: referral.descriptionOfConcern | escape | boldAppendStamp | nl2br
+                html: (referral.descriptionOfConcern or 'Not provided') | escape | boldAppendStamp | nl2br
             },
             actions: {
                 items: [
@@ -167,7 +167,7 @@
                 text: "Reasons given for the behaviour"
             },
             value: {
-                html: referral.knownReasons | escape | boldAppendStamp | nl2br
+                html: (referral.knownReasons or 'Not provided') | escape | boldAppendStamp | nl2br
             },
             actions: {
                 items: [
