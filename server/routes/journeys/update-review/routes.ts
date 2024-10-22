@@ -2,12 +2,15 @@ import StartJourneyRoutes from './start/routes'
 import { Services } from '../../../services'
 import { JourneyRouter } from '../base/routes'
 import { UpdateReviewController } from './controller'
+import { UpdateOutcomeRoutes } from './outcome/routes'
 
 function Routes({ csipApiService, prisonerSearchService }: Services) {
   const { router, get } = JourneyRouter()
   const updateController = new UpdateReviewController(csipApiService, prisonerSearchService)
 
   get('/', updateController.UPDATE)
+
+  router.use('/outcome', UpdateOutcomeRoutes())
 
   return router
 }
