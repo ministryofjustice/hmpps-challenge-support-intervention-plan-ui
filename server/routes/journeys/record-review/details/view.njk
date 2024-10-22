@@ -12,7 +12,7 @@
     <label for="summary">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-7">
             {% if isUpdate %}
-                Update details on the review
+                Update the review details
             {% else %}
                 Enter details of the review
             {% endif %}
@@ -20,27 +20,20 @@
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        {% if not isUpdate %}
-            {{ govukDetails({
-                summaryText: "What type of information to include",
-                html: '
-                <p>You could include: </p>
-                <ul>
-                  <li>a description of the review process or minutes from a review meeting</li>
-                  <li>a summary of progress on each identified need</li>
-                  <li>information on any set-backs or changes in risk</li>
-                </ul>'
-            }) }}
-        {% endif %}
-        {% if isUpdate and currentSummary %}
-            {{ govukInsetText({
-                html: currentSummary | escape | boldAppendStamp | nl2br
-            }) }}
-        {% endif %}
+        {{ govukDetails({
+            summaryText: "What type of information to include",
+            html: '
+            <p>You could include: </p>
+            <ul>
+                <li>a description of the review process or minutes from a review meeting</li>
+                <li>a summary of progress on each identified need</li>
+                <li>information on any set-backs or changes in risk</li>
+            </ul>'
+        }) }}
         {{ govukCharacterCount({
-            maxlength: maxLengthChars,
+            maxlength: 4000,
             rows: 12,
-            threshold: threshold,
+            threshold: 75,
             id: "summary",
             name: "summary",
             value: summary,
