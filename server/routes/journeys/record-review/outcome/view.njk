@@ -1,12 +1,12 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Outcome - Record a CSIP review" %}
+{% set pageTitle = "What’s the outcome of this review? - Update a CSIP review" if isUpdate else "Outcome - Record a CSIP review" %}
 
 {% block innerContent %}
-    <span class="govuk-caption-l">Record a CSIP review</span>
+    {% include 'base/components/review-caption.njk' %}
     <label for="outcome">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-7">What’s the outcome of this review?</h1>
     </label>
@@ -29,9 +29,9 @@
             ],
             errorMessage: validationErrors | findError('outcome')
         }) }}
-        {{ govukButton({
+        {{ submitButton({
             text: "Continue",
-            preventDoubleClick: true
+            alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
         }) }}
     </form>
 {% endblock %}
