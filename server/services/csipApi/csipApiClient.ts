@@ -157,4 +157,18 @@ export default class CsipApiClient {
       data: payload,
     })
   }
+
+  async updateReview(reviewUuid: string, payload: components['schemas']['UpdateReviewRequest']) {
+    return this.restClient.patch<components['schemas']['Review']>({
+      path: `/csip-records/plan/reviews/${reviewUuid}`,
+      data: payload,
+    })
+  }
+
+  async updateAttendee(attendeeUuid: string, payload: components['schemas']['UpdateAttendeeRequest']) {
+    return this.restClient.patch<components['schemas']['Attendee']>({
+      path: `/csip-records/plan/reviews/attendees/${attendeeUuid}`,
+      data: payload,
+    })
+  }
 }

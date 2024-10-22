@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import CsipApiService from '../../services/csipApi/csipApiService'
 import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
 import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../utils/constants'
-import { identifiedNeedSorter, interviewSorter } from '../../utils/sorters'
+import { attendeeSorter, identifiedNeedSorter, interviewSorter } from '../../utils/sorters'
 
 export class CsipRecordController {
   constructor(
@@ -184,7 +184,12 @@ export class CsipRecordController {
       shouldShowTabs: !!investigation,
       plan: record.plan,
       identifiedNeeds: record.plan?.identifiedNeeds.sort(identifiedNeedSorter),
-      reviews: record.plan?.reviews,
+      reviews: record.plan?.reviews
+        ?.sort((a, b) => a.reviewSequence - b.reviewSequence)
+        ?.map(review => ({
+          ...review,
+          attendees: review.attendees?.sort(attendeeSorter) || [],
+        })),
       record,
       decision,
       investigation,

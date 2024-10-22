@@ -427,7 +427,40 @@ const stubCsipRecordSuccessPlanPending = () => {
   })
 }
 
-const stubCsipRecordSuccessCsipOpen = () => {
+const stubCsipRecordSuccessCsipOpen = (
+  reviews = [
+    {
+      reviewDate: '2024-04-05',
+      actions: ['REMAIN_ON_CSIP'],
+      summary: 'a summary',
+      recordedByDisplayName: 'joe bloggs',
+      attendees: [
+        {
+          attendeeUuid: 'attendee-uuid-2',
+          name: 'Attendee Alt',
+          role: 'another role text',
+          isAttended: false,
+        },
+      ],
+    },
+    {
+      reviewDate: '2024-04-15',
+      actions: ['REMAIN_ON_CSIP'],
+      summary: 'even longer',
+      recordedByDisplayName: 'test testerson',
+      nextReviewDate: '2025-04-15',
+      attendees: [
+        {
+          attendeeUuid: 'attendee-uuid-1',
+          name: 'Attendee Name',
+          role: 'role text',
+          isAttended: true,
+          contribution: 'contribution text',
+        },
+      ],
+    },
+  ],
+) => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
     ...csip,
     status: 'CSIP_OPEN',
@@ -471,20 +504,7 @@ const stubCsipRecordSuccessCsipOpen = () => {
       },
     },
     plan: {
-      reviews: [
-        {
-          reviewDate: '2024-04-05',
-          actions: 'some actions',
-          summary: 'a summary',
-          recordedByDisplayName: 'joe bloggs',
-        },
-        {
-          reviewDate: '2024-04-15',
-          actions: 'other stuff',
-          summary: 'even longer',
-          recordedByDisplayName: 'test testerson',
-        },
-      ],
+      reviews,
       caseManager: 'some person',
       reasonForPlan: 'plan reason',
       nextCaseReviewDate: '2024-05-25',
