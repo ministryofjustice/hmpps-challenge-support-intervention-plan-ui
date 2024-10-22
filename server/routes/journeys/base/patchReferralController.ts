@@ -62,6 +62,7 @@ export class PatchReferralController extends BaseJourneyController {
             csipRecord.referral,
             'incidentInvolvement',
             incidentInvolvement => (incidentInvolvement as { code: string })?.code,
+            'incidentInvolvementCode',
           ),
           ...changes,
         },

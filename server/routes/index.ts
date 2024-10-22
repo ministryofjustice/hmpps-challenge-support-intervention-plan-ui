@@ -38,6 +38,9 @@ export default function routes(services: Services): Router {
       /delete-identified-need\/\d+$/,
       /participant-contribution-details\/\d+$/,
       /delete-participant\/\d+$/,
+      /record-review\/outcome$/,
+      /record-review\/close-csip$/,
+      /record-review\/next-review-date$/,
     ]),
   )
   router.use(journeyStateMachine())

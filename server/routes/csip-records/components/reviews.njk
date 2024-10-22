@@ -6,7 +6,7 @@
         <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-l">Reviews</h1>
         </div>
-        {% if reviews.length > 1 %}
+        {% if reviews.length > 1 and status == 'CSIP_OPEN' %}
             <div class="govuk-summary-list govuk-summary-list__actions">
                 <a class="govuk-link govuk-link--no-visited-state" href="/csip-record/{{ recordUuid }}/update-review/start">Update most recent review</a>
             </div>
@@ -24,7 +24,7 @@
         <div class="govuk-grid-column-two-thirds">
             <h2 class="govuk-heading-m">Review {{ loop.index }}:</h2>
         </div>
-        {% if loop.index == reviews.length %}
+        {% if loop.index == reviews.length and status == 'CSIP_OPEN' %}
             <div class="govuk-summary-list govuk-summary-list__actions">
                 <a class="govuk-link govuk-link--no-visited-state" href="/csip-record/{{ recordUuid }}/update-review/start">Update review</a>
             </div>

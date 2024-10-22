@@ -1,7 +1,7 @@
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
 context('test /update-review/outcome', () => {
-  const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
+  const getContinueButton = () => cy.findByRole('button', { name: /Confirm and save/ })
   const getOutcomeClose = () => cy.findByRole('radio', { name: 'Close the CSIP' })
   const getOutcomeRemain = () =>
     cy.findByRole('radio', { name: 'What’s the outcome of this review? Keep the prisoner on the plan' })
@@ -15,7 +15,7 @@ context('test /update-review/outcome', () => {
     cy.task('stubCsipRecordSuccessCsipOpen')
   })
 
-  it('should redirect to close csip', () => {
+  it('should redirect to close csip if CLOSE_CSIP is submitted', () => {
     navigateToTestPage()
     cy.url().should('to.match', /\/outcome#outcome$/)
     checkAxeAccessibility()
@@ -31,16 +31,11 @@ context('test /update-review/outcome', () => {
     getOutcomeClose().should('be.checked')
   })
 
-  it('should redirect to next review date', () => {
+  it('should show success message if REMAIN_ON_CSIP is submitted', () => {
     navigateToTestPage()
-
-    getOutcomeRemain().click()
     getContinueButton().click()
-    cy.url().should('to.match', /\/next-review-date#outcome$/)
-
-    cy.go('back')
-    cy.reload()
-    getOutcomeRemain().should('be.checked')
+    cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
+    cy.findByText('You’ve updated the review details for the most recent review.').should('be.visible')
   })
 
   const navigateToTestPage = () => {

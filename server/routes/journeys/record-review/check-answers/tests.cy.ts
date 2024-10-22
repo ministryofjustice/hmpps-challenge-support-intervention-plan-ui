@@ -32,7 +32,7 @@ context('test /record-review/check-answers', () => {
           },
         ],
         nextReviewDate: '2024-05-06',
-        outcome: 'CLOSE_CSIP',
+        outcome: 'REMAIN_ON_CSIP',
         summary: 'a summary',
       },
     })
@@ -46,7 +46,7 @@ context('test /record-review/check-answers', () => {
 
     cy.findByRole('heading', { name: /Review information/ }).should('be.visible')
     cy.contains('dt', 'Review details').next().should('include.text', 'a summary')
-    cy.contains('dt', 'Review outcome').next().should('include.text', 'Close the CSIP')
+    cy.contains('dt', 'Review outcome').next().should('include.text', 'Keep the prisoner on a plan')
     cy.contains('dt', 'Next review date').next().should('include.text', '06 May 2024')
 
     cy.findByRole('link', { name: /change the details of the review/i })
@@ -57,14 +57,6 @@ context('test /record-review/check-answers', () => {
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.contains('dt', 'Review details').next().should('include.text', 'new details')
 
-    cy.findByRole('link', { name: /change the review outcome/i })
-      .should('be.visible')
-      .click()
-    cy.url().should('to.match', /outcome#outcome$/)
-    cy.findByRole('radio', { name: /Keep the prisoner on the plan/i }).click()
-    cy.findByRole('button', { name: /Continue/i }).click()
-    cy.contains('dt', 'Review outcome').next().should('include.text', 'Keep the prisoner on a plan')
-
     cy.findByRole('link', { name: /change the next review date/i })
       .should('be.visible')
       .click()
@@ -72,6 +64,17 @@ context('test /record-review/check-answers', () => {
     cy.findByRole('textbox').clear().type(format(startOfTomorrow(), 'dd/MM/yyyy'), { delay: 0 })
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.contains('dt', 'Next review date').next().should('include.text', format(startOfTomorrow(), 'dd MMMM yyyy'))
+
+    cy.findByRole('link', { name: /change the review outcome/i })
+      .should('be.visible')
+      .click()
+    cy.url().should('to.match', /outcome#outcome$/)
+    cy.findByRole('radio', { name: /Close the CSIP/i }).click()
+    cy.findByRole('button', { name: /Continue/i }).click()
+    cy.findByRole('button', { name: /Yes, close CSIP/i }).click()
+    cy.contains('dt', 'Review outcome').next().should('include.text', 'Close the CSIP')
+
+    cy.findByRole('link', { name: /change the next review date/i }).should('not.exist')
 
     cy.contains('dt', 'Name').next().should('include.text', 'bar footerton')
     cy.contains('dt', 'Role').next().should('include.text', 'arole')
@@ -174,7 +177,7 @@ context('test /record-review/check-answers', () => {
   }
 
   const continueToConfirmation = () => {
-    cy.findByRole('button', { name: /Confirm and record review/i }).click()
+    cy.findByRole('button', { name: /Record review and close CSIP/i }).click()
     cy.url().should('to.match', /\/confirmation(#[A-z]+)?$/)
   }
 })

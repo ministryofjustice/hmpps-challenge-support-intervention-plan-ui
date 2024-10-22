@@ -30,7 +30,7 @@
             errorMessage: validationErrors | findError('outcome')
         }) }}
         {{ submitButton({
-            text: "Continue",
+            text: "Confirm and save" if isUpdate else "Continue",
             alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
         }) }}
     </form>

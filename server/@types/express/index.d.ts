@@ -118,6 +118,7 @@ export type IdentifiedNeed = {
 }
 
 export type Review = Partial<{
+  outcomeSubJourney: Review
   reviewUuid: string
   reviewSequence: number
   reviewDate: string
