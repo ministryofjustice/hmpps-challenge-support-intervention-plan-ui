@@ -35,7 +35,7 @@ context('test /update-review/details', () => {
     checkAxeAccessibility()
 
     getContinueButton().click()
-    cy.findByRole('heading', { name: /Sorry, there is a problem with the service/ }).should('be.visible')
+    cy.findByText('Simulated Error for E2E testing').should('be.visible')
   })
 
   const navigateToTestPage = () => {
