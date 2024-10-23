@@ -6,6 +6,7 @@ import { components } from '../../../../@types/csip'
 export class ReviewCheckAnswersController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
     req.journeyData.isCheckAnswers = true
+    delete req.journeyData.review!.outcomeSubJourney
 
     res.render('record-review/check-answers/view', {
       review: req.journeyData.review,

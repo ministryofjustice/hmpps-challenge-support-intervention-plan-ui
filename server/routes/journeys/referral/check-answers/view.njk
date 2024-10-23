@@ -54,7 +54,7 @@
                     }
                 ]
             }
-            },
+            } if referral.isOnBehalfOfReferral else undefined,
             {
                 key: {
                 text: "Area of work"
@@ -91,7 +91,7 @@
                 ]
             }
             }
-        ] | filterBy(referrerDetailsFilter)
+        ]
     }) }}
 
     {% if referral.isProactiveReferral %}

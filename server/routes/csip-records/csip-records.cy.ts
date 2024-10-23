@@ -134,7 +134,7 @@ context('test /csip-records', () => {
       .next('dl')
       .eq(0)
       .within(() => {
-        cy.findByText('Keep the prisoner on a plan').should('be.visible')
+        cy.findByText('Keep the prisoner on the plan').should('be.visible')
         cy.findByText('a summary').should('be.visible')
         cy.findByText('joe bloggs').should('be.visible')
         cy.findByText('05 April 2024').should('be.visible')
@@ -146,7 +146,7 @@ context('test /csip-records', () => {
       .next('dl')
       .eq(0)
       .within(() => {
-        cy.findByText('Keep the prisoner on a plan').should('be.visible')
+        cy.findByText('Keep the prisoner on the plan').should('be.visible')
         cy.findByText('even longer').should('be.visible')
         cy.findByText('test testerson').should('be.visible')
         cy.findByText('15 April 2024').should('be.visible')

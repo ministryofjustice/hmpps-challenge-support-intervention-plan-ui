@@ -7,13 +7,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
     delete req.journeyData.referral!.onBehalfOfSubJourney
 
     const { referral } = req.journeyData
-    const referrerDetailsFilter = (itm: { key: { text: string } }) =>
-      referral!.isOnBehalfOfReferral || itm.key.text !== 'Name of referrer'
-
-    const involvementFilter = (itm: { key: { text: string } }) =>
-      referral!.assaultedStaffName || itm.key.text !== 'Names of staff assaulted'
-
-    res.render('referral/check-answers/view', { referral, referrerDetailsFilter, involvementFilter })
+    res.render('referral/check-answers/view', { referral })
   }
 
   checkSubmitToAPI = async (req: Request, _res: Response, next: NextFunction) => {
