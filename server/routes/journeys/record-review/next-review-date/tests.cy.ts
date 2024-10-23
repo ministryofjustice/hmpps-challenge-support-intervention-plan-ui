@@ -99,12 +99,12 @@ context('test /record-review/next-review-date', () => {
   const completeInputs = () => {
     resetInputs()
 
-    getNextReviewDate().type('27/8/2035', { delay: 0 })
+    getNextReviewDate().type('27/8/2077', { delay: 0 })
   }
 
   const verifyDetailsAreRestoredFromJourney = () => {
     cy.reload()
 
-    getNextReviewDate().should('have.value', '27/08/2035')
+    getNextReviewDate().should('have.value', '27/08/2077')
   }
 })

@@ -49,7 +49,6 @@ export class PatchReferralController extends BaseJourneyController {
           refererAreaCode: csipRecord.referral.refererArea.code,
           incidentLocationCode: csipRecord.referral.incidentLocation.code,
           incidentTypeCode: csipRecord.referral.incidentType.code,
-          ...getNonUndefinedProp(csipRecord.referral, 'incidentDate'),
           ...getNonUndefinedProp(csipRecord.referral, 'incidentTime'),
           ...getNonUndefinedProp(csipRecord.referral, 'isProactiveReferral'),
           ...getNonUndefinedProp(csipRecord.referral, 'isStaffAssaulted'),

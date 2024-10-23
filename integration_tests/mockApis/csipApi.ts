@@ -769,7 +769,9 @@ const stubPatchReviewSuccess = () => {
 }
 
 const stubPatchReviewFail = () => {
-  return createBasicHttpStub('PATCH', '/csip-api/csip-records/plan/reviews/[a-zA-Z0-9-]+', 500)
+  return createBasicHttpStub('PATCH', '/csip-api/csip-records/plan/reviews/[a-zA-Z0-9-]+', 500, {
+    userMessage: 'Simulated Error for E2E testing',
+  })
 }
 
 export const csip = {
