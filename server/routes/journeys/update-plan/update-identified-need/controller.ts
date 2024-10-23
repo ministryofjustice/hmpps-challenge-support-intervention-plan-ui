@@ -4,7 +4,7 @@ import { PatchPlanController } from '../../base/patchPlanController'
 
 export class UpdateIdentifiedNeedController extends PatchPlanController {
   GET = async (req: Request, res: Response) => {
-    const identifiedNeed = this.getSelectedIdentifiedNeed(req as Request)
+    const identifiedNeed = this.getSelectedIdentifiedNeed(req)
 
     if (!identifiedNeed) {
       return res.notFound()
