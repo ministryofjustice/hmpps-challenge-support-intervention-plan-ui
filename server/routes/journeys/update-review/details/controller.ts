@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import { SchemaType } from '../../record-review/details/schemas'
-import { PatchReviewController } from '../../base/patchReviewController'
+import {
+  MESSAGE_MOST_RECENT_REVIEW_UPDATED,
+  MESSAGE_REVIEW_UPDATED,
+  PatchReviewController,
+} from '../../base/patchReviewController'
 
 export class UpdateDetailsController extends PatchReviewController {
   GET = async (req: Request, res: Response) => {
@@ -20,6 +24,10 @@ export class UpdateDetailsController extends PatchReviewController {
       changes: {
         summary: req.body.summary,
       },
+      message:
+        req.journeyData.csipRecord!.plan!.reviews.length > 1
+          ? MESSAGE_MOST_RECENT_REVIEW_UPDATED
+          : MESSAGE_REVIEW_UPDATED,
     })
 
   POST = async (req: Request, res: Response) => {

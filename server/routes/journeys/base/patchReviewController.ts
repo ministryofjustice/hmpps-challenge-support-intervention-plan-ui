@@ -7,17 +7,18 @@ import { getNonUndefinedProp } from '../../../utils/utils'
 
 export const MESSAGE_REVIEW_UPDATED = 'You’ve updated the review details.'
 export const MESSAGE_MOST_RECENT_REVIEW_UPDATED = 'You’ve updated the review details for the most recent review.'
-const MESSAGE_CLOSED_CSIP = 'You’ve updated the review outcome and closed the CSIP.'
 
 export class PatchReviewController extends BaseJourneyController {
   submitChanges = async <T>({
     req,
     next,
     changes,
+    message,
   }: {
     req: Request<unknown, unknown, T>
     next: NextFunction
     changes: Partial<components['schemas']['UpdateReviewRequest']>
+    message: string
   }) => {
     const review = req.journeyData.csipRecord!.plan!.reviews.reduce(
       (prev, cur) => (prev!.reviewSequence > cur.reviewSequence ? prev : cur),
@@ -51,12 +52,9 @@ export class PatchReviewController extends BaseJourneyController {
       delete payload.csipClosedDate
     }
 
-    const standardUpdateMessage =
-      req.journeyData.csipRecord!.plan!.reviews.length > 1 ? MESSAGE_MOST_RECENT_REVIEW_UPDATED : MESSAGE_REVIEW_UPDATED
-
     try {
       await this.csipApiService.updateReview(req as Request, payload)
-      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, payload.csipClosedDate ? MESSAGE_CLOSED_CSIP : standardUpdateMessage)
+      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, message)
       next()
     } catch (e) {
       next(e)

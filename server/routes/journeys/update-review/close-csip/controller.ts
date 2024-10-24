@@ -20,6 +20,7 @@ export class UpdateCloseCsipController extends PatchReviewController {
       changes: {
         actions: ['CLOSE_CSIP'],
       },
+      message: 'You’ve updated the review outcome and closed the CSIP.',
     })
 
   POST = async (req: Request, res: Response) => {

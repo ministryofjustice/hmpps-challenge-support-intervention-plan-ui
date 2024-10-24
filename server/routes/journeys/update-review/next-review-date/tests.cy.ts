@@ -25,7 +25,7 @@ context('test /update-review/next-review-date', () => {
 
     proceedToNextScreen()
     cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
-    cy.findByText('You’ve updated the review details for the most recent review.').should('be.visible')
+    cy.findByText('You’ve updated the next review date').should('be.visible')
   })
 
   it('should handle patch failure', () => {
