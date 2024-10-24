@@ -1,5 +1,6 @@
 {% from "partials/submitButton/macro.njk" import submitButton %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% extends "partials/layout.njk" %}
 
@@ -27,5 +28,13 @@
             classes: "govuk-button--warning govuk-!-margin-right-3",
             alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
         }) }}
+        {% if not isUpdate %}
+            {{ govukButton({
+                text: "No, change the outcome",
+                href: backUrl,
+                classes: "govuk-button--secondary",
+                preventDoubleClick: true
+            }) }}
+        {% endif %}
     </form>
 {% endblock %}
