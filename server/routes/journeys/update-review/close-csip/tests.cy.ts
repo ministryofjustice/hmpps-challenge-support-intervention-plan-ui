@@ -26,6 +26,15 @@ context('test /update-review/close-csip', () => {
     cy.visit(START_URL, { failOnStatusCode: false })
     cy.visit(PAGE_URL)
 
+    injectJourneyDataAndReload(uuid, {
+      csipRecord: {
+        plan: {
+          reviews: [{}],
+          identifiedNeeds: [],
+        },
+      },
+    })
+
     cy.findByText(
       /There (are|is) \d open identified needs? in Testname User's plan. These will be closed when you close the CSIP./,
     ).should('not.exist')
@@ -33,7 +42,7 @@ context('test /update-review/close-csip', () => {
     checkAxeAccessibility()
     validatePageContents()
     getCloseButton().click()
-    urlShouldMatchCsipRecord()
+    urlShouldMatchCsipRecordAndDisplaySuccessMessage()
 
     cy.go('back')
     getCancelButton().click()
@@ -48,6 +57,7 @@ context('test /update-review/close-csip', () => {
     injectJourneyDataAndReload(uuid, {
       csipRecord: {
         plan: {
+          reviews: [{}],
           identifiedNeeds: [{}, { closedDate: todayString() }],
         },
       },
@@ -60,7 +70,7 @@ context('test /update-review/close-csip', () => {
     checkAxeAccessibility()
     validatePageContents()
     getCloseButton().click()
-    urlShouldMatchCsipRecord()
+    urlShouldMatchCsipRecordAndDisplaySuccessMessage()
   })
 
   it('should try out all cases - with multiple open identified need', () => {
@@ -72,6 +82,7 @@ context('test /update-review/close-csip', () => {
     injectJourneyDataAndReload(uuid, {
       csipRecord: {
         plan: {
+          reviews: [{}],
           identifiedNeeds: [{}, {}],
         },
       },
@@ -84,7 +95,7 @@ context('test /update-review/close-csip', () => {
     checkAxeAccessibility()
     validatePageContents()
     getCloseButton().click()
-    urlShouldMatchCsipRecord()
+    urlShouldMatchCsipRecordAndDisplaySuccessMessage()
   })
 
   it('should handle patch failure', () => {
@@ -96,19 +107,19 @@ context('test /update-review/close-csip', () => {
     injectJourneyDataAndReload(uuid, {
       csipRecord: {
         plan: {
+          reviews: [{}],
           identifiedNeeds: [{}, {}],
         },
       },
     })
 
     getCloseButton().click()
-    urlShouldMatchCsipRecord()
+    cy.findByText('There is a problem')
+    cy.findByText('Simulated Error for E2E testing')
   })
 
   const validatePageContents = () => {
-    cy.findByRole('heading', { name: 'Are you sure you want to close this CSIP?' }).should(
-      'be.visible',
-    )
+    cy.findByRole('heading', { name: 'Are you sure you want to close this CSIP?' }).should('be.visible')
 
     cy.findByText('Update a CSIP review').should('be.visible')
 
@@ -120,7 +131,8 @@ context('test /update-review/close-csip', () => {
       .and('match', /outcome$/)
   }
 
-  const urlShouldMatchCsipRecord = () => {
-    cy.url().should('to.match', /\/csip-record\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
+  const urlShouldMatchCsipRecordAndDisplaySuccessMessage = () => {
+    cy.findByText('You’ve updated the review outcome and closed the CSIP.')
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
   }
 })

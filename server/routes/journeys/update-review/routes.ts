@@ -6,7 +6,7 @@ import { UpdateOutcomeRoutes } from './outcome/routes'
 import { UpdateDetailsRoutes } from './details/routes'
 import { UpdateNextReviewDateRoutes } from './next-review-date/routes'
 import { UpdateAttendeeRoutes } from './update-participant-contribution-details/routes'
-import { UpdateCloseCsipRoutes } from '../update-review/close-csip/routes'
+import { UpdateCloseCsipRoutes } from './close-csip/routes'
 
 function Routes({ csipApiService, prisonerSearchService }: Services) {
   const { router, get } = JourneyRouter()
