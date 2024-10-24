@@ -21,6 +21,7 @@ export class UpdateNextReviewDateController extends PatchReviewController {
       changes: {
         nextReviewDate: req.body.nextReviewDate,
       },
+      message: 'You’ve updated the next review date',
     })
 
   POST = async (req: Request, res: Response) => {

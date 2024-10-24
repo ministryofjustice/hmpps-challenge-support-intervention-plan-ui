@@ -1,14 +1,16 @@
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/submitButton/macro.njk" import submitButton %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% extends "partials/layout.njk" %}
 
 {% set identifiedNeedsText = "is 1 open identified need" if openIdentifiedNeeds == 1 else "are " + openIdentifiedNeeds + " open identified needs" %}
-{% set pageTitle = "Close CSIP - Record a CSIP review" %}
+{% set pageTitle = "Are you sure you want to close this CSIP? - Update a CSIP review" if isUpdate else "Close CSIP - Record a CSIP review" %}
+{% set finalReviewInsert = "" if isUpdate else " record the final review and" %}
 
 {% block innerContent %}
-    <span class="govuk-caption-l">Record a CSIP review</span>
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Are you sure you want to record the final review and close this CSIP?</h1>
+    {% include 'base/components/review-caption.njk' %}
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Are you sure you want to{{finalReviewInsert}} close this CSIP?</h1>
     {% if openIdentifiedNeeds %}
         {{ govukWarningText({
             text: "There " + identifiedNeedsText + " in " + prisoner | firstNameSpaceLastName | possessiveComma + " plan. These will be closed when you close the CSIP.",
@@ -21,16 +23,18 @@
 
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        {{ govukButton({
+        {{ submitButton({
             text: "Yes, close CSIP",
-            preventDoubleClick: true,
-            classes: "govuk-button--warning govuk-!-margin-right-3"
+            classes: "govuk-button--warning govuk-!-margin-right-3",
+            alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
         }) }}
-        {{ govukButton({
-            text: "No, change the outcome",
-            href: backUrl,
-            classes: "govuk-button--secondary",
-            preventDoubleClick: true
-        }) }}
+        {% if not isUpdate %}
+            {{ govukButton({
+                text: "No, change the outcome",
+                href: backUrl,
+                classes: "govuk-button--secondary",
+                preventDoubleClick: true
+            }) }}
+        {% endif %}
     </form>
 {% endblock %}

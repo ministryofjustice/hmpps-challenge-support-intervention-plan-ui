@@ -13,10 +13,12 @@ export class PatchReviewController extends BaseJourneyController {
     req,
     next,
     changes,
+    message,
   }: {
     req: Request<unknown, unknown, T>
     next: NextFunction
     changes: Partial<components['schemas']['UpdateReviewRequest']>
+    message: string
   }) => {
     const review = req.journeyData.csipRecord!.plan!.reviews.reduce(
       (prev, cur) => (prev!.reviewSequence > cur.reviewSequence ? prev : cur),
@@ -52,12 +54,7 @@ export class PatchReviewController extends BaseJourneyController {
 
     try {
       await this.csipApiService.updateReview(req as Request, payload)
-      req.flash(
-        FLASH_KEY__CSIP_SUCCESS_MESSAGE,
-        req.journeyData.csipRecord!.plan!.reviews.length > 1
-          ? MESSAGE_MOST_RECENT_REVIEW_UPDATED
-          : MESSAGE_REVIEW_UPDATED,
-      )
+      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, message)
       next()
     } catch (e) {
       next(e)
