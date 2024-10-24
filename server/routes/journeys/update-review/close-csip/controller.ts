@@ -3,7 +3,6 @@ import { PatchReviewController } from '../../base/patchReviewController'
 
 export class UpdateCloseCsipController extends PatchReviewController {
   GET = async (req: Request, res: Response) => {
-    req.journeyData.isUpdate = true
     res.render('record-review/close-csip/view', {
       closeCsip: res.locals.formResponses?.['closeCsip'] ?? req.journeyData.review?.outcome,
       isUpdate: true,
