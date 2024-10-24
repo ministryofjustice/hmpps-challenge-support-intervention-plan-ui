@@ -103,95 +103,99 @@
         </div>
     </div>
 
-    {% for attendee in attendees %}
-        {{ govukSummaryList({
-            card: {
-                title: { text: "Participant: " + attendee.name },
-                classes: "govuk-!-margin-bottom-8" if loop.index === attendees.length else undefined
-            },
-            rows: [{
-                key: {
-                    text: 'Name'
+    {% if attendees.length %}
+        {% for attendee in attendees %}
+            {{ govukSummaryList({
+                card: {
+                    title: { text: "Participant: " + attendee.name },
+                    classes: "govuk-!-margin-bottom-8" if loop.index === attendees.length else undefined
                 },
-                value: {
-                    text: attendee.name or 'Not provided'
-                },
-                actions: {
-                    items: [
-                        {
-                            href: 'update-review/participant-contribution-details/' + attendee.attendeeUuid + '#name',
-                            text: "Change",
-                            visuallyHiddenText: "the participant’s name",
-                            classes: "govuk-link--no-visited-state"
-                        }
-                    ]
-                }
-            },{
-                key: {
-                    text: 'Role'
-                },
-                value: {
-                    text: attendee.role or 'Not provided'
-                },
-                actions: {
-                    items: [
-                        {
-                            href: 'update-review/participant-contribution-details/' + attendee.attendeeUuid + '#role',
-                            text: "Change",
-                            visuallyHiddenText: "the participant’s role",
-                            classes: "govuk-link--no-visited-state"
-                        }
-                    ]
-                }
-            },{
-                key: {
-                    text: 'Attended in person'
-                },
-                value: {
-                    text: 'Yes' if attendee.isAttended === true else ('No' if attendee.isAttended === false else 'Not provided')
-                },
-                actions: {
-                    items: [
-                        {
-                            href: 'update-review/participant-contribution-details/' + attendee.attendeeUuid + '#isAttended',
-                            text: "Change",
-                            visuallyHiddenText: "whether the participant attended the review meeting in person or not",
-                            classes: "govuk-link--no-visited-state"
-                        }
-                    ]
-                }
-            },{
-                key: {
-                    text: 'Contribution'
-                },
-                value: {
-                    html: (attendee.contribution or 'Not provided') | escape | boldAppendStamp | nl2br
-                },
-                actions: {
-                    items: [
-                        {
-                            href: 'update-review/participant-contribution-details/' + attendee.attendeeUuid + '#contribution',
-                            text: "Change",
-                            visuallyHiddenText: "the description of the participant’s contribution to the review",
-                            classes: "govuk-link--no-visited-state"
-                        }
-                    ]
-                }
-            }]
-        }) }}
-    {% endfor %}
+                rows: [{
+                    key: {
+                        text: 'Name'
+                    },
+                    value: {
+                        text: attendee.name or 'Not provided'
+                    },
+                    actions: {
+                        items: [
+                            {
+                                href: 'update-review/participant-contribution-details/' + attendee.attendeeUuid + '#name',
+                                text: "Change",
+                                visuallyHiddenText: "the participant’s name",
+                                classes: "govuk-link--no-visited-state"
+                            }
+                        ]
+                    }
+                },{
+                    key: {
+                        text: 'Role'
+                    },
+                    value: {
+                        text: attendee.role or 'Not provided'
+                    },
+                    actions: {
+                        items: [
+                            {
+                                href: 'update-review/participant-contribution-details/' + attendee.attendeeUuid + '#role',
+                                text: "Change",
+                                visuallyHiddenText: "the participant’s role",
+                                classes: "govuk-link--no-visited-state"
+                            }
+                        ]
+                    }
+                },{
+                    key: {
+                        text: 'Attended in person'
+                    },
+                    value: {
+                        text: 'Yes' if attendee.isAttended === true else ('No' if attendee.isAttended === false else 'Not provided')
+                    },
+                    actions: {
+                        items: [
+                            {
+                                href: 'update-review/participant-contribution-details/' + attendee.attendeeUuid + '#isAttended',
+                                text: "Change",
+                                visuallyHiddenText: "whether the participant attended the review meeting in person or not",
+                                classes: "govuk-link--no-visited-state"
+                            }
+                        ]
+                    }
+                },{
+                    key: {
+                        text: 'Contribution'
+                    },
+                    value: {
+                        html: (attendee.contribution or 'Not provided') | escape | boldAppendStamp | nl2br
+                    },
+                    actions: {
+                        items: [
+                            {
+                                href: 'update-review/participant-contribution-details/' + attendee.attendeeUuid + '#contribution',
+                                text: "Change",
+                                visuallyHiddenText: "the description of the participant’s contribution to the review",
+                                classes: "govuk-link--no-visited-state"
+                            }
+                        ]
+                    }
+                }]
+            }) }}
+        {% endfor %}
 
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            {{ govukDetails({
-                summaryText: "How can I delete a participant?",
-                html: '
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                {{ govukDetails({
+                    summaryText: "How can I delete a participant?",
+                    html: '
             <p>It’s not possible to delete participants recorded in a CSIP review.</p>
             <p>To remove information about a participant, you can overwrite the participant information using the ‘Change’ links.</p>
             '
-            }) }}
+                }) }}
+            </div>
         </div>
-    </div>
+    {% else %}
+        <p class="govuk-!-margin-bottom-6">No contribution recorded.</p>
+    {% endif %}
 
   {{ govukButton ({
     classes: "govuk-!-margin-bottom-7 govuk-button--secondary",
