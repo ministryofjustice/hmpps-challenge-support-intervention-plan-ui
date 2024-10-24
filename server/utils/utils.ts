@@ -73,7 +73,7 @@ export const ordinalNumber = (number: number) => {
   return number + ordinal
 }
 
-const APPEND_STAMP_REGEX = /\n(\[.+?])\n/g
+const APPEND_STAMP_REGEX = /\n\n(\[.+?])\n\n|^(\[.+?])\n\n/g
 
 export const boldAppendStamp = (val: string) => {
   const res: string[] = []
@@ -81,9 +81,15 @@ export const boldAppendStamp = (val: string) => {
 
   val.matchAll(APPEND_STAMP_REGEX).forEach(match => {
     res.push(val.substring(endIndex, match.index))
-    res.push('\n<strong>')
-    res.push(match[1]!)
-    res.push('</strong>\n')
+    if (match[1]) {
+      res.push('\n\n<strong>')
+      res.push(match[1]!)
+      res.push('</strong>\n\n')
+    } else if (match[2]) {
+      res.push('<strong>')
+      res.push(match[2]!)
+      res.push('</strong>\n\n')
+    }
     endIndex = match.index + match[0].length
   })
 

@@ -133,10 +133,14 @@
     }) }}
 {% endfor %}
 
+{% if not contributoryFactors.length %}
+    <p class="govuk-!-margin-bottom-6">No contributory factor recorded.</p>
+{% endif %}
+
 {% if isUpdate and canAddMoreContributoryFactors %}
     {{ govukButton ({
         classes: "govuk-!-margin-bottom-7 govuk-button--secondary",
-        text: "Add another contributory factor",
+        text: "Add another contributory factor" if contributoryFactors.length else "Add contributory factor",
         href: "update-referral/add-contributory-factor"
     }) }}
 {% endif %}

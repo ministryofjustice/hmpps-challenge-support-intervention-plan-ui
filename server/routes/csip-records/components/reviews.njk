@@ -66,49 +66,53 @@
         }]
     }) }}
 
-    {% set contributions %}
-        {% for attendee in review.attendees %}
-            {{ govukSummaryList({
-                card: {
-                    title: { text: "Participant: " + (attendee.name or loop.index) }
-                },
-                rows: [{
-                    key: {
-                        text: 'Name'
+    {% if review.attendees.length %}
+        {% set contributions %}
+            {% for attendee in review.attendees %}
+                {{ govukSummaryList({
+                    card: {
+                        title: { text: "Participant: " + (attendee.name or loop.index) }
                     },
-                    value: {
-                        text: attendee.name or 'Not provided'
-                    }
-                },{
-                    key: {
-                        text: 'Role'
-                    },
-                    value: {
-                        text: attendee.role or 'Not provided'
-                    }
-                },{
-                    key: {
-                        text: 'Attended in person'
-                    },
-                    value: {
-                        text: 'Yes' if attendee.isAttended else 'No'
-                    }
-                },{
-                    key: {
-                        text: 'Contribution'
-                    },
-                    value: {
-                        html: (attendee.contribution or 'Not provided') | escape | boldAppendStamp | nl2br
-                    }
-                }]
-            }) }}
-        {% endfor %}
-    {% endset %}
+                    rows: [{
+                        key: {
+                            text: 'Name'
+                        },
+                        value: {
+                            text: attendee.name or 'Not provided'
+                        }
+                    },{
+                        key: {
+                            text: 'Role'
+                        },
+                        value: {
+                            text: attendee.role or 'Not provided'
+                        }
+                    },{
+                        key: {
+                            text: 'Attended in person'
+                        },
+                        value: {
+                            text: 'Yes' if attendee.isAttended else 'No'
+                        }
+                    },{
+                        key: {
+                            text: 'Contribution'
+                        },
+                        value: {
+                            html: (attendee.contribution or 'Not provided') | escape | boldAppendStamp | nl2br
+                        }
+                    }]
+                }) }}
+            {% endfor %}
+        {% endset %}
 
-    {{ govukDetails({
-        summaryText: "Show contributions",
-        html: contributions
-    }) }}
+        {{ govukDetails({
+            summaryText: "Show contributions",
+            html: contributions
+        }) }}
+    {% else %}
+        <p class="govuk-!-margin-bottom-6">No contribution recorded.</p>
+    {% endif %}
 
     <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
 {% endfor %}
