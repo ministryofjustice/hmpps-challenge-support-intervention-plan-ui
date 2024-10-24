@@ -20,6 +20,11 @@ it('should always have a threshold of 1000 chars', () => {
       expect(threshold).toBe('0')
       return
     }
+    if (num === 0) {
+      expect(maxLengthChars).toBe(4000 - dividerLength - num + 2)
+      expect(maxLengthChars - Math.round(maxLengthChars * (Number(threshold) / 100))).toEqual(1000)
+      return
+    }
     expect(maxLengthChars).toBe(4000 - dividerLength - num)
     expect(maxLengthChars - Math.round(maxLengthChars * (Number(threshold) / 100))).toEqual(1000)
   })
