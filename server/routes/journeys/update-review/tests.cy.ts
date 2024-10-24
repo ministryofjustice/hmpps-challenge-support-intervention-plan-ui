@@ -92,23 +92,23 @@ context('test /update-review', () => {
     cy.findByRole('link', { name: `Change the participant’s name (Participant: Attendee Name)` })
       .should('be.visible')
       .and('have.attr', 'href')
-      .and('match', /\/participant-contribution-details\/attendee-uuid-1#name$/)
+      .and('match', /\/update-participant-contribution-details\/attendee-uuid-1#name$/)
     cy.findByRole('link', { name: `Change the participant’s role (Participant: Attendee Name)` })
       .should('be.visible')
       .and('have.attr', 'href')
-      .and('match', /\/participant-contribution-details\/attendee-uuid-1#role$/)
+      .and('match', /\/update-participant-contribution-details\/attendee-uuid-1#role$/)
     cy.findByRole('link', {
       name: `Change whether the participant attended the review meeting in person or not (Participant: Attendee Name)`,
     })
       .should('be.visible')
       .and('have.attr', 'href')
-      .and('match', /\/participant-contribution-details\/attendee-uuid-1#isAttended$/)
+      .and('match', /\/update-participant-contribution-details\/attendee-uuid-1#isAttended$/)
     cy.findByRole('link', {
       name: `Change the description of the participant’s contribution to the review (Participant: Attendee Name)`,
     })
       .should('be.visible')
       .and('have.attr', 'href')
-      .and('match', /\/participant-contribution-details\/attendee-uuid-1#contribution$/)
+      .and('match', /\/update-participant-contribution-details\/attendee-uuid-1#contribution$/)
 
     cy.findByRole('button', { name: /Add another participant/ })
       .should('be.visible')

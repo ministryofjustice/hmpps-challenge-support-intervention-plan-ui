@@ -1,8 +1,7 @@
 import { NextFunction, Request } from 'express'
-import { BaseJourneyController } from './controller'
 import { getNonUndefinedProp } from '../../../utils/utils'
 import { components } from '../../../@types/csip'
-import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../../utils/constants'
+import { PatchCsipRecordController } from './patchCsipRecordController'
 
 export const MESSAGE_REFERRAL_DETAILS_UPDATED = 'You’ve updated the referral details.'
 export const MESSAGE_REACTIVE_DETAILS_UPDATED = 'You’ve updated the incident details.'
@@ -25,7 +24,7 @@ type UpdateReferralSuccessMessage =
   | typeof MESSAGE_CONTRIBUTORY_FACTOR_UPDATED
   | typeof MESSAGE_REFERRAL_ADDITIONAL_INFO_UPDATED
 
-export class PatchReferralController extends BaseJourneyController {
+export class PatchReferralController extends PatchCsipRecordController {
   submitChanges = async <T>({
     req,
     next,
@@ -36,40 +35,14 @@ export class PatchReferralController extends BaseJourneyController {
     next: NextFunction
     changes: Partial<components['schemas']['UpdateReferral']>
     successMessage: UpdateReferralSuccessMessage
-  }) => {
-    const csipRecord = req.journeyData.csipRecord!
-
-    try {
-      await this.csipApiService.updateCsipRecord(req as Request, {
-        ...getNonUndefinedProp(csipRecord, 'logCode'),
-        referral: {
-          incidentDate: csipRecord.referral.incidentDate,
-          referredBy: csipRecord.referral.referredBy,
-          isSaferCustodyTeamInformed: csipRecord.referral.isSaferCustodyTeamInformed,
-          refererAreaCode: csipRecord.referral.refererArea.code,
-          incidentLocationCode: csipRecord.referral.incidentLocation.code,
-          incidentTypeCode: csipRecord.referral.incidentType.code,
-          ...getNonUndefinedProp(csipRecord.referral, 'incidentTime'),
-          ...getNonUndefinedProp(csipRecord.referral, 'isProactiveReferral'),
-          ...getNonUndefinedProp(csipRecord.referral, 'isStaffAssaulted'),
-          ...getNonUndefinedProp(csipRecord.referral, 'assaultedStaffName'),
-          ...getNonUndefinedProp(csipRecord.referral, 'descriptionOfConcern'),
-          ...getNonUndefinedProp(csipRecord.referral, 'knownReasons'),
-          ...getNonUndefinedProp(csipRecord.referral, 'otherInformation'),
-          ...getNonUndefinedProp(csipRecord.referral, 'isReferralComplete'),
-          ...getNonUndefinedProp(
-            csipRecord.referral,
-            'incidentInvolvement',
-            incidentInvolvement => (incidentInvolvement as { code: string })?.code,
-            'incidentInvolvementCode',
-          ),
-          ...changes,
-        },
-      })
-      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, successMessage)
-      next()
-    } catch (e) {
-      next(e)
-    }
-  }
+  }) =>
+    this.submitCsipChanges({
+      req,
+      next,
+      successMessage,
+      changes: {
+        ...getNonUndefinedProp(req.journeyData.csipRecord!, 'logCode'),
+        referral: changes,
+      },
+    })
 }

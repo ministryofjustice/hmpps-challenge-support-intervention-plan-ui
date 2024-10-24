@@ -5,11 +5,17 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Participant and contribution details - Update a CSIP review" if isUpdate else "Participant and contribution details - Record a CSIP review " %}
+{% set pageTitle = "Update the participant and contribution details - Update a CSIP review" if isUpdate else "Participant and contribution details - Record a CSIP review " %}
 
 {% block innerContent %}
     {% include 'base/components/review-caption.njk' %}
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Participant and contribution details</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">
+        {% if isUpdate %}
+            Update the participant and contribution details
+        {% else %}
+            Participant and contribution details
+        {% endif %}
+    </h1>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 
