@@ -784,6 +784,29 @@ const stubPatchAttendeeFail = () => {
   })
 }
 
+const stubSearchCsipRecords = () => {
+  return createBasicHttpStub('GET', '/csip-api/search/csip-records.*', 200, {
+    content: [
+      {
+        id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        prisoner: {
+          prisonNumber: 'string',
+          firstName: 'string',
+          lastName: 'string',
+          location: 'string',
+        },
+        referralDate: '2024-10-25',
+        nextReviewDate: '2024-10-25',
+        caseManager: 'string',
+        status: 'CSIP_CLOSED',
+      },
+    ],
+    metadata: {
+      totalElements: 100,
+    },
+  })
+}
+
 export const csip = {
   recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
   prisonNumber: 'A1111AA',
@@ -919,4 +942,5 @@ export default {
   stubPatchReviewFail,
   stubPatchAttendeeSuccess,
   stubPatchAttendeeFail,
+  stubSearchCsipRecords,
 }

@@ -13,7 +13,7 @@ export class SearchCsipController {
   ) {}
 
   GET = async (req: Request, res: Response) => {
-    const { page, clear, sort } = req.query
+    const { page, clear, sort, query } = req.query
 
     if (clear) {
       req.session.searchCsipParams = {}
@@ -21,6 +21,14 @@ export class SearchCsipController {
     }
 
     req.session.searchCsipParams ??= {}
+
+    if (query) {
+      req.session.searchCsipParams.query = (query as string).trim() || null
+      delete req.session.searchCsipParams.status
+      delete req.session.searchCsipParams.sort
+      return res.redirect('manage-csips')
+    }
+
     if (sort) {
       const [sortingKey, sortingDirection] = (sort as string).split(',')
       if (

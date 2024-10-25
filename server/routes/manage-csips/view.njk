@@ -95,7 +95,7 @@
   {% for csipRecord in records %}
     {% set csipRecordRows = (csipRecordRows.push([
       {
-        html: '<a class="govuk-link--no-visited-state" href="' + digitalPrisonServicesUrl + '/prisoner/' + csipRecord.prisoner.prisonNumber + '" target="_blank">' + csipRecord.prisoner | lastNameCommaFirstName + "</a><br/>" + csipRecord.prisoner.prisonNumber
+        html: '<a class="govuk-link--no-visited-state" href="' + digitalPrisonServicesUrl + '/prisoner/' + csipRecord.prisoner.prisonNumber + '">' + csipRecord.prisoner | lastNameCommaFirstName + "</a><br/>" + csipRecord.prisoner.prisonNumber
       },
       {
         classes: 'col-width-200',
@@ -105,11 +105,14 @@
         text: csipRecord.referralDate | formatSimpleDisplayDate
       },
       {
-        html: reviewDate(csipRecord.nextReviewDate | formatSimpleDisplayDate)
+        html: reviewDate({
+          date: csipRecord.nextReviewDate | formatSimpleDisplayDate,
+          emptyLabel: '-'
+        })
       },
       {
         classes: 'col-width-200',
-        html: csipRecord.caseManager | shyHyphens(20)
+        html: (csipRecord.caseManager | shyHyphens(20)) or '-'
       },
       {
         html: statusTag({ record: csipRecord })
