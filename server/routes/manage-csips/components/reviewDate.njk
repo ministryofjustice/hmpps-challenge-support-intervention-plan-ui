@@ -1,0 +1,12 @@
+{% macro reviewDate(date) %}
+    {%- if date %}
+        {%- switch date | datePriority %}
+        {% case 'OVERDUE' %}
+            <span class="govuk-tag--red govuk-!-padding-left-2 govuk-!-padding-right-2 govuk-!-padding-top-1 govuk-!-padding-bottom-1 nowrap">{{ date }}</span>
+        {% case 'URGENT' %}
+            <span class="govuk-tag--yellow govuk-!-padding-left-2 govuk-!-padding-right-2 govuk-!-padding-top-1 govuk-!-padding-bottom-1 nowrap">{{ date }}</span>
+        {% case 'NORMAL' %}
+            {{ date }}
+        {% endswitch %}
+    {% endif %}
+{% endmacro %}

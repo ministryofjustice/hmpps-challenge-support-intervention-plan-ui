@@ -56,7 +56,7 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
   app.use(populateClientToken())
-  app.get('/prisoner-image/:prisonerNumber', new PrisonerImageRoutes(services.prisonerImageService).GET)
+  app.get('/prisoner-image/:prisonerNumber', new PrisonerImageRoutes(services.prisonApiService).GET)
   app.use(populateValidationErrors())
   app.use(setUpJourneyData())
   app.get(

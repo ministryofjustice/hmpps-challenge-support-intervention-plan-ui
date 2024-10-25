@@ -11,5 +11,6 @@ $govuk-page-width: $moj-page-width;
 @import 'node_modules/@ministryofjustice/hmpps-connect-dps-components/dist/assets/header-bar';
 
 @import './components/header-bar';
+@import './components/horizontal-search-form';
 @import './local';
-@import './server/views/partials/miniProfile/_all'
+@import '../../server/views/partials/miniProfile/all';

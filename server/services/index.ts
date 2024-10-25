@@ -1,7 +1,7 @@
 import { dataAccess } from '../data'
 import PrisonerSearchService from './prisonerSearch/prisonerSearchService'
 import AuditService from './auditService'
-import PrisonerImageService from './prisonerImage/prisonerImageService'
+import PrisonApiService from './prisonApi/prisonApiService'
 import CsipApiService from './csipApi/csipApiService'
 
 export const services = () => {
@@ -11,14 +11,14 @@ export const services = () => {
   const auditService = new AuditService(hmppsAuditClient)
   const csipApiService = new CsipApiService(csipApiClient)
   const prisonerSearchService = new PrisonerSearchService(prisonerSearchApiClient)
-  const prisonerImageService = new PrisonerImageService(prisonerImageClient)
+  const prisonApiService = new PrisonApiService(prisonerImageClient)
 
   return {
     applicationInfo,
     auditService,
     csipApiService,
     prisonerSearchService,
-    prisonerImageService,
+    prisonApiService,
   }
 }
 

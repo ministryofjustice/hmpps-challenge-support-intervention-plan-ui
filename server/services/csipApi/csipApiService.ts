@@ -1,6 +1,12 @@
 import { Request } from 'express'
 import { RestClientBuilder } from '../../data'
-import { CsipRecord, CsipSummaries, ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
+import {
+  CsipRecord,
+  CsipSearchResults,
+  CsipSummaries,
+  ReferenceData,
+  ReferenceDataType,
+} from '../../@types/csip/csipApiTypes'
 import CsipApiClient from './csipApiClient'
 import { components } from '../../@types/csip'
 
@@ -17,6 +23,19 @@ export default class CsipApiService {
 
   getPrisonerCsipRecords(req: Request, prisonNumber: string, page: number, size: number): Promise<CsipSummaries> {
     return this.csipApiClientBuilder(req.systemClientToken).getPrisonerCsipRecords(prisonNumber, page, size)
+  }
+
+  searchAndSortCsipRecords(params: {
+    req: Request
+    prisonCode: string
+    query?: string
+    status?: CsipRecord['status']
+    sort: string
+    page: number
+    size: number
+  }): Promise<CsipSearchResults> {
+    const { req, ...queries } = params
+    return this.csipApiClientBuilder(req.systemClientToken).searchAndSortCsipRecords(queries)
   }
 
   createReferral(
