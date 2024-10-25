@@ -784,6 +784,16 @@ const stubPatchAttendeeFail = () => {
   })
 }
 
+const stubPostNewAttendeeSuccess = () => {
+  return createBasicHttpStub('POST', '/csip-api/csip-records/plan/reviews/[a-zA-Z0-9-]+/attendees', 201)
+}
+
+const stubPostNewAttendeeFail = () => {
+  return createBasicHttpStub('POST', '/csip-api/csip-records/plan/reviews/[a-zA-Z0-9-]+/attendees', 500, {
+    userMessage: 'Simulated Error for E2E testing',
+  })
+}
+
 export const csip = {
   recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
   prisonNumber: 'A1111AA',
@@ -919,4 +929,6 @@ export default {
   stubPatchReviewFail,
   stubPatchAttendeeSuccess,
   stubPatchAttendeeFail,
+  stubPostNewAttendeeSuccess,
+  stubPostNewAttendeeFail,
 }

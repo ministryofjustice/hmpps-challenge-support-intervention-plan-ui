@@ -1,6 +1,6 @@
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
-context('test /update-review/update-participant-contribution-details', () => {
+context('test /update-review/participant-contribution-details', () => {
   const getContinueButton = () => cy.findByRole('button', { name: /Confirm and save/ })
   const getName = () => cy.findByRole('textbox', { name: /What’s the participant’s name\?/ })
   const getRole = () => cy.findByRole('textbox', { name: /What’s their role\?/ })
@@ -18,9 +18,9 @@ context('test /update-review/update-participant-contribution-details', () => {
   })
 
   it('should try out all cases', () => {
-    cy.task('stubPatchAttendeeSuccess')
+    cy.task('stubPostNewAttendeeSuccess')
     navigateToTestPage()
-    cy.url().should('to.match', /\/update-participant-contribution-details\/attendee-uuid-1#name$/)
+    cy.url().should('to.match', /\/participant-contribution-details$/)
 
     checkAxeAccessibility()
     validatePageContents()
@@ -28,18 +28,18 @@ context('test /update-review/update-participant-contribution-details', () => {
 
     proceedToNextScreen()
     cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
-    cy.findByText('You’ve updated the review details for the most recent review.').should('be.visible')
+    cy.findByText('You’ve added a new participant.').should('be.visible')
   })
 
   it('should handle patch failure', () => {
-    cy.task('stubPatchAttendeeFail')
+    cy.task('stubPostNewAttendeeFail')
     navigateToTestPage()
-    cy.url().should('to.match', /\/update-participant-contribution-details\/attendee-uuid-1#name$/)
+    cy.url().should('to.match', /\/participant-contribution-details$/)
 
     proceedToNextScreen()
 
     cy.findByText('Simulated Error for E2E testing').should('be.visible')
-    cy.url().should('to.match', /\/update-participant-contribution-details\/attendee-uuid-1#name$/)
+    cy.url().should('to.match', /\/participant-contribution-details$/)
   })
 
   const navigateToTestPage = () => {
@@ -47,21 +47,21 @@ context('test /update-review/update-participant-contribution-details', () => {
     cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550/reviews`)
     cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/reviews$/)
     cy.findByRole('link', { name: /update review/i }).click()
-    cy.findByRole('link', { name: /Change the participant’s name \(Participant: Attendee Name\)/i }).click()
+    cy.findByRole('button', { name: /Add another participant/i }).click()
   }
 
   const validatePageContents = () => {
     cy.findByRole('heading', { name: /Update the participant and contribution details/ }).should('be.visible')
 
-    getName().should('be.visible').and('have.value', 'Attendee Name')
-    getRole().should('be.visible').and('have.value', 'role text')
-    getRadioYes().should('exist').and('be.checked')
-    getContribution().should('exist').and('have.value', 'contribution text')
+    getName().should('be.visible')
+    getRole().should('be.visible')
+    getRadioYes().should('exist')
+    getContribution().should('exist')
     getContinueButton().should('be.visible')
 
     cy.findByRole('link', { name: /^back/i })
       .should('have.attr', 'href')
-      .and('match', /..\/..\/update-review$/)
+      .and('match', /..\/update-review$/)
 
     cy.findByRole('link', { name: /Cancel/i })
       .should('be.visible')
@@ -111,6 +111,7 @@ context('test /update-review/update-participant-contribution-details', () => {
   const proceedToNextScreen = () => {
     getName().clear().type('John Smith', { delay: 0 })
     getRole().clear().type('a role', { delay: 0 })
+    getRadioYes().click()
     getContribution().clear().type('a contrib', { delay: 0 })
     getContinueButton().click()
   }

@@ -7,6 +7,7 @@ import { getNonUndefinedProp } from '../../../utils/utils'
 
 export const MESSAGE_REVIEW_UPDATED = 'You’ve updated the review details.'
 export const MESSAGE_MOST_RECENT_REVIEW_UPDATED = 'You’ve updated the review details for the most recent review.'
+const MESSAGE_ADDED_ATTENDEE = 'You’ve added a new participant.'
 
 export class PatchReviewController extends BaseJourneyController {
   submitChanges = async <T>({
@@ -55,6 +56,24 @@ export class PatchReviewController extends BaseJourneyController {
     try {
       await this.csipApiService.updateReview(req as Request, payload)
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, message)
+      next()
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  addNewAttendee = async <T>({
+    req,
+    next,
+    changes,
+  }: {
+    req: Request<unknown, unknown, T>
+    next: NextFunction
+    changes: components['schemas']['UpdateAttendeeRequest']
+  }) => {
+    try {
+      await this.csipApiService.addNewAttendee(req as Request, changes)
+      req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_ADDED_ATTENDEE)
       next()
     } catch (e) {
       next(e)
