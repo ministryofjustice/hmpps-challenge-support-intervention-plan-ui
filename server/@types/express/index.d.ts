@@ -1,7 +1,7 @@
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import { Breadcrumbs } from '../../middleware/breadcrumbs'
 import { fieldErrors } from '../../middleware/validationMiddleware'
-import { CsipRecord, ReferenceData, YesNoAnswer } from '../csip/csipApiTypes'
+import { CsipRecord, CsipRecordStatus, ReferenceData, YesNoAnswer } from '../csip/csipApiTypes'
 import Prisoner from '../../services/prisonerSearch/prisoner'
 
 export declare module 'express-session' {
@@ -20,7 +20,7 @@ type JourneyDataMap = {
 
 type SearchCsipParams = Partial<{
   query: string | null
-  status: CsipRecord['status'] | null
+  status: CsipRecordStatus | null
   sort: string
   page: number
 }>

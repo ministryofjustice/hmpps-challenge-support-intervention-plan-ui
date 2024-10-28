@@ -2,6 +2,7 @@ import RestClient from '../../data/restClient'
 import config from '../../config'
 import {
   CsipRecord,
+  CsipRecordStatus,
   CsipSearchResults,
   CsipSummaries,
   ReferenceData,
@@ -42,7 +43,7 @@ export default class CsipApiClient {
   }: {
     prisonCode: string
     query?: string
-    status?: CsipRecord['status']
+    status?: CsipRecordStatus
     sort: string
     page: number
     size: number

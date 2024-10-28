@@ -5,7 +5,7 @@ import { identifiedNeedSorter } from '../../../../utils/sorters'
 export class UpdateIdentifiedNeedsController extends PatchPlanController {
   GET = async (req: Request, res: Response) => {
     const record = req.journeyData.csipRecord!
-    if (record.status !== 'CSIP_OPEN' || !record.plan) {
+    if (record.status.code !== 'CSIP_OPEN' || !record.plan) {
       res.redirect(`/csip-records/${record.recordUuid}`)
       return
     }

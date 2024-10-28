@@ -333,7 +333,10 @@ const stubScreeningOutcomeType = () => {
 const stubCsipRecordSuccessAwaitingDecision = () => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
     ...csip,
-    status: 'AWAITING_DECISION',
+    status: {
+      code: 'AWAITING_DECISION',
+      description: 'Awaiting decision',
+    },
     referral: {
       ...csip.referral,
       investigation: {
@@ -365,7 +368,10 @@ const stubCsipRecordSuccessAwaitingDecision = () => {
 const stubCsipRecordSuccessAwaitingDecisionNoInterviews = () => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
     ...csip,
-    status: 'AWAITING_DECISION',
+    status: {
+      code: 'AWAITING_DECISION',
+      description: 'Awaiting decision',
+    },
     referral: {
       ...csip.referral,
       investigation: {
@@ -384,7 +390,10 @@ const stubCsipRecordSuccessAwaitingDecisionNoInterviews = () => {
 const stubCsipRecordSuccessPlanPending = () => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
     ...csip,
-    status: 'PLAN_PENDING',
+    status: {
+      code: 'PLAN_PENDING',
+      description: 'Plan pending',
+    },
     referral: {
       ...csip.referral,
       investigation: {
@@ -463,7 +472,10 @@ const stubCsipRecordSuccessCsipOpen = (
 ) => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
     ...csip,
-    status: 'CSIP_OPEN',
+    status: {
+      code: 'CSIP_OPEN',
+      description: 'CSIP open',
+    },
     referral: {
       ...csip.referral,
       investigation: {
@@ -571,7 +583,10 @@ const stubCsipRecordGetSuccessAfterScreeningNFA = () => {
     'GET',
     '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
     200,
-    csipRecordWithScreeningOutcome('', 'NO_FURTHER_ACTION'),
+    csipRecordWithScreeningOutcome('', {
+      code: 'NO_FURTHER_ACTION',
+      description: 'No further action',
+    }),
   )
 }
 
@@ -580,7 +595,10 @@ const stubCsipRecordGetSuccessAfterScreeningACCT = () => {
     'GET',
     '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
     200,
-    csipRecordWithScreeningOutcome('', 'ACCT_SUPPORT'),
+    csipRecordWithScreeningOutcome('', {
+      code: 'ACCT_SUPPORT',
+      description: 'Support through ACCT',
+    }),
   )
 }
 
@@ -589,11 +607,20 @@ const stubCsipRecordGetSuccessAfterScreeningSupportOutsideCsip = () => {
     'GET',
     '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
     200,
-    csipRecordWithScreeningOutcome('', 'SUPPORT_OUTSIDE_CSIP'),
+    csipRecordWithScreeningOutcome('', {
+      code: 'SUPPORT_OUTSIDE_CSIP',
+      description: 'Support outside of CSIP',
+    }),
   )
 }
 
-const csipRecordWithScreeningOutcome = (reason: string, status: string = 'INVESTIGATION_PENDING') => {
+const csipRecordWithScreeningOutcome = (
+  reason: string,
+  status: { code: string; description: string } = {
+    code: 'INVESTIGATION_PENDING',
+    description: 'Investigation pending',
+  },
+) => {
   return {
     ...csip,
     status,
@@ -800,7 +827,10 @@ const stubSearchCsipRecords = () => {
         referralDate: '2024-10-25',
         nextReviewDate: '2001-10-25',
         caseManager: 'Overdue Manager',
-        status: 'CSIP_CLOSED',
+        status: {
+          code: 'CSIP_CLOSED',
+          description: 'CSIP closed',
+        },
       },
       {
         id: '3fa85f64-5717-4562-b3fc-2c963f66afa7',
@@ -813,7 +843,10 @@ const stubSearchCsipRecords = () => {
         referralDate: '2024-10-25',
         nextReviewDate: reviewDate.toISOString().substring(0, 10),
         caseManager: 'Soon Due Manager',
-        status: 'CSIP_OPEN',
+        status: {
+          code: 'CSIP_OPEN',
+          description: 'CSIP open',
+        },
       },
     ],
     metadata: {
@@ -830,7 +863,10 @@ export const csip = {
   createdAt: '2024-07-22T11:21:48',
   createdBy: 'AHUMAN_GEN',
   createdByDisplayName: 'A Human',
-  status: 'REFERRAL_SUBMITTED',
+  status: {
+    code: 'REFERRAL_SUBMITTED',
+    description: 'Referral submitted',
+  },
   referral: {
     isOnBehalfOfReferral: true,
     referredBy: '<script>alert("Test User")</script>',

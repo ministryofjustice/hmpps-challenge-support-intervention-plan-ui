@@ -2,6 +2,7 @@ import { Request } from 'express'
 import { RestClientBuilder } from '../../data'
 import {
   CsipRecord,
+  CsipRecordStatus,
   CsipSearchResults,
   CsipSummaries,
   ReferenceData,
@@ -29,7 +30,7 @@ export default class CsipApiService {
     req: Request
     prisonCode: string
     query?: string
-    status?: CsipRecord['status']
+    status?: CsipRecordStatus
     sort: string
     page: number
     size: number
