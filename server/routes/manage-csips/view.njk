@@ -1,0 +1,168 @@
+{% from "partials/simplePagination/macro.njk" import simplePagination %}
+{% from "partials/statusTag/macro.njk" import statusTag %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "./components/reviewDate.njk" import reviewDate %}
+
+{% set fullWidth = true %}
+{% set pageTitle = "View and manage CSIPs" %}
+{% extends "partials/layout.njk" %}
+
+{% block innerContent %}
+  <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">View and manage CSIPs </h1>
+
+  <form method="post" class="govuk-grid-row govuk-!-margin-bottom-7 govuk-!-padding-6 search-form">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+    <h2 class="govuk-heading-m">Filter by</h2>
+    <div class="horizontal-form">
+      {{ govukInput({
+        id: "query",
+        name: "query",
+        value: query,
+        classes: "min-width-one-quarter",
+        label: {
+          text: 'Name or prison number'
+        }
+      }) }}
+
+      {{ govukSelect({
+        id: "status",
+        name: "status",
+        label: {
+          text: "CSIP status"
+        },
+        items: [
+          {
+            value: "",
+            text: "All"
+          },
+          {
+            value: 'AWAITING_DECISION',
+            text: 'Awaiting decision'
+          },
+          {
+            value: 'CSIP_CLOSED',
+            text: 'CSIP closed'
+          },
+          {
+            value: 'CSIP_OPEN',
+            text: 'CSIP open'
+          },
+          {
+            value: 'INVESTIGATION_PENDING',
+            text: 'Investigation pending'
+          },
+          {
+            value: 'NO_FURTHER_ACTION',
+            text: 'No further action'
+          },
+          {
+            value: 'PLAN_PENDING',
+            text: 'Plan pending'
+          },
+          {
+            value: 'REFERRAL_PENDING',
+            text: 'Referral pending'
+          },
+          {
+            value: 'REFERRAL_SUBMITTED',
+            text: 'Referral submitted'
+          },
+          {
+            value: 'SUPPORT_OUTSIDE_CSIP',
+            text: 'Support outside of CSIP'
+          },
+          {
+            value: 'ACCT_SUPPORT',
+            text: 'Support through ACCT'
+          }
+        ] | setSelected(status or '')
+      }) }}
+
+      {{ govukButton({
+        text: "Apply filters",
+        preventDoubleClick: true
+      }) }}
+      <a class="govuk-link govuk-link--no-visited-state govuk-body no-label-form-clear-link" href="?clear=true">Clear</a>
+    </div>
+  </form>
+
+  {{ simplePagination(paginationParams) }}
+
+  {% set csipRecordRows = [] %}
+  {% for csipRecord in records %}
+    {% set csipRecordRows = (csipRecordRows.push([
+      {
+        html: '<a class="govuk-link--no-visited-state" href="' + digitalPrisonServicesUrl + '/prisoner/' + csipRecord.prisoner.prisonNumber + '">' + csipRecord.prisoner | lastNameCommaFirstName + "</a><br/>" + csipRecord.prisoner.prisonNumber
+      },
+      {
+        classes: 'col-width-200',
+        html: csipRecord.prisoner.location | shyHyphens(20)
+      },
+      {
+        text: csipRecord.referralDate | formatSimpleDisplayDate
+      },
+      {
+        html: reviewDate({
+          date: csipRecord.nextReviewDate | formatSimpleDisplayDate,
+          emptyLabel: '-'
+        })
+      },
+      {
+        classes: 'col-width-200',
+        html: (csipRecord.caseManager | shyHyphens(20)) or '-'
+      },
+      {
+        html: statusTag({ record: csipRecord })
+      },
+      {
+        classes: 'govuk-link govuk-link--no-visited-state',
+        html: '<a href="/csip-records/' + csipRecord.id + '">View<span class="govuk-visually-hidden"> CSIP record</span></a>'
+      }
+    ]), csipRecordRows) %}
+  {% endfor %}
+
+  {% if records.length %}
+    {{ govukTable({
+      firstCellIsHeader: false,
+      classes: 'table-vertical-align-middle govuk-!-margin-top-6',
+      head: [
+        {
+          text: 'Name and prison number',
+          key: 'name'
+        },
+        {
+          text: "Residential location",
+          key: 'location'
+        },
+        {
+          text: "Referral date",
+          key: 'referralDate'
+        },
+        {
+          text: "Next review date",
+          key: 'nextReviewDate'
+        },
+        {
+          text: "Case Manager",
+          key: 'caseManager'
+        },
+        {
+          text: "CSIP status",
+          key: 'status'
+        },
+        {
+          text: ""
+        }
+      ] | convertToSortableColumns(sort or 'name,asc'),
+      rows: csipRecordRows
+    }) }}
+  {% else %}
+    <p class="govuk-!-margin-bottom-6">No matching CSIP records found.</p>
+  {% endif %}
+
+  {{ simplePagination(paginationParams) }}
+
+{% endblock %}

@@ -10,12 +10,20 @@ export declare module 'express-session' {
     returnTo: string
     nowInMinutes: number
     journeyDataMap: JourneyDataMap
+    searchCsipParams: SearchCsipParams
   }
 }
 
 type JourneyDataMap = {
   [key: string]: JourneyData
 }
+
+type SearchCsipParams = Partial<{
+  query: string | null
+  status: CsipRecord['status'] | null
+  sort: string
+  page: number
+}>
 
 export type JourneyData = {
   instanceUnixEpoch: number

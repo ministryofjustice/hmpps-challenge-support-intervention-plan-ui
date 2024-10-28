@@ -3,14 +3,21 @@ import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
-import { boldAppendStamp, convertToTitleCase, initialiseName, sentenceCase } from './utils'
+import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
 import config from '../config'
 import { buildErrorSummaryList, customErrorOrderBuilder, findError } from '../middleware/validationMiddleware'
-import { formatDisplayDate, todayStringGBFormat } from './datetimeUtils'
+import { formatDisplayDate, formatSimpleDisplayDate, todayStringGBFormat } from './datetimeUtils'
 import { YES_NO_ANSWER } from '../routes/journeys/referral/safer-custody/schemas'
 import { csipStatusDisplayText, csipStatusTagClass, identifiedNeedsActionLabel } from './csipDisplayTextUtils'
-import { firstNameSpaceLastName, personDateOfBirth, personProfileName } from './miniProfileUtils'
+import {
+  firstNameSpaceLastName,
+  lastNameCommaFirstName,
+  personDateOfBirth,
+  personProfileName,
+} from './miniProfileUtils'
 import logger from '../../logger'
+import { convertToSortableColumns, datePriority } from '../routes/manage-csips/components/filters'
+import { setSelected, boldAppendStamp, shyHyphens } from './viewUtils'
 
 export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')
@@ -63,10 +70,16 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('convertToTitleCase', convertToTitleCase)
   njkEnv.addFilter('sentenceCase', sentenceCase)
   njkEnv.addFilter('formatDisplayDate', formatDisplayDate)
+  njkEnv.addFilter('formatSimpleDisplayDate', formatSimpleDisplayDate)
   njkEnv.addFilter('customErrorOrderBuilder', customErrorOrderBuilder)
   njkEnv.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
+  njkEnv.addFilter('lastNameCommaFirstName', lastNameCommaFirstName)
   njkEnv.addFilter('possessiveComma', (name: string) => (name.endsWith('s') ? `${name}’` : `${name}’s`))
+  njkEnv.addFilter('shyHyphens', shyHyphens)
+  njkEnv.addFilter('datePriority', datePriority)
+  njkEnv.addFilter('convertToSortableColumns', convertToSortableColumns)
   njkEnv.addFilter('boldAppendStamp', boldAppendStamp)
+  njkEnv.addFilter('setSelected', setSelected)
   njkEnv.addFilter('csipStatusDisplayText', csipStatusDisplayText)
   njkEnv.addFilter('csipStatusTagClass', csipStatusTagClass)
   njkEnv.addFilter('identifiedNeedsActionLabel', identifiedNeedsActionLabel)

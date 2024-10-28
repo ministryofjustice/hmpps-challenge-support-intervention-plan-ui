@@ -14,7 +14,7 @@ export class PatchCsipRecordController extends BaseJourneyController {
     req: Request<unknown, unknown, T>
     next: NextFunction
     changes: Omit<components['schemas']['UpdateCsipRecordRequest'], 'referral'> & {
-      referral?: Partial<components['schemas']['UpdateReferral']>
+      referral?: Partial<components['schemas']['UpdateReferralRequest']>
     }
     successMessage: string
   }) => {

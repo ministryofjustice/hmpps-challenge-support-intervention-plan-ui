@@ -1,3 +1,3 @@
 {% macro statusTag(params) %}
-    <span class="{{ params.record | csipStatusTagClass }} govuk-!-padding-left-2 govuk-!-padding-right-2 govuk-!-padding-top-1 govuk-!-padding-bottom-1">{{ params.record | csipStatusDisplayText }}</span>
+    <span class="{{ params.record | csipStatusTagClass }} govuk-!-padding-left-2 govuk-!-padding-right-2 govuk-!-padding-top-1 govuk-!-padding-bottom-1 nowrap">{{ params.record | csipStatusDisplayText }}</span>
 {% endmacro %}

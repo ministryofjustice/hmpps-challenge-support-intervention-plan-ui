@@ -25,7 +25,7 @@
 
 {% block innerContent %}
   <h1 class="govuk-heading-l govuk-!-margin-bottom-7">CSIP records for {{ prisoner | firstNameSpaceLastName }}</h1>
-  {{ simplePagination(totalPages, currentPage) }}
+  {{ simplePagination(paginationParams) }}
   {{ govukTable({
     firstCellIsHeader: false,
     head: [

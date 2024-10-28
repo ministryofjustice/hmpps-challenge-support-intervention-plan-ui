@@ -7,3 +7,4 @@ export type YesNoAnswer = components['schemas']['CreateReferralRequest']['isSafe
 export type CsipRecord = components['schemas']['CsipRecord']
 
 export type CsipSummaries = components['schemas']['CsipSummaries']
+export type CsipSearchResults = components['schemas']['CsipSearchResults']
