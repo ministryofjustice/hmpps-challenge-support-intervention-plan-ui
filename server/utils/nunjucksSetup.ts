@@ -17,7 +17,7 @@ import {
 } from './miniProfileUtils'
 import logger from '../../logger'
 import { convertToSortableColumns, datePriority } from '../routes/manage-csips/components/filters'
-import { setSelected, boldAppendStamp, shyHyphens } from './viewUtils'
+import { setSelected, boldAppendStamp, softHyphenate } from './viewUtils'
 
 export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')
@@ -75,7 +75,7 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
   njkEnv.addFilter('lastNameCommaFirstName', lastNameCommaFirstName)
   njkEnv.addFilter('possessiveComma', (name: string) => (name.endsWith('s') ? `${name}’` : `${name}’s`))
-  njkEnv.addFilter('shyHyphens', shyHyphens)
+  njkEnv.addFilter('softHyphenate', softHyphenate)
   njkEnv.addFilter('datePriority', datePriority)
   njkEnv.addFilter('convertToSortableColumns', convertToSortableColumns)
   njkEnv.addFilter('boldAppendStamp', boldAppendStamp)
