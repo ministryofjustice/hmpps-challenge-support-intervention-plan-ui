@@ -785,6 +785,8 @@ const stubPatchAttendeeFail = () => {
 }
 
 const stubSearchCsipRecords = () => {
+  const reviewDate = new Date()
+  reviewDate.setDate(reviewDate.getDate() + 1)
   return createBasicHttpStub('GET', '/csip-api/search/csip-records.*', 200, {
     content: [
       {
@@ -796,9 +798,22 @@ const stubSearchCsipRecords = () => {
           location: 'string',
         },
         referralDate: '2024-10-25',
-        nextReviewDate: '2024-10-25',
-        caseManager: 'string',
+        nextReviewDate: '2001-10-25',
+        caseManager: 'Overdue Manager',
         status: 'CSIP_CLOSED',
+      },
+      {
+        id: '3fa85f64-5717-4562-b3fc-2c963f66afa7',
+        prisoner: {
+          prisonNumber: 'string',
+          firstName: 'string',
+          lastName: 'string',
+          location: 'string',
+        },
+        referralDate: '2024-10-25',
+        nextReviewDate: reviewDate.toISOString().substring(0, 10),
+        caseManager: 'Soon Due Manager',
+        status: 'CSIP_OPEN',
       },
     ],
     metadata: {

@@ -22,6 +22,7 @@ type SearchCsipParams = Partial<{
   query: string | null
   status: CsipRecord['status'] | null
   sort: string
+  page: number
 }>
 
 export type JourneyData = {

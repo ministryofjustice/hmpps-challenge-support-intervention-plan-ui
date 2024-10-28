@@ -2,6 +2,7 @@ import { todayString } from '../../../utils/datetimeUtils'
 
 type DatePriority = 'NORMAL' | 'URGENT' | 'OVERDUE'
 
+// compute priority for date in d/m/yyyy format
 export const datePriority = (date: string): DatePriority => {
   const dateString = new Date(Date.parse(date.split(/[-/]/).reverse().join('-'))).toISOString().substring(0, 10)
   if (dateString < todayString()) {
@@ -15,6 +16,7 @@ export const datePriority = (date: string): DatePriority => {
   return 'NORMAL'
 }
 
+// add aria-sort attributes to govukTable head row, so that moj-sortable-table css will be applied
 export const convertToSortableColumns = (headings: { text: string; key?: string }[], sort: string) => {
   const [sortingKey, sortingDirection] = sort.split(',')
 
