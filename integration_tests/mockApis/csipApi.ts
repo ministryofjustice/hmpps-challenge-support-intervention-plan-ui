@@ -811,6 +811,16 @@ const stubPatchAttendeeFail = () => {
   })
 }
 
+const stubPostNewAttendeeSuccess = () => {
+  return createBasicHttpStub('POST', '/csip-api/csip-records/plan/reviews/[a-zA-Z0-9-]+/attendees', 201)
+}
+
+const stubPostNewAttendeeFail = () => {
+  return createBasicHttpStub('POST', '/csip-api/csip-records/plan/reviews/[a-zA-Z0-9-]+/attendees', 500, {
+    userMessage: 'Simulated Error for E2E testing',
+  })
+}
+
 const stubSearchCsipRecords = () => {
   const reviewDate = new Date()
   reviewDate.setDate(reviewDate.getDate() + 1)
@@ -993,5 +1003,7 @@ export default {
   stubPatchReviewFail,
   stubPatchAttendeeSuccess,
   stubPatchAttendeeFail,
+  stubPostNewAttendeeSuccess,
+  stubPostNewAttendeeFail,
   stubSearchCsipRecords,
 }

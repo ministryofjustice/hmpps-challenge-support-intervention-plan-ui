@@ -7,6 +7,7 @@ import { UpdateDetailsRoutes } from './details/routes'
 import { UpdateNextReviewDateRoutes } from './next-review-date/routes'
 import { UpdateAttendeeRoutes } from './update-participant-contribution-details/routes'
 import { UpdateCloseCsipRoutes } from './close-csip/routes'
+import { AddParticipantContributionDetailsRoutes } from './participant-contribution-details/routes'
 
 function Routes({ csipApiService, prisonerSearchService }: Services) {
   const { router, get } = JourneyRouter()
@@ -18,6 +19,7 @@ function Routes({ csipApiService, prisonerSearchService }: Services) {
   router.use('/details', UpdateDetailsRoutes(csipApiService))
   router.use('/next-review-date', UpdateNextReviewDateRoutes(csipApiService))
   router.use('/update-participant-contribution-details/:attendeeUuid', UpdateAttendeeRoutes(csipApiService))
+  router.use('/participant-contribution-details', AddParticipantContributionDetailsRoutes(csipApiService))
   router.use('/close-csip', UpdateCloseCsipRoutes(csipApiService))
 
   return router
