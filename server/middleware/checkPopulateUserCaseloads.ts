@@ -25,6 +25,9 @@ export default function checkPopulateUserCaseloads(
       !req.url.includes('service-not-enabled')
     ) {
       try {
+        if (res.locals.feComponentsMeta?.caseLoads) {
+          req.session.userCaseloads = res.locals.feComponentsMeta.caseLoads
+        }
         const refetchCaseloads = !req.session.userCaseloads || req.session.userCaseloads.length > 1
         const promises = refetchCaseloads
           ? [csipApiService.getServiceConfigInfo(req), prisonApiService.getCaseLoads(req)]

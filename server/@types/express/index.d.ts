@@ -176,6 +176,17 @@ export declare global {
       digitalPrisonServicesUrl: string
       breadcrumbs: Breadcrumbs
       prisoner?: PrisonerSummary
+      feComponentsMeta?: {
+        activeCaseLoad: CaseLoad
+        caseLoads: CaseLoad[]
+        services: {
+          id: string
+          heading: string
+          description: string
+          href: string
+          navEnabled: boolean
+        }[]
+      }
       formResponses?: { [key: string]: string }
       appInsightsConnectionString?: string
       appInsightsApplicationName?: string
