@@ -76,7 +76,7 @@ export class CsipRecordController {
 
     let actionButton
     let secondaryButton
-    switch (record.status) {
+    switch (record.status.code) {
       case 'REFERRAL_PENDING':
         secondaryButton = {
           label: 'Update referral',
@@ -148,7 +148,7 @@ export class CsipRecordController {
     }
 
     res.render('csip-records/view', {
-      status: record.status,
+      status: record.status.code,
       updatingEntity: record.plan ? null : 'referral',
       shouldShowTabs: !!investigation,
       plan: record.plan,

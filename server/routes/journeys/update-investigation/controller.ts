@@ -14,7 +14,7 @@ export class UpdateInvestigationController extends BaseJourneyController {
 
   UPDATE = async (req: Request, res: Response) => {
     const record = req.journeyData.csipRecord!
-    if (record.status !== 'AWAITING_DECISION') {
+    if (record.status.code !== 'AWAITING_DECISION') {
       return res.redirect(`/csip-records/${record.recordUuid}`)
     }
 
@@ -44,7 +44,7 @@ export class UpdateInvestigationController extends BaseJourneyController {
       updatingEntity: 'investigation',
       isUpdate: true,
       referralTabSelected: false,
-      status: record.status,
+      status: record.status.code,
       investigation,
       recordUuid: record.recordUuid,
       prisoner,

@@ -38,7 +38,7 @@ export class UpdateDecisionController extends BaseJourneyController {
       updatingEntity: 'investigation decision',
       isUpdate: true,
       referralTabSelected: false,
-      status: record.status,
+      status: record.status.code,
       decision,
       recordUuid: record.recordUuid,
       prisoner,

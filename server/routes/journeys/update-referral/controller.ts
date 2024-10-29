@@ -81,7 +81,7 @@ export class UpdateReferralController extends BaseJourneyController {
 
   UPDATE = async (req: Request, res: Response) => {
     const record = req.journeyData.csipRecord!
-    if (!['REFERRAL_SUBMITTED', 'REFERRAL_PENDING'].includes(record.status)) {
+    if (!['REFERRAL_SUBMITTED', 'REFERRAL_PENDING'].includes(record.status.code)) {
       return res.redirect(`/csip-records/${record.recordUuid}`)
     }
 
@@ -126,7 +126,7 @@ export class UpdateReferralController extends BaseJourneyController {
       canAddMoreContributoryFactors,
       isUpdate: true,
       updatingEntity: 'referral',
-      status: record.status,
+      status: record.status.code,
       recordUuid: record.recordUuid,
       referralTabSelected: true,
       prisoner,

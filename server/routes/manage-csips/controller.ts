@@ -3,7 +3,7 @@ import CsipApiService from '../../services/csipApi/csipApiService'
 import PrisonApiService from '../../services/prisonApi/prisonApiService'
 import { setPaginationLocals } from '../../views/partials/simplePagination/utils'
 import { getNonUndefinedProp } from '../../utils/utils'
-import { CsipRecord } from '../../@types/csip/csipApiTypes'
+import { CsipRecordStatus } from '../../@types/csip/csipApiTypes'
 
 const PAGE_SIZE = 25
 
@@ -52,7 +52,7 @@ export class SearchCsipController {
             'UNKNOWN',
           ].includes(status as string)
         ) {
-          req.session.searchCsipParams.status = status as CsipRecord['status']
+          req.session.searchCsipParams.status = status as CsipRecordStatus
         } else {
           delete req.session.searchCsipParams.status
         }

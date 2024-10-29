@@ -99,7 +99,7 @@
       },
       {
         classes: 'col-width-200',
-        html: csipRecord.prisoner.location | shyHyphens(20)
+        html: csipRecord.prisoner.location | softHyphenate(20)
       },
       {
         text: csipRecord.referralDate | formatSimpleDisplayDate
@@ -112,7 +112,7 @@
       },
       {
         classes: 'col-width-200',
-        html: (csipRecord.caseManager | shyHyphens(20)) or '-'
+        html: (csipRecord.caseManager | softHyphenate(20)) or '-'
       },
       {
         html: statusTag({ record: csipRecord })

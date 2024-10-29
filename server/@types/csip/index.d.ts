@@ -1256,22 +1256,7 @@ export interface components {
       lastModifiedByDisplayName?: string
       referral: components['schemas']['Referral']
       plan?: components['schemas']['Plan']
-      /**
-       * @description The current status of the CSIP record.
-       * @enum {string}
-       */
-      status:
-        | 'CSIP_CLOSED'
-        | 'CSIP_OPEN'
-        | 'AWAITING_DECISION'
-        | 'ACCT_SUPPORT'
-        | 'PLAN_PENDING'
-        | 'INVESTIGATION_PENDING'
-        | 'NO_FURTHER_ACTION'
-        | 'SUPPORT_OUTSIDE_CSIP'
-        | 'REFERRAL_SUBMITTED'
-        | 'REFERRAL_PENDING'
-        | 'UNKNOWN'
+      status: components['schemas']['ReferenceData']
     }
     /** @description A need identified in the CSIP Plan */
     IdentifiedNeed: {
@@ -1887,19 +1872,7 @@ export interface components {
       /** Format: date */
       nextReviewDate?: string
       caseManager?: string
-      /** @enum {string} */
-      status:
-        | 'CSIP_CLOSED'
-        | 'CSIP_OPEN'
-        | 'AWAITING_DECISION'
-        | 'ACCT_SUPPORT'
-        | 'PLAN_PENDING'
-        | 'INVESTIGATION_PENDING'
-        | 'NO_FURTHER_ACTION'
-        | 'SUPPORT_OUTSIDE_CSIP'
-        | 'REFERRAL_SUBMITTED'
-        | 'REFERRAL_PENDING'
-        | 'UNKNOWN'
+      status: components['schemas']['ReferenceData']
     }
     CsipSearchResults: {
       content: components['schemas']['CsipSearchResult'][]
@@ -1943,38 +1916,18 @@ export interface components {
       nextReviewDate?: string
       incidentType: components['schemas']['ReferenceData']
       caseManager?: string
-      /** @enum {string} */
-      status:
-        | 'CSIP_CLOSED'
-        | 'CSIP_OPEN'
-        | 'AWAITING_DECISION'
-        | 'ACCT_SUPPORT'
-        | 'PLAN_PENDING'
-        | 'INVESTIGATION_PENDING'
-        | 'NO_FURTHER_ACTION'
-        | 'SUPPORT_OUTSIDE_CSIP'
-        | 'REFERRAL_SUBMITTED'
-        | 'REFERRAL_PENDING'
-        | 'UNKNOWN'
+      status: components['schemas']['ReferenceData']
     }
     CurrentCsip: {
-      /** @enum {string} */
-      status:
-        | 'CSIP_CLOSED'
-        | 'CSIP_OPEN'
-        | 'AWAITING_DECISION'
-        | 'ACCT_SUPPORT'
-        | 'PLAN_PENDING'
-        | 'INVESTIGATION_PENDING'
-        | 'NO_FURTHER_ACTION'
-        | 'SUPPORT_OUTSIDE_CSIP'
-        | 'REFERRAL_SUBMITTED'
-        | 'REFERRAL_PENDING'
-        | 'UNKNOWN'
+      status: components['schemas']['ReferenceData']
       /** Format: date */
-      referralDate: string
+      referralDate?: string
       /** Format: date */
       nextReviewDate?: string
+      /** Format: date */
+      closedDate?: string
+      /** Format: int64 */
+      reviewOverdueDays?: number
     }
     CurrentCsipDetail: {
       currentCsip?: components['schemas']['CurrentCsip']

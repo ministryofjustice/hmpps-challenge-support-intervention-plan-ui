@@ -60,7 +60,7 @@ export const boldAppendStamp = (val: string) => {
   return res.join('')
 }
 
-export const shyHyphens = (text: string | undefined, maxLength: number) => {
+export const softHyphenate = (text: string | undefined, maxLength: number) => {
   if (!text) {
     return ''
   }
