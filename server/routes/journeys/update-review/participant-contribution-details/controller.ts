@@ -3,7 +3,7 @@ import { SchemaType } from '../../record-review/participant-contribution-details
 import { PatchReviewController } from '../../base/patchReviewController'
 import { getNonUndefinedProp } from '../../../../utils/utils'
 
-export class UpdateParticipantContributionDetailsController extends PatchReviewController {
+export class AddParticipantContributionDetailsController extends PatchReviewController {
   GET = async (req: Request, res: Response) => {
     res.render('record-review/participant-contribution-details/view', {
       name: res.locals.formResponses?.['name'],

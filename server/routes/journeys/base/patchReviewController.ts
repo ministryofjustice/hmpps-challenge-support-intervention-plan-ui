@@ -69,7 +69,7 @@ export class PatchReviewController extends BaseJourneyController {
   }: {
     req: Request<unknown, unknown, T>
     next: NextFunction
-    changes: components['schemas']['UpdateAttendeeRequest']
+    changes: components['schemas']['CreateAttendeeRequest']
   }) => {
     try {
       await this.csipApiService.addNewAttendee(req as Request, changes)

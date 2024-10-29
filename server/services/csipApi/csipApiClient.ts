@@ -198,7 +198,7 @@ export default class CsipApiClient {
     })
   }
 
-  async addNewAttendee(reviewUuid: string, payload: components['schemas']['UpdateAttendeeRequest']) {
+  async addNewAttendee(reviewUuid: string, payload: components['schemas']['CreateAttendeeRequest']) {
     return this.restClient.post<components['schemas']['Attendee']>({
       path: `/csip-records/plan/reviews/${reviewUuid}/attendees`,
       data: payload,
