@@ -31,5 +31,14 @@
                 text: 'results'
             }
         }) }}
+    {% else %}
+        {{ mojPagination({
+            results: {
+                count: params.totalRows,
+                from: params.rowFrom,
+                to: params.rowTo,
+                text: 'results'
+            }
+        }) }}
     {% endif %}
 {% endmacro %}

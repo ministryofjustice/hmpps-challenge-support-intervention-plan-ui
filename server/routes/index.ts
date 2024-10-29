@@ -8,7 +8,6 @@ import redirectCheckAnswersMiddleware from '../middleware/redirectCheckAnswersMi
 import journeyStateMachine from '../middleware/journeyStateMachine'
 import { JourneyRoutes } from './journeys/routes'
 import { CsipRecordRoutes } from './csip-records/routes'
-import { PrisonerRoutes } from './prisoners/routes'
 import { SearchCsipRoutes } from './manage-csips/routes'
 
 export default function routes(services: Services): Router {
@@ -22,7 +21,6 @@ export default function routes(services: Services): Router {
   })
 
   router.use('/csip-records/:recordUuid', CsipRecordRoutes(services))
-  router.use('/prisoners/:prisonNumber', PrisonerRoutes(services))
   router.use('/manage-csips', SearchCsipRoutes(services))
 
   router.use(insertJourneyIdentifier())
