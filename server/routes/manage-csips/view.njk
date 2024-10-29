@@ -89,7 +89,9 @@
     </div>
   </form>
 
-  {{ simplePagination(paginationParams) }}
+  {% if records.length %}
+    {{ simplePagination(paginationParams)  }}
+  {% endif %}
 
   {% set csipRecordRows = [] %}
   {% for csipRecord in records %}
@@ -163,6 +165,8 @@
     <p class="govuk-!-margin-bottom-6">No matching CSIP records found.</p>
   {% endif %}
 
-  {{ simplePagination(paginationParams) }}
+  {% if records.length %}
+    {{ simplePagination(paginationParams)  }}
+  {% endif %}
 
 {% endblock %}
