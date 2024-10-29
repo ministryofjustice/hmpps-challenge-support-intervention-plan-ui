@@ -14,24 +14,20 @@ context('test /record-review', () => {
   })
 
   it('should allow me to the csip record page', () => {
-    cy.task('stubGetCaseLoads')
-    cy.task('stubGetServiceInfoOneAgencyLEI')
     cy.signIn()
     cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
     cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
   })
 
   it('should allow me to the csip record page when the dps components api populates the caseload data', () => {
-    cy.task('stubComponentsReal')
     cy.task('stubGetCaseLoadsFail')
-    cy.task('stubGetServiceInfoOneAgencyLEI')
     cy.signIn()
     cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
     cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
   })
 
   it('should take me to the journey as we dont check start or uuid-based urls', () => {
-    cy.task('stubGetCaseLoads')
+    cy.task('stubGetCaseLoadsFail')
     cy.task('stubGetServiceInfoNoAgencies')
     cy.signIn()
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/develop-an-initial-plan/start`)

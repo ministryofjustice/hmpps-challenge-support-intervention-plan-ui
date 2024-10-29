@@ -126,10 +126,35 @@ const token = (userToken: UserToken) =>
     },
   })
 
+const stubGetServiceInfoOneAgencyLEI = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      url: '/csip-api/info',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        activeAgencies: ['LEI'],
+      },
+    },
+  })
+}
+
 export default {
   getSignInUrl,
   stubAuthPing: ping,
   stubAuthManageDetails: manageDetails,
-  stubSignIn: (userToken: UserToken = {}): Promise<[Response, Response, Response, Response, Response]> =>
-    Promise.all([favicon(), redirect(), signOut(), token(userToken), tokenVerification.stubVerifyToken()]),
+  stubSignIn: (userToken: UserToken = {}): Promise<[Response, Response, Response, Response, Response, Response]> =>
+    Promise.all([
+      favicon(),
+      redirect(),
+      signOut(),
+      stubGetServiceInfoOneAgencyLEI(),
+      token(userToken),
+      tokenVerification.stubVerifyToken(),
+    ]),
 }

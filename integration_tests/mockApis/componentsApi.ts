@@ -1,6 +1,6 @@
 import { stubFor } from './wiremock'
 
-const stubComponents = () => {
+const stubComponentsFail = () => {
   return stubFor({
     request: {
       method: 'GET',
@@ -12,7 +12,7 @@ const stubComponents = () => {
   })
 }
 
-const stubComponentsReal = () => {
+const stubComponents = () => {
   return stubFor({
     request: {
       method: 'GET',
@@ -54,5 +54,5 @@ const stubComponentsReal = () => {
 
 export default {
   stubComponents,
-  stubComponentsReal,
+  stubComponentsFail,
 }

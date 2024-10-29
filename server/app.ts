@@ -57,6 +57,11 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
   app.use(populateClientToken())
+  app.use((_req, res, next) => {
+    res.notFound = () => res.status(404).render('pages/not-found')
+    next()
+  })
+  app.get('/prisoner-image/:prisonerNumber', new PrisonerImageRoutes(services.prisonApiService).GET)
   app.get(
     '*',
     dpsComponents.getPageComponents({
@@ -71,13 +76,8 @@ export default function createApp(services: Services): express.Application {
   )
   app.use(breadcrumbs())
   app.use(checkPopulateUserCaseloads(services.prisonApiService, services.csipApiService))
-  app.get('/prisoner-image/:prisonerNumber', new PrisonerImageRoutes(services.prisonApiService).GET)
   app.use(populateValidationErrors())
   app.use(setUpJourneyData())
-  app.use((_req, res, next) => {
-    res.notFound = () => res.status(404).render('pages/not-found')
-    next()
-  })
   app.use(routes(services))
   if (config.sentry.dsn) Sentry.setupExpressErrorHandler(app)
   app.use((_req, res) => res.notFound())
