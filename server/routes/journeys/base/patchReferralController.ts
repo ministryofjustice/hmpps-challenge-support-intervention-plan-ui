@@ -33,7 +33,7 @@ export class PatchReferralController extends PatchCsipRecordController {
   }: {
     req: Request<unknown, unknown, T>
     next: NextFunction
-    changes: Partial<components['schemas']['UpdateReferral']>
+    changes: Partial<components['schemas']['UpdateReferralRequest']>
     successMessage: UpdateReferralSuccessMessage
   }) =>
     this.submitCsipChanges({

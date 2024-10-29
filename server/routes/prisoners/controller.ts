@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import CsipApiService from '../../services/csipApi/csipApiService'
 import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
+import { setPaginationLocals } from '../../views/partials/simplePagination/utils'
 
 const PAGE_SIZE = 10
 
@@ -18,14 +19,11 @@ export class PrisonersController {
 
     const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, prisonNumber!)
     const csipSummaries = await this.csipApiService.getPrisonerCsipRecords(req, prisonNumber!, currentPage, PAGE_SIZE)
-
-    const totalPages = Math.ceil(csipSummaries.metadata.totalElements / PAGE_SIZE)
+    setPaginationLocals(res, PAGE_SIZE, currentPage, csipSummaries.metadata.totalElements, csipSummaries.content.length)
 
     res.render('prisoners/view', {
       prisoner,
       csipRecords: csipSummaries.content,
-      totalPages,
-      currentPage,
       showBreadcrumbs: true,
     })
   }

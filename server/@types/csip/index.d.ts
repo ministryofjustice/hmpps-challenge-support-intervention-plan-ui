@@ -117,7 +117,7 @@ export interface paths {
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
      */
-    get: operations['getCsipRecordsByPrisonNumbers']
+    get: operations['getCsipRecordsByPrisonNumbers_1']
     put?: never
     /**
      * Create a CSIP record for a prisoner.
@@ -484,6 +484,52 @@ export interface paths {
     patch: operations['updateIdentifiedNeed']
     trace?: never
   }
+  '/sync/csip-records/{prisonNumber}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Retrieve all CSIP records for a prisoner.
+     * @description
+     *
+     *     Requires one of the following roles:
+     *     * ROLE_NOMIS_CSIP
+     */
+    get: operations['getCsipRecordsByPrisonNumbers']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/search/csip-records': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Search and filter all CSIP records.
+     * @description Returns the CSIP records matching search query and filters
+     *
+     *     Requires one of the following roles:
+     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     */
+    get: operations['findCsipRecords']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/reference-data/{domain}': {
     parameters: {
       query?: never
@@ -527,6 +573,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/prisoners/{prisonNumber}/csip-records/current': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Retrieve the current CSIP record for a prisoner.
+     * @description Returns a summary of the current CSIP record and counts of opened csip and referrals for the prisoner
+     *
+     *     Requires one of the following roles:
+     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__RO
+     */
+    get: operations['getCurrentCsipRecord']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/sync/csip-records/{id}': {
     parameters: {
       query?: never
@@ -558,10 +627,15 @@ export interface components {
       prisonCode?: string
       cellLocation?: string
     }
+    /** @description The attendees/contributors to the review. */
     SyncAttendeeRequest: {
+      /** @description Name of review attendee/contributor. */
       name?: string
+      /** @description Role of review attendee/contributor. */
       role?: string
+      /** @description If the person attended the review. */
       isAttended?: boolean
+      /** @description Description of attendee contribution. */
       contribution?: string
       /** Format: int64 */
       legacyId: number
@@ -576,8 +650,11 @@ export interface components {
       lastModifiedBy?: string
       lastModifiedByDisplayName?: string
     }
+    /** @description Contributory factors to the incident that motivated the referral. */
     SyncContributoryFactorRequest: {
+      /** @description The type of contributory factor to the incident or motivation for CSIP referral. */
       factorTypeCode: string
+      /** @description Additional information about the contributory factor to the incident or motivation for CSIP referral. */
       comment?: string
       /** Format: int64 */
       legacyId: number
@@ -594,6 +671,7 @@ export interface components {
     }
     SyncCsipRequest: {
       prisonNumber: string
+      /** @description User entered identifier for the CSIP record. Defaults to the prison code. */
       logCode?: string
       referral?: components['schemas']['SyncReferralRequest']
       plan?: components['schemas']['SyncPlanRequest']
@@ -618,15 +696,27 @@ export interface components {
       lastModifiedByDisplayName?: string
     }
     SyncDecisionAndActionsRequest: {
+      /** @description The conclusion of the referral and reasons for the outcome decision. */
       conclusion?: string
+      /** @description The outcome decision for the referral. */
       outcomeTypeCode?: string
+      /** @description The role of the person making the outcome decision. */
       signedOffByRoleCode?: string
-      /** Format: date */
+      /**
+       * Format: date
+       * @description The date the outcome decision was made.
+       * @example 2021-09-27
+       */
       date?: string
+      /** @description The username of the user who recorded the outcome decision. */
       recordedBy?: string
+      /** @description The displayable name of the user who recorded the outcome decision. */
       recordedByDisplayName?: string
+      /** @description The next steps that should be taken following the outcome decision. */
       nextSteps?: string
+      /** @description Any other actions that are recommended to be considered. */
       actionOther?: string
+      /** @description A list of recommended actions. */
       actions: (
         | 'OPEN_CSIP_ALERT'
         | 'NON_ASSOCIATIONS_UPDATED'
@@ -637,11 +727,19 @@ export interface components {
         | 'SIM_REFERRAL'
       )[]
     }
+    /** @description The interviews in relation to the investigation */
     SyncInterviewRequest: {
+      /** @description Name of the person being interviewed. */
       interviewee: string
-      /** Format: date */
+      /**
+       * Format: date
+       * @description The date the interview took place.
+       * @example 2021-09-27
+       */
       interviewDate: string
+      /** @description What role the interviewee played in the incident or referral. */
       intervieweeRoleCode: string
+      /** @description Information provided in interview. */
       interviewText?: string
       /** Format: int64 */
       legacyId: number
@@ -657,24 +755,48 @@ export interface components {
       lastModifiedByDisplayName?: string
     }
     SyncInvestigationRequest: {
+      /** @description The names of the staff involved in the investigation. */
       staffInvolved?: string
+      /** @description Any evidence that was secured as part of the investigation. */
       evidenceSecured?: string
+      /** @description The reasons why the incident occurred. */
       occurrenceReason?: string
+      /** @description The normal behaviour of the person in prison. */
       personsUsualBehaviour?: string
+      /** @description What triggers the person in prison has that could have motivated the incident. */
       personsTrigger?: string
+      /** @description Any protective factors to reduce the person's risk factors and prevent triggers for instance of violence */
       protectiveFactors?: string
+      /** @description The interviews in relation to the investigation */
       interviews: components['schemas']['SyncInterviewRequest'][]
     }
+    /** @description The needs identified in the CSIP plan. */
     SyncNeedRequest: {
+      /** @description Details of the need identified in the CSIP plan. */
       identifiedNeed: string
+      /** @description The name of the person who is responsible for taking action on the intervention. */
       responsiblePerson: string
-      /** Format: date */
+      /**
+       * Format: date
+       * @description The date the need was identified.
+       * @example 2021-09-27
+       */
       createdDate: string
-      /** Format: date */
+      /**
+       * Format: date
+       * @description The target date the need should be progressed or resolved.
+       * @example 2021-09-27
+       */
       targetDate: string
-      /** Format: date */
+      /**
+       * Format: date
+       * @description The date the identified need was resolved or closed.
+       * @example 2021-09-27
+       */
       closedDate?: string
+      /** @description The planned intervention for the identified need. */
       intervention: string
+      /** @description How the plan to address the identified need is progressing. */
       progression?: string
       /** Format: int64 */
       legacyId: number
@@ -690,56 +812,106 @@ export interface components {
       lastModifiedByDisplayName?: string
     }
     SyncPlanRequest: {
+      /** @description The case manager assigned to the CSIP plan. */
       caseManager?: string
+      /** @description The reasons motivating the creation of a CSIP plan. */
       reasonForPlan?: string
       /** Format: date */
       firstCaseReviewDate?: string
+      /** @description The needs identified in the CSIP plan. */
       identifiedNeeds: components['schemas']['SyncNeedRequest'][]
+      /** @description The reviews of the CSIP plan. */
       reviews: components['schemas']['SyncReviewRequest'][]
-      /** Format: date */
+      /**
+       * Format: date
+       * @description The next date the CSIP plan should be reviewed.
+       * @example 2021-09-27
+       */
       nextCaseReviewDate?: string
     }
+    /** @description The referral that results in the creation of this CSIP record. */
     SyncReferralRequest: {
       /** Format: date */
       referralDate: string
-      /** Format: date */
+      /**
+       * Format: date
+       * @description The date the incident that motivated the CSIP referral occurred
+       * @example 2021-09-27
+       */
       incidentDate: string
-      /** Format: partial-time */
+      /**
+       * Format: partial-time
+       * @description The time the incident that motivated the CSIP referral occurred
+       * @example 14:19:25
+       */
       incidentTime?: string
+      /** @description The type of incident that motivated the CSIP referral. */
       incidentTypeCode: string
+      /** @description The location of incident that motivated the CSIP referral. */
       incidentLocationCode: string
+      /** @description The person reporting the incident or creating the CSIP referral. */
       referredBy: string
+      /** @description The area of work of the person reporting the incident or creating the CSIP referral. */
       refererAreaCode: string
+      /** @description Was this referral proactive or preventative. */
       isProactiveReferral?: boolean
+      /** @description Were any members of staff assaulted in the incident. */
       isStaffAssaulted?: boolean
+      /** @description Name or names of assaulted members of staff if any. */
       assaultedStaffName?: string
+      /** @description The type of involvement the person had in the incident */
       incidentInvolvementCode?: string
+      /** @description The reasons why there is cause for concern. */
       descriptionOfConcern?: string
+      /** @description The reasons already known about the causes of the incident or motivation for CSIP referral. */
       knownReasons?: string
+      /** @description Any other information about the incident or reasons for CSIP referral. */
       otherInformation?: string
-      /** @enum {string} */
+      /**
+       * @description Records whether the safer custody team been informed.
+       * @enum {string}
+       */
       isSaferCustodyTeamInformed: 'YES' | 'NO' | 'DO_NOT_KNOW'
+      /** @description Is the referral complete. */
       isReferralComplete?: boolean
       /** Format: date */
       completedDate?: string
       completedBy?: string
       completedByDisplayName?: string
+      /** @description Contributory factors to the incident that motivated the referral. */
       contributoryFactors: components['schemas']['SyncContributoryFactorRequest'][]
       saferCustodyScreeningOutcome?: components['schemas']['SyncScreeningOutcomeRequest']
       investigation?: components['schemas']['SyncInvestigationRequest']
       decisionAndActions?: components['schemas']['SyncDecisionAndActionsRequest']
     }
+    /** @description The reviews of the CSIP plan. */
     SyncReviewRequest: {
-      /** Format: date */
+      /**
+       * Format: date
+       * @description The date of the review.
+       * @example 2021-09-27
+       */
       reviewDate?: string
+      /** @description The username of the person who recorded the review. */
       recordedBy: string
+      /** @description The displayable name of the person who recorded the review. */
       recordedByDisplayName: string
-      /** Format: date */
+      /**
+       * Format: date
+       * @description The date of the next review.
+       * @example 2021-09-27
+       */
       nextReviewDate?: string
-      /** Format: date */
+      /**
+       * Format: date
+       * @description The date the CSIP plan was closed following a review outcome decision to close it.
+       */
       csipClosedDate?: string
+      /** @description Additional information about the review. */
       summary?: string
+      /** @description A list of actions following the review. */
       actions: ('RESPONSIBLE_PEOPLE_INFORMED' | 'CSIP_UPDATED' | 'REMAIN_ON_CSIP' | 'CASE_NOTE' | 'CLOSE_CSIP')[]
+      /** @description The attendees/contributors to the review. */
       attendees: components['schemas']['SyncAttendeeRequest'][]
       /** Format: int64 */
       legacyId: number
@@ -755,11 +927,19 @@ export interface components {
       lastModifiedByDisplayName?: string
     }
     SyncScreeningOutcomeRequest: {
+      /** @description The type of outcome of the safer custody screening. */
       outcomeTypeCode: string
+      /** @description The reasons for the safer custody screening outcome decision. */
       reasonForDecision?: string
-      /** Format: date */
+      /**
+       * Format: date
+       * @description The date of the safer custody screening outcome.
+       * @example 2021-09-27
+       */
       date: string
+      /** @description The username of the user who recorded the screening outcome. */
       recordedBy: string
+      /** @description The displayable name of the user who recorded the screening outcome. */
       recordedByDisplayName: string
     }
     ErrorResponse: {
@@ -1341,7 +1521,6 @@ export interface components {
       /**
        * Format: date
        * @description The date the CSIP plan was closed following a review outcome decision to close it.
-       * @example 2021-09-27
        */
       csipClosedDate?: string
       /** @description Additional information about the review. */
@@ -1483,7 +1662,7 @@ export interface components {
       reasonForPlan: string
       /**
        * Format: date
-       * @description The first date the CSIP plan should be reviewed.
+       * @description The next date the CSIP plan should be reviewed.
        * @example 2021-09-27
        */
       nextCaseReviewDate: string
@@ -1522,7 +1701,6 @@ export interface components {
       /**
        * Format: date
        * @description The date the CSIP plan was closed following a review outcome decision to close it.
-       * @example 2021-09-27
        */
       csipClosedDate?: string
       /** @description Additional information about the review. */
@@ -1536,10 +1714,10 @@ export interface components {
     UpdateCsipRecordRequest: {
       /** @description User entered identifier for the CSIP record. Defaults to the prison code. */
       logCode?: string
-      referral?: components['schemas']['UpdateReferral']
+      referral?: components['schemas']['UpdateReferralRequest']
     }
     /** @description The detail for updating a CSIP referral */
-    UpdateReferral: {
+    UpdateReferralRequest: {
       /**
        * Format: date
        * @description The date the incident that motivated the CSIP referral occurred
@@ -1597,7 +1775,7 @@ export interface components {
       /** @description Any protective factors to reduce the person's risk factors and prevent triggers for instance of violence */
       protectiveFactors?: string
     }
-    /** @description The request for creating a CSIP Plan for a CSIP record */
+    /** @description The request for updating a CSIP Plan for a CSIP record */
     UpdatePlanRequest: {
       /** @description The case manager assigned to the CSIP plan. */
       caseManager?: string
@@ -1605,7 +1783,7 @@ export interface components {
       reasonForPlan?: string
       /**
        * Format: date
-       * @description The first date the CSIP plan should be reviewed.
+       * @description The next date the CSIP plan should be reviewed.
        * @example 2021-09-27
        */
       nextCaseReviewDate?: string
@@ -1653,7 +1831,6 @@ export interface components {
       /**
        * Format: date
        * @description The date the CSIP plan was closed following a review outcome decision to close it.
-       * @example 2021-09-27
        */
       csipClosedDate?: string
       /** @description Additional information about the review. */
@@ -1701,6 +1878,43 @@ export interface components {
       /** @description How the plan to address the identified need is progressing. */
       progression?: string
     }
+    CsipSearchResult: {
+      /** Format: uuid */
+      id: string
+      prisoner: components['schemas']['Prisoner']
+      /** Format: date */
+      referralDate: string
+      /** Format: date */
+      nextReviewDate?: string
+      caseManager?: string
+      /** @enum {string} */
+      status:
+        | 'CSIP_CLOSED'
+        | 'CSIP_OPEN'
+        | 'AWAITING_DECISION'
+        | 'ACCT_SUPPORT'
+        | 'PLAN_PENDING'
+        | 'INVESTIGATION_PENDING'
+        | 'NO_FURTHER_ACTION'
+        | 'SUPPORT_OUTSIDE_CSIP'
+        | 'REFERRAL_SUBMITTED'
+        | 'REFERRAL_PENDING'
+        | 'UNKNOWN'
+    }
+    CsipSearchResults: {
+      content: components['schemas']['CsipSearchResult'][]
+      metadata: components['schemas']['PageMeta']
+    }
+    PageMeta: {
+      /** Format: int64 */
+      totalElements: number
+    }
+    Prisoner: {
+      prisonNumber: string
+      firstName: string
+      lastName: string
+      location?: string
+    }
     DlqMessage: {
       body: {
         [key: string]: Record<string, never>
@@ -1743,9 +1957,31 @@ export interface components {
         | 'REFERRAL_PENDING'
         | 'UNKNOWN'
     }
-    PageMeta: {
-      /** Format: int64 */
-      totalElements: number
+    CurrentCsip: {
+      /** @enum {string} */
+      status:
+        | 'CSIP_CLOSED'
+        | 'CSIP_OPEN'
+        | 'AWAITING_DECISION'
+        | 'ACCT_SUPPORT'
+        | 'PLAN_PENDING'
+        | 'INVESTIGATION_PENDING'
+        | 'NO_FURTHER_ACTION'
+        | 'SUPPORT_OUTSIDE_CSIP'
+        | 'REFERRAL_SUBMITTED'
+        | 'REFERRAL_PENDING'
+        | 'UNKNOWN'
+      /** Format: date */
+      referralDate: string
+      /** Format: date */
+      nextReviewDate?: string
+    }
+    CurrentCsipDetail: {
+      currentCsip?: components['schemas']['CurrentCsip']
+      /** Format: int32 */
+      totalOpenedCsipCount: number
+      /** Format: int32 */
+      totalReferralCount: number
     }
     DefaultLegacyActioned: {
       /** Format: date-time */
@@ -1960,7 +2196,7 @@ export interface operations {
       }
     }
   }
-  getCsipRecordsByPrisonNumbers: {
+  getCsipRecordsByPrisonNumbers_1: {
     parameters: {
       query?: {
         logCode?: string
@@ -3232,6 +3468,111 @@ export interface operations {
       }
     }
   }
+  getCsipRecordsByPrisonNumbers: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Successful request - returns an empty list if no csip records are found */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CsipRecord'][]
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  findCsipRecords: {
+    parameters: {
+      query?: {
+        prisonCode?: string
+        query?: string
+        status?:
+          | 'CSIP_CLOSED'
+          | 'CSIP_OPEN'
+          | 'AWAITING_DECISION'
+          | 'ACCT_SUPPORT'
+          | 'PLAN_PENDING'
+          | 'INVESTIGATION_PENDING'
+          | 'NO_FURTHER_ACTION'
+          | 'SUPPORT_OUTSIDE_CSIP'
+          | 'REFERRAL_SUBMITTED'
+          | 'REFERRAL_PENDING'
+          | 'UNKNOWN'
+        page?: number
+        size?: number
+        sort?: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description CSIP records found */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['CsipSearchResults']
+        }
+      }
+      /** @description Bad Request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getReferenceData: {
     parameters: {
       query?: {
@@ -3314,6 +3655,55 @@ export interface operations {
         }
         content: {
           '*/*': components['schemas']['GetDlqResult']
+        }
+      }
+    }
+  }
+  getCurrentCsipRecord: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description CSIP records found */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CurrentCsipDetail']
+        }
+      }
+      /** @description Bad Request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
         }
       }
     }

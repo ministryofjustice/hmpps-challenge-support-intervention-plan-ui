@@ -19,3 +19,19 @@
   cursor: default;
   display: inline-block;
 }
+
+.table-vertical-align-middle td {
+  vertical-align: middle;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.col-width-200 {
+  max-width: 200px;
+}
+
+.min-width-one-quarter {
+  min-width: 25vw;
+}

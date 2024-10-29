@@ -40,6 +40,9 @@ export const formatInputDate = (value?: string) => value && DATE_FORMAT_GB.forma
 
 export const formatDisplayDate = (value?: string) => value && DATE_FORMAT_GB_VERBOSE.format(new Date(Date.parse(value)))
 
+export const formatSimpleDisplayDate = (value?: string) =>
+  value && DATE_FORMAT_GB.format(new Date(Date.parse(value))).replaceAll(/^0|(?<=\/)0/g, '')
+
 export const formatDisplayDateTime = (value?: string) =>
   value && DATE_TIME_FORMAT_GB_VERBOSE.format(new Date(Date.parse(value)))
 

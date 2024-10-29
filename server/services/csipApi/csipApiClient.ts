@@ -1,6 +1,12 @@
 import RestClient from '../../data/restClient'
 import config from '../../config'
-import { CsipRecord, CsipSummaries, ReferenceData, ReferenceDataType } from '../../@types/csip/csipApiTypes'
+import {
+  CsipRecord,
+  CsipSearchResults,
+  CsipSummaries,
+  ReferenceData,
+  ReferenceDataType,
+} from '../../@types/csip/csipApiTypes'
 import { components } from '../../@types/csip'
 
 export default class CsipApiClient {
@@ -23,6 +29,26 @@ export default class CsipApiClient {
   async getPrisonerCsipRecords(prisonNumber: string, page: number, size: number): Promise<CsipSummaries> {
     return this.restClient.get<CsipSummaries>({
       path: `/prisoners/${prisonNumber}/csip-records?page=${page}&size=${size}`,
+    })
+  }
+
+  async searchAndSortCsipRecords({
+    prisonCode,
+    query,
+    status,
+    sort,
+    page,
+    size,
+  }: {
+    prisonCode: string
+    query?: string
+    status?: CsipRecord['status']
+    sort: string
+    page: number
+    size: number
+  }): Promise<CsipSearchResults> {
+    return this.restClient.get<CsipSearchResults>({
+      path: `/search/csip-records?page=${page}&size=${size}&prisonCode=${prisonCode}&query=${query ?? ''}&status=${status ?? ''}&sort=${sort}`,
     })
   }
 

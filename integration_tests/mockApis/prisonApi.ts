@@ -16,6 +16,28 @@ const stubGetPrisonerImage = () => {
   })
 }
 
+const stubGetCaseLoads = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/prison-api/api/users/me/caseLoads',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: [
+        {
+          currentlyActive: true,
+          caseLoadId: 'LEI',
+        },
+      ],
+    },
+  })
+}
+
 export default {
   stubGetPrisonerImage,
+  stubGetCaseLoads,
 }
