@@ -1,12 +1,14 @@
 import {
+  Contracts,
   defaultClient,
   DistributedTracingModes,
   getCorrelationContext,
   setup,
   TelemetryClient,
 } from 'applicationinsights'
-import { RequestHandler } from 'express'
+import { Request, RequestHandler } from 'express'
 import { v4 } from 'uuid'
+import { EnvelopeTelemetry } from 'applicationinsights/out/Declarations/Contracts'
 import type { ApplicationInfo } from '../applicationInfo'
 
 export function initialiseAppInsights(): void {
@@ -16,6 +18,26 @@ export function initialiseAppInsights(): void {
 
     setup().setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C).start()
   }
+}
+
+function addUserDataToRequests(envelope: EnvelopeTelemetry, contextObjects: Record<string, unknown> | undefined) {
+  const isRequest = envelope.data.baseType === Contracts.TelemetryTypeString['Request']
+  if (isRequest) {
+    const { username, activeCaseLoadId } =
+      (contextObjects?.['http.ServerRequest'] as Request | undefined)?.res?.locals?.user || {}
+    if (username) {
+      const properties = envelope.data.baseData?.['properties']
+      // eslint-disable-next-line no-param-reassign
+      envelope.data.baseData ??= {}
+      // eslint-disable-next-line no-param-reassign
+      envelope.data.baseData['properties'] = {
+        username,
+        activeCaseLoadId,
+        ...properties,
+      }
+    }
+  }
+  return true
 }
 
 export function buildAppInsightsClient(
@@ -30,6 +52,8 @@ export function buildAppInsightsClient(
       const { url } = data.baseData!
       return !url?.endsWith('/health') && !url?.endsWith('/ping') && !url?.endsWith('/metrics')
     })
+
+    defaultClient.addTelemetryProcessor(addUserDataToRequests)
 
     defaultClient.addTelemetryProcessor(({ tags, data }, contextObjects) => {
       const operationNameOverride =

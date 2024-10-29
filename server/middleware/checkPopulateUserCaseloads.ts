@@ -1,4 +1,5 @@
 import { RequestHandler, Router } from 'express'
+import { validate as uuidValidate } from 'uuid'
 import logger from '../../logger'
 import PrisonApiService from '../services/prisonApi/prisonApiService'
 import CsipApiService from '../services/csipApi/csipApiService'
@@ -19,27 +20,33 @@ export default function checkPopulateUserCaseloads(
   router.use(async (req, res, next) => {
     const splitUrl = req.url.split('/').filter(Boolean)
     if (
-      !splitUrl[0]?.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/) &&
+      !uuidValidate(splitUrl[0] || '') &&
       !req.url.endsWith('/start') &&
       !req.url.includes('prisoner-image') &&
       !req.url.includes('service-not-enabled')
     ) {
       try {
         if (res.locals.feComponentsMeta?.caseLoads) {
-          req.session.userCaseloads = res.locals.feComponentsMeta.caseLoads
+          res.locals.user.caseloads = res.locals.feComponentsMeta.caseLoads
         }
-        const refetchCaseloads = !req.session.userCaseloads || req.session.userCaseloads.length > 1
+        if (res.locals.feComponentsMeta?.activeCaseLoad) {
+          res.locals.user.activeCaseLoadId = res.locals.feComponentsMeta.activeCaseLoad.caseLoadId
+        }
+        const refetchCaseloads = !res.locals.user.caseloads || res.locals.user.caseloads.length > 1
         const promises = refetchCaseloads
           ? [csipApiService.getServiceConfigInfo(req), prisonApiService.getCaseLoads(req)]
           : [csipApiService.getServiceConfigInfo(req)]
         const [configInfo, caseloads] = await Promise.all(promises)
         if (refetchCaseloads) {
-          req.session.userCaseloads = caseloads as CaseLoad[]
+          res.locals.user.caseloads = caseloads as CaseLoad[]
+          res.locals.user.activeCaseLoadId =
+            (caseloads as CaseLoad[])!.find(caseload => caseload.currentlyActive)?.caseLoadId ??
+            res.locals.user.activeCaseLoadId
         }
         // Check that the user's active caseload is enabled on the API side
         if (
           !(configInfo as ServiceConfigInfo).activeAgencies.includes(
-            req.session.userCaseloads!.find(caseload => caseload.currentlyActive)?.caseLoadId || '',
+            res.locals.user.caseloads!.find(caseload => caseload.currentlyActive)?.caseLoadId || '',
           )
         ) {
           res.redirect('/service-not-enabled')

@@ -21,17 +21,6 @@ context('test /record-review', () => {
     cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
   })
 
-  it('should allow me to the csip record page and not try to access users caseloads again', () => {
-    cy.task('stubGetOneCaseLoad')
-    cy.task('stubGetServiceInfoOneAgencyLEI')
-    cy.signIn()
-    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
-    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
-    cy.task('stubGetCaseLoadsFail')
-    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
-    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
-  })
-
   it('should allow me to the csip record page when the dps components api populates the caseload data', () => {
     cy.task('stubComponentsReal')
     cy.task('stubGetCaseLoadsFail')
