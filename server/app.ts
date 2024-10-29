@@ -31,6 +31,7 @@ import breadcrumbs from './middleware/breadcrumbs'
 import './sentry'
 import sentryMiddleware from './middleware/sentryMiddleware'
 import { handleApiError } from './middleware/handleApiError'
+import checkPopulateUserCaseloads from './middleware/checkPopulateUserCaseloads'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -56,9 +57,6 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
   app.use(populateClientToken())
-  app.get('/prisoner-image/:prisonerNumber', new PrisonerImageRoutes(services.prisonApiService).GET)
-  app.use(populateValidationErrors())
-  app.use(setUpJourneyData())
   app.get(
     '*',
     dpsComponents.getPageComponents({
@@ -72,6 +70,10 @@ export default function createApp(services: Services): express.Application {
     }),
   )
   app.use(breadcrumbs())
+  app.use(checkPopulateUserCaseloads(services.prisonApiService, services.csipApiService))
+  app.get('/prisoner-image/:prisonerNumber', new PrisonerImageRoutes(services.prisonApiService).GET)
+  app.use(populateValidationErrors())
+  app.use(setUpJourneyData())
   app.use((_req, res, next) => {
     res.notFound = () => res.status(404).render('pages/not-found')
     next()

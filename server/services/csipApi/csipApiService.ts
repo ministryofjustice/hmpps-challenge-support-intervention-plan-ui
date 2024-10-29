@@ -7,7 +7,7 @@ import {
   ReferenceData,
   ReferenceDataType,
 } from '../../@types/csip/csipApiTypes'
-import CsipApiClient from './csipApiClient'
+import CsipApiClient, { ServiceConfigInfo } from './csipApiClient'
 import { components } from '../../@types/csip'
 
 export default class CsipApiService {
@@ -36,6 +36,10 @@ export default class CsipApiService {
   }): Promise<CsipSearchResults> {
     const { req, ...queries } = params
     return this.csipApiClientBuilder(req.systemClientToken).searchAndSortCsipRecords(queries)
+  }
+
+  getServiceConfigInfo(req: Request): Promise<ServiceConfigInfo> {
+    return this.csipApiClientBuilder(req.systemClientToken).getServiceConfigInfo()
   }
 
   createReferral(

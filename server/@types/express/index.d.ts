@@ -3,6 +3,7 @@ import { Breadcrumbs } from '../../middleware/breadcrumbs'
 import { fieldErrors } from '../../middleware/validationMiddleware'
 import { CsipRecord, ReferenceData, YesNoAnswer } from '../csip/csipApiTypes'
 import Prisoner from '../../services/prisonerSearch/prisoner'
+import { CaseLoad } from '../../interfaces/caseLoad'
 
 export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
@@ -10,6 +11,7 @@ export declare module 'express-session' {
     returnTo: string
     nowInMinutes: number
     journeyDataMap: JourneyDataMap
+    userCaseloads?: CaseLoad[]
     searchCsipParams: SearchCsipParams
   }
 }

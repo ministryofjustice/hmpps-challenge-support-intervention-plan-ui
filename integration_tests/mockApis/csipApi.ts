@@ -548,6 +548,24 @@ const stubCsipRecordGetSuccess = () => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, csip)
 }
 
+const stubGetServiceInfoOneAgencyLEI = () => {
+  return createBasicHttpStub('GET', '/csip-api/info', 200, {
+    activeAgencies: ['LEI'],
+  })
+}
+
+const stubGetServiceInfoOneAgencyMDI = () => {
+  return createBasicHttpStub('GET', '/csip-api/info', 200, {
+    activeAgencies: ['MDI'],
+  })
+}
+
+const stubGetServiceInfoNoAgencies = () => {
+  return createBasicHttpStub('GET', '/csip-api/info', 200, {
+    activeAgencies: [],
+  })
+}
+
 const stubCsipRecordGetSuccessAfterScreeningWithReason = () => {
   return createBasicHttpStub(
     'GET',
@@ -958,4 +976,7 @@ export default {
   stubPatchAttendeeSuccess,
   stubPatchAttendeeFail,
   stubSearchCsipRecords,
+  stubGetServiceInfoOneAgencyLEI,
+  stubGetServiceInfoOneAgencyMDI,
+  stubGetServiceInfoNoAgencies,
 }

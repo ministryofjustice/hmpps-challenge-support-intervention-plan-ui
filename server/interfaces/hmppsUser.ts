@@ -1,3 +1,5 @@
+import { CaseLoad } from './caseLoad'
+
 export type AuthSource = 'nomis' | 'delius' | 'external' | 'azuread'
 
 /**
@@ -56,4 +58,6 @@ export interface AzureADUser extends BaseUser {
   authSource: 'azuread'
 }
 
-export type HmppsUser = PrisonUser | ProbationUser | ExternalUser | AzureADUser
+export type HmppsUser = (PrisonUser | ProbationUser | ExternalUser | AzureADUser) & {
+  caseloads: CaseLoad[] | undefined
+}
