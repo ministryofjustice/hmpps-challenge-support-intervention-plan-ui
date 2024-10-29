@@ -103,6 +103,11 @@ export class CsipRecordController {
             label: 'Update decision',
             link: `/csip-record/${recordUuid}/update-decision/start`,
           }
+        } else if (investigation) {
+          secondaryButton = {
+            label: 'Update investigation',
+            link: `/csip-record/${recordUuid}/update-investigation/start`,
+          }
         }
         break
       case 'SUPPORT_OUTSIDE_CSIP':
@@ -150,7 +155,7 @@ export class CsipRecordController {
     res.render('csip-records/view', {
       status: record.status.code,
       updatingEntity: record.plan ? null : 'referral',
-      shouldShowTabs: !!investigation,
+      shouldShowTabs: !!investigation || !!record.plan || record.status.code === 'PLAN_PENDING',
       plan: record.plan,
       identifiedNeeds: record.plan?.identifiedNeeds.sort(identifiedNeedSorter),
       reviews: record.plan?.reviews

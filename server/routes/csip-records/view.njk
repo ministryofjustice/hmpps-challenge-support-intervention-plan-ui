@@ -99,6 +99,14 @@
         text: 'Referral',
         href: 'referral',
         active: tabSelected == 'referral'
+      }] if plan else [{
+        text: 'Investigation',
+        href: 'investigation',
+        active: tabSelected == 'investigation'
+      }, {
+        text: 'Referral',
+        href: 'referral',
+        active: tabSelected == 'referral'
       }]
     }) }}
   {% endif %}
