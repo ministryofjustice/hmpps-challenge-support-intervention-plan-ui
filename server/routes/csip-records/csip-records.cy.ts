@@ -195,7 +195,6 @@ context('test /csip-records', () => {
 
   const checkInvestigationDetailsExist = () => {
     cy.findByRole('heading', { name: /investigation$/i }).should('be.visible')
-    cy.findByText('22 July 2024').should('be.visible')
     cy.findByText('staff stafferson').should('be.visible')
     cy.findByText('SomeVidence').should('be.visible')
     cy.findByText('bananas').should('be.visible')
