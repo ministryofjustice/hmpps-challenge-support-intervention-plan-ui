@@ -50,7 +50,8 @@
   {% endif %}
 {% endblock %}
 
-{% block pageTitle %}{{pageTitle | default(applicationName)}} - DPS{% endblock %}
+{% set errorPrefix = 'Error: ' if validationErrors else '' %}
+{% block pageTitle %}{{errorPrefix}}{{pageTitle | default(applicationName)}} - DPS{% endblock %}
 
 {% block header %}
   {{ feComponents.header | safe }}

@@ -2,7 +2,7 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Confirmation - Make a CSIP referral" %}
+{% set pageTitle = "CSIP referral complete" %}
 
 {% set theHtml = ("<div><strong>" + (prisoner.lastName + ", " + prisoner.firstName) | convertToTitleCase | escape + "</strong></div><div>" + prisoner.prisonerNumber | escape + "</div>") %}
 

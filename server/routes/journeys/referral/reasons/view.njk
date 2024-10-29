@@ -4,11 +4,13 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Reasons - Update CSIP referral" if isUpdate else "Reasons - Make a CSIP referral" %}
-
-{% set nonUpdateHeaderText = 'What reasons have been given for the behaviour?' if isProactiveReferral else 'What reasons have been given for the incident?' %}
-{% set updateHeaderText = 'Add information to the reasons given for the behaviour' if isProactiveReferral else 'Add information to the reasons given for the incident' %}
+{% set keyword = 'behaviour' if isProactiveReferral else 'incident' %}
+{% set nonUpdateHeaderText = ['What reasons have been given for the ', keyword, '?'] | join %}
+{% set updateHeaderText = ['Add information to the reasons given for the ', keyword] | join %}
 {% set headerText = updateHeaderText if isUpdate else nonUpdateHeaderText %}
+
+{% set flowName = "Update CSIP referral" if isUpdate else "Make a CSIP referral" %}
+{% set pageTitle = [headerText, " - ", flowName] | join %}
 
 {% block innerContent %}
     {% include 'base/components/referral-caption.njk' %}

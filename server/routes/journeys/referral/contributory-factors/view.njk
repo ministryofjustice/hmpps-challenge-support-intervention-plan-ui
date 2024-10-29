@@ -3,11 +3,12 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Contributory factors - Make a CSIP referral" %}
+{% set headerText = 'What are the contributory factors?' %}
+{% set pageTitle = [headerText, ' - Make a CSIP referral'] | join %}
 
 {% block innerContent %}
     <span class="govuk-caption-l">Make a CSIP referral</span>
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">What are the contributory factors? </h1>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ headerText }}</h1>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {{ govukCheckboxes({

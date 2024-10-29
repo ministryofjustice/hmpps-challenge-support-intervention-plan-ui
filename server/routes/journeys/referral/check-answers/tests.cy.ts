@@ -66,7 +66,7 @@ context('test /record-investigation/check-answers', () => {
 
   it('should redirect to something on failure', () => {
     cy.task('stubCsipRecordPostFailure')
-    cy.findByRole('button', { name: /Confirm and send/i }).click()
+    cy.findByRole('button', { name: /Confirm and submit/i }).click()
     cy.url().should('to.match', /\/check-answers/)
     cy.findByText('There is a problem').should('be.visible')
   })
@@ -74,7 +74,7 @@ context('test /record-investigation/check-answers', () => {
   it('should be able to change answers and proceed to confirmation', () => {
     cy.task('stubCsipRecordPostSuccess')
 
-    cy.findByRole('heading', { name: /Check your answers before sending the referral/ }).should('be.visible')
+    cy.findByRole('heading', { name: /Check your answers before submitting the referral/ }).should('be.visible')
 
     checkBehalfOf()
     checkNameOfReferrer()
@@ -403,7 +403,7 @@ context('test /record-investigation/check-answers', () => {
   }
 
   const continueToConfirmation = () => {
-    cy.findByRole('button', { name: /Confirm and send/i }).click()
+    cy.findByRole('button', { name: /Confirm and submit/i }).click()
     cy.url().should('to.match', /\/confirmation(#[A-z]+)?/)
   }
 })
