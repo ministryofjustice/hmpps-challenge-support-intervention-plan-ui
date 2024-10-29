@@ -32,7 +32,7 @@ export default function checkPopulateUserCaseloads(
         if (res.locals.feComponentsMeta?.activeCaseLoad) {
           res.locals.user.activeCaseLoadId = res.locals.feComponentsMeta.activeCaseLoad.caseLoadId
         }
-        const refetchCaseloads = !res.locals.user.caseloads || res.locals.user.caseloads.length > 1
+        const refetchCaseloads = !res.locals.user.caseloads
         const promises = refetchCaseloads
           ? [csipApiService.getServiceConfigInfo(req), prisonApiService.getCaseLoads(req)]
           : [csipApiService.getServiceConfigInfo(req)]

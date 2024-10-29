@@ -11,7 +11,6 @@ export declare module 'express-session' {
     returnTo: string
     nowInMinutes: number
     journeyDataMap: JourneyDataMap
-    userCaseloads?: CaseLoad[]
     searchCsipParams: SearchCsipParams
   }
 }
