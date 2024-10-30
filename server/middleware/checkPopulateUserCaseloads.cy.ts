@@ -27,8 +27,8 @@ context('test /record-review', () => {
   })
 
   it('should take me to the journey as we dont check start or uuid-based urls', () => {
-    cy.task('stubGetCaseLoadsFail')
-    cy.task('stubGetServiceInfoNoAgencies')
+    cy.task('stubGetCaseLoads')
+    cy.task('stubGetServiceInfoOneAgencyMDI')
     cy.signIn()
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/develop-an-initial-plan/start`)
     cy.url().should('to.match', /\/develop-an-initial-plan$/)
