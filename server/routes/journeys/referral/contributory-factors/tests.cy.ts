@@ -42,6 +42,7 @@ context('test /referral/contributory-factors', () => {
   })
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'What are the contributory factors? - Make a CSIP referral - DPS')
     cy.findByText('What are the contributory factors?').should('be.visible')
 
     cy.findByRole('link', { name: /^back/i })

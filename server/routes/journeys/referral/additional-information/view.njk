@@ -4,12 +4,14 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Additional information - Update CSIP referral" if isUpdate else "Additional information - Make a CSIP referral" %}
+{% set flowName = "Update a CSIP referral" if isUpdate else "Make a CSIP referral" %}
+{% set headerText = "Add additional information" %}
+{% set pageTitle = [headerText, " - ", flowName] | join %}
 
 {% block innerContent %}
     {% include 'base/components/referral-caption.njk' %}
     <label for="otherInformation">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Add additional information{% if not isUpdate %} (optional){% endif %}</h1>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ headerText }}{% if not isUpdate %} (optional){% endif %}</h1>
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>

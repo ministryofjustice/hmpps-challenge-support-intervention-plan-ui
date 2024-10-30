@@ -5,19 +5,20 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Description - Update CSIP referral" if isUpdate else "Description - Make a CSIP referral" %}
-
-{% set headerText = 'Describe the behaviour and the concerns relating to the behaviour' if isProactiveReferral else 'Describe the incident and the concerns relating to the incident' %}
+{% set keyword = 'behaviour' if isProactiveReferral else 'incident' %}
+{% set headerText = (['Add information to the description of the ', keyword, ' and concerns'] | join) if isUpdate else (['Describe the ', keyword, ' and the concerns relating to the ', keyword] | join) %}
+{% set flowName = "Update a CSIP referral" if isUpdate else "Make a CSIP referral" %}
+{% set pageTitle = [headerText, " - ", flowName] | join %}
 {% set detailsHtml = '
             <p>The description could include: </p>
-            <ul>
+            <ul class="govuk-list govuk-list--bullet">
                 <li>a summary of the concerns</li>
                 <li>information from OASys or other records</li>
                 <li>observations of behaviour in custody</li>
             </ul>
             ' if isProactiveReferral else '
             <p>The description could include: </p>
-            <ul>
+            <ul class="govuk-list govuk-list--bullet">
               <li>a summary of the incident</li>
               <li>information about the incident report (if one has been made)</li>
               <li>the concerns relating to the incident</li>

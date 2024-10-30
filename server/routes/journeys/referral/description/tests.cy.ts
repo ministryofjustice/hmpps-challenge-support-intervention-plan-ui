@@ -21,6 +21,10 @@ context('Make a Referral Journey', () => {
     const uuid = v4()
 
     setupDataSignInAndGo(false, uuid)
+    cy.title().should(
+      'equal',
+      'Describe the incident and the concerns relating to the incident - Make a CSIP referral - DPS',
+    )
     checkValidation(false)
     checkValuesPersist(false)
     checkDetailsSummary(false)
@@ -30,6 +34,10 @@ context('Make a Referral Journey', () => {
     const uuid = v4()
 
     setupDataSignInAndGo(true, uuid)
+    cy.title().should(
+      'equal',
+      'Describe the behaviour and the concerns relating to the behaviour - Make a CSIP referral - DPS',
+    )
     checkValidation(true)
     checkValuesPersist(true)
     checkDetailsSummary(true)

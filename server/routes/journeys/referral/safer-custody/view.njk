@@ -3,11 +3,13 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Safer Custody - Update a CSIP referral" if isUpdate else "Safer Custody - Make a CSIP referral" %}
+{% set headerText = "Is the Safer Custody team already aware of this referral?" %}
+{% set flowName = "Update a CSIP referral" if isUpdate else "Make a CSIP referral" %}
+{% set pageTitle = [headerText, " - ", flowName] | join %}
 
 {% block innerContent %}
     {% include 'base/components/referral-caption.njk' %}
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Is the Safer Custody team already aware of this referral?</h1>
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ headerText }}</h1>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {{ govukRadios({

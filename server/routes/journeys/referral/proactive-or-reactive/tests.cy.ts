@@ -36,6 +36,7 @@ context('test /referral/proactive-or-reactive', () => {
   })
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Is this referral proactive or reactive? - Make a CSIP referral - DPS')
     cy.findByText('Make a CSIP referral').should('be.visible')
 
     getIsProactiveReferral().should('exist')

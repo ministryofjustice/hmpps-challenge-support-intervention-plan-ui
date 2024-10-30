@@ -12,6 +12,7 @@ context('Make a Referral Journey', () => {
 
   it('test area-of-work, including all edge cases', () => {
     setupDataSignInAndGo()
+    cy.title().should('equal', 'Which area do you work in? - Make a CSIP referral - DPS')
 
     checkValidation()
 

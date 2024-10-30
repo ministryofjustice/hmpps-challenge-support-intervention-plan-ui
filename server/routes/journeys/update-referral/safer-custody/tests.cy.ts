@@ -17,6 +17,10 @@ context('test /update-referral/safer-custody', () => {
   it('should try out different cases', () => {
     navigateToTestPage()
 
+    cy.title().should(
+      'equal',
+      `Is the Safer Custody team already aware of this referral? - Update a CSIP referral - DPS`,
+    )
     cy.url().should('to.match', /\/update-referral\/safer-custody#isSaferCustodyTeamInformed$/)
     checkAxeAccessibility()
 

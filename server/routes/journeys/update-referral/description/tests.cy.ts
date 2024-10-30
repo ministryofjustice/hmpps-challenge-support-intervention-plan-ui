@@ -5,7 +5,7 @@ import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
 context('test /update-referral/proactive-or-reactive', () => {
   const uuid = uuidV4()
-  const title = /Describe the behaviour and the concerns relating to the behaviour/i
+  const title = /Add information to the description of the behaviour and concerns/i
   const errorMsg = /enter a description of the behaviour and concerns/i
   const dividerText = generateSaveTimestamp('John Smith')
   const totalUsedChars = dividerText.length + 170 // 170 = already existing description text
@@ -31,6 +31,10 @@ context('test /update-referral/proactive-or-reactive', () => {
 
   it('test description, including all edge cases, proactive', () => {
     navigateToTestPage()
+    cy.title().should(
+      'equal',
+      `Add information to the description of the behaviour and concerns - Update a CSIP referral - DPS`,
+    )
     cy.url().should('to.match', /\/update-referral\/description#descriptionOfConcern$/)
     checkAxeAccessibility()
     checkValuesPersist()

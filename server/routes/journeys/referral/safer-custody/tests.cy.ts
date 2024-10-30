@@ -39,6 +39,7 @@ context('test /referral/safer-custody', () => {
   })
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Is the Safer Custody team already aware of this referral? - Make a CSIP referral - DPS')
     cy.findByText('Make a CSIP referral').should('be.visible')
 
     cy.findByRole('radio', { name: 'Yes' }).should('exist')

@@ -3,7 +3,9 @@
 {% from "partials/submitButton/macro.njk" import submitButton %}
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Involvement - Update a CSIP referral" if isUpdate else "Involvement - Make a CSIP referral" %}
+{% set titleText = "Behaviour involvement" if isProactiveReferral else "Incident involvement" %}
+{% set flowName = "Update a CSIP referral" if isUpdate else "Make a CSIP referral" %}
+{% set pageTitle =  [titleText, " - ", flowName] | join %}
 
 {% block content %}
     {% include 'base/components/referral-caption.njk' %}

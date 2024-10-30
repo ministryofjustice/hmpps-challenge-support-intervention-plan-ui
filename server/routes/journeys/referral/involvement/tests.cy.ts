@@ -109,6 +109,7 @@ context('Make a Referral Journey', () => {
 
   const checkProactiveReactiveContent = () => {
     // We're starting with it being proactive, so test the content and validation messages, then switch to reactive so we can test those as well
+    cy.title().should('equal', 'Behaviour involvement - Make a CSIP referral - DPS')
     cy.findByRole('heading', { name: /behaviour involvement/i }).should('be.visible')
     cy.findByText(/How was Testname User involved in the behaviour\?/).should('be.visible')
     cy.findByText(/have any staff been assaulted as a result of this behaviour\?/i).should('be.visible')
@@ -131,6 +132,8 @@ context('Make a Referral Journey', () => {
     cy.findByRole('radio', { name: /reactive/i }).click()
     cy.findByRole('button', { name: /continue/i }).click()
     cy.findByRole('button', { name: /continue/i }).click()
+
+    cy.title().should('equal', 'Incident involvement - Make a CSIP referral - DPS')
 
     cy.findByRole('heading', { name: /incident involvement/i }).should('be.visible')
     cy.findByText(/How was Testname User involved in the incident\?/).should('be.visible')

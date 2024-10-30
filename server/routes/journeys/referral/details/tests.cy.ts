@@ -17,6 +17,7 @@ context('Make a Referral Journey', () => {
 
   it('should try out all edge cases', () => {
     navigateToDetailsReactive()
+    cy.title().should('equal', 'Incident details - Make a CSIP referral - DPS')
     checkAxeAccessibility()
 
     submitNoValues()
@@ -53,6 +54,7 @@ context('Make a Referral Journey', () => {
     cy.findByRole('radio', { name: /proactive/i }).click()
     cy.findByRole('button', { name: /continue/i }).click()
 
+    cy.title().should('equal', 'Behaviour details - Make a CSIP referral - DPS')
     cy.findByRole('textbox', { name: /date of occurrence/i }).should('have.value', '25/12/2001')
     cy.findByRole('textbox', { name: /hour/i }).should('have.value', '23')
     cy.findByRole('textbox', { name: /minute/i }).should('have.value', '23')

@@ -5,14 +5,15 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Details - Update CSIP referral" if isUpdate else "Details - Make a CSIP referral" %}
-
 {% set titleText = "Behaviour details" if isProactiveReferral else "Incident details" %}
 {% set datePickerHeading = "When was the most recent occurrence of the behaviour?" if isProactiveReferral else "When was the incident?" %}
 {% set datePickerLabel = "Date of occurrence" if isProactiveReferral else "Date of incident" %}
 {% set incidentTimeLabel = "Time of occurrence (optional)" if isProactiveReferral else "Time of incident (optional)" %}
 {% set incidentLocationLabel = "Where was the most recent occurrence of the behaviour?" if isProactiveReferral else "Where did the incident occur?"  %}
 {% set incidentTypeLabel = "What’s the main concern?" if isProactiveReferral else "What was the incident type?" %}
+
+{% set flowName = "Update a CSIP referral" if isUpdate else "Make a CSIP referral" %}
+{% set pageTitle =  [titleText, " - ", flowName] | join %}
 
 {% set customErrorOrder = ['incidentDate', 'incidentTime', 'incidentLocation', 'incidentType'] %}
 

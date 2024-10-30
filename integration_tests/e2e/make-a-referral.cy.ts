@@ -33,7 +33,7 @@ context('Make a Referral Journey', () => {
 
     changeAnswersOnCYAPage()
 
-    cy.findByRole('button', { name: /Confirm and send/i }).click()
+    cy.findByRole('button', { name: /Confirm and submit/i }).click()
     cy.url().should('include', '/confirmation')
     checkAxeAccessibility()
     cy.findByRole('heading', { name: /CSIP referral complete/i })

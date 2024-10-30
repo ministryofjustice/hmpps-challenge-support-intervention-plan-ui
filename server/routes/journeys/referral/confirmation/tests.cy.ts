@@ -63,6 +63,7 @@ context('test /referral/confirmation', () => {
   })
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'CSIP referral complete - DPS')
     cy.findByRole('link', { name: /^CSIP/i }).should('have.attr', 'href').and('match', /\//)
 
     cy.findByText('CSIP referral complete').should('be.visible')

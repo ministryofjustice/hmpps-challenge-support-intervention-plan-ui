@@ -3,7 +3,9 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = ("New " + factorDescription | sentenceCase(false) + " comment - Update a CSIP referral") if isUpdate else (factorDescription + " comment - Make a CSIP referral") %}
+{% set flowName = "Update a CSIP referral" if isUpdate else "Make a CSIP referral" %}
+{% set headerText = ["Add a comment on ", (factorDescription | sentenceCase(false)), " factors"] | join %}
+{% set pageTitle = [headerText, " - ", flowName] | join %}
 
 {% block innerContent %}
     {% include 'base/components/referral-caption.njk' %}

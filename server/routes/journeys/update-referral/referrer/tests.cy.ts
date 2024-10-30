@@ -52,6 +52,7 @@ context('test /update-referral/referrer', () => {
   })
 
   const validatePageContents = () => {
+    cy.title().should('equal', `Referrer details - Update a CSIP referral - DPS`)
     cy.findByRole('heading', { name: 'Referrer details' }).should('be.visible')
 
     cy.findByText('Update a CSIP referral').should('be.visible')

@@ -3,14 +3,22 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Proactive or reactive - Update a CSIP referral" if isUpdate else "Proactive or reactive - Make a CSIP referral" %}
+{% set flowName = "Update a CSIP referral" if isUpdate else "Make a CSIP referral" %}
+{% set titleText = "Is this referral proactive or reactive?" %}
+{% set pageTitle =  [titleText, " - ", flowName] | join %}
 
 {% block innerContent %}
     {% include 'base/components/referral-caption.njk' %}
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Is this referral proactive or reactive?</h1>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {{ govukRadios({
+            fieldset: {
+                legend: {
+                    text: titleText,
+                    isPageHeading: true,
+                    classes: "govuk-fieldset__legend--l govuk-!-margin-bottom-7"
+                }
+            },
             id: 'isProactiveReferral',
             name: 'isProactiveReferral',
             items: [

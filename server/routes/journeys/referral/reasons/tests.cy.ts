@@ -80,6 +80,7 @@ context('test /referral/reasons', () => {
   })
 
   const validatePageContents = (type: string) => {
+    cy.title().should('equal', `What reasons have been given for the ${type}? - Make a CSIP referral - DPS`)
     cy.findByText('Make a CSIP referral').should('be.visible')
 
     cy.findByRole('heading', { name: `What reasons have been given for the ${type}?` })

@@ -4,14 +4,15 @@
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "Check answers - Make a CSIP referral" %}
+{% set headerText = "Check your answers before submitting the referral" %}
+{% set pageTitle = [headerText, " - Make a CSIP referral"] | join %}
 
 {% block innerContent %}
 
      <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <span class="govuk-caption-l">Make a CSIP referral</span>
-            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check your answers before sending the referral</h1>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ headerText }}</h1>
         </div>
     </div>
 
@@ -197,7 +198,7 @@
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         <div class="govuk-button-group">
             {{ govukButton({
-                text: "Confirm and send",
+                text: "Confirm and submit",
                 preventDoubleClick: true
             }) }}
             <a class="govuk-link govuk-link--no-visited-state" href="{{ digitalPrisonServicesUrl }}">Cancel</a>

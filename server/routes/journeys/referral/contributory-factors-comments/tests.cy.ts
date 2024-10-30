@@ -42,6 +42,7 @@ context('test /referral/contributory-factor-comment', () => {
   })
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Add comments about the contributory factors - Make a CSIP referral - DPS')
     cy.findByText('Add comments about the contributory factors (optional)').should('be.visible')
 
     cy.findByRole('link', { name: /^back/i })
