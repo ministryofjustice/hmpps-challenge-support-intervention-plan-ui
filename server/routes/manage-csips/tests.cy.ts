@@ -10,7 +10,6 @@ context('test /manage-csips', () => {
     cy.task('reset')
     cy.task('stubSignIn')
     cy.task('stubComponents')
-    cy.task('stubGetCaseLoads')
     cy.task('stubSearchCsipRecords')
   })
 

@@ -9,6 +9,28 @@ import {
 } from '../../@types/csip/csipApiTypes'
 import { components } from '../../@types/csip'
 
+export interface ServiceConfigInfo {
+  git: {
+    branch: string
+    commit: {
+      id: string
+      time: string
+    }
+  }
+  build: {
+    operatingSystem: string
+    version: string
+    artifact: string
+    machine: string
+    by: string
+    name: string
+    time: string
+    group: string
+  }
+  activeAgencies: string[]
+  publishEvents: boolean
+  productId: string
+}
 export default class CsipApiClient {
   private readonly restClient: RestClient
 
@@ -43,6 +65,12 @@ export default class CsipApiClient {
   }): Promise<CsipSearchResults> {
     return this.restClient.get<CsipSearchResults>({
       path: `/search/csip-records?page=${page}&size=${size}&prisonCode=${prisonCode}&query=${query ?? ''}&status=${status ?? ''}&sort=${sort}`,
+    })
+  }
+
+  async getServiceConfigInfo(): Promise<ServiceConfigInfo> {
+    return this.restClient.get<ServiceConfigInfo>({
+      path: `/info`,
     })
   }
 
