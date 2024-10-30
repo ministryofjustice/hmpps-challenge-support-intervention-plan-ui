@@ -18,5 +18,4 @@ export type CsipRecordStatus =
   | 'REFERRAL_PENDING'
   | 'UNKNOWN'
 
-export type CsipSummaries = components['schemas']['CsipSummaries']
 export type CsipSearchResults = components['schemas']['CsipSearchResults']

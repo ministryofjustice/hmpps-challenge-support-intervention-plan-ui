@@ -4,7 +4,6 @@ import {
   CsipRecord,
   CsipRecordStatus,
   CsipSearchResults,
-  CsipSummaries,
   ReferenceData,
   ReferenceDataType,
 } from '../../@types/csip/csipApiTypes'
@@ -25,12 +24,6 @@ export default class CsipApiClient {
 
   async getCsipRecord(recordUuid: string): Promise<CsipRecord> {
     return this.restClient.get<CsipRecord>({ path: `/csip-records/${recordUuid}` })
-  }
-
-  async getPrisonerCsipRecords(prisonNumber: string, page: number, size: number): Promise<CsipSummaries> {
-    return this.restClient.get<CsipSummaries>({
-      path: `/prisoners/${prisonNumber}/csip-records?page=${page}&size=${size}`,
-    })
   }
 
   async searchAndSortCsipRecords({
