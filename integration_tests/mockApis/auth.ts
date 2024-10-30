@@ -144,16 +144,44 @@ const stubGetServiceInfoOneAgencyLEI = () => {
   })
 }
 
+const stubGetCaseLoads = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/prison-api/api/users/me/caseLoads',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: [
+        {
+          currentlyActive: true,
+          caseLoadId: 'LEI',
+        },
+        {
+          currentlyActive: false,
+          caseLoadId: 'MDI',
+        },
+      ],
+    },
+  })
+}
+
 export default {
   getSignInUrl,
   stubAuthPing: ping,
   stubAuthManageDetails: manageDetails,
-  stubSignIn: (userToken: UserToken = {}): Promise<[Response, Response, Response, Response, Response, Response]> =>
+  stubSignIn: (
+    userToken: UserToken = {},
+  ): Promise<[Response, Response, Response, Response, Response, Response, Response]> =>
     Promise.all([
       favicon(),
       redirect(),
       signOut(),
       stubGetServiceInfoOneAgencyLEI(),
+      stubGetCaseLoads(),
       token(userToken),
       tokenVerification.stubVerifyToken(),
     ]),
