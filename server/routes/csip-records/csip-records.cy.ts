@@ -6,7 +6,7 @@ context('test /csip-records', () => {
     cy.task('stubSignIn')
     cy.task('stubGetPrisoner')
     cy.task('stubGetPrisonerImage')
-    cy.task('stubComponents')
+    cy.task('stubGetCaseLoads')
     cy.task('stubIntervieweeRoles')
   })
 
