@@ -21,6 +21,7 @@ context('Make a Referral Journey', () => {
 
   it('test involvement, including all edge cases', () => {
     setupDataSignInAndGo()
+    cy.title().should('equal', 'Add additional information - Make a CSIP referral - DPS')
 
     checkValidation()
 

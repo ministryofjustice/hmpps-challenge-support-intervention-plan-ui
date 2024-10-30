@@ -126,6 +126,7 @@ context('test /update-referral/contributory-factor-comment', () => {
       'to.match',
       /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-referral\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+-comment#comment$/,
     )
+    cy.title().should('equal', 'Add information to the comment on text factors - Update a CSIP referral - DPS')
     cy.findByRole('heading', { name: title }).should('be.visible')
     cy.findByText('Update a CSIP referral').should('be.visible')
   }

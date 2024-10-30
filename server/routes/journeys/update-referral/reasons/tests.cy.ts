@@ -31,6 +31,7 @@ context('test /update-referral/reasons', () => {
 
   it('test reasons, including all edge cases, proactive', () => {
     navigateToTestPage()
+    cy.title().should('equal', `Add information to the reasons given for the behaviour - Update a CSIP referral - DPS`)
     checkValuesPersist()
     checkValidation()
     proceedToNextPage()

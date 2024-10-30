@@ -72,6 +72,7 @@ context('test /record-investigation/check-answers', () => {
   })
 
   it('should be able to change answers and proceed to confirmation', () => {
+    cy.title().should('equal', 'Check your answers before submitting the referral - Make a CSIP referral - DPS')
     cy.task('stubCsipRecordPostSuccess')
 
     cy.findByRole('heading', { name: /Check your answers before submitting the referral/ }).should('be.visible')

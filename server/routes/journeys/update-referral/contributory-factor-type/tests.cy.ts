@@ -20,7 +20,6 @@ context('test /update-referral/contributory-factor-type', () => {
     cy.task('stubPatchContributoryFactorSuccess')
 
     navigateToTestPage()
-
     checkChangingFirstContributoryFactor()
 
     cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
@@ -77,6 +76,7 @@ context('test /update-referral/contributory-factor-type', () => {
       'to.match',
       /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-referral\/b8dff21f-e96c-4240-aee7-28900dd910f2-type#contributoryFactor$/,
     )
+    cy.title().should('equal', 'Change the contributory factor - Update a CSIP referral - DPS')
     cy.findByRole('heading', { name: /Change the contributory factor/ }).should('be.visible')
     cy.findByText('Update a CSIP referral').should('be.visible')
 

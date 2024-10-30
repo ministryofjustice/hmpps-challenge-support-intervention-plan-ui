@@ -12,9 +12,8 @@
 {% set incidentLocationLabel = "Where was the most recent occurrence of the behaviour?" if isProactiveReferral else "Where did the incident occur?"  %}
 {% set incidentTypeLabel = "What’s the main concern?" if isProactiveReferral else "What was the incident type?" %}
 
-{% set flowName = "Update CSIP referral" if isUpdate else "Make a CSIP referral" %}
-{% set errorPrefix = 'Error: ' if validationErrors else '' %}
-{% set pageTitle =  [errorPrefix, titleText, " - ", flowName] | join %}
+{% set flowName = "Update a CSIP referral" if isUpdate else "Make a CSIP referral" %}
+{% set pageTitle =  [titleText, " - ", flowName] | join %}
 
 {% set customErrorOrder = ['incidentDate', 'incidentTime', 'incidentLocation', 'incidentType'] %}
 

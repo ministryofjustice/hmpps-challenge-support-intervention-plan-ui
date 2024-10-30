@@ -4,7 +4,7 @@
 {% extends "partials/layout.njk" %}
 
 {% set headerText = "Is the Safer Custody team already aware of this referral?" %}
-{% set flowName = "Update CSIP referral" if isUpdate else "Make a CSIP referral" %}
+{% set flowName = "Update a CSIP referral" if isUpdate else "Make a CSIP referral" %}
 {% set pageTitle = [headerText, " - ", flowName] | join %}
 
 {% block innerContent %}

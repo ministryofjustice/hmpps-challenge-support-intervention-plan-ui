@@ -4,7 +4,7 @@
 {% extends "partials/layout.njk" %}
 
 {% set titleText = "Behaviour involvement" if isProactiveReferral else "Incident involvement" %}
-{% set flowName = "Update CSIP referral" if isUpdate else "Make a CSIP referral" %}
+{% set flowName = "Update a CSIP referral" if isUpdate else "Make a CSIP referral" %}
 {% set pageTitle =  [titleText, " - ", flowName] | join %}
 
 {% block content %}

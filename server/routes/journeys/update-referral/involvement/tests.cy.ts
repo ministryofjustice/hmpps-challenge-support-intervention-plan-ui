@@ -17,6 +17,7 @@ context('test /update-referral/involvement', () => {
   it('should try out different cases', () => {
     navigateToTestPage()
 
+    cy.title().should('equal', `Behaviour involvement - Update a CSIP referral - DPS`)
     cy.url().should('to.match', /\/update-referral\/involvement#involvementType$/)
     checkAxeAccessibility()
 

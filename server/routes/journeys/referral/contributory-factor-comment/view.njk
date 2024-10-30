@@ -3,7 +3,7 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set flowName = "Update CSIP referral" if isUpdate else "Make a CSIP referral" %}
+{% set flowName = "Update a CSIP referral" if isUpdate else "Make a CSIP referral" %}
 {% set headerText = ["Add a comment on ", (factorDescription | sentenceCase(false)), " factors"] | join %}
 {% set pageTitle = [headerText, " - ", flowName] | join %}
 

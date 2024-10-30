@@ -7,7 +7,7 @@
 
 {% set keyword = 'behaviour' if isProactiveReferral else 'incident' %}
 {% set headerText = (['Add information to the description of the ', keyword, ' and concerns'] | join) if isUpdate else (['Describe the ', keyword, ' and the concerns relating to the ', keyword] | join) %}
-{% set flowName = "Update CSIP referral" if isUpdate else "Make a CSIP referral" %}
+{% set flowName = "Update a CSIP referral" if isUpdate else "Make a CSIP referral" %}
 {% set pageTitle = [headerText, " - ", flowName] | join %}
 {% set detailsHtml = '
             <p>The description could include: </p>

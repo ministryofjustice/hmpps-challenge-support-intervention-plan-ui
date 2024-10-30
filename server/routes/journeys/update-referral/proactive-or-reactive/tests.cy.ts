@@ -17,6 +17,7 @@ context('test /update-referral/proactive-or-reactive', () => {
   it('should try out different cases', () => {
     navigateToTestPage()
 
+    cy.title().should('equal', `Is this referral proactive or reactive? - Update a CSIP referral - DPS`)
     cy.url().should('to.match', /\/update-referral\/proactive-or-reactive#isProactiveReferral$/)
     checkAxeAccessibility()
 

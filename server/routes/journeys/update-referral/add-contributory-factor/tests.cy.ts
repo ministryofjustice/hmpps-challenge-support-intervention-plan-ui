@@ -42,6 +42,7 @@ context('test /update-referral/add-contributory-factor', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', `Add another contributory factor - Update a CSIP referral - DPS`)
     cy.findByText('Add another contributory factor').should('be.visible')
   }
 

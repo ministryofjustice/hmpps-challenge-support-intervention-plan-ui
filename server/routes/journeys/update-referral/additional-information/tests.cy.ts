@@ -31,6 +31,7 @@ context('test /update-referral/additional-information', () => {
 
   it('test additional info, including all edge cases, proactive', () => {
     navigateToTestPage()
+    cy.title().should('equal', `Add additional information - Update a CSIP referral - DPS`)
     checkValuesPersist()
     checkValidation()
     proceedToNextPage()
