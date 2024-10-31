@@ -1,0 +1,187 @@
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "CSIP" %}
+{% set mainClasses = "app-container govuk-body" %}
+
+{% block content %}
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">CSIP (Challenge, Support and Intervention Plans)</h1>
+
+    <div class="homepage-content">
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full">
+                    <div class="card-group govuk-grid-row">
+                        <div class="govuk-grid-column-one-third card-group__item">
+                            <div class="card card--clickable">
+                                <h2 class="govuk-heading-m card__heading">
+                                    <a class="govuk-link govuk-link--no-visited-state card__link" href="/manage-csips?clear=true">View and manage CSIPs</a>
+                                </h2>
+                                <p class="govuk-body card__description">View all referrals, investigations, plans and reviews.</p>
+                            </div>
+                        </div>
+                        <div class="govuk-grid-column-one-third card-group__item">
+                            <div class="card card--clickable">
+                                <h2 class="govuk-heading-m card__heading">
+                                    <a class="govuk-link govuk-link--no-visited-state card__link" href="/how-to-make-a-referral">How to make a CSIP referral</a>
+                                </h2>
+                                <p class="govuk-body card__description">Information on how to start a new referral and who can make referrals.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="homepage-content-after">
+        <h2 class="govuk-heading-l govuk-!-margin-bottom-7">CSIP caseload for {{ activeCaseLoadName }}</h2>
+
+        <h3 class="govuk-heading-m">Referrals</h3>
+
+        <div class="govuk-grid-row hmpps-miniSummaryWrapper govuk-!-margin-bottom-6">
+            <div class="govuk-grid-column-one-third">
+                <div class="hmpps-summary-card">
+                    <div class="hmpps-summary-card__header">
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-two-thirds">
+                                <h2>Referrals submitted</h2>
+                            </div>
+                            <div class="govuk-summary-list govuk-summary-list__actions govuk-!-font-weight-bold">
+                                <a class="govuk-link govuk-link--no-visited-state" href="/manage-csips?status=REFERRAL_SUBMITTED">View<span class="govuk-visually-hidden"> referrals with status ‘Referral submitted’</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hmpps-summary-card__body">
+                        <div class="govuk-grid-row card-body ">
+                            <div class="govuk-grid-column-full">
+                                <p class="govuk-heading-xl govuk-!-padding-top-4">
+                                    {{ submittedReferrals }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-grid-column-one-third">
+                <div class="hmpps-summary-card">
+                    <div class="hmpps-summary-card__header">
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-two-thirds">
+                                <h2>Investigations pending</h2>
+                            </div>
+                            <div class="govuk-summary-list govuk-summary-list__actions govuk-!-font-weight-bold">
+                                <a class="govuk-link govuk-link--no-visited-state" href="/manage-csips?status=INVESTIGATION_PENDING">View<span class="govuk-visually-hidden"> referrals with status ‘Investigation pending’</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hmpps-summary-card__body">
+                        <div class="govuk-grid-row card-body ">
+                            <div class="govuk-grid-column-full">
+                                <p class="govuk-heading-xl govuk-!-padding-top-4">
+                                    {{ pendingInvestigations }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-grid-column-one-third">
+                <div class="hmpps-summary-card">
+                    <div class="hmpps-summary-card__header">
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-two-thirds">
+                                <h2>Awaiting decisions</h2>
+                            </div>
+                            <div class="govuk-summary-list govuk-summary-list__actions govuk-!-font-weight-bold">
+                                <a class="govuk-link govuk-link--no-visited-state" href="/manage-csips?status=AWAITING_DECISION">View<span class="govuk-visually-hidden"> referrals with status ‘Awaiting decision’</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hmpps-summary-card__body">
+                        <div class="govuk-grid-row card-body ">
+                            <div class="govuk-grid-column-full">
+                                <p class="govuk-heading-xl govuk-!-padding-top-4">
+                                    {{ awaitingDecisions }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="govuk-heading-m">Plans and reviews</h3>
+
+        <div class="govuk-grid-row hmpps-miniSummaryWrapper">
+            <div class="govuk-grid-column-one-third">
+                <div class="hmpps-summary-card">
+                    <div class="hmpps-summary-card__header">
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-two-thirds">
+                                <h2>Plans pending</h2>
+                            </div>
+                            <div class="govuk-summary-list govuk-summary-list__actions govuk-!-font-weight-bold">
+                                <a class="govuk-link govuk-link--no-visited-state" href="/manage-csips?status=PLAN_PENDING">View<span class="govuk-visually-hidden"> referrals with status ‘Plan pending’</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hmpps-summary-card__body">
+                        <div class="govuk-grid-row card-body ">
+                            <div class="govuk-grid-column-full">
+                                <p class="govuk-heading-xl govuk-!-padding-top-4">
+                                    {{ pendingPlans }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-grid-column-one-third">
+                <div class="hmpps-summary-card">
+                    <div class="hmpps-summary-card__header">
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-two-thirds">
+                                <h2>Open CSIPs</h2>
+                            </div>
+                            <div class="govuk-summary-list govuk-summary-list__actions govuk-!-font-weight-bold">
+                                <a class="govuk-link govuk-link--no-visited-state" href="/manage-csips?status=CSIP_OPEN">View<span class="govuk-visually-hidden"> open CSIPs</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hmpps-summary-card__body">
+                        <div class="govuk-grid-row card-body ">
+                            <div class="govuk-grid-column-full">
+                                <p class="govuk-heading-xl govuk-!-padding-top-4">
+                                    {{ open }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="govuk-grid-column-one-third">
+                <div class="hmpps-summary-card">
+                    <div class="hmpps-summary-card__header">
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-two-thirds">
+                                <h2>Reviews overdue</h2>
+                            </div>
+                            <div class="govuk-summary-list govuk-summary-list__actions govuk-!-font-weight-bold">
+                                <a class="govuk-link govuk-link--no-visited-state" href="/manage-csips?status=CSIP_OPEN&sort=nextReviewDate,asc">View<span class="govuk-visually-hidden"> open CSIPs with review dates in the past</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hmpps-summary-card__body">
+                        <div class="govuk-grid-row card-body ">
+                            <div class="govuk-grid-column-full">
+                                <p class="govuk-heading-xl govuk-!-padding-top-4">
+                                    {{ overdueReviews }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

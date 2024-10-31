@@ -36,6 +36,19 @@
   min-width: 350px;
 }
 
+.homepage-content-after {
+  margin-top: 380px;
+}
+
+.homepage-content {
+  padding: 70px 0;
+  background: #f0f4f5;
+  height: 150px;
+  position: absolute;
+  left: 0;
+  width: 100vw;
+}
+
 .dropshadow {
   border: 1px solid govuk-colour('dark-grey');
   box-shadow: 0 5px govuk-colour('mid-grey');

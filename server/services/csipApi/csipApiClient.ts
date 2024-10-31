@@ -1,6 +1,7 @@
 import RestClient from '../../data/restClient'
 import config from '../../config'
 import {
+  CsipOverview,
   CsipRecord,
   CsipRecordStatus,
   CsipSearchResults,
@@ -65,6 +66,12 @@ export default class CsipApiClient {
   }): Promise<CsipSearchResults> {
     return this.restClient.get<CsipSearchResults>({
       path: `/search/csip-records?page=${page}&size=${size}&prisonCode=${prisonCode}&query=${query ?? ''}&status=${status ?? ''}&sort=${sort}`,
+    })
+  }
+
+  async getCsipOverview(prisonCode: string): Promise<CsipOverview> {
+    return this.restClient.get<CsipOverview>({
+      path: `/prisons/${prisonCode}/csip-records/overview`,
     })
   }
 

@@ -30,6 +30,7 @@ const stubComponents = () => {
               caseLoadId: 'LEI',
               description: 'Leeds (HMP)',
               currentlyActive: true,
+              description: 'Leeds (HMP)',
             },
           ],
           activeCaseLoad: {
