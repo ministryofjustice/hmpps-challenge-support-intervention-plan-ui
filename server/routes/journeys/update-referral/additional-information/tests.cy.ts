@@ -54,7 +54,7 @@ context('test /update-referral/additional-information', () => {
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start`, {
       failOnStatusCode: false,
     })
-    cy.findByRole('link', { name: /Change the additional information relating to the referral/i }).click()
+    cy.findByRole('link', { name: /Add information to the additional information relating to the referral/i }).click()
     checkAxeAccessibility()
   }
 

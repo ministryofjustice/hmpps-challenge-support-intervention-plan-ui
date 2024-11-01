@@ -12,7 +12,7 @@ export const schemaFactory = async (req: Request, res: Response) => {
     : 4000
 
   const MAX_MSG = req.journeyData.isUpdate
-    ? `Update to the description must be ${maxLengthChars.toLocaleString()} or less`
+    ? `Update to the description must be ${maxLengthChars.toLocaleString()} characters or less`
     : `Description must be 4,000 characters or less`
 
   const keyword = req.journeyData.referral!.isProactiveReferral ? 'behaviour' : 'incident'

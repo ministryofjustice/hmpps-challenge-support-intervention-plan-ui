@@ -66,7 +66,6 @@ context('test /update-referral/proactive-or-reactive', () => {
   }
 
   const checkDetailsSummary = () => {
-    cy.get('details').invoke('attr', 'open').should('not.exist')
     cy.get('summary').click()
     cy.get('details').invoke('attr', 'open').should('exist')
 

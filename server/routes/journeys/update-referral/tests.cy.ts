@@ -138,7 +138,9 @@ context('test /update-referral', () => {
     )
     cy.findByRole('link', { name: /Add information to the reasons given for the behaviour/i }).should('be.visible')
     cy.findByRole('link', { name: /Change if Safer Custody are aware of the referral or not/i }).should('be.visible')
-    cy.findByRole('link', { name: /Change the additional information relating to the referral/i }).should('be.visible')
+    cy.findByRole('link', { name: /Add information to the additional information relating to the referral/i }).should(
+      'be.visible',
+    )
   }
 
   const checkCfChangeLinks = () => {
