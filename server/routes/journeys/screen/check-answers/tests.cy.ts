@@ -22,6 +22,7 @@ context('test /screen/check-answers', () => {
     checkAxeAccessibility()
 
     cy.url().should('to.match', /\/check-answers$/)
+    cy.title().should('equal', 'Check your answers before recording the screening outcome - Screen CSIP referral - DPS')
     cy.findByRole('heading', { name: /Check your answers before recording the screening outcome/ }).should('be.visible')
 
     cy.contains('dt', 'Screening outcome').next().should('include.text', `No further action`)

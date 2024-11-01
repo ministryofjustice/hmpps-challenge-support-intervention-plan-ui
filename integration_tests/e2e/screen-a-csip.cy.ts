@@ -47,10 +47,12 @@ context('Screen a CSIP Referral Journey', () => {
     getContinueButton().click()
 
     cy.url().should('include', '/screen/check-answers')
+    cy.title().should('equal', 'Check your answers before recording the screening outcome - Screen CSIP referral - DPS')
     cy.findByText(/no action neededmodified/i).should('be.visible')
     getCyaSubmitButton().click()
 
     cy.url().should('include', '/screen/confirmation')
+    cy.title().should('equal', 'CSIP screening outcome recorded - DPS')
     checkAxeAccessibility()
 
     // Prevent double submissions after journey is complete
@@ -69,6 +71,7 @@ context('Screen a CSIP Referral Journey', () => {
 
     cy.url().should('include', '/screen')
     getNfaRadio().should('be.checked')
+    cy.title().should('equal', 'Error: Screen CSIP referral - DPS')
   })
 
   it('should prepopulate textbox after an invalid input', () => {
