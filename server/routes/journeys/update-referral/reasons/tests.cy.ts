@@ -6,7 +6,7 @@ import { injectJourneyDataAndReload } from '../../../../../integration_tests/uti
 context('test /update-referral/reasons', () => {
   const uuid = uuidV4()
   const title = /Add information to the reasons given for the behaviour/i
-  const errorMsg = /enter the reasons given for the behaviour/i
+  const errorMsg = /Enter an update to the reasons given for the behaviour/i
   const dividerText = generateSaveTimestamp('John Smith')
   const totalUsedChars = dividerText.length + 158 // 158 = already existing reason text
 
@@ -56,7 +56,7 @@ context('test /update-referral/reasons', () => {
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start`, {
       failOnStatusCode: false,
     })
-    cy.findByRole('link', { name: /Change the reasons given for the behaviour/i }).click()
+    cy.findByRole('link', { name: /Add information to the reasons given for the behaviour/i }).click()
     cy.url().should('to.match', /\/update-referral\/reasons#knownReasons$/)
     checkAxeAccessibility()
   }

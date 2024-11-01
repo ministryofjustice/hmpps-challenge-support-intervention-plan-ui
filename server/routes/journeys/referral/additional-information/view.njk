@@ -29,7 +29,7 @@
             value: otherInformation,
             hint: {
                 text: 'Any other information relating to this referral, such as action already taken based on these concerns.'
-            },
+            } if not isUpdate,
             errorMessage: validationErrors | findError('otherInformation')
         }) }}
         {{ submitButton({

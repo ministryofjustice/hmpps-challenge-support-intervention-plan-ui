@@ -104,7 +104,7 @@ context('test /update-review', () => {
       .and('have.attr', 'href')
       .and('match', /\/update-participant-contribution-details\/attendee-uuid-1#isAttended$/)
     cy.findByRole('link', {
-      name: `Change the description of the participant’s contribution to the review (Participant: Attendee Name)`,
+      name: `Add information to the description of the participant’s contribution to the review (Participant: Attendee Name)`,
     })
       .should('be.visible')
       .and('have.attr', 'href')

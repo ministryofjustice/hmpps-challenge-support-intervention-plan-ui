@@ -6,7 +6,7 @@ import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 context('test /update-referral/proactive-or-reactive', () => {
   const uuid = uuidV4()
   const title = /Add information to the description of the behaviour and concerns/i
-  const errorMsg = /enter a description of the behaviour and concerns/i
+  const errorMsg = /enter an update to the description of the behaviour and concerns/i
   const dividerText = generateSaveTimestamp('John Smith')
   const totalUsedChars = dividerText.length + 170 // 170 = already existing description text
 
@@ -62,7 +62,7 @@ context('test /update-referral/proactive-or-reactive', () => {
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start`, {
       failOnStatusCode: false,
     })
-    cy.findByRole('link', { name: /change the description of the behaviour and concerns/i }).click()
+    cy.findByRole('link', { name: /add information to the description of the behaviour and concerns/i }).click()
   }
 
   const checkDetailsSummary = () => {

@@ -160,7 +160,7 @@
                 text: "Safer Custody aware of referral"
             },
                 value: {
-                text: "Yes" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.YES else ("No" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.NO else "I don’t know")
+                text: "Yes" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.YES else ("No" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.NO else "Not known")
             },
                 actions: {
                 items: [
@@ -184,7 +184,7 @@
                 items: [
                     {
                         href: "additional-information#otherInformation",
-                        text: "Change",
+                        text: "Add information",
                         visuallyHiddenText: "the additional information relating to the referral",
                         classes: "govuk-link--no-visited-state"
                     }

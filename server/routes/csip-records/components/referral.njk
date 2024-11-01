@@ -93,7 +93,11 @@
 {% for factor in contributoryFactors %}
     {{ govukSummaryList({
         card: {
-            title: { text: factor.factorType.description }
+            title: { 
+                text: factor.factorType.description,
+                classes: "govuk-!-font-size-24"
+            },
+            classes: "dropshadow"
         },
         rows: [{
             key: {
@@ -159,7 +163,7 @@
                 text: "Safer Custody aware of referral"
             },
             value: {
-                text: "Yes" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.YES else ("No" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.NO else "I don’t know")
+                text: "Yes" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.YES else ("No" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.NO else "Not known")
             },
             actions: {
                 items: [

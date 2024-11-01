@@ -86,6 +86,12 @@ context('test /update-referral/contributory-factor-comment', () => {
   }
 
   const checkValidation = () => {
+    cy.findByRole('button', { name: /confirm and save/i }).click()
+    cy.get('.govuk-error-summary a').should('have.length', 1)
+    cy.findByRole('link', {
+      name: /Enter an update to the comment on .+ factors/i,
+    }).should('be.visible')
+
     const timestampLength = generateSaveTimestamp('John Smith').length
     cy.findByRole('textbox')
       .clear()
@@ -97,7 +103,7 @@ context('test /update-referral/contributory-factor-comment', () => {
     cy.get('.govuk-error-summary a').should('have.length', 1)
 
     cy.findByRole('link', {
-      name: `Comment must be ${(4000 - 10 - timestampLength).toLocaleString()} characters or less`,
+      name: `Update to the comment must be ${(4000 - 10 - timestampLength).toLocaleString()} characters or less`,
     }).should('be.visible')
     cy.contains(/you have 1 character too many/i).should('be.visible')
 

@@ -86,7 +86,8 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
       )
     }
     req.flash(FLASH_KEY__VALIDATION_ERRORS, JSON.stringify(deduplicatedFieldErrors))
-    return res.redirect('back')
+    // Remove any hash from the URL by appending an empty hash string
+    return res.redirect(`${req.baseUrl}#`)
   }
 }
 
