@@ -3,7 +3,7 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
-context('test /update-referral/proactive-or-reactive', () => {
+context('test /update-referral/description', () => {
   const uuid = uuidV4()
   const title = /Add information to the description of the behaviour and concerns/i
   const errorMsg = /enter an update to the description of the behaviour and concerns/i
@@ -39,7 +39,6 @@ context('test /update-referral/proactive-or-reactive', () => {
     checkAxeAccessibility()
     checkValuesPersist()
     checkValidation()
-    checkDetailsSummary()
     proceedToNextPage()
   })
 
@@ -63,13 +62,6 @@ context('test /update-referral/proactive-or-reactive', () => {
       failOnStatusCode: false,
     })
     cy.findByRole('link', { name: /add information to the description of the behaviour and concerns/i }).click()
-  }
-
-  const checkDetailsSummary = () => {
-    cy.get('summary').click()
-    cy.get('details').invoke('attr', 'open').should('exist')
-
-    cy.findByText(/a summary of the concerns/i).should('be.visible')
   }
 
   const checkValuesPersist = () => {
