@@ -1,6 +1,7 @@
 import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
+import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
 context('test /update-decision/next-steps', () => {
   const uuid = uuidV4()
@@ -44,12 +45,14 @@ context('test /update-decision/next-steps', () => {
       csipRecord: {
         referral: {
           decisionAndActions: {
-            nextSteps: 'a'.repeat(3001),
+            nextSteps: 'a'.repeat(3000),
           },
         },
       },
     })
-    cy.contains('You have 944 characters remaining').should('be.visible')
+    cy.findAllByText(`You have ${1000 - generateSaveTimestamp('John Smith').length} characters remaining`).should(
+      'be.visible',
+    )
     cy.get('.govuk-inset-text').should('be.visible')
   })
 
