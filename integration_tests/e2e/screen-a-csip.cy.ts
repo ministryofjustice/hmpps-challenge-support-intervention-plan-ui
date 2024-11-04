@@ -52,7 +52,7 @@ context('Screen a CSIP Referral Journey', () => {
     getCyaSubmitButton().click()
 
     cy.url().should('include', '/screen/confirmation')
-    cy.title().should('equal', 'CSIP screening outcome recorded - DPS')
+    cy.title().should('equal', 'Confirmation - Screen CSIP referral - DPS')
     checkAxeAccessibility()
 
     // Prevent double submissions after journey is complete
