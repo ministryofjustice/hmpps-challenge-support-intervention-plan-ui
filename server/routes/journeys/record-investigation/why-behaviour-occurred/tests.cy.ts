@@ -19,6 +19,7 @@ context('test /record-investigation/why-behaviour-occurred', () => {
   it('should try out all cases', () => {
     navigateToTestPage()
     cy.url().should('to.match', /\/why-behaviour-occurred$/)
+    cy.title().should('equal', 'Why did the behaviour occur? - Record a CSIP investigation - DPS')
     checkAxeAccessibility()
 
     validatePageContents()
@@ -39,7 +40,7 @@ context('test /record-investigation/why-behaviour-occurred', () => {
   const validatePageContents = () => {
     cy.findByRole('heading', { name: /Why did the behaviour occur\?/ }).should('be.visible')
     cy.findByText(
-      /Include any reasons the prisoner has given about why the behaviour occured\.\s*You can also include reasons reported by other people\./,
+      /Include any reasons the prisoner has given about why the behaviour occurred\.\s*You can also include reasons reported by other people\./,
     ).should('be.visible')
     getInputTextbox().should('be.visible')
     getContinueButton().should('be.visible')
@@ -50,6 +51,7 @@ context('test /record-investigation/why-behaviour-occurred', () => {
 
   const validateErrorMessage = () => {
     getContinueButton().click()
+    cy.title().should('equal', 'Error: Why did the behaviour occur? - Record a CSIP investigation - DPS')
     cy.findByRole('link', { name: /Enter a description of why the behaviour occurred/i })
       .should('be.visible')
       .click()

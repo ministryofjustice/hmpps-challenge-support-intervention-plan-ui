@@ -20,6 +20,10 @@ context('test /record-investigation/staff-involved', () => {
   it('should try out all cases', () => {
     navigateToTestPage()
     cy.url().should('to.match', /\/staff-involved$/)
+    cy.title().should(
+      'equal',
+      'Which staff have been involved in the investigation? - Record a CSIP investigation - DPS',
+    )
     checkAxeAccessibility()
 
     validatePageContents()
@@ -48,6 +52,10 @@ context('test /record-investigation/staff-involved', () => {
 
   const validateErrorMessage = () => {
     getContinueButton().click()
+    cy.title().should(
+      'equal',
+      'Error: Which staff have been involved in the investigation? - Record a CSIP investigation - DPS',
+    )
     cy.findByRole('link', { name: /Enter the names of staff involved in the investigation/i })
       .should('be.visible')
       .click()

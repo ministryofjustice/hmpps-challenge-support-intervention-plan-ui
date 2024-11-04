@@ -33,6 +33,7 @@ context('test /update-investigation/evidence-secured', () => {
     checkAxeAccessibility()
 
     cy.url().should('to.match', /evidence-secured$/)
+    cy.title().should('equal', 'Add information on the evidence secured - Update a CSIP investigation - DPS')
 
     validatePageContents()
     validateErrorMessage()

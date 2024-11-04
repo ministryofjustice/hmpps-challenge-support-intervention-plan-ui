@@ -4,7 +4,7 @@
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "Check answers - Record a CSIP investigation" %}
+{% set pageTitle = "Check your answers before recording the investigation - Record a CSIP investigation" %}
 
 {% block innerContent %}
 
@@ -27,7 +27,7 @@
     {% for interview in investigation.interviews %}
         {{ govukSummaryList({
             card: {
-                classes: "govuk-!-margin-bottom-8" if loop.index === investigation.interviews.length else undefined,
+                classes: "govuk-!-margin-bottom-8 govuk-!-font-size-24" if loop.index === investigation.interviews.length else undefined,
                 title: { text: "Interview with " + interview.interviewee }
             },
             rows: [{

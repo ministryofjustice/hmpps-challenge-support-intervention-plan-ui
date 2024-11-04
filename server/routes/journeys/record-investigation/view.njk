@@ -12,18 +12,19 @@
 {% block innerContent %}
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Record a CSIP investigation</h1>
     <p class="govuk-body govuk-!-margin-bottom-8"><strong>CSIP log code: </strong>{{ logCode }}</p>
-    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-7">
+    <hr class="govuk-section-break govuk-!-margin-bottom-7">
 
     <h2 class="govuk-heading-m govuk-!-margin-bottom-7">1. Log interviews</h2>
     {{ govukTaskList({
         classes: "govuk-!-margin-bottom-7",
+        idPrefix: "interviews",
         items: [
             {
                 classes: "custom-task-list-first-row",
                 title: {
-                text: "Interview details",
-                classes: "govuk-link--no-visited-state"
-            },
+                    text: "Interview details",
+                    classes: "govuk-link--no-visited-state"
+                },
                 href: "record-investigation/interviews-summary",
                 status: completedStatus if investigation.interviews else incompleteStatus
             }
@@ -33,6 +34,7 @@
     <h2 class="govuk-heading-m govuk-!-margin-bottom-7">2. Enter findings</h2>
     {{ govukTaskList({
         classes: "govuk-!-margin-bottom-7",
+        idPrefix: "findings",
         items: [
             {
                 classes: "custom-task-list-first-row",
@@ -89,6 +91,7 @@
     <h2 class="govuk-heading-m govuk-!-margin-bottom-7">3. Save report</h2>
     {{ govukTaskList({
         classes: "govuk-!-margin-bottom-7",
+        idPrefix: "check-save",
         items: [
             {
                 classes: "custom-task-list-first-row",

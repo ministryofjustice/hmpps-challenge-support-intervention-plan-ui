@@ -20,6 +20,7 @@ context('test /record-investigation/evidence-secured', () => {
     navigateToTestPage()
 
     cy.url().should('to.match', /\/evidence-secured$/)
+    cy.title().should('equal', 'What evidence has been secured? - Record a CSIP investigation - DPS')
     checkAxeAccessibility()
 
     validatePageContents()
@@ -51,6 +52,7 @@ context('test /record-investigation/evidence-secured', () => {
 
   const validateErrorMessage = () => {
     getContinueButton().click()
+    cy.title().should('equal', 'Error: What evidence has been secured? - Record a CSIP investigation - DPS')
     cy.findByRole('link', { name: /Enter a description of the evidence secured/i })
       .should('be.visible')
       .click()

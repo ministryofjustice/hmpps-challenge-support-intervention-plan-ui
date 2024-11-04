@@ -4,7 +4,7 @@
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "Delete interview - Record a CSIP investigation" %}
+{% set pageTitle = "Are you sure you want to delete this interview? - Record a CSIP investigation" %}
 
 {% block innerContent %}
 
@@ -17,6 +17,7 @@
 
     {{ govukSummaryList({
         card: {
+            classes: "govuk-!-font-size-24",
             title: { text: "Interview with " + interview.interviewee }
         },
         rows: [{

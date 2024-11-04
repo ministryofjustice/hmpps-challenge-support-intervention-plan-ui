@@ -19,6 +19,7 @@ context('test /record-investigation/confirmation', () => {
     cy.signIn()
     cy.visit(START_URL)
     cy.visit(`${uuid}/record-investigation/confirmation`)
+    cy.title().should('equal', 'CSIP investigation recorded - DPS')
 
     validatePageContents()
 

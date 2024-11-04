@@ -19,6 +19,7 @@ context('test /record-investigation/protective-factors', () => {
   it('should try out all cases', () => {
     navigateToTestPage()
     cy.url().should('to.match', /\/protective-factors$/)
+    cy.title().should('equal', 'What are the protective factors for the prisoner? - Record a CSIP investigation - DPS')
     checkAxeAccessibility()
 
     validatePageContents()
@@ -48,6 +49,10 @@ context('test /record-investigation/protective-factors', () => {
 
   const validateErrorMessage = () => {
     getContinueButton().click()
+    cy.title().should(
+      'equal',
+      'Error: What are the protective factors for the prisoner? - Record a CSIP investigation - DPS',
+    )
     cy.findByRole('link', { name: /Enter a description of the prisoner’s protective factors/i })
       .should('be.visible')
       .click()

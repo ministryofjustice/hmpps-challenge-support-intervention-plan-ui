@@ -23,6 +23,10 @@ context('test /update-investigation/usual-behaviour-presentation', () => {
     checkAxeAccessibility()
 
     cy.url().should('to.match', /\/usual-behaviour-presentation$/)
+    cy.title().should(
+      'equal',
+      'Add information about the prisoner’s usual behaviour presentation - Update a CSIP investigation - DPS',
+    )
 
     validatePageContents()
     validateErrorMessage()

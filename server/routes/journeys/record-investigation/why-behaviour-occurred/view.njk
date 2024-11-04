@@ -4,7 +4,7 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Why the behaviour occurred - Update a CSIP investigation" if isUpdate else "Why the behaviour occurred - Record a CSIP investigation" %}
+{% set pageTitle = "Add information on why this occurred - Update a CSIP investigation" if isUpdate else "Why did the behaviour occur? - Record a CSIP investigation" %}
 
 {% block innerContent %}
     {% include 'base/components/investigation-caption.njk' %}
@@ -27,7 +27,7 @@
             value: occurrenceReason,
             errorMessage: validationErrors | findError('occurrenceReason'),
             hint: {
-                html: "Include any reasons the prisoner has given about why the behaviour occured.</br>You can also include reasons reported by other people."
+                html: "Include any reasons the prisoner has given about why the behaviour occurred.</br>You can also include reasons reported by other people."
             } if not isUpdate else undefined
         }) }}
         {{ submitButton({
