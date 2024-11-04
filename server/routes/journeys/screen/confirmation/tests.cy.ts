@@ -24,7 +24,6 @@ context('test /screen/confirmation', () => {
 
     setupData('PLAN_PENDING')
     cy.visit(PAGE_URL)
-    cy.title().should('equal', 'Confirmation - Screen CSIP referral - DPS')
     checkAxeAccessibility()
     validatePageContents()
     cy.findByText(
@@ -65,6 +64,8 @@ context('test /screen/confirmation', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'CSIP screening outcome recorded - DPS')
+
     cy.findByRole('link', { name: /^CSIP/i }).should('have.attr', 'href').and('match', /\//)
 
     cy.findByText('CSIP screening outcome recorded').should('be.visible')
