@@ -24,6 +24,7 @@ context('test /screen/confirmation', () => {
 
     setupData('No further action')
     cy.visit(PAGE_URL)
+    cy.title().should('equal', 'CSIP screening outcome recorded - DPS')
 
     checkAxeAccessibility()
     validatePageContents()
