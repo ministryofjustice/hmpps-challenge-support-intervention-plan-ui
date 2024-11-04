@@ -28,11 +28,13 @@ const stubComponents = () => {
           caseLoads: [
             {
               caseLoadId: 'LEI',
+              description: 'Leeds (HMP)',
               currentlyActive: true,
             },
           ],
           activeCaseLoad: {
             caseLoadId: 'LEI',
+            description: 'Leeds (HMP)',
             currentlyActive: true,
           },
           services: [],

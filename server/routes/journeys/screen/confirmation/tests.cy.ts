@@ -18,37 +18,48 @@ context('test /screen/confirmation', () => {
     cy.task('stubCsipRecordGetSuccess')
   })
 
-  it('should display page correctly when outcome type is "No further action"', () => {
+  it('should display page correctly for all outcomes', () => {
     cy.signIn()
     cy.visit(START_URL, { failOnStatusCode: false })
 
-    setupData('No further action')
+    setupData('PLAN_PENDING')
     cy.visit(PAGE_URL)
-    cy.title().should('equal', 'CSIP screening outcome recorded - DPS')
-
+    cy.title().should('equal', 'Confirmation - Screen CSIP referral - DPS')
     checkAxeAccessibility()
     validatePageContents()
-  })
+    cy.findByText(
+      'A CSIP Case Manager should be allocated to work with Testname User to develop an initial plan.',
+    ).should('be.visible')
 
-  it('should display page correctly when outcome type is "Progress to investigation"', () => {
-    cy.signIn()
-    cy.visit(START_URL, { failOnStatusCode: false })
-
-    setupData('Progress to investigation')
-    cy.visit(PAGE_URL)
-
+    setupData('INVESTIGATION_PENDING')
     checkAxeAccessibility()
     validatePageContents()
-    cy.findByText('What needs to happen next').should('be.visible')
     cy.findByText(
       'This should include interviewing Testname User about the behaviour that led to the referral.',
+    ).should('be.visible')
+
+    setupData('NO_FURTHER_ACTION')
+    checkAxeAccessibility()
+    validatePageContents()
+    cy.findByText(
+      'Make sure the people responsible for supporting the prisoner are informed of the screening decision.',
+    ).should('be.visible')
+
+    setupData('SUPPORT_OUTSIDE_CSIP')
+    checkAxeAccessibility()
+    validatePageContents()
+    cy.findByText(
+      'Make sure the people responsible for supporting the prisoner are informed of the screening decision.',
     ).should('be.visible')
   })
 
   const setupData = (outcome: string) => {
     injectJourneyDataAndReload(uuid, {
-      saferCustodyScreening: {
-        outcomeType: { code: 'NFA', description: outcome },
+      csipRecord: {
+        status: {
+          code: outcome,
+          description: outcome,
+        },
       },
     })
   }
@@ -56,8 +67,15 @@ context('test /screen/confirmation', () => {
   const validatePageContents = () => {
     cy.findByRole('link', { name: /^CSIP/i }).should('have.attr', 'href').and('match', /\//)
 
-    cy.findByText('Screening outcome recorded').should('be.visible')
+    cy.findByText('CSIP screening outcome recorded').should('be.visible')
 
-    cy.findByText('We’ve updated the status of the CSIP referral to ‘referral submitted’.').should('be.visible')
+    cy.findByRole('link', { name: 'View CSIP details for Testname User' })
+      .should('be.visible')
+      .and('have.attr', 'href')
+      .and('match', /\/manage-csips\?query=A1111AA$/)
+    cy.findByRole('link', { name: 'View all CSIPs for Leeds (HMP)' })
+      .should('be.visible')
+      .and('have.attr', 'href')
+      .and('match', /\/manage-csips\?clear=true$/)
   }
 })

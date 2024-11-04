@@ -24,7 +24,7 @@ export default function checkPopulateUserCaseloads(
         res.locals.user.caseloads = res.locals.feComponentsMeta.caseLoads
       }
       if (res.locals.feComponentsMeta?.activeCaseLoad) {
-        res.locals.user.activeCaseLoadId = res.locals.feComponentsMeta.activeCaseLoad.caseLoadId
+        res.locals.user.activeCaseLoad = res.locals.feComponentsMeta.activeCaseLoad
       }
       const refetchCaseloads = !res.locals.user.caseloads
       const promises = refetchCaseloads
@@ -33,10 +33,10 @@ export default function checkPopulateUserCaseloads(
       const [configInfo, caseloads] = await Promise.all(promises)
       if (refetchCaseloads) {
         res.locals.user.caseloads = caseloads as CaseLoad[]
-        res.locals.user.activeCaseLoadId =
-          (caseloads as CaseLoad[])!.find(caseload => caseload.currentlyActive)?.caseLoadId ??
-          res.locals.user.activeCaseLoadId
+        res.locals.user.activeCaseLoad =
+          (caseloads as CaseLoad[])!.find(caseload => caseload.currentlyActive) ?? res.locals.user.activeCaseLoad
       }
+
       // Check that the user's active caseload is enabled on the API side
       if (
         !uuidValidate(splitUrl[0] || '') &&

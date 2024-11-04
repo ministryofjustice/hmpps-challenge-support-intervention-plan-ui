@@ -2,17 +2,40 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "CSIP screening outcome recorded" %}
+{% set pageTitle = "Confirmation - Screen CSIP referral" %}
 
 {% block innerContent %}
     {{ govukPanel({
-        titleText: "Screening outcome recorded",
-        html: ("<div><strong>Decision: </strong>" + outcomeTypeDescription | escape + "</div>")
+        titleText: "CSIP screening outcome recorded",
+        text: "Status: " + (csipRecord | csipStatusDisplayText)
     }) }}
-    <p class="govuk-body">We’ve updated the status of the CSIP referral to ‘{{ csipRecord | csipStatusDisplayText | sentenceCase(false) }}’.</p>
-    {% if outcomeTypeDescription == "Progress to investigation" %}
-      <h1 class="govuk-heading-m">What needs to happen next</h1>
-      <p class="govuk-body">An appropriate staff member should now carry out an investigation.</p>
-      <p class="govuk-body">This should include interviewing {{ prisoner | firstNameSpaceLastName }} about the behaviour that led to the referral.</p>
-    {% endif %}
+
+    {% switch csipRecord.status.code %}
+    {% case 'INVESTIGATION_PENDING' %}
+        <p class="govuk-body">An appropriate staff member should now carry out an investigation.</p>
+        <p class="govuk-body">This should include interviewing {{ prisoner | firstNameSpaceLastName }} about the behaviour that led to the referral.</p>
+    {% case 'PLAN_PENDING' %}
+        <h1 class="govuk-heading-m">What needs to happen next</h1>
+        <p class="govuk-body">A CSIP Case Manager should be allocated to work with {{ prisoner | firstNameSpaceLastName }} to develop an initial plan.</p>
+        <p class="govuk-body">If {{ prisoner | firstNameSpaceLastName }} is being supported through an ACCT, the same staff member must act as both their CSIP Case Manager and their ACCT Case Co-ordinator, apart from in exceptional circumstances.</p>
+        <h1 class="govuk-heading-m">Other actions to consider</h1>
+        <p class="govuk-body">These might include:</p>
+        <ul class="govuk-body">
+            <li>opening a CSIP alert</li>
+            <li>updating {{prisoner | firstNameSpaceLastName | possessiveComma}} non-associations</li>
+            <li>making an entry in the observation book</li>
+            <li>a unit or cell move</li>
+            <li>a CSRA or RSRA (Room Sharing Risk Assessment) review</li>
+            <li>a service referral</li>
+            <li>a SIM referral</li>
+        </ul>
+    {% case 'SUPPORT_OUTSIDE_CSIP' %}
+        <h1 class="govuk-heading-m">What to do next</h1>
+        <p class="govuk-body">Make sure the people responsible for supporting the prisoner are informed of the screening decision.</p>
+    {% case 'NO_FURTHER_ACTION' %}
+        <h1 class="govuk-heading-m">What to do next</h1>
+        <p class="govuk-body">Make sure the people responsible for supporting the prisoner are informed of the screening decision.</p>
+    {% endswitch %}
+
+    {% include 'base/components/view-other-csips.njk' %}
 {% endblock %}
