@@ -18,47 +18,59 @@ context('test /record-decision/confirmation', () => {
     cy.task('stubCsipRecordSuccessPlanPending')
   })
 
-  it('should display page correctly when outcome type is "No further action"', () => {
+  it('should display page correctly for all outcomes', () => {
     cy.signIn()
     cy.visit(START_URL, { failOnStatusCode: false })
 
-    setupData('No further action')
     cy.visit(PAGE_URL)
-
+    setupData('PLAN_PENDING')
     checkAxeAccessibility()
     validatePageContents()
-  })
+    cy.findByText(
+      'A CSIP Case Manager should be allocated to work with Testname User to develop an initial plan.',
+    ).should('be.visible')
+    cy.findByRole('heading', { name: 'Other actions to consider' }).should('be.visible')
 
-  it('should display page correctly when outcome type is "Progress to CSIP"', () => {
-    cy.signIn()
-    cy.visit(START_URL, { failOnStatusCode: false })
-
-    setupData('Progress to CSIP')
-    cy.visit(PAGE_URL)
-
+    setupData('NO_FURTHER_ACTION')
     checkAxeAccessibility()
     validatePageContents()
-    cy.findByText('opening a CSIP alert').should('be.visible')
+    cy.findByText(
+      'A CSIP Case Manager should be allocated to work with Testname User to develop an initial plan.',
+    ).should('not.exist')
+    cy.findByRole('heading', { name: 'Other actions to consider' }).should('be.visible')
+
+    setupData('SUPPORT_OUTSIDE_CSIP')
+    checkAxeAccessibility()
+    validatePageContents()
+    cy.findByText(
+      'A CSIP Case Manager should be allocated to work with Testname User to develop an initial plan.',
+    ).should('not.exist')
+    cy.findByRole('heading', { name: 'Other actions to consider' }).should('be.visible')
   })
 
   const setupData = (outcome: string) => {
     injectJourneyDataAndReload(uuid, {
-      decisionAndActions: {
-        signedOffByRole: { code: 'A', description: 'SignerRole1' },
-        outcome: { code: 'NFA', description: outcome },
-        conclusion: `<script>alert('xss-conclusion');</script>`,
-        nextSteps: `<script>alert('xss-nextSteps');</script>`,
-        actionOther: `<script>alert('xss-actionOther');</script>`,
+      csipRecord: {
+        status: {
+          code: outcome,
+          description: outcome,
+        },
       },
     })
   }
 
   const validatePageContents = () => {
-    cy.findByRole('link', { name: /^CSIP/i }).should('have.attr', 'href').and('match', /\//)
-
     cy.findByText('CSIP investigation decision recorded').should('be.visible')
 
-    cy.findByText('We’ve updated the status of the referral to “plan pending”.').should('be.visible')
-    cy.findByText('Other actions to consider').should('be.visible')
+    cy.findByRole('link', { name: /^CSIP/i }).should('have.attr', 'href').and('match', /\//)
+
+    cy.findByRole('link', { name: 'View CSIP details for Testname User' })
+      .should('be.visible')
+      .and('have.attr', 'href')
+      .and('match', /\/manage-csips\?query=A1111AA$/)
+    cy.findByRole('link', { name: 'View all CSIPs for Leeds (HMP)' })
+      .should('be.visible')
+      .and('have.attr', 'href')
+      .and('match', /\/manage-csips\?clear=true$/)
   }
 })

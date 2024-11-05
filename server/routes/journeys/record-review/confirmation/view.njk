@@ -6,17 +6,21 @@
 
 {% block innerContent %}
     {{ govukPanel({
-        titleText: ("Review recorded and CSIP closed" if planClosed else "CSIP review recorded") + " for " + (prisoner | firstNameSpaceLastName)
+        titleText: "CSIP review recorded for " + (prisoner | firstNameSpaceLastName),
+        text: "Status: " + (csipRecord | csipStatusDisplayText)
     }) }}
 
-    <h1 class="govuk-heading-m">What to do next</h1>
-    <p class="govuk-body">Make sure the people responsible for supporting the prisoner are informed that the plan has been {{ "closed" if planClosed else "reviewed" }}.</p>
-    <p>
-        <a href="/csip-records/{{ recordUuid }}/plan" class="govuk-link govuk-link--no-visited-state">View the {{ ("closed plan" if planClosed else "plan for " + prisoner | firstNameSpaceLastName) }}</a>
-    </p>
-    {% if not planClosed %}
-        <p>
-            <a href="/manage-csips" class="govuk-link govuk-link--no-visited-state">View all CSIPs</a>
-        </p>
-    {% endif %}
+    {% switch csipRecord.status.code %}
+    {% case 'CSIP_OPEN' %}
+        <h1 class="govuk-heading-m">What to do next</h1>
+        <ol class="govuk-body govuk-list govuk-list--number">
+            <li><a class="govuk-link govuk-link--no-visited-state" href="/csip-record/{{ csipRecord.recordUuid }}/update-plan/identified-needs/start">Update the identified needs in {{prisoner | firstNameSpaceLastName | possessiveComma}} plan</a>, if you have not done so already. Record any new information on actions and progress.</li>
+            <li>Tell the people responsible for supporting the prisoner that the plan has been reviewed.</li>
+        </ol>
+    {% case 'CSIP_CLOSED' %}
+        <h1 class="govuk-heading-m">What to do next</h1>
+        <p class="govuk-body">Tell the people responsible for supporting {{ prisoner | firstNameSpaceLastName }} that the plan has been closed.</p>
+    {% endswitch %}
+
+    {% include 'base/components/view-other-csips.njk' %}
 {% endblock %}

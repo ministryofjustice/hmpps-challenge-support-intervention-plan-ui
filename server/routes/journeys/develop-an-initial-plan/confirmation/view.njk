@@ -6,15 +6,16 @@
 
 {% block innerContent %}
     {{ govukPanel({
-        titleText: "Initial plan recorded and CSIP opened for " + prisoner | firstNameSpaceLastName
+        titleText: "Initial plan recorded for " + prisoner | firstNameSpaceLastName,
+        text: "Status: CSIP open"
     }) }}
-    <p>We’ve updated the status to ‘CSIP open’.</p>
-    <p>The next review date is {{nextReviewDate | formatDisplayDate}}</p>
-    <h2 class="govuk-heading-m">How to keep this plan up to date</h2>
+    <h1 class="govuk-heading-m">How to keep this plan up to date</h1>
     <p>Use this service to:</p>
     <ul class="govuk-list govuk-list--bullet">
-        <li>record actions and progress on the interventions</li>
-        <li>add, edit and close identified needs as targets change or are met</li>
+        <li>record actions and progress on the identified needs</li>
+        <li>add, update and close identified needs as targets change or are met</li>
         <li>change the Case Manager, reason for the plan and next review date</li>
     </ul>
+
+    {% include 'base/components/view-other-csips.njk' %}
 {% endblock %}

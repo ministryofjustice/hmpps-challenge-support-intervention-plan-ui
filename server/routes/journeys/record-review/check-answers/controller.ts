@@ -34,6 +34,7 @@ export class ReviewCheckAnswersController extends BaseJourneyController {
           role: attendee.role!,
         })),
       })
+      req.journeyData.csipRecord = await this.csipApiService.getCsipRecord(req, req.journeyData.csipRecord!.recordUuid)
       req.journeyData.journeyCompleted = true
       next()
     } catch (e) {
