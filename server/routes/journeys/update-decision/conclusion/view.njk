@@ -5,12 +5,13 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Conclusion - Update a CSIP investigation decision" %}
+{% set heading = "Add information about the reasons for the decision" %}
+{% set pageTitle = heading + " - Update a CSIP investigation decision" %}
 
 {% block innerContent %}
     {% include 'base/components/decision-caption.njk' %}
     <label for="conclusion">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Add information about the reasons for the decision</h1>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ heading }}</h1>
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>

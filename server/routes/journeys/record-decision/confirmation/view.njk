@@ -2,11 +2,11 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Confirmation - Record a CSIP investigation decision" %}
+{% set pageTitle = "CSIP investigation decision recorded" %}
 
 {% block innerContent %}
     {{ govukPanel({
-        titleText: "CSIP investigation decision recorded",
+        titleText: pageTitle,
         text: "Status: " + (csipRecord | csipStatusDisplayText)
     }) }}
 

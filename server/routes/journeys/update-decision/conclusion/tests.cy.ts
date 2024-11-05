@@ -70,6 +70,10 @@ context('test /update-decision/conclusion', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should(
+      'equal',
+      'Add information about the reasons for the decision - Update a CSIP investigation decision - DPS',
+    )
     cy.findByRole('heading', { name: 'Add information about the reasons for the decision' }).should('be.visible')
     cy.findByText('dec-conc').should('be.visible')
     getContinueButton().should('be.visible')
@@ -79,13 +83,18 @@ context('test /update-decision/conclusion', () => {
       .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
     cy.findByText(/Include the name and role of the staff member signing off on the decision/i).should('not.exist')
     cy.findAllByRole('radio').should('have.length', 0)
-    cy.title().should('equal', 'Conclusion - Update a CSIP investigation decision - DPS')
     cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', `../update-decision`)
   }
 
   const validateErrorMessage = () => {
     getInputTextbox().clear()
     getContinueButton().click()
+
+    cy.title().should(
+      'equal',
+      'Error: Add information about the reasons for the decision - Update a CSIP investigation decision - DPS',
+    )
+
     cy.findByRole('link', { name: /Enter an update on the reasons for the decision/i })
       .should('be.visible')
       .click()

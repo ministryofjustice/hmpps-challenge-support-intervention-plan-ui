@@ -91,6 +91,7 @@ context('test /update-decision/next-steps', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Add more comments on next steps - Update a CSIP investigation decision - DPS')
     cy.findByRole('heading', title).should('be.visible')
     cy.get('.govuk-inset-text').should('be.visible')
     getContinueButton().should('be.visible')
@@ -106,6 +107,9 @@ context('test /update-decision/next-steps', () => {
   const validateErrorMessage = () => {
     getInputTextbox().clear()
     getContinueButton().click()
+
+    cy.title().should('equal', 'Error: Add more comments on next steps - Update a CSIP investigation decision - DPS')
+
     cy.findByRole('link', ERRORS.EMPTY).should('be.visible').click()
     getInputTextbox().should('be.focused')
 

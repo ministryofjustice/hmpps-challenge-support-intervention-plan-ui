@@ -23,6 +23,10 @@ context('test /record-decision/check-answers', () => {
     checkAxeAccessibility()
 
     cy.url().should('to.match', /\/check-answers$/)
+    cy.title().should(
+      'equal',
+      'Check your answers before recording the investigation decision - Record a CSIP investigation decision - DPS',
+    )
     cy.findByRole('heading', { name: /Check your answers before recording the investigation decision/ }).should(
       'be.visible',
     )

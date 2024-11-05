@@ -48,6 +48,7 @@ context('test /record-decision/conclusion', () => {
   })
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Investigation decision - Record a CSIP investigation decision - DPS')
     cy.findByRole('heading', { name: 'Investigation decision' }).should('be.visible')
 
     cy.findByText('Record a CSIP investigation decision').should('be.visible')
@@ -66,6 +67,8 @@ context('test /record-decision/conclusion', () => {
   const validateErrorsMandatory = () => {
     resetInputs()
     getContinueButton().click()
+
+    cy.title().should('equal', 'Error: Investigation decision - Record a CSIP investigation decision - DPS')
 
     cy.findByRole('link', { name: /Select the conclusion of the CSIP investigation/i })
       .should('be.visible')

@@ -35,6 +35,7 @@ context('test /record-decision', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Who’s signing off on this decision? - Record a CSIP investigation decision - DPS')
     cy.findByRole('heading', { name: /Who’s signing off on this decision?/ }).should('be.visible')
     cy.findByRole('radio', { name: /SignerRole1/ }).should('exist')
     cy.findByRole('radio', { name: /SignerRole2/ }).should('exist')

@@ -70,6 +70,7 @@ context('test /update-decision/additional-information', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Add additional information - Update a CSIP investigation decision - DPS')
     cy.findByRole('heading', { name: 'Add additional information' }).should('be.visible')
     cy.findByText(/some action/).should('be.visible')
     getContinueButton().should('be.visible')
@@ -79,13 +80,15 @@ context('test /update-decision/additional-information', () => {
       .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
     cy.findByText(/Any other information relating/i).should('not.exist')
     cy.findAllByRole('radio').should('have.length', 0)
-    cy.title().should('equal', 'Additional information - Update a CSIP investigation decision - DPS')
     cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', `../update-decision`)
   }
 
   const validateErrorMessage = () => {
     getInputTextbox().clear()
     getContinueButton().click()
+
+    cy.title().should('equal', 'Error: Add additional information - Update a CSIP investigation decision - DPS')
+
     cy.findByRole('link', { name: /Enter an update to the additional information/i })
       .should('be.visible')
       .click()
