@@ -7,23 +7,48 @@
 {% block innerContent %}
     {{ govukPanel({
         titleText: "CSIP investigation decision recorded",
-        html: ("<div><strong>Decision: </strong>" + outcomeTypeDescription | escape + "</div>")
+        text: "Status: " + (csipRecord | csipStatusDisplayText)
     }) }}
 
-    <p class="govuk-body">We’ve updated the status of the referral to “{{ csipRecord | csipStatusDisplayText | sentenceCase(false) }}”.</p>
-
-    <h2 class="govuk-heading-m">Other actions to consider</h2>
-    <p class="govuk-body">These might include:</p>
-
-    <ul class="govuk-list govuk-list--bullet">
-        {% if outcomeTypeDescription == "Progress to CSIP" %}
+    {% switch csipRecord.status.code %}
+    {% case 'PLAN_PENDING' %}
+        <h1 class="govuk-heading-m">What needs to happen next</h1>
+        <p class="govuk-body">A CSIP Case Manager should be allocated to work with {{ prisoner | firstNameSpaceLastName }} to develop an initial plan.</p>
+        <p class="govuk-body">If {{ prisoner | firstNameSpaceLastName }} is being supported through an ACCT, the same staff member must act as both their CSIP Case Manager and their ACCT Case Co-ordinator, apart from in exceptional circumstances.</p>
+        <h1 class="govuk-heading-m">Other actions to consider</h1>
+        <p class="govuk-body">These might include:</p>
+        <ul class="govuk-body">
             <li>opening a CSIP alert</li>
-        {% endif %}
-        <li>updating {{ prisoner | firstNameSpaceLastName | possessiveComma }} non-associations</li>
-        <li>making an entry in the observation book</li>
-        <li>a unit or cell move</li>
-        <li>a CSRA or RSRA (Room Sharing Risk Assessment) review</li>
-        <li>a service referral</li>
-        <li>a SIM referral</li>
-    </ul>
+            <li>updating {{prisoner | firstNameSpaceLastName | possessiveComma}} non-associations</li>
+            <li>making an entry in the observation book</li>
+            <li>a unit or cell move</li>
+            <li>a CSRA or RSRA (Room Sharing Risk Assessment) review</li>
+            <li>a service referral</li>
+            <li>a SIM referral</li>
+        </ul>
+    {% case 'SUPPORT_OUTSIDE_CSIP' %}
+        <h1 class="govuk-heading-m">Other actions to consider</h1>
+        <p class="govuk-body">These might include:</p>
+        <ul class="govuk-body">
+            <li>updating {{prisoner | firstNameSpaceLastName | possessiveComma}} non-associations</li>
+            <li>making an entry in the observation book</li>
+            <li>a unit or cell move</li>
+            <li>a CSRA or RSRA (Room Sharing Risk Assessment) review</li>
+            <li>a service referral</li>
+            <li>a SIM referral</li>
+        </ul>
+    {% case 'NO_FURTHER_ACTION' %}
+        <h1 class="govuk-heading-m">Other actions to consider</h1>
+        <p class="govuk-body">These might include:</p>
+        <ul class="govuk-body">
+            <li>updating {{prisoner | firstNameSpaceLastName | possessiveComma}} non-associations</li>
+            <li>making an entry in the observation book</li>
+            <li>a unit or cell move</li>
+            <li>a CSRA or RSRA (Room Sharing Risk Assessment) review</li>
+            <li>a service referral</li>
+            <li>a SIM referral</li>
+        </ul>
+    {% endswitch %}
+
+    {% include 'base/components/view-other-csips.njk' %}
 {% endblock %}

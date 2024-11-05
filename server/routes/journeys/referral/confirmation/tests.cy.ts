@@ -69,11 +69,20 @@ context('test /referral/confirmation', () => {
     cy.findByText('CSIP referral complete').should('be.visible')
 
     cy.findByText('What happens next').should('be.visible')
-    cy.findByText('We’ve sent the referral to the Safer Custody team.').should('be.visible')
+    cy.findByText('The referral has been submitted to the Safer Custody team.').should('be.visible')
     cy.findByText('They might contact you:').should('be.visible')
     cy.findByText('if they need more information to make a decision on next steps').should('be.visible')
-    cy.findByText('to provide guidance on actions if the referral does not procede to an investigation or plan').should(
-      'be.visible',
-    )
+    cy.findByText(
+      'to provide guidance on actions if the referral does not progress to an investigation or a plan',
+    ).should('be.visible')
+
+    cy.findByRole('link', { name: 'View CSIP details for Testname User' })
+      .should('be.visible')
+      .and('have.attr', 'href')
+      .and('match', /\/manage-csips\?query=A1111AA$/)
+    cy.findByRole('link', { name: 'View all CSIPs for Leeds (HMP)' })
+      .should('be.visible')
+      .and('have.attr', 'href')
+      .and('match', /\/manage-csips\?clear=true$/)
   }
 })

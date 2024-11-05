@@ -4,18 +4,18 @@
 
 {% set pageTitle = "CSIP referral complete" %}
 
-{% set theHtml = ("<div><strong>" + (prisoner.lastName + ", " + prisoner.firstName) | convertToTitleCase | escape + "</strong></div><div>" + prisoner.prisonerNumber | escape + "</div>") %}
-
 {% block innerContent %}
     {{ govukPanel({
         titleText: "CSIP referral complete",
-        html: theHtml
+        text: "Status: Referral submitted"
     }) }}
     <h1 class="govuk-heading-m">What happens next</h1>
-    <p class="govuk-body">We’ve sent the referral to the Safer Custody team.</p>
+    <p class="govuk-body">The referral has been submitted to the Safer Custody team.</p>
     <p class="govuk-body">They might contact you:</p>
     <ul class="govuk-list govuk-list--bullet govuk-list--spaced">
         <li>if they need more information to make a decision on next steps</li>
-        <li>to provide guidance on actions if the referral does not procede to an investigation or plan</li>
+        <li>to provide guidance on actions if the referral does not progress to an investigation or a plan</li>
     </ul>
+
+    {% include 'base/components/view-other-csips.njk' %}
 {% endblock %}

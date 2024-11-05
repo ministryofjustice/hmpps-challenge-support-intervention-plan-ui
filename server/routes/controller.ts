@@ -9,7 +9,7 @@ export class HomePageController extends BaseJourneyController {
 
     return res.render('view', {
       showBreadcrumbs: true,
-      activeCaseLoadName: res.locals.user.caseloads?.find(caseLoad => caseLoad.caseLoadId === prisonCode)?.description,
+      activeCaseLoadName: res.locals.user.activeCaseLoad?.description,
       ...counts,
     })
   }
