@@ -15,59 +15,54 @@ context('test /record-review/confirmation', () => {
     cy.task('stubCsipRecordSuccessCsipOpen')
   })
 
-  it('should try out all cases for remain on csip', () => {
+  it('should display page correctly for all outcomes', () => {
     cy.signIn()
     cy.visit(START_URL)
     cy.visit(`${uuid}/record-review/confirmation`)
 
-    validatePageContents(false)
-
+    setupData('CSIP_OPEN')
+    validatePageContents()
     checkAxeAccessibility()
+    cy.findByText('Tell the people responsible for supporting the prisoner that the plan has been reviewed.').should(
+      'be.visible',
+    )
+    cy.findByRole('link', { name: 'Update the identified needs in Testname User’s plan' })
+      .should('be.visible')
+      .and('have.attr', 'href')
+      .and('match', /\/csip-record\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/update-plan\/identified-needs\/start$/)
+
+    setupData('CSIP_CLOSED')
+    validatePageContents()
+    checkAxeAccessibility()
+    cy.findByText('Tell the people responsible for supporting Testname User that the plan has been closed.').should(
+      'be.visible',
+    )
   })
 
-  it('should try out all cases for close csip', () => {
-    cy.signIn()
-    cy.visit(START_URL)
+  const setupData = (outcome: string) => {
     injectJourneyDataAndReload(uuid, {
-      review: {
-        outcome: 'CLOSE_CSIP',
+      csipRecord: {
+        recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
+        status: {
+          code: outcome,
+          description: outcome,
+        },
       },
     })
-    cy.visit(`${uuid}/record-review/confirmation`)
+  }
 
-    validatePageContents(true)
+  const validatePageContents = () => {
+    cy.findByText('CSIP review recorded for Testname User').should('be.visible')
 
-    checkAxeAccessibility()
-  })
+    cy.findByRole('link', { name: /^CSIP/i }).should('have.attr', 'href').and('match', /\//)
 
-  const validatePageContents = (csipClosed: boolean) => {
-    cy.findByRole('link', { name: /Digital Prison Services/ }).should('be.visible')
-    cy.findByRole('link', { name: /^CSIP/ }).should('be.visible')
-
-    cy.findByRole('heading', { name: /What to do next/ }).should('be.visible')
-    if (csipClosed) {
-      cy.findByText(
-        /Make sure the people responsible for supporting the prisoner are informed that the plan has been closed/i,
-      ).should('be.visible')
-      cy.findByText('Review recorded and CSIP closed for Testname User').should('be.visible')
-      cy.findByRole('link', { name: /View the closed plan/i }).should('be.visible')
-      cy.findByRole('link', { name: /View the closed plan/i })
-        .should('have.attr', 'href')
-        .and('include', `csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550/plan`)
-      cy.findByRole('link', { name: /View all CSIPs/i }).should('not.exist')
-    } else {
-      cy.findByText(
-        /Make sure the people responsible for supporting the prisoner are informed that the plan has been reviewed/i,
-      ).should('be.visible')
-      cy.findByText('CSIP review recorded for Testname User').should('be.visible')
-      cy.findByRole('link', { name: /View the plan for Testname User/i }).should('be.visible')
-      cy.findByRole('link', { name: /View the plan for Testname User/i })
-        .should('have.attr', 'href')
-        .and('include', `csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550/plan`)
-      cy.findByRole('link', { name: /View all CSIPs/i }).should('be.visible')
-      cy.findByRole('link', { name: /View all CSIPs/i })
-        .should('have.attr', 'href')
-        .and('include', `manage-csips`)
-    }
+    cy.findByRole('link', { name: 'View CSIP details for Testname User' })
+      .should('be.visible')
+      .and('have.attr', 'href')
+      .and('match', /\/manage-csips\?query=A1111AA$/)
+    cy.findByRole('link', { name: 'View all CSIPs for Leeds (HMP)' })
+      .should('be.visible')
+      .and('have.attr', 'href')
+      .and('match', /\/manage-csips\?clear=true$/)
   }
 })

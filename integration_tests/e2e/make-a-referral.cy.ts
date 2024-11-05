@@ -39,7 +39,7 @@ context('Make a Referral Journey', () => {
     cy.findByRole('heading', { name: /CSIP referral complete/i })
       .should('be.visible')
       .next()
-      .should('include.text', 'User, TestnameA1111AA')
+      .should('include.text', 'Status: Referral submitted')
 
     cy.go('back')
     // There is nothing to test or wait on when going back here - the entire redirection is handled in the express middleware, so we just wait for a second to ensure

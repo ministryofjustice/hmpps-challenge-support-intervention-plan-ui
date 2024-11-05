@@ -32,13 +32,20 @@ context('test /develop-an-initial-plan/confirmation', () => {
   })
 
   const validatePageContents = () => {
-    cy.findByRole('heading', { name: 'Initial plan recorded and CSIP opened for Testname User' }).should('be.visible')
-    cy.findByText('We’ve updated the status to ‘CSIP open’.').should('be.visible')
-    cy.findByText('The next review date is 25 December 2023').should('be.visible')
+    cy.findByRole('heading', { name: 'Initial plan recorded for Testname User' }).should('be.visible')
     cy.findByRole('heading', { name: 'How to keep this plan up to date' }).should('be.visible')
     cy.findByText('Use this service to:').should('be.visible')
-    cy.findByText('record actions and progress on the interventions').should('be.visible')
-    cy.findByText('add, edit and close identified needs as targets change or are met').should('be.visible')
+    cy.findByText('record actions and progress on the identified needs').should('be.visible')
+    cy.findByText('add, update and close identified needs as targets change or are met').should('be.visible')
     cy.findByText('change the Case Manager, reason for the plan and next review date').should('be.visible')
+
+    cy.findByRole('link', { name: 'View CSIP details for Testname User' })
+      .should('be.visible')
+      .and('have.attr', 'href')
+      .and('match', /\/manage-csips\?query=A1111AA$/)
+    cy.findByRole('link', { name: 'View all CSIPs for Leeds (HMP)' })
+      .should('be.visible')
+      .and('have.attr', 'href')
+      .and('match', /\/manage-csips\?clear=true$/)
   }
 })
