@@ -11,226 +11,225 @@
             </div>
         {% endif %}
     </div>
+{% endif %}
 
+{% if investigation %}
 
-    {% if investigation %}
+  {{ govukSummaryList({
+      classes: "govuk-!-margin-bottom-7",
+      rows: [
+        {
+          key: {
+            text: 'Staff involved'
+          },
+          value: {
+            html: (investigation.staffInvolved or 'Not provided') | escape | boldAppendStamp | nl2br
+          },
+          actions: {
+            items: [
+              {
+                href: "update-investigation/staff-involved#staffInvolved",
+                text: "Add information",
+                visuallyHiddenText: "on the staff involved in the investigation",
+                classes: "govuk-link--no-visited-state"
+              }
+            ]
+          } if isUpdate else undefined
+        },
+        {
+          key: {
+            text: 'Evidence secured'
+          },
+          value: {
+            html: (investigation.evidenceSecured or 'Not provided') | escape | boldAppendStamp | nl2br
+          },
+          actions: {
+            items: [
+              {
+                href: "update-investigation/evidence-secured#evidenceSecured",
+                text: "Add information",
+                visuallyHiddenText: "on the evidence secured",
+                classes: "govuk-link--no-visited-state"
+              }
+            ]
+          } if isUpdate else undefined
+        },
+        {
+          key: {
+            text: 'Why this occurred'
+          },
+          value: {
+            html: (investigation.occurrenceReason or 'Not provided') | escape | boldAppendStamp | nl2br
+          },
+          actions: {
+            items: [
+              {
+                href: "update-investigation/why-behaviour-occurred#occurrenceReason",
+                text: "Add information",
+                visuallyHiddenText: "on why the behaviour occurred",
+                classes: "govuk-link--no-visited-state"
+              }
+            ]
+          } if isUpdate else undefined
+        },
+        {
+          key: {
+            text: 'Usual behaviour presentation'
+          },
+          value: {
+            html: (investigation.personsUsualBehaviour or 'Not provided') | escape | boldAppendStamp | nl2br
+          },
+          actions: {
+            items: [
+              {
+                href: "update-investigation/usual-behaviour-presentation#personsUsualBehaviour",
+                text: "Add information",
+                visuallyHiddenText: "about the prisoner’s usual behaviour presentation",
+                classes: "govuk-link--no-visited-state"
+              }
+            ]
+          } if isUpdate else undefined
+        },
+        {
+          key: {
+            text: 'Triggers'
+          },
+          value: {
+            html: (investigation.personsTrigger or 'Not provided') | escape | boldAppendStamp | nl2br
+          },
+          actions: {
+            items: [
+              {
+                href: "update-investigation/triggers#personsTrigger",
+                text: "Add information",
+                visuallyHiddenText: "about the prisoner’s triggers",
+                classes: "govuk-link--no-visited-state"
+              }
+            ]
+          } if isUpdate else undefined
+        },
+        {
+          key: {
+            text: 'Protective factors'
+          },
+          value: {
+            html: (investigation.protectiveFactors or 'Not provided') | escape | boldAppendStamp | nl2br
+          },
+          actions: {
+            items: [
+              {
+                href: "update-investigation/protective-factors#protectiveFactors",
+                text: "Add information",
+                visuallyHiddenText: "about the prisoner’s protective factors",
+                classes: "govuk-link--no-visited-state"
+              }
+            ]
+          } if isUpdate else undefined
+        }
+      ]
+  }) }}
 
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-7">Interviews</h2>
+
+  {% for interview in investigation.interviews %}
       {{ govukSummaryList({
-          classes: "govuk-!-margin-bottom-7",
-          rows: [
-            {
-              key: {
-                text: 'Staff involved'
-              },
-              value: {
-                html: (investigation.staffInvolved or 'Not provided') | escape | boldAppendStamp | nl2br
-              },
-              actions: {
-                items: [
-                  {
-                    href: "update-investigation/staff-involved#staffInvolved",
-                    text: "Add information",
-                    visuallyHiddenText: "on the staff involved in the investigation",
-                    classes: "govuk-link--no-visited-state"
-                  }
-                ]
-              } if isUpdate else undefined
+          card: {
+              classes: "govuk-!-margin-bottom-7 govuk-!-font-size-24" if loop.index === investigation.interviews.length else undefined,
+              title: { text: "Interview with " + interview.interviewee }
+          },
+          rows: [{
+            key: {
+                text: 'Interviewee'
             },
-            {
-              key: {
-                text: 'Evidence secured'
-              },
-              value: {
-                html: (investigation.evidenceSecured or 'Not provided') | escape | boldAppendStamp | nl2br
-              },
-              actions: {
-                items: [
-                  {
-                    href: "update-investigation/evidence-secured#evidenceSecured",
-                    text: "Add information",
-                    visuallyHiddenText: "on the evidence secured",
-                    classes: "govuk-link--no-visited-state"
-                  }
-                ]
-              } if isUpdate else undefined
+            value: {
+                text: interview.interviewee
             },
-            {
-              key: {
-                text: 'Why this occurred'
-              },
-              value: {
-                html: (investigation.occurrenceReason or 'Not provided') | escape | boldAppendStamp | nl2br
-              },
-              actions: {
-                items: [
-                  {
-                    href: "update-investigation/why-behaviour-occurred#occurrenceReason",
-                    text: "Add information",
-                    visuallyHiddenText: "on why the behaviour occurred",
-                    classes: "govuk-link--no-visited-state"
-                  }
-                ]
-              } if isUpdate else undefined
+            actions: {
+              items: [
+                {
+                  href: "update-investigation/interview-details/" + loop.index + "#interviewee",
+                  text: "Change",
+                  visuallyHiddenText: "the interviewee’s name",
+                  classes: "govuk-link--no-visited-state"
+                }
+              ]
+            } if isUpdate else undefined
+          }, {
+            key: {
+                text: 'Interview date'
             },
-            {
-              key: {
-                text: 'Usual behaviour presentation'
-              },
-              value: {
-                html: (investigation.personsUsualBehaviour or 'Not provided') | escape | boldAppendStamp | nl2br
-              },
-              actions: {
-                items: [
-                  {
-                    href: "update-investigation/usual-behaviour-presentation#personsUsualBehaviour",
-                    text: "Add information",
-                    visuallyHiddenText: "about the prisoner’s usual behaviour presentation",
-                    classes: "govuk-link--no-visited-state"
-                  }
-                ]
-              } if isUpdate else undefined
+            value: {
+                text: interview.interviewDate | formatDisplayDate
             },
-            {
-              key: {
-                text: 'Triggers'
-              },
-              value: {
-                html: (investigation.personsTrigger or 'Not provided') | escape | boldAppendStamp | nl2br
-              },
-              actions: {
-                items: [
-                  {
-                    href: "update-investigation/triggers#personsTrigger",
-                    text: "Add information",
-                    visuallyHiddenText: "about the prisoner’s triggers",
-                    classes: "govuk-link--no-visited-state"
-                  }
-                ]
-              } if isUpdate else undefined
+            actions: {
+              items: [
+                {
+                  href: "update-investigation/interview-details/" + loop.index + "#interviewDate",
+                  text: "Change",
+                  visuallyHiddenText: "the interview date for the interview with " + interview.interviewee,
+                  classes: "govuk-link--no-visited-state"
+                }
+              ]
+            } if isUpdate else undefined
+          }, {
+            key: {
+                text: 'Role'
             },
-            {
-              key: {
-                text: 'Protective factors'
-              },
-              value: {
-                html: (investigation.protectiveFactors or 'Not provided') | escape | boldAppendStamp | nl2br
-              },
-              actions: {
-                items: [
-                  {
-                    href: "update-investigation/protective-factors#protectiveFactors",
-                    text: "Add information",
-                    visuallyHiddenText: "about the prisoner’s protective factors",
-                    classes: "govuk-link--no-visited-state"
-                  }
-                ]
-              } if isUpdate else undefined
-            }
-          ]
+            value: {
+                html: interview.intervieweeRole.description | escape | nl2br
+            },
+            actions: {
+              items: [
+                {
+                  href: "update-investigation/interview-details/" + loop.index + "#intervieweeRole",
+                  text: "Change",
+                  visuallyHiddenText: "the role for " + interview.interviewee,
+                  classes: "govuk-link--no-visited-state"
+                }
+              ]
+            } if isUpdate else undefined
+          }, {
+            key: {
+                text: 'Comments'
+            },
+            value: {
+                html: (interview.interviewText or "Not provided") | escape | boldAppendStamp | nl2br
+            },
+            actions: {
+              items: [
+                {
+                  href: "update-investigation/interview-details/" + loop.index + "#interviewText",
+                  text: "Change",
+                  visuallyHiddenText: "the comments about the interview with " + interview.interviewee,
+                  classes: "govuk-link--no-visited-state"
+                }
+              ]
+            } if isUpdate else undefined
+          }]
       }) }}
+  {% endfor %}
 
-      <h2 class="govuk-heading-m govuk-!-margin-bottom-7">Interviews</h2>
+  {% if not investigation.interviews.length %}
+      <p class="govuk-!-margin-bottom-8">No interview details recorded.</p>
+  {% endif %}
 
-      {% for interview in investigation.interviews %}
-          {{ govukSummaryList({
-              card: {
-                  classes: "govuk-!-margin-bottom-7 govuk-!-font-size-24" if loop.index === investigation.interviews.length else undefined,
-                  title: { text: "Interview with " + interview.interviewee }
-              },
-              rows: [{
-                key: {
-                    text: 'Interviewee'
-                },
-                value: {
-                    text: interview.interviewee
-                },
-                actions: {
-                  items: [
-                    {
-                      href: "update-investigation/interview-details/" + loop.index + "#interviewee",
-                      text: "Change",
-                      visuallyHiddenText: "the interviewee’s name",
-                      classes: "govuk-link--no-visited-state"
-                    }
-                  ]
-                } if isUpdate else undefined
-              }, {
-                key: {
-                    text: 'Interview date'
-                },
-                value: {
-                    text: interview.interviewDate | formatDisplayDate
-                },
-                actions: {
-                  items: [
-                    {
-                      href: "update-investigation/interview-details/" + loop.index + "#interviewDate",
-                      text: "Change",
-                      visuallyHiddenText: "the interview date for the interview with " + interview.interviewee,
-                      classes: "govuk-link--no-visited-state"
-                    }
-                  ]
-                } if isUpdate else undefined
-              }, {
-                key: {
-                    text: 'Role'
-                },
-                value: {
-                    html: interview.intervieweeRole.description | escape | nl2br
-                },
-                actions: {
-                  items: [
-                    {
-                      href: "update-investigation/interview-details/" + loop.index + "#intervieweeRole",
-                      text: "Change",
-                      visuallyHiddenText: "the role for " + interview.interviewee,
-                      classes: "govuk-link--no-visited-state"
-                    }
-                  ]
-                } if isUpdate else undefined
-              }, {
-                key: {
-                    text: 'Comments'
-                },
-                value: {
-                    html: (interview.interviewText or "Not provided") | escape | boldAppendStamp | nl2br
-                },
-                actions: {
-                  items: [
-                    {
-                      href: "update-investigation/interview-details/" + loop.index + "#interviewText",
-                      text: "Change",
-                      visuallyHiddenText: "the comments about the interview with " + interview.interviewee,
-                      classes: "govuk-link--no-visited-state"
-                    }
-                  ]
-                } if isUpdate else undefined
-              }]
-          }) }}
-      {% endfor %}
+  {% if isUpdate %}
+    {{ govukButton ({
+      classes: "govuk-!-margin-bottom-7 govuk-button--secondary",
+      text: "Add interview" if not investigation.interviews.length else "Add another interview",
+      href: "update-investigation/interview-details/" + newInterviewIndex
+    }) }}
+    <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
+  {% endif %}
 
-      {% if not investigation.interviews.length %}
-          <p class="govuk-!-margin-bottom-8">No interview details recorded.</p>
-      {% endif %}
+{% else %}
+  <p class="govuk-!-margin-bottom-8">No investigation recorded.</p>
 
-      {% if isUpdate %}
-        {{ govukButton ({
-          classes: "govuk-!-margin-bottom-7 govuk-button--secondary",
-          text: "Add interview" if not investigation.interviews.length else "Add another interview",
-          href: "update-investigation/interview-details/" + newInterviewIndex
-        }) }}
-        <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
-      {% endif %}
+  {% if not plan %}
+    <p>
+      <a class="govuk-link govuk-link--no-visited-state" href="/csip-record/{{recordUuid}}/record-investigation/start">Record an investigation</a>
+    </p>
+  {% endif %}
 
-    {% else %}
-      <p class="govuk-!-margin-bottom-8">No investigation recorded.</p>
-
-      {% if not plan %}
-        <p>
-          <a class="govuk-link govuk-link--no-visited-state" href="/csip-record/{{recordUuid}}/record-investigation/start">Record an investigation</a>
-        </p>
-      {% endif %}
-
-      <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
-    {% endif %}
+  <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl">
 {% endif %}

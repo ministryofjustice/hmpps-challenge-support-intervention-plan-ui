@@ -121,8 +121,12 @@
   {% elif tabSelected == 'investigation' %}
     {% if decision %}
       {% include './components/decision.njk' %}
+      {% if not isUpdate %}
+        {% include './components/investigation.njk' %}
+      {% endif %}
+    {% else %}
+      {% include './components/investigation.njk' %}
     {% endif %}
-    {% include './components/investigation.njk' %}
   {% elif tabSelected == 'plan' %}
     {% include './components/plan.njk' %}
   {% elif tabSelected == 'reviews' %}
