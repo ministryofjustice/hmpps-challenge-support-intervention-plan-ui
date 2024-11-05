@@ -2,7 +2,7 @@ import { v4 as uuidV4 } from 'uuid'
 import { addDays, formatDate, startOfTomorrow } from 'date-fns'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
-import { DATE_FORMAT_GB_VERBOSE, formatDateConcise, formatDateLongMonthConcise } from '../../../../utils/datetimeUtils'
+import { formatDateLongMonthConcise } from '../../../../utils/datetimeUtils'
 
 context('test /update-plan/check-answers', () => {
   const uuid = uuidV4()
