@@ -105,7 +105,7 @@ context('test /record-investigation/interview-details', () => {
     cy.findAllByText('Date of the interview must be a real date').should('have.length', 2)
     getInterviewDate().should('have.value', '31/2/2024')
 
-    getInterviewDate().clear().type('01/01/2124', { delay: 0 })
+    getInterviewDate().clear().type('1/1/2124', { delay: 0 })
     getContinueButton().click()
 
     cy.findAllByText('Date of the interview must be today or in the past').should('have.length', 2)

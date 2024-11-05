@@ -61,9 +61,9 @@ context('test /record-review/check-answers', () => {
       .should('be.visible')
       .click()
     cy.url().should('to.match', /next-review-date#nextReviewDate$/)
-    cy.findByRole('textbox').clear().type(format(startOfTomorrow(), 'dd/MM/yyyy'), { delay: 0 })
+    cy.findByRole('textbox').clear().type(format(startOfTomorrow(), 'd/L/yyyy'), { delay: 0 })
     cy.findByRole('button', { name: /Continue/i }).click()
-    cy.contains('dt', 'Next review date').next().should('include.text', format(startOfTomorrow(), 'dd MMMM yyyy'))
+    cy.contains('dt', 'Next review date').next().should('include.text', format(startOfTomorrow(), 'd MMMM yyyy'))
 
     cy.findByRole('link', { name: /change the review outcome/i })
       .should('be.visible')
