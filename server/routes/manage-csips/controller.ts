@@ -70,7 +70,7 @@ export class SearchCsipController extends BaseJourneyController {
 
     const { content: records, metadata } = await this.csipApiService.searchAndSortCsipRecords({
       req,
-      prisonCode: res.locals.user.activeCaseLoadId!,
+      prisonCode: res.locals.user.activeCaseLoad!.caseLoadId,
       sort: req.session.searchCsipParams.sort || 'name,asc',
       ...getNonUndefinedProp(req.session.searchCsipParams, 'query'),
       ...getNonUndefinedProp(req.session.searchCsipParams, 'status'),

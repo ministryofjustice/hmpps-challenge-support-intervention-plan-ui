@@ -3,7 +3,7 @@ import { BaseJourneyController } from './journeys/base/controller'
 
 export class HomePageController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
-    const prisonCode = res.locals.user.activeCaseLoadId!
+    const prisonCode = res.locals.user.activeCaseLoad!.caseLoadId
     res.locals.breadcrumbs.popLastItem()
     const { counts } = await this.csipApiService.getCsipOverview(req, prisonCode)
 
