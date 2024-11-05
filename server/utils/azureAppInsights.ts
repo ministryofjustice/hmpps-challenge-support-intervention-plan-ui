@@ -23,7 +23,7 @@ export function initialiseAppInsights(): void {
 function addUserDataToRequests(envelope: EnvelopeTelemetry, contextObjects: Record<string, unknown> | undefined) {
   const isRequest = envelope.data.baseType === Contracts.TelemetryTypeString['Request']
   if (isRequest) {
-    const { username, activeCaseLoadId } =
+    const { username, activeCaseLoad } =
       (contextObjects?.['http.ServerRequest'] as Request | undefined)?.res?.locals?.user || {}
     if (username) {
       const properties = envelope.data.baseData?.['properties']
@@ -32,7 +32,7 @@ function addUserDataToRequests(envelope: EnvelopeTelemetry, contextObjects: Reco
       // eslint-disable-next-line no-param-reassign
       envelope.data.baseData['properties'] = {
         username,
-        activeCaseLoadId,
+        activeCaseLoadId: activeCaseLoad?.caseLoadId,
         ...properties,
       }
     }
