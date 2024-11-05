@@ -883,6 +883,21 @@ const stubSearchCsipRecords = () => {
   })
 }
 
+const stubGetCsipOverview = () => {
+  const reviewDate = new Date()
+  reviewDate.setDate(reviewDate.getDate() + 1)
+  return createBasicHttpStub('GET', '/csip-api/prisons/LEI/csip-records/overview', 200, {
+    counts: {
+      submittedReferrals: 1,
+      pendingInvestigations: 1,
+      awaitingDecisions: 1,
+      pendingPlans: 1,
+      open: 1,
+      overdueReviews: 1,
+    },
+  })
+}
+
 export const csip = {
   recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
   prisonNumber: 'A1111AA',
@@ -1024,6 +1039,7 @@ export default {
   stubPostNewAttendeeSuccess,
   stubPostNewAttendeeFail,
   stubSearchCsipRecords,
+  stubGetCsipOverview,
   stubGetServiceInfoOneAgencyLEI,
   stubGetServiceInfoOneAgencyMDI,
   stubGetServiceInfoNoAgencies,

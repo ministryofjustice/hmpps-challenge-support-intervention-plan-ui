@@ -34,8 +34,7 @@ const convertCfsToSummaryRows = (
           }
 
           return (
-            (a.comment && b.comment && a.comment.localeCompare(b.comment)) ||
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+            (a.comment && b.comment && a.comment.localeCompare(b.comment)) || a.factorUuid.localeCompare(b.factorUuid)
           )
         })
         .map((cf, idx) => {

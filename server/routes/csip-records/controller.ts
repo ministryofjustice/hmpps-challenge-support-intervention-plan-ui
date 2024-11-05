@@ -15,10 +15,7 @@ export class CsipRecordController {
     const { recordUuid } = req.params
     const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
     const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
-    const referral = {
-      createdAt: record.createdAt,
-      ...record.referral,
-    }
+    const { referral } = record
     const { investigation } = referral
 
     const interviews = record.referral!.investigation?.interviews

@@ -1,6 +1,7 @@
 import { Request } from 'express'
 import { RestClientBuilder } from '../../data'
 import {
+  CsipOverview,
   CsipRecord,
   CsipRecordStatus,
   CsipSearchResults,
@@ -32,6 +33,10 @@ export default class CsipApiService {
   }): Promise<CsipSearchResults> {
     const { req, ...queries } = params
     return this.csipApiClientBuilder(req.systemClientToken).searchAndSortCsipRecords(queries)
+  }
+
+  getCsipOverview(req: Request, prisonCode: string): Promise<CsipOverview> {
+    return this.csipApiClientBuilder(req.systemClientToken).getCsipOverview(prisonCode)
   }
 
   getServiceConfigInfo(req: Request): Promise<ServiceConfigInfo> {

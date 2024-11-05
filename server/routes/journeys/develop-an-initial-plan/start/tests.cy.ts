@@ -21,6 +21,7 @@ context('test /csip-record/:recordUuid/develop-an-initial-plan/start', () => {
   })
 
   it('should redirect to root if CSIP record is not found', () => {
+    cy.task('stubGetCsipOverview')
     cy.signIn()
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/develop-an-initial-plan/start`)
     cy.url().should('to.match', /http:\/\/localhost:3007\/$/)

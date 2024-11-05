@@ -19,3 +19,4 @@ export type CsipRecordStatus =
   | 'UNKNOWN'
 
 export type CsipSearchResults = components['schemas']['CsipSearchResults']
+export type CsipOverview = components['schemas']['CsipOverview']

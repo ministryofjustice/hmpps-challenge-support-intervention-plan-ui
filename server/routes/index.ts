@@ -2,26 +2,29 @@ import { type RequestHandler, Router } from 'express'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import type { Services } from '../services'
-import { Page } from '../services/auditService'
 import insertJourneyIdentifier from '../middleware/insertJourneyIdentifier'
 import redirectCheckAnswersMiddleware from '../middleware/redirectCheckAnswersMiddleware'
 import journeyStateMachine from '../middleware/journeyStateMachine'
 import { JourneyRoutes } from './journeys/routes'
 import { CsipRecordRoutes } from './csip-records/routes'
 import { SearchCsipRoutes } from './manage-csips/routes'
+import { HomePageController } from './controller'
 
 export default function routes(services: Services): Router {
   const router = Router({ mergeParams: true })
+  const controller = new HomePageController(services.csipApiService)
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
-  get('/', async (req, res) => {
-    await services.auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
-
-    res.render('pages/index')
-  })
+  // TODO: determine whether we need to implement audit service
+  // import { Page } from '../services/auditService'
+  // await services.auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
+  get('/', controller.GET)
 
   router.use('/csip-records/:recordUuid', CsipRecordRoutes(services))
   router.use('/manage-csips', SearchCsipRoutes(services))
+  router.get('/how-to-make-a-referral', (_req, res) =>
+    res.render('how-to-make-a-referral/view', { showBreadcrumbs: true }),
+  )
 
   router.use(insertJourneyIdentifier())
   router.use(

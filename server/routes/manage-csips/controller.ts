@@ -1,18 +1,12 @@
 import { Request, Response } from 'express'
-import CsipApiService from '../../services/csipApi/csipApiService'
-import PrisonApiService from '../../services/prisonApi/prisonApiService'
 import { setPaginationLocals } from '../../views/partials/simplePagination/utils'
 import { getNonUndefinedProp } from '../../utils/utils'
 import { CsipRecordStatus } from '../../@types/csip/csipApiTypes'
+import { BaseJourneyController } from '../journeys/base/controller'
 
 const PAGE_SIZE = 25
 
-export class SearchCsipController {
-  constructor(
-    private readonly csipApiService: CsipApiService,
-    private readonly prisonApiService: PrisonApiService,
-  ) {}
-
+export class SearchCsipController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
     const { page, clear, sort, query, status } = req.query
 
@@ -74,13 +68,9 @@ export class SearchCsipController {
 
     const currentPage = req.session.searchCsipParams.page || 1
 
-    const prisonCode = (await this.prisonApiService.getCaseLoads(req)).find(
-      caseLoad => caseLoad.currentlyActive,
-    )!.caseLoadId
-
     const { content: records, metadata } = await this.csipApiService.searchAndSortCsipRecords({
       req,
-      prisonCode,
+      prisonCode: res.locals.user.activeCaseLoad!.caseLoadId,
       sort: req.session.searchCsipParams.sort || 'name,asc',
       ...getNonUndefinedProp(req.session.searchCsipParams, 'query'),
       ...getNonUndefinedProp(req.session.searchCsipParams, 'status'),

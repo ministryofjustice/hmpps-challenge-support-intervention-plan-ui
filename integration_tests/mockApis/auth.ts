@@ -159,10 +159,12 @@ const stubGetCaseLoads = () => {
         {
           currentlyActive: true,
           caseLoadId: 'LEI',
+          description: 'Leeds (HMP)',
         },
         {
           currentlyActive: false,
           caseLoadId: 'MDI',
+          description: 'Moorland',
         },
       ],
     },
