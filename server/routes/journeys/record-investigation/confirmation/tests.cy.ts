@@ -28,10 +28,10 @@ context('test /record-investigation/confirmation', () => {
 
   const validatePageContents = () => {
     cy.findByRole('link', { name: /Digital Prison Services/ }).should('be.visible')
-    cy.findByRole('link', { name: /CSIP/ }).should('be.visible')
+    cy.get('.csip-breadcrumbs__breadcrumbs').findByRole('link', { name: /CSIP/ }).should('be.visible')
 
     cy.findByText('CSIP investigation recorded').should('be.visible')
-    cy.findByText('We’ve updated the status of the referral to ‘awaiting decision’.').should('be.visible')
+    cy.findByText('Status: Awaiting decision').should('be.visible')
 
     cy.findByRole('heading', { name: /What needs to happen next/ }).should('be.visible')
     cy.findByText(
@@ -40,5 +40,14 @@ context('test /record-investigation/confirmation', () => {
     cy.findByText(
       'If the Custodial Manager is not available then another appropriate person can do this, such as the Residential Governor or a Safer Custody team member.',
     ).should('be.visible')
+
+    cy.findByRole('link', { name: 'View CSIP details for Testname User' })
+      .should('be.visible')
+      .and('have.attr', 'href')
+      .and('match', /\/manage-csips\?query=A1111AA$/)
+    cy.findByRole('link', { name: 'View all CSIPs for Leeds (HMP)' })
+      .should('be.visible')
+      .and('have.attr', 'href')
+      .and('match', /\/manage-csips\?clear=true$/)
   }
 })

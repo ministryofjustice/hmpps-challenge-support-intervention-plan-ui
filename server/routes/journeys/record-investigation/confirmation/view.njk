@@ -6,11 +6,12 @@
 
 {% block innerContent %}
     {{ govukPanel({
-        titleText: "CSIP investigation recorded"
+        titleText: "CSIP investigation recorded",
+        html: "Status: Awaiting decision"
     }) }}
-    <p class="govuk-body">We’ve updated the status of the referral to ‘awaiting decision’.</p>
-
     <h1 class="govuk-heading-m">What needs to happen next</h1>
     <p class="govuk-body">The Custodial Manager should assess the findings of the investigation and make a decision about whether {{ prisoner | firstNameSpaceLastName }} needs to be placed on a CSIP.</p>
     <p class="govuk-body">If the Custodial Manager is not available then another appropriate person can do this, such as the Residential Governor or a Safer Custody team member.</p>
+
+    {% include "../../base/components/view-other-csips.njk" %}
 {% endblock %}
