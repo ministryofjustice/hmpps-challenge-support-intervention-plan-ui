@@ -13,7 +13,10 @@
     {% for interview in interviews %}
         {{ govukSummaryList({
             card: {
-                title: { text: "Interview with " + interview.interviewee },
+                title: {
+                    classes: "govuk-!-font-size-24",
+                    text: "Interview with " + interview.interviewee
+                },
                 actions: {
                     items: [
                         {

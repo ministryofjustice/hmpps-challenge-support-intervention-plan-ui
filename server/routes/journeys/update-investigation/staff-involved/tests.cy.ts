@@ -23,6 +23,10 @@ context('test /update-investigation/staff-involved', () => {
     checkAxeAccessibility()
 
     cy.url().should('to.match', /\/staff-involved$/)
+    cy.title().should(
+      'equal',
+      'Add information on the staff involved in the investigation - Update a CSIP investigation - DPS',
+    )
 
     validatePageContents()
     validateErrorMessage()

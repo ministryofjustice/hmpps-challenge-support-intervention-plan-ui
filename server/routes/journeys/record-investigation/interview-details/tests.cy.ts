@@ -36,6 +36,7 @@ context('test /record-investigation/interview-details', () => {
     cy.findByText(/No interview details recorded./).should('be.visible')
 
     proceedToAddInterview('Add interview')
+    cy.title().should('equal', 'Interview details - Record a CSIP investigation - DPS')
 
     validatePageContents()
     validateErrorsMandatory()
@@ -75,6 +76,7 @@ context('test /record-investigation/interview-details', () => {
   const validateErrorsMandatory = () => {
     resetInputs()
     getContinueButton().click()
+    cy.title().should('equal', 'Error: Interview details - Record a CSIP investigation - DPS')
 
     cy.findByRole('link', { name: /Enter the interviewee’s name/i })
       .should('be.visible')
@@ -100,7 +102,7 @@ context('test /record-investigation/interview-details', () => {
     getInterviewDate().clear().type('31/02/2024', { delay: 0 })
     getContinueButton().click()
 
-    cy.findAllByText('Date of interview must be a real date').should('have.length', 2)
+    cy.findAllByText('Date of the interview must be a real date').should('have.length', 2)
     getInterviewDate().should('have.value', '31/02/2024')
 
     getInterviewDate().clear().type('01/01/2124', { delay: 0 })

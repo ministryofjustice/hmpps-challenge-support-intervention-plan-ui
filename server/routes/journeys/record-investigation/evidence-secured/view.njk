@@ -4,7 +4,7 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Evidence secured - " + ('Update' if isUpdate else 'Record') + " a CSIP investigation" %}
+{% set pageTitle = "Add information on the evidence secured - Update a CSIP investigation" if isUpdate else "What evidence has been secured? - Record a CSIP investigation" %}
 
 {% block innerContent %}
     {% include 'base/components/investigation-caption.njk' %}

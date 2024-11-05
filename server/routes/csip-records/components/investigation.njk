@@ -134,7 +134,7 @@
   {% for interview in investigation.interviews %}
       {{ govukSummaryList({
           card: {
-              classes: "govuk-!-margin-bottom-7" if loop.index === investigation.interviews.length else undefined,
+              classes: "govuk-!-margin-bottom-7 govuk-!-font-size-24" if loop.index === investigation.interviews.length else undefined,
               title: { text: "Interview with " + interview.interviewee }
           },
           rows: [{

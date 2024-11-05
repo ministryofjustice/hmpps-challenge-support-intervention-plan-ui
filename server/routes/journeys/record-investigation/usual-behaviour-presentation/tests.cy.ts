@@ -20,6 +20,10 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
   it('should try out all cases', () => {
     navigateToTestPage()
     cy.url().should('to.match', /\/usual-behaviour-presentation$/)
+    cy.title().should(
+      'equal',
+      'What’s the prisoner’s usual behaviour presentation? - Record a CSIP investigation - DPS',
+    )
     checkAxeAccessibility()
 
     validatePageContents()
@@ -49,6 +53,10 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
 
   const validateErrorMessage = () => {
     getContinueButton().click()
+    cy.title().should(
+      'equal',
+      'Error: What’s the prisoner’s usual behaviour presentation? - Record a CSIP investigation - DPS',
+    )
     cy.findByRole('link', { name: /Enter a description of the prisoner’s usual behaviour presentation/i })
       .should('be.visible')
       .click()

@@ -12,7 +12,7 @@ const INTERVIEW_TEXT_TOO_LONG_ERROR_MSG = 'Comments must be 4,000 characters or 
 const INTERVIEWEE_ROLE_REQUIRED_MSG = 'Select how the interviewee was involved'
 
 const INTERVIEW_DATE_REQUIRED_MSG = 'Enter the date of the interview'
-const INTERVIEW_DATE_INVALID_ERROR_MSG = 'Date of interview must be a real date'
+const INTERVIEW_DATE_INVALID_ERROR_MSG = 'Date of the interview must be a real date'
 const INTERVIEW_DATE_FUTURE_ERROR_MSG = 'Date of the interview must be today or in the past'
 
 const INTERVIEWEE_REQUIRED_MSG = 'Enter the interviewee’s name'

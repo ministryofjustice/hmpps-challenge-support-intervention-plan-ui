@@ -81,7 +81,10 @@ context('test /update-investigation/protective-factors', () => {
       .and('have.attr', 'href')
       .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
     cy.findByText(/Help with understanding protective factors/).should('not.exist')
-    cy.title().should('equal', 'Protective factors - Update a CSIP investigation - DPS')
+    cy.title().should(
+      'equal',
+      'Add information about the protective factors for the prisoner - Update a CSIP investigation - DPS',
+    )
   }
 
   const validateErrorMessage = () => {

@@ -18,6 +18,7 @@ context('test /record-investigation/interviews-summary', () => {
   it('should try out all cases', () => {
     navigateToTestPage()
     cy.url().should('to.match', /\/interviews-summary$/)
+    cy.title().should('equal', 'Interviews summary - Record a CSIP investigation - DPS')
     checkAxeAccessibility()
 
     cy.findByRole('heading', { name: /Interviews summary/ }).should('be.visible')

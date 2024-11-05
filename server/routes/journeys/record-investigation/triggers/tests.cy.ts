@@ -19,6 +19,7 @@ context('test /record-investigation/triggers', () => {
   it('should try out all cases', () => {
     navigateToTestPage()
     cy.url().should('to.match', /\/triggers$/)
+    cy.title().should('equal', 'What are the prisoner’s triggers? - Record a CSIP investigation - DPS')
     checkAxeAccessibility()
 
     validatePageContents()
@@ -48,6 +49,7 @@ context('test /record-investigation/triggers', () => {
 
   const validateErrorMessage = () => {
     getContinueButton().click()
+    cy.title().should('equal', 'Error: What are the prisoner’s triggers? - Record a CSIP investigation - DPS')
     cy.findByRole('link', { name: /Enter a description of the prisoner’s triggers/i })
       .should('be.visible')
       .click()

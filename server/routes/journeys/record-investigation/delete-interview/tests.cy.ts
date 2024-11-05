@@ -29,6 +29,7 @@ context('test /record-investigation/delete-interview', () => {
     })
 
     cy.url().should('to.match', /\/delete-interview\/1$/)
+    cy.title().should('equal', 'Are you sure you want to delete this interview? - Record a CSIP investigation - DPS')
     checkAxeAccessibility()
     cy.findByRole('heading', { name: /Are you sure you want to delete this interview\?/ }).should('be.visible')
 

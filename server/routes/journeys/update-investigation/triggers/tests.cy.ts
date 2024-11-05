@@ -57,7 +57,7 @@ context('test /update-investigation/triggers', () => {
       .and('have.attr', 'href')
       .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
     cy.findByText(/Where to find information on a prisoner’s triggers/).should('not.exist')
-    cy.title().should('equal', 'Triggers - Update a CSIP investigation - DPS')
+    cy.title().should('equal', 'Add information about the prisoner’s triggers - Update a CSIP investigation - DPS')
   }
 
   const validateErrorMessage = () => {
