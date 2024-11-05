@@ -6,7 +6,7 @@ import fs from 'fs'
 import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
 import config from '../config'
 import { buildErrorSummaryList, customErrorOrderBuilder, findError } from '../middleware/validationMiddleware'
-import { formatDisplayDate, formatSimpleDisplayDate, todayStringGBFormat } from './datetimeUtils'
+import { formatDateLongMonthConcise, formatDateConcise, todayStringGBFormat } from './datetimeUtils'
 import { YES_NO_ANSWER } from '../routes/journeys/referral/safer-custody/schemas'
 import { csipStatusDisplayText, csipStatusTagClass, identifiedNeedsActionLabel } from './csipDisplayTextUtils'
 import {
@@ -69,8 +69,8 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('findError', findError)
   njkEnv.addFilter('convertToTitleCase', convertToTitleCase)
   njkEnv.addFilter('sentenceCase', sentenceCase)
-  njkEnv.addFilter('formatDisplayDate', formatDisplayDate)
-  njkEnv.addFilter('formatSimpleDisplayDate', formatSimpleDisplayDate)
+  njkEnv.addFilter('formatDisplayDate', formatDateLongMonthConcise)
+  njkEnv.addFilter('formatSimpleDisplayDate', formatDateConcise)
   njkEnv.addFilter('customErrorOrderBuilder', customErrorOrderBuilder)
   njkEnv.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
   njkEnv.addFilter('lastNameCommaFirstName', lastNameCommaFirstName)

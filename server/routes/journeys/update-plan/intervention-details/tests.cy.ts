@@ -152,7 +152,7 @@ context('test /update-plan/intervention-details', () => {
     cy.reload()
 
     getIntervention().should('have.value', 'textarea input')
-    getTargetDate().should('have.value', '27/08/2024')
+    getTargetDate().should('have.value', '27/8/2024')
     getResponsiblePerson().should('have.value', 'textarea input')
   }
 })

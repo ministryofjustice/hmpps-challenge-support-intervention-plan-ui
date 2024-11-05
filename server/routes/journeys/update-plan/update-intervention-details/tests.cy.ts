@@ -65,7 +65,7 @@ context('test /update-plan/update-intervention-details', () => {
     cy.findByText('first need').should('be.visible')
 
     getResponsiblePerson().should('be.visible').and('have.value', 'test testerson')
-    getTargetDate().should('be.visible').and('have.value', '02/04/2024')
+    getTargetDate().should('be.visible').and('have.value', '2/4/2024')
     getContinueButton().should('be.visible')
 
     cy.findByRole('link', { name: /Cancel/i })

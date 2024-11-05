@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { SchemaType } from '../../develop-an-initial-plan/intervention-details/schemas'
-import { formatInputDate } from '../../../../utils/datetimeUtils'
+import { formatDateConcise } from '../../../../utils/datetimeUtils'
 
 export class NewInterventionDetailsController {
   GET = async (req: Request, res: Response) => {
@@ -10,7 +10,7 @@ export class NewInterventionDetailsController {
       identifiedNeed: req.journeyData.plan!.identifiedNeedSubJourney!.identifiedNeed,
       targetDate:
         res.locals.formResponses?.['targetDate'] ??
-        formatInputDate(req.journeyData.plan!.identifiedNeedSubJourney!.targetDate),
+        formatDateConcise(req.journeyData.plan!.identifiedNeedSubJourney!.targetDate),
       responsiblePerson:
         res.locals.formResponses?.['responsiblePerson'] ??
         req.journeyData.plan!.identifiedNeedSubJourney!.responsiblePerson,

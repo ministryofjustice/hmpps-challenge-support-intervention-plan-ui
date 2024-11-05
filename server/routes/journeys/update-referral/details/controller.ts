@@ -5,7 +5,7 @@ import {
   MESSAGE_REACTIVE_DETAILS_UPDATED,
   PatchReferralController,
 } from '../../base/patchReferralController'
-import { formatInputDate, formatInputTime } from '../../../../utils/datetimeUtils'
+import { formatDateConcise, formatInputTime } from '../../../../utils/datetimeUtils'
 import { getNonUndefinedProp } from '../../../../utils/utils'
 
 export class UpdateReferralDetailsController extends PatchReferralController {
@@ -25,7 +25,7 @@ export class UpdateReferralDetailsController extends PatchReferralController {
       res.locals.formResponses?.['incidentType'] ?? req.journeyData.referral!.incidentType,
     )
     const incidentDate =
-      res.locals.formResponses?.['incidentDate'] ?? formatInputDate(req.journeyData.referral!.incidentDate)
+      res.locals.formResponses?.['incidentDate'] ?? formatDateConcise(req.journeyData.referral!.incidentDate)
 
     const [journeyDataHour, journeyDataMinute] = formatInputTime(req.journeyData.referral!.incidentTime)
     const hour = res.locals.formResponses?.['hour'] ?? journeyDataHour

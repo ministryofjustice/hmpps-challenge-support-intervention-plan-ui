@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
-import { formatInputDate } from '../../../../utils/datetimeUtils'
+import { formatDateConcise } from '../../../../utils/datetimeUtils'
 import { parseIdentifiedNeedIndex } from '../subJourneyUtils'
 import { IdentifiedNeed } from '../../../../@types/express'
 
@@ -14,7 +14,7 @@ export class InterventionDetailsController {
 
     return res.render('develop-an-initial-plan/intervention-details/view', {
       identifiedNeed: this.getData(req, res, 'identifiedNeed', isNew, index),
-      targetDate: this.getData<string | undefined>(req, res, 'targetDate', isNew, index, formatInputDate),
+      targetDate: this.getData<string | undefined>(req, res, 'targetDate', isNew, index, formatDateConcise),
       responsiblePerson: this.getData(req, res, 'responsiblePerson', isNew, index),
       intervention: this.getData(req, res, 'intervention', isNew, index),
       backUrl: isNew ? `../summarise-identified-need/${index + 1}` : `../identified-needs`,

@@ -163,7 +163,7 @@ context('Make a Referral Journey', () => {
     cy.findByRole('button', { name: /continue/i }).click()
     cy.findByRole('link', { name: /enter a time using the 24-hour clock/i }).should('be.visible')
     cy.findByRole('link', { name: /enter the date of the incident/i }).should('not.exist')
-    cy.findByRole('textbox', { name: /date of incident/i }).should('have.value', '01/01/2024')
+    cy.findByRole('textbox', { name: /date of incident/i }).should('have.value', '1/1/2024')
     cy.findByRole('link', { name: /select the location of the incident/i }).should('be.visible')
     cy.findByRole('link', { name: /select the incident type/i }).should('be.visible')
     cy.get('.govuk-error-summary a').should('have.length', 3)

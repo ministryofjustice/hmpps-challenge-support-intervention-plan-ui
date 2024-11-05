@@ -56,7 +56,7 @@ context('test /develop-an-initial-plan/intervention-details', () => {
     cy.findByText('Identified need summary:').next().should('have.text', 'saved summary')
     getIntervention().should('have.value', 'Intervention')
     getResponsiblePerson().should('have.value', 'Person Name')
-    getTargetDate().should('have.value', '01/08/2024')
+    getTargetDate().should('have.value', '1/8/2024')
 
     completeInputs()
     getContinueButton().click()
@@ -197,7 +197,7 @@ context('test /develop-an-initial-plan/intervention-details', () => {
     cy.reload()
 
     getIntervention().should('have.value', 'textarea input')
-    getTargetDate().should('have.value', '27/08/2024')
+    getTargetDate().should('have.value', '27/8/2024')
     getResponsiblePerson().should('have.value', 'textarea input')
   }
 })

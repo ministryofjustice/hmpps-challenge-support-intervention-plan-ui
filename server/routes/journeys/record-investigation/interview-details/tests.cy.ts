@@ -99,17 +99,17 @@ context('test /record-investigation/interview-details', () => {
 
   const validateErrorMessageInterviewDate = () => {
     resetInputs()
-    getInterviewDate().clear().type('31/02/2024', { delay: 0 })
+    getInterviewDate().clear().type('31/2/2024', { delay: 0 })
     getContinueButton().click()
 
     cy.findAllByText('Date of the interview must be a real date').should('have.length', 2)
-    getInterviewDate().should('have.value', '31/02/2024')
+    getInterviewDate().should('have.value', '31/2/2024')
 
     getInterviewDate().clear().type('01/01/2124', { delay: 0 })
     getContinueButton().click()
 
     cy.findAllByText('Date of the interview must be today or in the past').should('have.length', 2)
-    getInterviewDate().should('have.value', '01/01/2124')
+    getInterviewDate().should('have.value', '1/1/2124')
   }
 
   const validateRadios = () => {
@@ -145,7 +145,7 @@ context('test /record-investigation/interview-details', () => {
 
   const verifyDetailsAreRestoredFromJourney = () => {
     getIntervieweeName().should('have.value', 'John Smith')
-    getInterviewDate().should('have.value', '01/01/2021')
+    getInterviewDate().should('have.value', '1/1/2021')
     getIntervieweeRole().should('be.checked')
     getInterviewText().should('have.value', 'Interviewee comment')
   }

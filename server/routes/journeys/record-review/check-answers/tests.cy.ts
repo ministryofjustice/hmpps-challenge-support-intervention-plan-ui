@@ -47,7 +47,7 @@ context('test /record-review/check-answers', () => {
     cy.findByRole('heading', { name: /Review information/ }).should('be.visible')
     cy.contains('dt', 'Review details').next().should('include.text', 'a summary')
     cy.contains('dt', 'Review outcome').next().should('include.text', 'Keep the prisoner on the plan')
-    cy.contains('dt', 'Next review date').next().should('include.text', '06 May 2024')
+    cy.contains('dt', 'Next review date').next().should('include.text', '6 May 2024')
 
     cy.findByRole('link', { name: /change the details of the review/i })
       .should('be.visible')

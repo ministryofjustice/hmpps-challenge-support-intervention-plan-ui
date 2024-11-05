@@ -103,7 +103,7 @@ const changeInformationProactiveOnBehalf = () => {
 
   cy.url().should('include', '/details')
   cy.findByRole('heading', { name: /behaviour details/i }).should('be.visible')
-  cy.findByDisplayValue('06/07/2024').should('be.visible')
+  cy.findByDisplayValue('6/7/2024').should('be.visible')
   cy.findByDisplayValue('12').should('be.visible')
   cy.findByDisplayValue('24').should('be.visible')
   cy.findByDisplayValue('LocationB').should('be.visible')
@@ -179,7 +179,7 @@ const goBackCheckInfoSaved = (onBehalfOf: boolean, proactive: boolean) => {
   cy.findByRole('link', { name: /^back/i }).click()
 
   cy.url().should('include', '/details')
-  cy.findByDisplayValue('06/07/2024').should('be.visible')
+  cy.findByDisplayValue('6/7/2024').should('be.visible')
   cy.findByDisplayValue('12').should('be.visible')
   cy.findByDisplayValue('24').should('be.visible')
   cy.findByDisplayValue('LocationB').should('be.visible')
@@ -217,7 +217,7 @@ const fillInformationReactiveNotOnBehalf = () => {
   cy.url().should('include', '/details')
   cy.findByRole('heading', { name: /incident details/i }).should('be.visible')
   cy.findByRole('heading', { name: /When was the incident\?/i }).should('be.visible')
-  cy.findByRole('textbox', { name: /date of incident/i }).type('06/07/2024', { delay: 0 })
+  cy.findByRole('textbox', { name: /date of incident/i }).type('6/7/2024', { delay: 0 })
   cy.findByRole('textbox', { name: /hour/i }).type('12', { delay: 0 })
   cy.findByRole('textbox', { name: /minute/i }).type('24', { delay: 0 })
   cy.findByRole('combobox', { name: /where did the incident occur\?/i }).select('LocationB')
@@ -409,15 +409,15 @@ const changeAnswersOnCYAPage = () => {
 }
 
 const changeAnswersOnCYAProactiveSection = () => {
-  cy.contains('dt', 'Date of occurrence').next().should('include.text', '06 July 2024')
+  cy.contains('dt', 'Date of occurrence').next().should('include.text', '6 July 2024')
   cy.findByRole('link', { name: /change date of occurrence/i })
     .should('be.visible')
     .click()
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
   cy.findByRole('textbox', { name: /Date of occurrence/i }).clear()
-  cy.findByRole('textbox', { name: /Date of occurrence/i }).type('05/05/2024', { delay: 0 })
+  cy.findByRole('textbox', { name: /Date of occurrence/i }).type('5/5/2024', { delay: 0 })
   cy.findByRole('button', { name: /continue/i }).click()
-  cy.contains('dt', 'Date of occurrence').next().should('include.text', '05 May 2024')
+  cy.contains('dt', 'Date of occurrence').next().should('include.text', '5 May 2024')
 
   cy.contains('dt', 'Time of occurrence').next().should('include.text', '12:24')
   cy.findByRole('link', { name: /change time of occurrence/i })
@@ -509,15 +509,15 @@ const changeAnswersOnCYAProactiveSection = () => {
 }
 
 const changeAnswersOnCYAReactiveSection = () => {
-  cy.contains('dt', 'Date of incident').next().should('include.text', '05 May 2024')
+  cy.contains('dt', 'Date of incident').next().should('include.text', '5 May 2024')
   cy.findByRole('link', { name: /change date of incident/i })
     .should('be.visible')
     .click()
   cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', 'check-answers')
   cy.findByRole('textbox', { name: /Date of incident/i }).clear()
-  cy.findByRole('textbox', { name: /Date of incident/i }).type('06/06/2024', { delay: 0 })
+  cy.findByRole('textbox', { name: /Date of incident/i }).type('6/6/2024', { delay: 0 })
   cy.findByRole('button', { name: /continue/i }).click()
-  cy.contains('dt', 'Date of incident').next().should('include.text', '06 June 2024')
+  cy.contains('dt', 'Date of incident').next().should('include.text', '6 June 2024')
 
   cy.contains('dt', 'Time of incident').next().should('include.text', '23:59')
   cy.findByRole('link', { name: /change time of incident/i })

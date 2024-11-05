@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { SchemaType } from './schemas'
 import { PatchPlanController } from '../../base/patchPlanController'
-import { formatInputDate } from '../../../../utils/datetimeUtils'
+import { formatDateConcise } from '../../../../utils/datetimeUtils'
 
 export class UpdateInterventionDetailsController extends PatchPlanController {
   GET = async (req: Request, res: Response) => {
@@ -14,7 +14,7 @@ export class UpdateInterventionDetailsController extends PatchPlanController {
     return res.render('update-plan/update-intervention-details/view', {
       identifiedNeed: identifiedNeed.identifiedNeed,
       responsiblePerson: res.locals.formResponses?.['responsiblePerson'] ?? identifiedNeed.responsiblePerson,
-      targetDate: res.locals.formResponses?.['targetDate'] ?? formatInputDate(identifiedNeed.targetDate),
+      targetDate: res.locals.formResponses?.['targetDate'] ?? formatDateConcise(identifiedNeed.targetDate),
       recordUuid: req.journeyData.csipRecord!.recordUuid,
       backUrl: '../identified-needs',
     })

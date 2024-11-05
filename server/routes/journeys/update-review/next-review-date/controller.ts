@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express'
 import { SchemaType } from '../../record-review/next-review-date/schemas'
 import { PatchReviewController } from '../../base/patchReviewController'
-import { formatInputDate } from '../../../../utils/datetimeUtils'
+import { formatDateConcise } from '../../../../utils/datetimeUtils'
 
 export class UpdateNextReviewDateController extends PatchReviewController {
   GET = async (req: Request, res: Response) => {
     res.render('record-review/next-review-date/view', {
       nextReviewDate:
-        res.locals.formResponses?.['nextReviewDate'] ?? formatInputDate(req.journeyData.review!.nextReviewDate),
+        res.locals.formResponses?.['nextReviewDate'] ?? formatDateConcise(req.journeyData.review!.nextReviewDate),
       isUpdate: true,
       backUrl: '../update-review',
       recordUuid: req.journeyData.csipRecord!.recordUuid,

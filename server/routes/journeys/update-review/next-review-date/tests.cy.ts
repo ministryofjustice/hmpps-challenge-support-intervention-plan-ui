@@ -63,7 +63,7 @@ context('test /update-review/next-review-date', () => {
       .and('have.attr', 'href')
       .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
 
-    getNextReviewDate().should('be.visible').and('have.value', '15/04/2025')
+    getNextReviewDate().should('be.visible').and('have.value', '15/4/2025')
   }
 
   const validateErrorMessage = () => {
@@ -92,7 +92,7 @@ context('test /update-review/next-review-date', () => {
       .should('be.visible')
       .click()
     getNextReviewDate().should('be.focused')
-    getNextReviewDate().should('have.value', '01/01/2024')
+    getNextReviewDate().should('have.value', '1/1/2024')
   }
 
   const proceedToNextScreen = () => {

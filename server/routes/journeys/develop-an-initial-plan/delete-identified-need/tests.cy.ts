@@ -56,7 +56,7 @@ context('test /develop-an-initial-plan/delete-identified-need', () => {
     cy.findByRole('button', { name: /yes, delete it/i }).should('be.visible')
     cy.findByRole('button', { name: /no, do not delete it/i }).should('be.visible')
     cy.findByRole('heading', { name: /a need goes here/i }).should('be.visible')
-    cy.findByText('01 August 2024').should('be.visible')
+    cy.findByText('1 August 2024').should('be.visible')
     cy.findByText(/identified need summary/i)
       .siblings()
       .findByText(/a need goes here/i)

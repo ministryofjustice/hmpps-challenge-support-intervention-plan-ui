@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
-import { formatInputDate, formatInputTime } from '../../../../utils/datetimeUtils'
+import { formatDateConcise, formatInputTime } from '../../../../utils/datetimeUtils'
 import { SchemaType } from './schemas'
 
 export class ReferralDetailsController extends BaseJourneyController {
@@ -18,7 +18,7 @@ export class ReferralDetailsController extends BaseJourneyController {
       res.locals.formResponses?.['incidentType'] ?? req.journeyData.referral!.incidentType,
     )
     const incidentDate =
-      res.locals.formResponses?.['incidentDate'] ?? formatInputDate(req.journeyData.referral!.incidentDate)
+      res.locals.formResponses?.['incidentDate'] ?? formatDateConcise(req.journeyData.referral!.incidentDate)
 
     const [journeyDataHour, journeyDataMinute] = formatInputTime(req.journeyData.referral!.incidentTime)
     const hour = res.locals.formResponses?.['hour'] ?? journeyDataHour
