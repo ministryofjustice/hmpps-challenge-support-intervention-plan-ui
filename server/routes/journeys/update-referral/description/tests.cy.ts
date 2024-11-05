@@ -3,10 +3,10 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 
-context('test /update-referral/proactive-or-reactive', () => {
+context('test /update-referral/description', () => {
   const uuid = uuidV4()
   const title = /Add information to the description of the behaviour and concerns/i
-  const errorMsg = /enter a description of the behaviour and concerns/i
+  const errorMsg = /enter an update to the description of the behaviour and concerns/i
   const dividerText = generateSaveTimestamp('John Smith')
   const totalUsedChars = dividerText.length + 170 // 170 = already existing description text
 
@@ -39,7 +39,6 @@ context('test /update-referral/proactive-or-reactive', () => {
     checkAxeAccessibility()
     checkValuesPersist()
     checkValidation()
-    checkDetailsSummary()
     proceedToNextPage()
   })
 
@@ -62,15 +61,7 @@ context('test /update-referral/proactive-or-reactive', () => {
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start`, {
       failOnStatusCode: false,
     })
-    cy.findByRole('link', { name: /change the description of the behaviour and concerns/i }).click()
-  }
-
-  const checkDetailsSummary = () => {
-    cy.get('details').invoke('attr', 'open').should('not.exist')
-    cy.get('summary').click()
-    cy.get('details').invoke('attr', 'open').should('exist')
-
-    cy.findByText(/a summary of the concerns/i).should('be.visible')
+    cy.findByRole('link', { name: /add information to the description of the behaviour and concerns/i }).click()
   }
 
   const checkValuesPersist = () => {

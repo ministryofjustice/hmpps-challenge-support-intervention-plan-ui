@@ -133,10 +133,14 @@ context('test /update-referral', () => {
     cy.findByRole('link', { name: /Change main concern/i }).should('be.visible')
     cy.findByRole('link', { name: /Change how the prisoner was involved/i }).should('be.visible')
     cy.findByRole('link', { name: /Change if a staff member was assaulted or not/i }).should('be.visible')
-    cy.findByRole('link', { name: /Change the description of the behaviour and concerns/i }).should('be.visible')
-    cy.findByRole('link', { name: /Change the reasons given for the behaviour/i }).should('be.visible')
+    cy.findByRole('link', { name: /Add information to the description of the behaviour and concerns/i }).should(
+      'be.visible',
+    )
+    cy.findByRole('link', { name: /Add information to the reasons given for the behaviour/i }).should('be.visible')
     cy.findByRole('link', { name: /Change if Safer Custody are aware of the referral or not/i }).should('be.visible')
-    cy.findByRole('link', { name: /Change the additional information relating to the referral/i }).should('be.visible')
+    cy.findByRole('link', { name: /Add information to the additional information relating to the referral/i }).should(
+      'be.visible',
+    )
   }
 
   const checkCfChangeLinks = () => {

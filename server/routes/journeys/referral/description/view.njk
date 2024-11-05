@@ -33,10 +33,12 @@
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        {% if not isUpdate %}
         {{ govukDetails({
             summaryText: "What type of information to include",
             html: detailsHtml
         }) }}
+        {% endif %}
         {% if isUpdate and currentDescriptionOfConcern %}
             {{ govukInsetText({
                 html: currentDescriptionOfConcern | escape | boldAppendStamp | nl2br

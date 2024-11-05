@@ -359,7 +359,7 @@ context('test /record-investigation/check-answers', () => {
   }
 
   const checkSaferCustody = () => {
-    cy.contains('dt', 'Safer Custody aware of referral').next().should('include.text', `I don’t know`)
+    cy.contains('dt', 'Safer Custody aware of referral').next().should('include.text', `Not known`)
     cy.findByRole('link', { name: /Change if Safer Custody are aware of the referral or not/i })
       .should('be.visible')
       .click()
