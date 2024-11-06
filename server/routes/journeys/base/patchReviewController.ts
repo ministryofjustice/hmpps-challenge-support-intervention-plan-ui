@@ -29,7 +29,7 @@ export class PatchReviewController extends BaseJourneyController {
     const payload = {
       recordedBy: review.recordedBy,
       recordedByDisplayName: review.recordedByDisplayName,
-      ...getNonUndefinedProp(review, 'reviewDate'),
+      reviewDate: review.reviewDate,
       ...getNonUndefinedProp(review, 'nextReviewDate'),
       ...getNonUndefinedProp(review, 'summary'),
       ...getNonUndefinedProp(review, 'csipClosedDate'),
