@@ -810,7 +810,7 @@ export interface components {
        * @description The date of the review.
        * @example 2021-09-27
        */
-      reviewDate?: string
+      reviewDate: string
       /** @description The username of the person who recorded the review. */
       recordedBy: string
       /** @description The displayable name of the person who recorded the review. */
@@ -1250,7 +1250,7 @@ export interface components {
        * @description The date of the review.
        * @example 2021-09-27
        */
-      reviewDate?: string
+      reviewDate: string
       /** @description The username of the person who recorded the review. */
       recordedBy: string
       /** @description The displayable name of the person who recorded the review. */
@@ -1400,7 +1400,7 @@ export interface components {
        * @description The date of the review.
        * @example 2021-09-27
        */
-      reviewDate?: string
+      reviewDate: string
       /** @description The username of the person who recorded the review. */
       recordedBy: string
       /** @description The displayable name of the person who recorded the review. */
@@ -1530,7 +1530,7 @@ export interface components {
        * @description The date of the review.
        * @example 2021-09-27
        */
-      reviewDate?: string
+      reviewDate: string
       /** @description The username of the person who recorded the review. */
       recordedBy: string
       /** @description The displayable name of the person who recorded the review. */

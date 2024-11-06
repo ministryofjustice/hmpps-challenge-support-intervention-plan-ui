@@ -27,7 +27,7 @@ export class UpdateReviewController extends BaseJourneyController {
 
     req.journeyData.review = {
       reviewUuid: review.reviewUuid,
-      ...getNonUndefinedProp(review, 'reviewDate'),
+      reviewDate: review.reviewDate,
       ...getNonUndefinedProp(review, 'nextReviewDate'),
       ...getNonUndefinedProp(review, 'summary'),
       outcome: review.csipClosedDate ? 'CLOSE_CSIP' : 'REMAIN_ON_CSIP',
