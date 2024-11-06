@@ -3,7 +3,8 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Record a CSIP investigation decision" %}
+{% set title = "Who’s signing off on this decision?" %}
+{% set pageTitle = title + " - Record a CSIP investigation decision" %}
 
 {% block innerContent %}
     <span class="govuk-caption-l">Record a CSIP investigation decision</span>
@@ -12,7 +13,7 @@
         {{ govukRadios({
             fieldset: {
                 legend: {
-                    text: "Who’s signing off on this decision?",
+                    text: title,
                     isPageHeading: true,
                     classes: "govuk-fieldset__legend--l govuk-!-margin-bottom-7"
                 }

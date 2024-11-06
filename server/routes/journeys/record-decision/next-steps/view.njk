@@ -4,7 +4,7 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Next steps - " + ('Update' if isUpdate else 'Record') + " a CSIP investigation decision" %}
+{% set pageTitle = "Add " + ('more' if isUpdate else 'any') + " comments on next steps - " + ('Update' if isUpdate else 'Record') + " a CSIP investigation decision" %}
 
 {% block innerContent %}
     {% include 'base/components/decision-caption.njk' %}

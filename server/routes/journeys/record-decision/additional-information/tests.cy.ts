@@ -39,6 +39,7 @@ context('test /record-decision/additional-information', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Add additional information - Record a CSIP investigation decision - DPS')
     cy.findByRole('heading', { name: /Add additional information \(optional\)/ }).should('be.visible')
     cy.findByText(
       'Any other information relating to the CSIP investigation decision, such as action already taken.',
@@ -56,6 +57,7 @@ context('test /record-decision/additional-information', () => {
     })
     getContinueButton().click()
 
+    cy.title().should('equal', 'Error: Add additional information - Record a CSIP investigation decision - DPS')
     cy.findByRole('link', { name: /Additional information must be 4,000 characters or less/i })
       .should('be.visible')
       .click()

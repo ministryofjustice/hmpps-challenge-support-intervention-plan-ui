@@ -60,6 +60,7 @@ context('test /record-decision/confirmation', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'CSIP investigation decision recorded - DPS')
     cy.findByText('CSIP investigation decision recorded').should('be.visible')
 
     cy.findByRole('link', { name: /^CSIP/i }).should('have.attr', 'href').and('match', /\//)

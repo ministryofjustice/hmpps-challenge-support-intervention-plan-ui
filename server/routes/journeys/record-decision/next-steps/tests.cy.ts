@@ -38,6 +38,7 @@ context('test /record-decision/next-steps', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Add any comments on next steps - Record a CSIP investigation decision - DPS')
     cy.findByRole('heading', { name: /Add any comments on next steps \(optional\)/ }).should('be.visible')
     cy.findByText('updating Testname User’s non-associations').should('be.visible')
     getInputTextbox().should('be.visible')
@@ -53,6 +54,7 @@ context('test /record-decision/next-steps', () => {
     })
     getContinueButton().click()
 
+    cy.title().should('equal', 'Error: Add any comments on next steps - Record a CSIP investigation decision - DPS')
     cy.findByRole('link', { name: /Comments on next steps must be 4,000 characters or less/i })
       .should('be.visible')
       .click()
