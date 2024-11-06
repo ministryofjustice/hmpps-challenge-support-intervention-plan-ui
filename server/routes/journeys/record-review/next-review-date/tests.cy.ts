@@ -86,14 +86,14 @@ context('test /record-review/next-review-date', () => {
     getNextReviewDate().should('be.focused')
     getNextReviewDate().should('have.value', '27/13/2024')
 
-    getNextReviewDate().clear().type('01/01/2024', { delay: 0 })
+    getNextReviewDate().clear().type('1/1/2024', { delay: 0 })
     getContinueButton().click()
 
     cy.findByRole('link', { name: /Next review date must be today or in the future/i })
       .should('be.visible')
       .click()
     getNextReviewDate().should('be.focused')
-    getNextReviewDate().should('have.value', '01/01/2024')
+    getNextReviewDate().should('have.value', '1/1/2024')
   }
 
   const completeInputs = () => {
@@ -105,6 +105,6 @@ context('test /record-review/next-review-date', () => {
   const verifyDetailsAreRestoredFromJourney = () => {
     cy.reload()
 
-    getNextReviewDate().should('have.value', '27/08/2077')
+    getNextReviewDate().should('have.value', '27/8/2077')
   }
 })

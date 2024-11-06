@@ -2,7 +2,7 @@ import { v4 as uuidV4 } from 'uuid'
 import { addDays, formatDate, startOfTomorrow } from 'date-fns'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
-import { DATE_FORMAT_GB_VERBOSE } from '../../../../utils/datetimeUtils'
+import { formatDateLongMonthConcise } from '../../../../utils/datetimeUtils'
 
 context('test /update-plan/check-answers', () => {
   const uuid = uuidV4()
@@ -52,12 +52,12 @@ context('test /update-plan/check-answers', () => {
 
     cy.findByRole('link', { name: /change the target date/i }).click()
     cy.url().should('to.match', /intervention-details#targetDate/i)
-    const targetDate = addDays(startOfTomorrow(), 5)
+    const targetDate = formatDate(addDays(startOfTomorrow(), 5), 'yyyy-LL-dd')
     cy.findByRole('textbox', { name: /What’s the target date for progress\?/i })
       .clear()
-      .type(formatDate(targetDate, 'dd/MM/yyyy'))
+      .type(formatDate(targetDate, 'd/L/yyyy'))
     cy.findByRole('button', { name: /continue/i }).click()
-    cy.contains('dt', 'Target date').next().should('include.text', DATE_FORMAT_GB_VERBOSE.format(targetDate))
+    cy.contains('dt', 'Target date').next().should('include.text', formatDateLongMonthConcise(targetDate))
 
     cy.findByRole('link', { name: /change the summary of the identified need/i }).click()
     cy.url().should('to.match', /summarise-identified-need#identifiedNeed/i)
@@ -89,9 +89,7 @@ context('test /update-plan/check-answers', () => {
     cy.contains('dt', 'Actions and progress').next().should('include.text', 'foobarprog')
     cy.contains('dt', 'Planned intervention').next().should('include.text', 'we need to do things')
     cy.contains('dt', 'Identified need summary').next().should('include.text', 'a need')
-    cy.contains('dt', 'Target date')
-      .next()
-      .should('include.text', DATE_FORMAT_GB_VERBOSE.format(new Date(2024, 5, 2)))
+    cy.contains('dt', 'Target date').next().should('include.text', formatDateLongMonthConcise('2024-06-02'))
     cy.contains('dt', 'Person responsible').next().should('include.text', 'joe bloggs')
   }
 

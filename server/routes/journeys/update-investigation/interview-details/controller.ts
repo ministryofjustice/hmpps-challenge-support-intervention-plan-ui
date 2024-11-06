@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { SchemaType } from '../../record-investigation/interview-details/schemas'
 import { PatchInvestigationController } from '../../base/patchInvestigationController'
-import { formatInputDate } from '../../../../utils/datetimeUtils'
+import { formatDateConcise } from '../../../../utils/datetimeUtils'
 import { getNonUndefinedProp } from '../../../../utils/utils'
 
 export class UpdateInterviewController extends PatchInvestigationController {
@@ -26,7 +26,7 @@ export class UpdateInterviewController extends PatchInvestigationController {
       intervieweeRoleOptions,
       interviewDate:
         res.locals.formResponses?.['interviewDate'] ??
-        formatInputDate(req.journeyData.investigation?.interviews?.[index]?.interviewDate),
+        formatDateConcise(req.journeyData.investigation?.interviews?.[index]?.interviewDate),
       interviewee:
         res.locals.formResponses?.['interviewee'] ?? req.journeyData.investigation?.interviews?.[index]?.interviewee,
       backUrl: '../../update-investigation',

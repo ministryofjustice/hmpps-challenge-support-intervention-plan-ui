@@ -52,7 +52,7 @@ context('test /update-plan/next-review-date', () => {
   const validatePageContents = () => {
     cy.findByRole('heading', { name: /change the date of the next csip review/i }).should('be.visible')
     cy.findByRole('heading', { name: /when will you next review the plan with/i }).should('be.visible')
-    cy.findByDisplayValue('25/05/2024').should('be.visible')
+    cy.findByDisplayValue('25/5/2024').should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /Cancel/i })
       .should('be.visible')

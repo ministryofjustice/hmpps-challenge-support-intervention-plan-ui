@@ -63,7 +63,7 @@ context('test /update-review/next-review-date', () => {
       .and('have.attr', 'href')
       .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
 
-    getNextReviewDate().should('be.visible').and('have.value', '15/04/2025')
+    getNextReviewDate().should('be.visible').and('have.value', '15/4/2025')
   }
 
   const validateErrorMessage = () => {
@@ -85,14 +85,14 @@ context('test /update-review/next-review-date', () => {
     getNextReviewDate().should('be.focused')
     getNextReviewDate().should('have.value', '27/13/2024')
 
-    getNextReviewDate().clear().type('01/01/2024', { delay: 0 })
+    getNextReviewDate().clear().type('1/1/2024', { delay: 0 })
     getContinueButton().click()
 
     cy.findByRole('link', { name: /Next review date must be today or in the future/i })
       .should('be.visible')
       .click()
     getNextReviewDate().should('be.focused')
-    getNextReviewDate().should('have.value', '01/01/2024')
+    getNextReviewDate().should('have.value', '1/1/2024')
   }
 
   const proceedToNextScreen = () => {

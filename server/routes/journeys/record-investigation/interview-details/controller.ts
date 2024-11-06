@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
 import { BaseJourneyController } from '../../base/controller'
-import { formatInputDate } from '../../../../utils/datetimeUtils'
+import { formatDateConcise } from '../../../../utils/datetimeUtils'
 
 export class InterviewDetailsController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
@@ -24,7 +24,7 @@ export class InterviewDetailsController extends BaseJourneyController {
       intervieweeRoleOptions,
       interviewDate:
         res.locals.formResponses?.['interviewDate'] ??
-        formatInputDate(req.journeyData.investigation?.interviews?.[index]?.interviewDate),
+        formatDateConcise(req.journeyData.investigation?.interviews?.[index]?.interviewDate),
       interviewee:
         res.locals.formResponses?.['interviewee'] ?? req.journeyData.investigation?.interviews?.[index]?.interviewee,
       backUrl: '../interviews-summary',

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
-import { formatInputDate } from '../../../../utils/datetimeUtils'
+import { formatDateConcise } from '../../../../utils/datetimeUtils'
 
 export class NextReviewDateController {
   GET = async (req: Request, res: Response) => {
@@ -9,7 +9,7 @@ export class NextReviewDateController {
     res.render('develop-an-initial-plan/next-review-date/view', {
       backUrl,
       nextCaseReviewDate:
-        res.locals.formResponses?.['nextCaseReviewDate'] || formatInputDate(req.journeyData.plan!.nextCaseReviewDate),
+        res.locals.formResponses?.['nextCaseReviewDate'] || formatDateConcise(req.journeyData.plan!.nextCaseReviewDate),
     })
   }
 

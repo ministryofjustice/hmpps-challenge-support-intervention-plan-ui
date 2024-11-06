@@ -51,10 +51,10 @@ context('test /updatel-plan/close-identified-need', () => {
 
     cy.findByRole('heading', { name: 'first need' }).should('be.visible')
     cy.findByText('test testerson').should('be.visible')
-    cy.findByText('02 April 2024').should('be.visible')
+    cy.findByText('2 April 2024').should('be.visible')
     cy.findByText('get it sorted').should('be.visible')
     cy.findByText('progression done').should('be.visible')
-    cy.findByText('01 March 2024').should('be.visible')
+    cy.findByText('1 March 2024').should('be.visible')
 
     cy.findByRole('button', { name: /Close need/i }).should('be.visible')
 

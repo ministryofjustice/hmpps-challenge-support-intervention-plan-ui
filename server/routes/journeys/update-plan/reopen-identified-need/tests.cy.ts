@@ -75,12 +75,12 @@ context('test /updatel-plan/reopen-identified-need', () => {
 
     cy.findByRole('heading', { name: 'closed need' }).should('be.visible')
     cy.findByText('joe bloggs').should('be.visible')
-    cy.findByText('01 May 2024').should('be.visible')
-    cy.findByText('02 June 2024').should('be.visible')
+    cy.findByText('1 May 2024').should('be.visible')
+    cy.findByText('2 June 2024').should('be.visible')
     cy.findAllByText('closed need').should('have.length', 2)
     cy.findByText('we need to do things').should('be.visible')
     cy.findByText('Not provided').should('be.visible')
-    cy.findByText('01 April 2024').should('be.visible')
+    cy.findByText('1 April 2024').should('be.visible')
 
     cy.findByRole('button', { name: /Reopen need/i }).should('be.visible')
 

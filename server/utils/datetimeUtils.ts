@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import z from 'zod'
 
 const DATE_FORMAT_GB = new Intl.DateTimeFormat('en-GB', {
@@ -35,13 +36,10 @@ export const parse24Hour = (value: string) => parseNumber(value, 0, 23, 2)
 
 export const parseMinute = (value: string) => parseNumber(value, 0, 59, 2)
 
-// format ISO Date into GB date string
-export const formatInputDate = (value?: string) => value && DATE_FORMAT_GB.format(new Date(Date.parse(value)))
+export const formatDateConcise = (value?: string) => value && format(new Date(Date.parse(value)), 'd/L/yyyy')
 
-export const formatDisplayDate = (value?: string) => value && DATE_FORMAT_GB_VERBOSE.format(new Date(Date.parse(value)))
-
-export const formatSimpleDisplayDate = (value?: string) =>
-  value && DATE_FORMAT_GB.format(new Date(Date.parse(value))).replaceAll(/^0|(?<=\/)0/g, '')
+export const formatDateLongMonthConcise = (value?: string) =>
+  value && format(new Date(Date.parse(value)), 'd LLLL yyyy')
 
 export const formatDisplayDateTime = (value?: string) =>
   value && DATE_TIME_FORMAT_GB_VERBOSE.format(new Date(Date.parse(value)))
