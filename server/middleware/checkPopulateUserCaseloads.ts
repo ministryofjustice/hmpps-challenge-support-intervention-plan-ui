@@ -19,6 +19,9 @@ export default function checkPopulateUserCaseloads(
 
   router.use(async (req, res, next) => {
     const splitUrl = req.url.split('/').filter(Boolean)
+    const services = res.locals.feComponentsMeta?.services
+    let isEligibleForService = services ? services.find(service => service.id === 'csipUI') !== undefined : undefined
+    let caseloads
     try {
       if (res.locals.feComponentsMeta?.caseLoads) {
         res.locals.user.caseloads = res.locals.feComponentsMeta.caseLoads
@@ -27,11 +30,8 @@ export default function checkPopulateUserCaseloads(
         res.locals.user.activeCaseLoad = res.locals.feComponentsMeta.activeCaseLoad
       }
       const refetchCaseloads = !res.locals.user.caseloads
-      const promises = refetchCaseloads
-        ? [csipApiService.getServiceConfigInfo(req), prisonApiService.getCaseLoads(req)]
-        : [csipApiService.getServiceConfigInfo(req)]
-      const [configInfo, caseloads] = await Promise.all(promises)
       if (refetchCaseloads) {
+        caseloads = caseloads ?? (await prisonApiService.getCaseLoads(req))
         res.locals.user.caseloads = caseloads as CaseLoad[]
         res.locals.user.activeCaseLoad =
           (caseloads as CaseLoad[])!.find(caseload => caseload.currentlyActive) ?? res.locals.user.activeCaseLoad
@@ -44,11 +44,13 @@ export default function checkPopulateUserCaseloads(
         !req.url.includes('prisoner-image') &&
         !req.url.includes('service-not-enabled')
       ) {
-        if (
-          !(configInfo as ServiceConfigInfo).activeAgencies.includes(
+        if (isEligibleForService === undefined) {
+          const configInfo = await csipApiService.getServiceConfigInfo(req)
+          isEligibleForService = (configInfo as ServiceConfigInfo).activeAgencies.includes(
             res.locals.user.caseloads!.find(caseload => caseload.currentlyActive)?.caseLoadId || '',
           )
-        ) {
+        }
+        if (!isEligibleForService) {
           res.redirect('/service-not-enabled')
           return
         }
