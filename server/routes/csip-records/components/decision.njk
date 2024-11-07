@@ -30,7 +30,7 @@
           text: 'Decision outcome'
         },
         value: {
-          text: decision.outcome.description
+          text: (decision.outcome.description if decision.outcome else 'Not provided')
         }
       },
       {
@@ -38,7 +38,7 @@
           text: 'Signed off by'
         },
         value: {
-          text: decision.signedOffByRole.description
+          text: (decision.signedOffByRole.description if decision.signedOffByRole else 'Not provided')
         }
       },
       {
