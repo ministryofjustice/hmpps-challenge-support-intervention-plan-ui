@@ -10,10 +10,10 @@ context('test /manage-csips', () => {
     cy.task('reset')
     cy.task('stubSignIn')
     cy.task('stubComponents')
-    cy.task('stubSearchCsipRecords')
   })
 
   it('tests all use cases', () => {
+    cy.task('stubSearchCsipRecords')
     navigateToTestPage()
     cy.url().should('to.match', /\/manage-csips$/)
     checkAxeAccessibility()
@@ -73,6 +73,18 @@ context('test /manage-csips', () => {
     getQueryInput().should('have.value', '')
     cy.get('[aria-current="page"]').first().should('have.text', '1')
     cy.get('[aria-sort="descending"]').should('not.exist')
+  })
+
+  it('shows error message and empty result on API failure', () => {
+    cy.task('stubSearchCsipRecordsFail')
+    navigateToTestPage()
+    cy.url().should('to.match', /\/manage-csips/)
+    checkAxeAccessibility()
+
+    cy.findAllByRole('heading', { name: /View and manage CSIPs/i }).should('be.visible')
+
+    cy.findByText('Simulated Error for E2E testing').should('be.visible')
+    cy.findByText('No results for this search criteria.').should('be.visible')
   })
 
   const navigateToTestPage = () => {

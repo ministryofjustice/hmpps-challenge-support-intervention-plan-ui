@@ -883,6 +883,12 @@ const stubSearchCsipRecords = () => {
   })
 }
 
+const stubSearchCsipRecordsFail = () => {
+  return createBasicHttpStub('GET', '/csip-api/search/csip-records.*', 500, {
+    userMessage: 'Simulated Error for E2E testing',
+  })
+}
+
 const stubGetCsipOverview = () => {
   const reviewDate = new Date()
   reviewDate.setDate(reviewDate.getDate() + 1)
@@ -1039,6 +1045,7 @@ export default {
   stubPostNewAttendeeSuccess,
   stubPostNewAttendeeFail,
   stubSearchCsipRecords,
+  stubSearchCsipRecordsFail,
   stubGetCsipOverview,
   stubGetServiceInfoOneAgencyLEI,
   stubGetServiceInfoOneAgencyMDI,
