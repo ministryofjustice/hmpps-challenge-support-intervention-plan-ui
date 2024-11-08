@@ -1,5 +1,4 @@
-import { expect } from 'chai'
-import { checkAxeAccessibility } from '../support/accessibilityViolations'
+import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
 
 context('Make a Referral Journey', () => {
   beforeEach(() => {
@@ -44,7 +43,6 @@ context('Make a Referral Journey', () => {
     cy.go('back')
     // There is nothing to test or wait on when going back here - the entire redirection is handled in the express middleware, so we just wait for a second to ensure
     // that we arent just immediately testing that the same url is there, and then that the state handling has redirected us back to confirmation
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000)
     cy.url().should('include', '/confirmation')
   })
@@ -238,13 +236,9 @@ const fillInformationReactiveNotOnBehalf = () => {
     'be.visible',
   )
   // Cypress does not check the visibility of elements inside <details> elements properly, so use browser builtins instead
-  cy.findByText(/the description could include/i).then(el => {
-    expect(el.get(0).checkVisibility()).to.eq(false)
-  })
-  cy.findByText(/what type of information to include/i).click()
-  cy.findByText(/the description could include/i).then(el => {
-    expect(el.get(0).checkVisibility()).to.eq(true)
-  })
+  cy.get('details').invoke('attr', 'open').should('not.exist')
+  cy.get('summary').click()
+  cy.get('details').invoke('attr', 'open').should('exist')
   cy.findByRole('textbox', { name: /Describe the incident and the concerns relating to the incident/i }).type(
     'incident concerns foobar123',
     { delay: 0 },

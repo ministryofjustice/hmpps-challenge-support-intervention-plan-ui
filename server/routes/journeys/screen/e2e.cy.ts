@@ -1,4 +1,4 @@
-import { checkAxeAccessibility } from '../support/accessibilityViolations'
+import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
 
 context('Screen a CSIP Referral Journey', () => {
   beforeEach(() => {
