@@ -23,6 +23,8 @@ context('Make a Referral Journey', () => {
     fillInNextSteps()
     fillInAdditionalInformation()
     reviewCheckAnswersConfirm()
+    reviewChangeLinks()
+    reivewConfirmation()
   })
 
   const fillInSignOff = () => {
@@ -57,8 +59,10 @@ context('Make a Referral Journey', () => {
     cy.contains('dt', 'Reasons for decision').next().should('include.text', 'some reasons go here')
     cy.contains('dt', 'Comments on next steps').next().should('include.text', 'some comments here!')
     cy.contains('dt', 'Additional information').next().should('include.text', 'additional info goes here!')
-    cy.findByRole('button', { name: /Confirm and record decision/i }).click()
+  }
 
+  const reivewConfirmation = () => {
+    cy.findByRole('button', { name: /Confirm and record decision/i }).click()
     cy.url().should('include', '/confirmation')
     checkAxeAccessibility()
     cy.findByRole('heading', { name: /CSIP investigation decision recorded/i })
@@ -66,11 +70,44 @@ context('Make a Referral Journey', () => {
       .next()
       .should('include.text', 'Status: Awaiting decision')
 
+    // Test that going back from confirmation automatically redirects us back to confirmation
     cy.go('back')
     // There is nothing to test or wait on when going back here - the entire redirection is handled in the express middleware, so we just wait for a second to ensure
-    // that we arent just immediately testing that the same url is there, and then that the state handling has redirected us back to confirmation
+    // that we arent just immediately testing before the navigation back has started, and then that the state handling has redirected us back to confirmation
     cy.wait(1000)
     cy.url().should('include', '/confirmation')
+  }
+
+  const reviewChangeLinks = () => {
+    cy.findByRole('link', { name: /who’s signing off on the decision/i }).click()
+    cy.url().should('to.match', /record-decision$/)
+    cy.findByRole('radio', { name: /SignerRole1/i }).click()
+    cy.findByRole('button', { name: /continue/i }).click()
+    cy.contains('dt', 'Signed off by').next().should('include.text', 'SignerRole1')
+
+    cy.findByRole('link', { name: /change the outcome of the investigation/i }).click()
+    cy.url().should('to.match', /conclusion#outcome$/)
+    cy.findByRole('radio', { name: /No further action/i }).click()
+    cy.findByRole('button', { name: /continue/i }).click()
+    cy.contains('dt', 'Outcome').next().should('include.text', 'No further action')
+
+    cy.findByRole('link', { name: /change the description of the reasons for the decision/i }).click()
+    cy.url().should('to.match', /conclusion#conclusion$/)
+    cy.findByRole('textbox', { name: /Describe the reasons for the decision/i }).type('different reasons')
+    cy.findByRole('button', { name: /continue/i }).click()
+    cy.contains('dt', 'Reasons for decision').next().should('include.text', 'different reasons')
+
+    cy.findByRole('link', { name: /change the comments on next steps/i }).click()
+    cy.url().should('to.match', /next-steps$/)
+    cy.findByRole('textbox', { name: /Add any comments on next steps \(optional\)/i }).type('next steps!')
+    cy.findByRole('button', { name: /continue/i }).click()
+    cy.contains('dt', 'Comments on next steps').next().should('include.text', 'next steps!')
+
+    cy.findByRole('link', { name: /change the additional information/i }).click()
+    cy.url().should('to.match', /additional-information$/)
+    cy.findByRole('textbox', { name: /Add additional information \(optional\)/i }).type('different info')
+    cy.findByRole('button', { name: /continue/i }).click()
+    cy.contains('dt', 'Additional information').next().should('include.text', 'different info')
   }
 
   const signinAndStart = () => {
