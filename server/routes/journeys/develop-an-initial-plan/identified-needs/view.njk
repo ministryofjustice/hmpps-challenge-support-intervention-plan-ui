@@ -19,14 +19,14 @@
             summaryText: "Help with developing an initial plan",
             html: '
             <p>The plan should:</p>
-            <ul>
-            <li>respond to the needs identified in within the referral, investigation and other records</li>
+            <ul class="govuk-list govuk-list--bullet">
+            <li>respond to the needs identified within the referral, investigation and other records</li>
             <li>include achievable targets, developed and agreed with the prisoner</li>
             <li>detail ’small steps’ to behaviour change, including the ’how’ and ’what it looks like’</li>
             <li>be based on a multi-disciplinary approach and communicated with all appropriate staff members</li>
             </ul>
             <p>Plans can include a range of activities, such as:</p>
-            <ul>
+            <ul class="govuk-list govuk-list--bullet">
             <li>support to cope better and manage their triggers</li>
             <li>support to learn about acceptable behaviour</li>
             <li>other types of support - for example, helping the prisoner improve their contact with family or engage more with activities</li>
@@ -40,7 +40,10 @@
     {% for identifiedNeed in identifiedNeeds %}
         {{ govukSummaryList({
             card: {
-                title: { text: identifiedNeed.identifiedNeed },
+                title: {
+                    text: identifiedNeed.identifiedNeed,
+                    classes: "govuk-!-font-size-24"
+                },
                 actions: {
                     items: [
                         {

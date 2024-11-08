@@ -32,6 +32,7 @@ context('test /develop-an-initial-plan/confirmation', () => {
   })
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Initial plan recorded - DPS')
     cy.findByRole('heading', { name: 'Initial plan recorded for Testname User' }).should('be.visible')
     cy.findByRole('heading', { name: 'How to keep this plan up to date' }).should('be.visible')
     cy.findByText('Use this service to:').should('be.visible')

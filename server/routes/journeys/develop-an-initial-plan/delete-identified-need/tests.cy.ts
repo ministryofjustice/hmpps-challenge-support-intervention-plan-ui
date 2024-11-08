@@ -50,6 +50,7 @@ context('test /develop-an-initial-plan/delete-identified-need', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Are you sure you want to delete this identified need? - Develop an initial plan - DPS')
     cy.findByRole('link', { name: /^back/i }).should('be.visible')
     cy.findByRole('heading', { name: /are you sure you want to delete this identified need\?/i }).should('be.visible')
 
