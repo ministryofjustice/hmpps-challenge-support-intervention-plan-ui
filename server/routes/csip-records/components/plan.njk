@@ -80,9 +80,9 @@
 
 <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-8">
 
-<div class="govuk-grid-row govuk-!-margin-bottom-6">
+<div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-7">Identified needs</h2>
+        <h2 class="govuk-heading-m">Identified needs</h2>
     </div>
     {% if status == 'CSIP_OPEN' %}
         <div class="govuk-summary-list govuk-summary-list__actions">
@@ -96,7 +96,8 @@
         card: {
             classes: "govuk-!-margin-bottom-7" if loop.index === identifiedNeeds.length else undefined,
             title: { 
-              text: need.identifiedNeed
+              text: need.identifiedNeed,
+              classes: "govuk-!-font-size-24"
             },
             actions: {
               items: [{

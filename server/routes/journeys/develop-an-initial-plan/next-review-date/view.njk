@@ -19,7 +19,7 @@
         {{ govukDetails({
             summaryText: "Help with setting a review date",
             html: '
-            <p>Choose a plan that’s consistent with the targets and dates in ' + (prisoner | firstNameSpaceLastName | possessiveComma | escape) + ' plan</p>
+            <p>Choose a review date that’s consistent with the targets and dates in ' + (prisoner | firstNameSpaceLastName | possessiveComma | escape) + ' plan.</p>
             <p>If there’s anything upcoming that could be triggering for ' + (prisoner | firstNameSpaceLastName | escape) + ', it might be useful to set the review date before this.</p>
             '
         }) }}
@@ -34,7 +34,9 @@
             label: {
                 html: '<h2 class="govuk-heading-m">When will you next review the plan with ' + (prisoner | firstNameSpaceLastName | escape) + '?</h2>'
             },
-            hint: "For example, 24/9/2024",
+            hint: {
+                text: "For example, 24/9/2024"
+            },
             value: nextCaseReviewDate,
             errorMessage: validationErrors | findError('nextCaseReviewDate'),
             classes: 'hmpps-datepicker--fixed-width govuk-body',

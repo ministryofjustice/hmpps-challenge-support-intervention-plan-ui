@@ -4,7 +4,7 @@
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "Delete identified need - Develop an initial plan" %}
+{% set pageTitle = "Are you sure you want to delete this identified need? - Develop an initial plan" %}
 
 {% block innerContent %}
     <div class="govuk-grid-row">
@@ -16,7 +16,10 @@
 
     {{ govukSummaryList({
         card: {
-            title: { text: identifiedNeed.identifiedNeed }
+            title: {
+                text: identifiedNeed.identifiedNeed,
+                classes: "govuk-!-font-size-24"
+            }
         },
         rows: [{
             key: {

@@ -4,7 +4,7 @@
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "Check answers - Develop an initial plan" %}
+{% set pageTitle = "Check your answers before opening a CSIP - Develop an initial plan" %}
 
 {% block innerContent %}
 
@@ -15,7 +15,7 @@
         </div>
     </div>
 
-     <div class="govuk-grid-row govuk-!-margin-bottom-7">
+     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <h2 class="govuk-heading-m">Case management</h2>
         </div>
@@ -77,7 +77,7 @@
         }]
     }) }}
 
-    <div class="govuk-grid-row govuk-!-margin-bottom-7">
+    <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <h2 class="govuk-heading-m">Identified needs</h2>
         </div>
@@ -90,7 +90,10 @@
         {{ govukSummaryList({
             classes: "govuk-!-margin-bottom-7" if loop.index === plan.identifiedNeeds.length else undefined,
             card: {
-                title: { text: need.identifiedNeed }
+                title: {
+                    text: need.identifiedNeed,
+                    classes: "govuk-!-font-size-24"
+                }
             },
             rows: [{
                 key: {

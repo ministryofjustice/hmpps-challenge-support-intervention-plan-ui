@@ -85,6 +85,7 @@ context('test /record-investigation/check-answers', () => {
 
   const validatePageContents = () => {
     cy.url().should('to.match', /\/check-answers$/)
+    cy.title().should('equal', 'Check your answers before opening a CSIP - Develop an initial plan - DPS')
     cy.findByRole('heading', { name: /Check your answers before opening a CSIP for Testname User/ }).should(
       'be.visible',
     )

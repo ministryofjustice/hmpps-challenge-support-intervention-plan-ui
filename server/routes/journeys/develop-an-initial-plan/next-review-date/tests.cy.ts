@@ -5,7 +5,7 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 
 const uuid = v4()
 
-context('Make a Referral Journey', () => {
+context('DiAP next review date', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
@@ -13,7 +13,7 @@ context('Make a Referral Journey', () => {
     cy.task('stubComponents')
   })
 
-  it('test area-of-work, including all edge cases', () => {
+  it('test next-review-date, including all edge cases', () => {
     setupDataSignInAndGo()
 
     checkValidation()
@@ -78,7 +78,9 @@ context('Make a Referral Journey', () => {
     cy.get('details').invoke('attr', 'open').should('not.exist')
     cy.get('summary').click()
     cy.get('details').invoke('attr', 'open').should('exist')
-    cy.findByText('Choose a plan that’s consistent with the targets and dates in Test Testersons’ plan')
+    cy.findByText(/Choose a review date that’s consistent with the targets and dates in Test Testersons’ plan/).should(
+      'be.visible',
+    )
   }
 
   const setupDataSignInAndGo = () => {
