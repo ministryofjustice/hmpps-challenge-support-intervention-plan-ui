@@ -8,6 +8,15 @@ const PAGE_SIZE = 25
 
 export class SearchCsipController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
+    if (res.locals.validationErrors) {
+      // if the API call failed (and resulted in a validation error message), render empty result instead of repeating the API call again
+      return res.render('manage-csips/view', {
+        showBreadcrumbs: true,
+        records: [],
+        ...req.session.searchCsipParams,
+      })
+    }
+
     const { page, clear, sort, query, status } = req.query
 
     if (clear) {
