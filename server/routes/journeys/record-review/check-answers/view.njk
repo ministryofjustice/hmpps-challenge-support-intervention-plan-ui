@@ -5,7 +5,7 @@
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "Check answers - Record a CSIP review" %}
+{% set pageTitle = "Check your answers before recording the review" + (" and closing the CSIP" if review.outcome == 'CLOSE_CSIP' else "") + " - Record a CSIP review" %}
 
 {% block innerContent %}
 

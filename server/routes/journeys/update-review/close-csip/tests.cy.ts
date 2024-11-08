@@ -119,6 +119,7 @@ context('test /update-review/close-csip', () => {
   })
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Are you sure you want to close this CSIP? - Update a CSIP review - DPS')
     cy.findByRole('heading', { name: 'Are you sure you want to close this CSIP?' }).should('be.visible')
 
     cy.findByText('Update a CSIP review').should('be.visible')

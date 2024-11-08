@@ -4,7 +4,7 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Update review details - Update a CSIP review" if isUpdate else "Enter review details - Record a CSIP review" %}
+{% set pageTitle = "Update the review details - Update a CSIP review" if isUpdate else "Enter details of the review - Record a CSIP review" %}
 
 {% block innerContent %}
     {% include 'base/components/review-caption.njk' %}
@@ -20,7 +20,7 @@
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {{ govukDetails({
-            summaryText: "What type of information to include",
+            summaryText: "What to include in the review details",
             html: '
             <p>You could include: </p>
             <ul class="govuk-list govuk-list--bullet">

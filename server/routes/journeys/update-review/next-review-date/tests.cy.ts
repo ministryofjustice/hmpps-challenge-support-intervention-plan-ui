@@ -48,6 +48,7 @@ context('test /update-review/next-review-date', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Set a date for the next CSIP review - Update a CSIP review - DPS')
     cy.findByRole('heading', { name: 'Set a date for the next CSIP review' }).should('be.visible')
     cy.findByText('Update a CSIP review').should('be.visible')
     cy.findByText('Help with setting a review date').should('be.visible').click()

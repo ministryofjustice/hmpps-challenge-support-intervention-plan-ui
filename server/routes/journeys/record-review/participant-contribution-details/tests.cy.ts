@@ -54,12 +54,15 @@ context('test /record-review/participant-contribution-details', () => {
   })
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Participant and contribution details - Record a CSIP review - DPS')
     cy.findByRole('heading', { name: /Participant and contribution details/ }).should('be.visible')
 
     cy.findByRole('heading', { name: /What’s the participant’s name\?/ }).should('be.visible')
 
     getName().should('be.visible')
-    cy.findByText('For example, the prisoner or a staff member supporting the prisoner.').should('be.visible')
+    cy.findByText('For example, the name of the prisoner or a staff member supporting the prisoner.').should(
+      'be.visible',
+    )
     cy.findByRole('heading', { name: /What’s their role\?/ }).should('be.visible')
     getRole().should('be.visible')
     cy.findByText(/Did this participant attend the review meeting in person\?/).should('be.visible')

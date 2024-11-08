@@ -40,6 +40,7 @@ context('test /record-review/check-answers', () => {
     cy.visit(`${uuid}/record-review/check-answers`)
 
     cy.url().should('to.match', /\/check-answers$/)
+    cy.title().should('equal', 'Check your answers before recording the review - Record a CSIP review - DPS')
     checkAxeAccessibility()
 
     cy.findByRole('heading', { name: /Check your answers before recording the review/ }).should('be.visible')
@@ -124,6 +125,10 @@ context('test /record-review/check-answers', () => {
     cy.visit(`${uuid}/record-review/check-answers`)
 
     cy.url().should('to.match', /\/check-answers$/)
+    cy.title().should(
+      'equal',
+      'Check your answers before recording the review and closing the CSIP - Record a CSIP review - DPS',
+    )
 
     cy.contains('dt', 'Attended in person').next().should('include.text', 'Yes')
 

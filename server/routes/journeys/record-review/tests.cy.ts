@@ -33,6 +33,8 @@ context('test /record-review', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Record information about the review - Record a CSIP review - DPS')
+
     cy.findByRole('heading', { name: 'Record information about the review' }).should('be.visible')
     cy.findByText(/LEI123/).should('be.visible')
 
