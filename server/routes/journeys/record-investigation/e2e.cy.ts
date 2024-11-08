@@ -118,6 +118,9 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
       .should('be.visible')
       .and('have.attr', 'href')
       .and('match', /\/manage-csips\?clear=true$/)
+
+    cy.go('back')
+    cy.url().should('to.match', /confirmation$/)
   })
 
   const govukTaskListStatusShouldBe = (link: string, status: string) => {
@@ -215,5 +218,51 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     )
     verifySummaryText('Triggers', 'What are Testname User’s triggers? cypress e2e test')
     verifySummaryText('Protective factors', 'What are the protective factors for Testname User? cypress e2e test')
+    verifyCyaChangeLinks()
+  }
+
+  const verifyCyaChangeLinks = () => {
+    cy.findByText('Add, change or delete').click()
+    cy.url().should('to.match', /interviews-summary$/)
+    getContinueButton().click()
+    cy.url().should('to.match', /check-answers$/)
+
+    cy.findAllByText('Change').as('changeLinks')
+
+    cy.get('@changeLinks').eq(0).click()
+    cy.url().should('to.match', /staff-involved$/)
+    cy.get('textarea').clear().type('staff-involved changed', { delay: 0 })
+    getContinueButton().click()
+    verifySummaryText(sections.STAFF, 'staff-involved changed')
+
+    cy.get('@changeLinks').eq(1).click()
+    cy.url().should('to.match', /why-behaviour-occurred$/)
+    cy.get('textarea').clear().type('why-behaviour-occurred changed', { delay: 0 })
+    getContinueButton().click()
+    verifySummaryText('Why the behaviour occurred', 'why-behaviour-occurred changed')
+
+    cy.get('@changeLinks').eq(2).click()
+    cy.url().should('to.match', /evidence-secured$/)
+    cy.get('textarea').clear().type('evidence-secured changed', { delay: 0 })
+    getContinueButton().click()
+    verifySummaryText(sections.EVIDENCE, 'evidence-secured changed')
+
+    cy.get('@changeLinks').eq(3).click()
+    cy.url().should('to.match', /usual-behaviour-presentation$/)
+    cy.get('textarea').clear().type('usual-behaviour-presentation changed', { delay: 0 })
+    getContinueButton().click()
+    verifySummaryText(sections.USUAL_BEHAVIOUR, 'usual-behaviour-presentation changed')
+
+    cy.get('@changeLinks').eq(4).click()
+    cy.url().should('to.match', /triggers$/)
+    cy.get('textarea').clear().type('triggers changed', { delay: 0 })
+    getContinueButton().click()
+    verifySummaryText('Triggers', 'triggers changed')
+
+    cy.get('@changeLinks').eq(5).click()
+    cy.url().should('to.match', /protective-factors$/)
+    cy.get('textarea').clear().type('protective-factors changed', { delay: 0 })
+    getContinueButton().click()
+    verifySummaryText(sections.PROTECTIVE_FACTORS, 'protective-factors changed')
   }
 })
