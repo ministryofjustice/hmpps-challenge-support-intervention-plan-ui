@@ -58,6 +58,7 @@ context('test /record-review/outcome', () => {
   })
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'What’s the outcome of this review? - Record a CSIP review - DPS')
     cy.findByText('Record a CSIP review').should('be.visible')
 
     cy.findByRole('link', { name: /^back/i })

@@ -37,8 +37,9 @@ context('test /record-review/details', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Enter details of the review - Record a CSIP review - DPS')
     cy.findByRole('heading', { name: 'Enter details of the review' }).should('be.visible')
-    cy.findByText(/What type of information to include/).should('be.visible')
+    cy.findByText(/What to include in the review details/).should('be.visible')
     cy.get('details').invoke('attr', 'open').should('not.exist')
     cy.get('summary').click()
     cy.get('details').invoke('attr', 'open').should('exist')

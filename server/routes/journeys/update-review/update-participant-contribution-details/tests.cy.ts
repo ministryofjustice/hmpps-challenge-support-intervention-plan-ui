@@ -51,6 +51,7 @@ context('test /update-review/update-participant-contribution-details', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Update the participant and contribution details - Update a CSIP review - DPS')
     cy.findByRole('heading', { name: /Update the participant and contribution details/ }).should('be.visible')
 
     getName().should('be.visible').and('have.value', 'Attendee Name')

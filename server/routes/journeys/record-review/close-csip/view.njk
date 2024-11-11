@@ -5,7 +5,7 @@
 {% extends "partials/layout.njk" %}
 
 {% set identifiedNeedsText = "is 1 open identified need" if openIdentifiedNeeds == 1 else "are " + openIdentifiedNeeds + " open identified needs" %}
-{% set pageTitle = "Are you sure you want to close this CSIP? - Update a CSIP review" if isUpdate else "Close CSIP - Record a CSIP review" %}
+{% set pageTitle = "Are you sure you want to close this CSIP? - Update a CSIP review" if isUpdate else "Are you sure you want to record the final review and close this CSIP? - Record a CSIP review" %}
 {% set finalReviewInsert = "" if isUpdate else " record the final review and" %}
 
 {% block innerContent %}
@@ -30,7 +30,7 @@
         }) }}
         {% if not isUpdate %}
             {{ govukButton({
-                text: "No, change the outcome",
+                text: "No, change outcome",
                 href: backUrl,
                 classes: "govuk-button--secondary",
                 preventDoubleClick: true

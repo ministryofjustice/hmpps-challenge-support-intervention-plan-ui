@@ -19,7 +19,7 @@ context('test /record-review/participants-summary', () => {
     cy.url().should('to.match', /\/participants-summary$/)
     checkAxeAccessibility()
 
-    cy.findByRole('heading', { name: /Log participants and contributions to the review/ }).should('be.visible')
+    cy.findByRole('heading', { name: /Log participants and contributions/ }).should('be.visible')
     cy.findByText(/No participants recorded./).should('be.visible')
 
     cy.findByRole('button', { name: 'Add participant' }).click()

@@ -36,6 +36,10 @@ context('test /record-review/delete-participant', () => {
     cy.findByRole('link', { name: /delete the information about the participant/i }).click()
 
     cy.url().should('to.match', /\/delete-participant\/1$/)
+    cy.title().should(
+      'equal',
+      'Are you sure you want to delete the information about this participant? - Record a CSIP review - DPS',
+    )
     checkAxeAccessibility()
     cy.findByRole('heading', {
       name: /Are you sure you want to delete the information about this participant\?/,

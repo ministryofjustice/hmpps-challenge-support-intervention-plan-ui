@@ -9,7 +9,7 @@ context('test /record-review/close-csip', () => {
   const PAGE_URL = `${uuid}/record-review/close-csip`
 
   const getCloseButton = () => cy.findByRole('button', { name: 'Yes, close CSIP' })
-  const getCancelButton = () => cy.findByRole('button', { name: 'No, change the outcome' })
+  const getCancelButton = () => cy.findByRole('button', { name: 'No, change outcome' })
 
   beforeEach(() => {
     cy.task('reset')
@@ -85,6 +85,10 @@ context('test /record-review/close-csip', () => {
   })
 
   const validatePageContents = () => {
+    cy.title().should(
+      'equal',
+      'Are you sure you want to record the final review and close this CSIP? - Record a CSIP review - DPS',
+    )
     cy.findByRole('heading', { name: 'Are you sure you want to record the final review and close this CSIP?' }).should(
       'be.visible',
     )

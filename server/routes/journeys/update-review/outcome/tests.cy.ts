@@ -47,6 +47,7 @@ context('test /update-review/outcome', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'What’s the outcome of this review? - Record a CSIP review - DPS')
     cy.findByText('Update a CSIP review').should('be.visible')
 
     getOutcomeRemain().should('be.checked')

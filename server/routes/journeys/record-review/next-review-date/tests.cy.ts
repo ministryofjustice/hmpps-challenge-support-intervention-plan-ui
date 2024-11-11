@@ -44,6 +44,7 @@ context('test /record-review/next-review-date', () => {
   })
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Set a date for the next CSIP review - Record a CSIP review - DPS')
     cy.findByRole('heading', { name: 'Set a date for the next CSIP review' }).should('be.visible')
 
     cy.findByText('Record a CSIP review').should('be.visible')

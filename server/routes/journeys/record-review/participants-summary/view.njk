@@ -4,13 +4,13 @@
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "Participant and contribution details - Record a CSIP review" %}
+{% set pageTitle = "Participant and contribution details" if isUpdate else "Log participants and contributions - Record a CSIP review" %}
 
 {% block innerContent %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             {% include 'base/components/review-caption.njk' %}
-            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Log participants and contributions to the review</h1>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Log participants and contributions</h1>
         </div>
     </div>
 
