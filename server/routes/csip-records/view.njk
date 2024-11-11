@@ -6,6 +6,35 @@
 
 {% set fullWidth = true %}
 
+{% block additionalScripts %}
+  <script type="text/javascript" nonce="{{ cspNonce }}">
+      const printButton = document.getElementById('print-button');
+      if (printButton === null) {
+        if (!window.__customPrintObserver) {
+          const observer = new MutationObserver(mutationList => {
+            mutationList.forEach(mutation => {
+              if (mutation.type === 'childList') {
+                mutation.addedNodes.forEach(node => {
+                  if (node.id === 'print-button' && node.classList.contains('govuk-!-display-none')) {
+                    node.classList.remove('govuk-!-display-none');
+                    node.ariaHidden = false;
+                  }
+                });
+              }
+            })
+          });
+
+          observer.observe(document.documentElement, { attributes: false, childList: true, subtree: true })
+
+          window.__customPrintObserver = observer
+        }
+      } else {
+        printButton.classList.remove('govuk-!-display-none');
+        printButton.removeAttribute('aria-hidden');
+      }
+  </script>
+{% endblock %}
+
 
 
 {% switch updatingEntity %}
@@ -30,6 +59,19 @@
     </form>
   {% endset %}
 {% endif %}
+
+{% set printButtonHtml %}
+  {{ govukButton({
+    text: "Print",
+    preventDoubleClick: true,
+    attributes: {
+      id: "print-button",
+      "aria-hidden": true,
+      onclick: "javascript:print();"
+    },
+    classes: 'govuk-button--secondary govuk-!-margin-bottom-0 govuk-!-margin-left-4 govuk-!-display-none'
+  }) }}
+{% endset %}
 
 {% switch (updatingEntity or 'null') %}
   {% case 'null' %}
@@ -57,10 +99,16 @@
         text: basePageHeader,
         classes: 'govuk-heading-xl'
       },
-      items: [{
-        html: actionButtonHtml,
-        classes: 'govuk-!-display-none'
-      }] if actionButton else []
+      items: [
+        {
+          html: actionButtonHtml,
+          classes: 'govuk-!-display-none'
+        },
+        {
+          html: printButtonHtml,
+          classes: 'govuk-!-display-none'
+        }
+      ] if actionButton else []
     }) }}
     <hr class="govuk-section-break govuk-section-break--visible">
   {% endif %}
@@ -69,7 +117,7 @@
 {% block innerContent %}
   {% if not isUpdate %}
     <p class="govuk-!-margin-bottom-6">
-      {{ statusTag({ record: record }) }}
+      Status: {{ statusTag({ record: record }) }}
     </p>
     <p class="govuk-!-margin-bottom-8">
       <strong>CSIP log code:</strong> {{ record.logCode or "Not provided" }}
