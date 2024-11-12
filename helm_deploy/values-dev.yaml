@@ -20,7 +20,7 @@ generic-service:
     COMPONENT_API_URL: "https://frontend-components-dev.hmpps.service.justice.gov.uk" # used by hmpps-connect-dps-components module
     COMMON_COMPONENTS_ENABLED: true
     DPS_HOME_PAGE_URL: "https://digital-dev.prison.service.justice.gov.uk"
-    MINI_PROFILE_URL: "https://prisoner-dev.prison.service.justice.gov.uk"
+    MINI_PROFILE_URL: "https://prisoner-dev.digital.prison.service.justice.gov.uk""
     ENVIRONMENT_NAME: DEV # Phase banner tag label
     AUDIT_ENABLED: "false"
     SENTRY_ENVIRONMENT: DEV
