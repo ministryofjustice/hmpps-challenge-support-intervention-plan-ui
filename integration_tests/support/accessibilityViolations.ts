@@ -39,7 +39,10 @@ const checkStyleRules = () => {
       if (element.hasClass('govuk-summary-list__value') || element.hasClass('govuk-inset-text')) {
         return
       }
-      fail(`Non-curly apostrophe found in the following text: ${element.text()}`)
+      const textExcludeTesname = element.text().replace(/Tes'name/gi, '')
+      if (textExcludeTesname.includes("'")) {
+        fail(`Non-curly apostrophe found in the following text: ${element.text()}`)
+      }
     })
 }
 

@@ -8,7 +8,7 @@ context('test /record-review/next-review-date', () => {
 
   const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
   const getNextReviewDate = () =>
-    cy.findByRole('textbox', { name: 'When will you next review the plan with Testname User?' })
+    cy.findByRole('textbox', { name: "When will you next review the plan with Tes'name User?" })
 
   const resetInputs = () => {
     getNextReviewDate().clear()
@@ -51,7 +51,7 @@ context('test /record-review/next-review-date', () => {
 
     cy.findByText('Help with setting a review date').should('be.visible').click()
 
-    cy.findByText('Choose a review date that’s consistent with the targets and dates in Testname User’s plan.').should(
+    cy.findByText("Choose a review date that’s consistent with the targets and dates in Tes'name User’s plan.").should(
       'be.visible',
     )
 

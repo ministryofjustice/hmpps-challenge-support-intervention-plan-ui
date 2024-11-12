@@ -4,7 +4,7 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 context('test /record-investigation/triggers', () => {
   const uuid = uuidV4()
 
-  const getInputTextbox = () => cy.findByRole('textbox', { name: 'What are Testname User’s triggers?' })
+  const getInputTextbox = () => cy.findByRole('textbox', { name: "What are Tes'name User’s triggers?" })
   const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
 
   beforeEach(() => {
@@ -38,7 +38,7 @@ context('test /record-investigation/triggers', () => {
   }
 
   const validatePageContents = () => {
-    cy.findByRole('heading', { name: 'What are Testname User’s triggers?' }).should('be.visible')
+    cy.findByRole('heading', { name: "What are Tes'name User’s triggers?" }).should('be.visible')
     cy.findByText(/Where to find information on a prisoner’s triggers/).should('be.visible')
     getInputTextbox().should('be.visible')
     getContinueButton().should('be.visible')

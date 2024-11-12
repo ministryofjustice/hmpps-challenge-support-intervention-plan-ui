@@ -111,7 +111,7 @@ context('Make a Referral Journey', () => {
     // We're starting with it being proactive, so test the content and validation messages, then switch to reactive so we can test those as well
     cy.title().should('equal', 'Behaviour involvement - Make a CSIP referral - DPS')
     cy.findByRole('heading', { name: /behaviour involvement/i }).should('be.visible')
-    cy.findByText(/How was Testname User involved in the behaviour\?/).should('be.visible')
+    cy.findByText(/How was Tes'name User involved in the behaviour\?/).should('be.visible')
     cy.findByText(/have any staff been assaulted as a result of this behaviour\?/i).should('be.visible')
 
     cy.findByRole('button', { name: /continue/i }).click()
@@ -136,7 +136,7 @@ context('Make a Referral Journey', () => {
     cy.title().should('equal', 'Incident involvement - Make a CSIP referral - DPS')
 
     cy.findByRole('heading', { name: /incident involvement/i }).should('be.visible')
-    cy.findByText(/How was Testname User involved in the incident\?/).should('be.visible')
+    cy.findByText(/How was Tes'name User involved in the incident\?/).should('be.visible')
     cy.findByText(/were any staff assaulted during the incident\?/i).should('be.visible')
 
     cy.findByRole('button', { name: /continue/i }).click()
@@ -158,7 +158,7 @@ context('Make a Referral Journey', () => {
     cy.visit('/prisoners/A1111AA/referral/start')
     injectJourneyDataAndReload(uuid, {
       prisoner: {
-        firstName: 'Testname',
+        firstName: "Tes'name",
         lastName: 'User',
         cellLocation: '',
         prisonerNumber: 'A1111AA',

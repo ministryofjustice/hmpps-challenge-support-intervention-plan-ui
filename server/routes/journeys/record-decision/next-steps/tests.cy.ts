@@ -40,7 +40,7 @@ context('test /record-decision/next-steps', () => {
   const validatePageContents = () => {
     cy.title().should('equal', 'Add any comments on next steps - Record a CSIP investigation decision - DPS')
     cy.findByRole('heading', { name: /Add any comments on next steps \(optional\)/ }).should('be.visible')
-    cy.findByText('updating Testname User’s non-associations').should('be.visible')
+    cy.findByText("updating Tes'name User’s non-associations").should('be.visible')
     getInputTextbox().should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /^back/i })

@@ -65,10 +65,10 @@ context('test /update-review', () => {
   const validatePageContents = (hasOnlyOneReview: boolean) => {
     if (hasOnlyOneReview) {
       cy.title().should('to.match', /Update the review - CSIP - DPS/)
-      cy.findByRole('heading', { name: /Update the review of Testname User’s plan/ }).should('be.visible')
+      cy.findByRole('heading', { name: /Update the review of Tes'name User’s plan/ }).should('be.visible')
     } else {
       cy.title().should('to.match', /Update the most recent review - CSIP - DPS/)
-      cy.findByRole('heading', { name: /Update the most recent review of Testname User’s plan/ }).should('be.visible')
+      cy.findByRole('heading', { name: /Update the most recent review of Tes'name User’s plan/ }).should('be.visible')
     }
 
     cy.findByRole('link', { name: /cancel/i })

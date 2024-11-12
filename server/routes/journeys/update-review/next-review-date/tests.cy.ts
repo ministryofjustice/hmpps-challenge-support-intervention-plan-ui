@@ -3,7 +3,7 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 context('test /update-review/next-review-date', () => {
   const getContinueButton = () => cy.findByRole('button', { name: /Confirm and save/ })
   const getNextReviewDate = () =>
-    cy.findByRole('textbox', { name: 'When will you next review the plan with Testname User?' })
+    cy.findByRole('textbox', { name: "When will you next review the plan with Tes'name User?" })
 
   beforeEach(() => {
     cy.task('reset')
@@ -52,7 +52,7 @@ context('test /update-review/next-review-date', () => {
     cy.findByRole('heading', { name: 'Set a date for the next CSIP review' }).should('be.visible')
     cy.findByText('Update a CSIP review').should('be.visible')
     cy.findByText('Help with setting a review date').should('be.visible').click()
-    cy.findByText('Choose a review date that’s consistent with the targets and dates in Testname User’s plan.').should(
+    cy.findByText("Choose a review date that’s consistent with the targets and dates in Tes'name User’s plan.").should(
       'be.visible',
     )
     cy.findByRole('link', { name: /^back/i })

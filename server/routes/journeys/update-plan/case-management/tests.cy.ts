@@ -8,7 +8,7 @@ context('test /update-plan/case-management', () => {
   const PAGE_URL = `${uuid}/update-plan/case-management`
 
   const getContinueButton = () => cy.findByRole('button', { name: /Confirm and save/ })
-  const getCaseManager = () => cy.findByRole('textbox', { name: 'Who’s the Case Manager for Testname User’s plan?' })
+  const getCaseManager = () => cy.findByRole('textbox', { name: "Who’s the Case Manager for Tes'name User’s plan?" })
 
   const resetInputs = () => {
     getCaseManager().clear()
@@ -16,7 +16,7 @@ context('test /update-plan/case-management', () => {
   }
 
   const getReasonForPlan = () =>
-    cy.findByRole('textbox', { name: 'What’s the main reason why Testname User needs a plan?' })
+    cy.findByRole('textbox', { name: "What’s the main reason why Tes'name User needs a plan?" })
 
   beforeEach(() => {
     cy.task('reset')

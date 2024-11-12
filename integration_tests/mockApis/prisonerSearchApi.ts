@@ -12,7 +12,7 @@ const stubGetPrisoner = () => {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       jsonBody: {
-        firstName: 'TestName',
+        firstName: "Tes'Name",
         lastName: 'User',
         prisonerNumber: 'A1111AA',
         dateOfBirth: '1932-02-02',

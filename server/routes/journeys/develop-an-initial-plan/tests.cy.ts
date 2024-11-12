@@ -8,7 +8,7 @@ context('test /develop-an-initial-plan', () => {
   const getIsNotCaseManagerRadio = () => cy.findByRole('radio', { name: /No/ })
   const getCaseManagerTextField = () => cy.findByRole('textbox', { name: /Name of Case Manager/ })
   const getReasonsTextField = () =>
-    cy.findByRole('textbox', { name: /What’s the main reason why Testname User needs a plan\?/ })
+    cy.findByRole('textbox', { name: /What’s the main reason why Tes'name User needs a plan\?/ })
   const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
 
   beforeEach(() => {
@@ -40,7 +40,7 @@ context('test /develop-an-initial-plan', () => {
   }
 
   const validatePageContents = () => {
-    cy.findByRole('group', { name: /Are you the Case Manager for Testname User’s plan\?/ }).should('be.visible')
+    cy.findByRole('group', { name: /Are you the Case Manager for Tes'name User’s plan\?/ }).should('be.visible')
     getIsCaseManagerRadio().should('exist')
     getIsNotCaseManagerRadio().should('exist')
     getCaseManagerTextField().should('not.exist')

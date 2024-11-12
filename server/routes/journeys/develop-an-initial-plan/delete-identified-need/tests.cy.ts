@@ -26,7 +26,7 @@ context('test /develop-an-initial-plan/delete-identified-need', () => {
     cy.signIn()
     injectJourneyDataAndReload(uuid, {
       prisoner: {
-        firstName: 'TestName',
+        firstName: "Tes'Name",
         lastName: 'User',
         cellLocation: '',
         prisonerNumber: 'A1111AA',

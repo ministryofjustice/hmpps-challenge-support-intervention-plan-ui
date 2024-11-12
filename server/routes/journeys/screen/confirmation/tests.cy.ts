@@ -27,14 +27,14 @@ context('test /screen/confirmation', () => {
     checkAxeAccessibility()
     validatePageContents()
     cy.findByText(
-      'A CSIP Case Manager should be allocated to work with Testname User to develop an initial plan.',
+      "A CSIP Case Manager should be allocated to work with Tes'name User to develop an initial plan.",
     ).should('be.visible')
 
     setupData('INVESTIGATION_PENDING')
     checkAxeAccessibility()
     validatePageContents()
     cy.findByText(
-      'This should include interviewing Testname User about the behaviour that led to the referral.',
+      "This should include interviewing Tes'name User about the behaviour that led to the referral.",
     ).should('be.visible')
 
     setupData('NO_FURTHER_ACTION')
@@ -70,7 +70,7 @@ context('test /screen/confirmation', () => {
 
     cy.findByText('CSIP screening outcome recorded').should('be.visible')
 
-    cy.findByRole('link', { name: 'View CSIP details for Testname User' })
+    cy.findByRole('link', { name: "View CSIP details for Tes'name User" })
       .should('be.visible')
       .and('have.attr', 'href')
       .and('match', /\/manage-csips\?query=A1111AA$/)
