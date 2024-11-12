@@ -65,7 +65,7 @@ export default class CsipApiClient {
     size: number
   }): Promise<CsipSearchResults> {
     return this.restClient.get<CsipSearchResults>({
-      path: `/search/csip-records?page=${page}&size=${size}&prisonCode=${prisonCode}&query=${query ?? ''}&status=${status ?? ''}&sort=${sort}`,
+      path: `/search/csip-records?page=${page}&size=${size}&prisonCode=${prisonCode}&query=${encodeURIComponent(query ?? '')}&status=${status ?? ''}&sort=${sort}`,
     })
   }
 
