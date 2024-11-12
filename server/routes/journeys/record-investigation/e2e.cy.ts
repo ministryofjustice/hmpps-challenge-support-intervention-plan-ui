@@ -9,7 +9,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     WHY_BEHAVIOUR: 'Why the behaviour occurred',
     EVIDENCE: 'Evidence secured',
     USUAL_BEHAVIOUR: 'Usual behaviour presentation',
-    TRIGGERS: 'Testname User’s triggers',
+    TRIGGERS: "Tes'name User’s triggers",
     PROTECTIVE_FACTORS: 'Protective factors',
     CHECK: 'Check and save report',
   }
@@ -71,7 +71,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     completeTextboxSection(
       sections.USUAL_BEHAVIOUR,
       /usual-behaviour-presentation$/,
-      'What is Testname User’s usual behaviour presentation?',
+      "What is Tes'name User’s usual behaviour presentation?",
     )
 
     cy.findAllByText('Cannot save yet').should('have.length', 1)
@@ -82,7 +82,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     govukTaskListStatusShouldBe(sections.USUAL_BEHAVIOUR, 'Completed')
     cy.findAllByText('Incomplete').should('have.length', 2)
 
-    completeTextboxSection(sections.TRIGGERS, /triggers$/, 'What are Testname User’s triggers?')
+    completeTextboxSection(sections.TRIGGERS, /triggers$/, "What are Tes'name User’s triggers?")
 
     cy.findAllByText('Cannot save yet').should('have.length', 1)
     govukTaskListStatusShouldBe(sections.DETAILS, 'Completed')
@@ -96,7 +96,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     completeTextboxSection(
       sections.PROTECTIVE_FACTORS,
       /protective-factors$/,
-      'What are the protective factors for Testname User?',
+      "What are the protective factors for Tes'name User?",
     )
 
     govukTaskListStatusShouldBe(sections.CHECK, 'Incomplete')
@@ -214,10 +214,10 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     verifySummaryText(sections.EVIDENCE, 'What evidence has been secured? cypress e2e test')
     verifySummaryText(
       sections.USUAL_BEHAVIOUR,
-      'What is Testname User’s usual behaviour presentation? cypress e2e test',
+      "What is Tes'name User’s usual behaviour presentation? cypress e2e test",
     )
-    verifySummaryText('Triggers', 'What are Testname User’s triggers? cypress e2e test')
-    verifySummaryText('Protective factors', 'What are the protective factors for Testname User? cypress e2e test')
+    verifySummaryText('Triggers', "What are Tes'name User’s triggers? cypress e2e test")
+    verifySummaryText('Protective factors', "What are the protective factors for Tes'name User? cypress e2e test")
     verifyCyaChangeLinks()
   }
 

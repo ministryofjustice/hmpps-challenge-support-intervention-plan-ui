@@ -5,7 +5,7 @@ context('test /update-investigation/usual-behaviour-presentation', () => {
   const uuid = uuidV4()
 
   const getInputTextbox = () =>
-    cy.findByRole('textbox', { name: 'Add information about Testname User’s usual behaviour presentation' })
+    cy.findByRole('textbox', { name: "Add information about Tes'name User’s usual behaviour presentation" })
   const getContinueButton = () => cy.findByRole('button', { name: /Confirm and save/ })
 
   beforeEach(() => {
@@ -54,7 +54,7 @@ context('test /update-investigation/usual-behaviour-presentation', () => {
   }
 
   const validatePageContents = () => {
-    cy.findByRole('heading', { name: 'Add information about Testname User’s usual behaviour presentation' }).should(
+    cy.findByRole('heading', { name: "Add information about Tes'name User’s usual behaviour presentation" }).should(
       'be.visible',
     )
     cy.findByText('a great person').should('be.visible')

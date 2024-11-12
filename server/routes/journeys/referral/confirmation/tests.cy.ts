@@ -76,7 +76,7 @@ context('test /referral/confirmation', () => {
       'to provide guidance on actions if the referral does not progress to an investigation or a plan',
     ).should('be.visible')
 
-    cy.findByRole('link', { name: 'View CSIP details for Testname User' })
+    cy.findByRole('link', { name: "View CSIP details for Tes'name User" })
       .should('be.visible')
       .and('have.attr', 'href')
       .and('match', /\/manage-csips\?query=A1111AA$/)

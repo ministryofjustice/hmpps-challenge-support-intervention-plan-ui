@@ -57,10 +57,10 @@ context('test /manage-csips', () => {
 
     // on filter, clear sort, go to first page
     getStatusSelect().select('CSIP_OPEN')
-    getQueryInput().clear().type(' Testname', { delay: 0 })
+    getQueryInput().clear().type(" Tes'name", { delay: 0 })
     getFilterButton().click()
     getStatusSelect().should('have.value', 'CSIP_OPEN')
-    getQueryInput().should('have.value', ' Testname')
+    getQueryInput().should('have.value', " Tes'name")
     cy.get('[aria-current="page"]').first().should('have.text', '1')
     cy.get('[aria-sort="descending"]').should('not.exist')
 

@@ -7,7 +7,7 @@ context('test /update-investigation/protective-factors', () => {
   const uuid = uuidV4()
 
   const getInputTextbox = () =>
-    cy.findByRole('textbox', { name: 'Add information about the protective factors for Testname User' })
+    cy.findByRole('textbox', { name: "Add information about the protective factors for Tes'name User" })
   const getContinueButton = () => cy.findByRole('button', { name: /Confirm and save/ })
 
   beforeEach(() => {
@@ -71,7 +71,7 @@ context('test /update-investigation/protective-factors', () => {
   }
 
   const validatePageContents = () => {
-    cy.findByRole('heading', { name: 'Add information about the protective factors for Testname User' }).should(
+    cy.findByRole('heading', { name: "Add information about the protective factors for Tes'name User" }).should(
       'be.visible',
     )
     cy.findByText('SomeFactors').should('be.visible')

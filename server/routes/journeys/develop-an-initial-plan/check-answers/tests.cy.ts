@@ -65,7 +65,7 @@ context('test /record-investigation/check-answers', () => {
 
     cy.findByRole('link', { name: /change the reason for the plan/i }).click()
     cy.url().should('to.match', /develop-an-initial-plan\/#reasonForPlan/i)
-    cy.findByRole('textbox', { name: /what’s the main reason why Testname User needs a plan\?/i })
+    cy.findByRole('textbox', { name: /what’s the main reason why Tes'name User needs a plan\?/i })
       .clear()
       .type('differentreason')
     cy.findByRole('button', { name: /continue/i }).click()
@@ -74,7 +74,7 @@ context('test /record-investigation/check-answers', () => {
     cy.findByRole('link', { name: /change the next review date/i }).click()
     cy.url().should('to.match', /develop-an-initial-plan\/next-review-date#nextCaseReviewDate/i)
     const today = new Date()
-    cy.findByRole('textbox', { name: /When will you next review the plan with Testname User\?/i })
+    cy.findByRole('textbox', { name: /When will you next review the plan with Tes'name User\?/i })
       .clear()
       .type(`${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`)
     cy.findByRole('button', { name: /continue/i }).click()
@@ -86,7 +86,7 @@ context('test /record-investigation/check-answers', () => {
   const validatePageContents = () => {
     cy.url().should('to.match', /\/check-answers$/)
     cy.title().should('equal', 'Check your answers before opening a CSIP - Develop an initial plan - DPS')
-    cy.findByRole('heading', { name: /Check your answers before opening a CSIP for Testname User/ }).should(
+    cy.findByRole('heading', { name: /Check your answers before opening a CSIP for Tes'name User/ }).should(
       'be.visible',
     )
 
@@ -122,7 +122,7 @@ context('test /record-investigation/check-answers', () => {
 
     injectJourneyDataAndReload(uuid, {
       prisoner: {
-        firstName: 'TestName',
+        firstName: "Tes'Name",
         lastName: 'User',
         cellLocation: '',
         prisonerNumber: 'A1111AA',

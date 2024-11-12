@@ -32,7 +32,7 @@ context('test /update-plan/identified-needs', () => {
   }
 
   const validatePageContents = () => {
-    cy.findByRole('heading', { name: /Update identified needs in Testname User’s plan/ }).should('be.visible')
+    cy.findByRole('heading', { name: /Update identified needs in Tes'name User’s plan/ }).should('be.visible')
     checkIdentifiedNeedsDetailsExist()
     cy.findByRole('link', { name: /cancel/i }).should('be.visible')
   }

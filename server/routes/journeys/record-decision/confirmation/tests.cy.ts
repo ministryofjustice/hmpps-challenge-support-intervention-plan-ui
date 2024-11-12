@@ -27,7 +27,7 @@ context('test /record-decision/confirmation', () => {
     checkAxeAccessibility()
     validatePageContents()
     cy.findByText(
-      'A CSIP Case Manager should be allocated to work with Testname User to develop an initial plan.',
+      "A CSIP Case Manager should be allocated to work with Tes'name User to develop an initial plan.",
     ).should('be.visible')
     cy.findByRole('heading', { name: 'Other actions to consider' }).should('be.visible')
 
@@ -35,7 +35,7 @@ context('test /record-decision/confirmation', () => {
     checkAxeAccessibility()
     validatePageContents()
     cy.findByText(
-      'A CSIP Case Manager should be allocated to work with Testname User to develop an initial plan.',
+      "A CSIP Case Manager should be allocated to work with Tes'name User to develop an initial plan.",
     ).should('not.exist')
     cy.findByRole('heading', { name: 'Other actions to consider' }).should('be.visible')
 
@@ -43,7 +43,7 @@ context('test /record-decision/confirmation', () => {
     checkAxeAccessibility()
     validatePageContents()
     cy.findByText(
-      'A CSIP Case Manager should be allocated to work with Testname User to develop an initial plan.',
+      "A CSIP Case Manager should be allocated to work with Tes'name User to develop an initial plan.",
     ).should('not.exist')
     cy.findByRole('heading', { name: 'Other actions to consider' }).should('be.visible')
   })
@@ -65,7 +65,7 @@ context('test /record-decision/confirmation', () => {
 
     cy.findByRole('link', { name: /^CSIP/i }).should('have.attr', 'href').and('match', /\//)
 
-    cy.findByRole('link', { name: 'View CSIP details for Testname User' })
+    cy.findByRole('link', { name: "View CSIP details for Tes'name User" })
       .should('be.visible')
       .and('have.attr', 'href')
       .and('match', /\/manage-csips\?query=A1111AA$/)

@@ -42,7 +42,7 @@ context('test /update-decision', () => {
 
   const validatePageContents = () => {
     cy.title().should('to.match', /Update a CSIP investigation decision - DPS/)
-    cy.findByRole('heading', { name: /Update CSIP investigation decision for Testname User/ }).should('be.visible')
+    cy.findByRole('heading', { name: /Update CSIP investigation decision for Tes'name User/ }).should('be.visible')
     cy.findByRole('link', { name: /cancel/i })
       .should('be.visible')
       .and('have.attr', 'href')

@@ -26,7 +26,7 @@ context('test /record-review/close-csip', () => {
     cy.visit(PAGE_URL)
 
     cy.findByText(
-      /There (are|is) \d open identified needs? in Testname User's plan. These will be closed when you close the CSIP./,
+      /There (are|is) \d open identified needs? in Tes'name User's plan. These will be closed when you close the CSIP./,
     ).should('not.exist')
 
     checkAxeAccessibility()
@@ -52,7 +52,7 @@ context('test /record-review/close-csip', () => {
     })
 
     cy.findByText(
-      'There is 1 open identified need in Testname User’s plan. These will be closed when you close the CSIP.',
+      "There is 1 open identified need in Tes'name User’s plan. These will be closed when you close the CSIP.",
     ).should('be.visible')
 
     checkAxeAccessibility()
@@ -75,7 +75,7 @@ context('test /record-review/close-csip', () => {
     })
 
     cy.findByText(
-      'There are 2 open identified needs in Testname User’s plan. These will be closed when you close the CSIP.',
+      "There are 2 open identified needs in Tes'name User’s plan. These will be closed when you close the CSIP.",
     ).should('be.visible')
 
     checkAxeAccessibility()

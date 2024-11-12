@@ -26,7 +26,7 @@ context('test /record-review/confirmation', () => {
     cy.findByText('Tell the people responsible for supporting the prisoner that the plan has been reviewed.').should(
       'be.visible',
     )
-    cy.findByRole('link', { name: 'Update the identified needs in Testname User’s plan' })
+    cy.findByRole('link', { name: "Update the identified needs in Tes'name User’s plan" })
       .should('be.visible')
       .and('have.attr', 'href')
       .and('match', /\/csip-record\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/update-plan\/identified-needs\/start$/)
@@ -34,7 +34,7 @@ context('test /record-review/confirmation', () => {
     setupData('CSIP_CLOSED')
     validatePageContents()
     checkAxeAccessibility()
-    cy.findByText('Tell the people responsible for supporting Testname User that the plan has been closed.').should(
+    cy.findByText("Tell the people responsible for supporting Tes'name User that the plan has been closed.").should(
       'be.visible',
     )
   })
@@ -53,11 +53,11 @@ context('test /record-review/confirmation', () => {
 
   const validatePageContents = () => {
     cy.title().should('equal', 'CSIP review recorded - DPS')
-    cy.findByText('CSIP review recorded for Testname User').should('be.visible')
+    cy.findByText("CSIP review recorded for Tes'name User").should('be.visible')
 
     cy.findByRole('link', { name: /^CSIP/i }).should('have.attr', 'href').and('match', /\//)
 
-    cy.findByRole('link', { name: 'View CSIP details for Testname User' })
+    cy.findByRole('link', { name: "View CSIP details for Tes'name User" })
       .should('be.visible')
       .and('have.attr', 'href')
       .and('match', /\/manage-csips\?query=A1111AA$/)

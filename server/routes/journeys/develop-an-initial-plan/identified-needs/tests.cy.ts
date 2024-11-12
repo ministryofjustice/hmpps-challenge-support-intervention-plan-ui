@@ -55,7 +55,7 @@ context('test /develop-an-initial-plan/identified-needs', () => {
     cy.signIn()
     injectJourneyDataAndReload(uuid, {
       prisoner: {
-        firstName: 'TestName',
+        firstName: "Tes'Name",
         lastName: 'User',
         cellLocation: '',
         prisonerNumber: 'A1111AA',
@@ -70,7 +70,7 @@ context('test /develop-an-initial-plan/identified-needs', () => {
 
   const validatePageContents = (withIdentifiedNeeds: boolean) => {
     cy.findByRole('link', { name: /^back/i }).should('not.exist')
-    cy.findByRole('heading', { name: /Identified needs for Testname User/ }).should('be.visible')
+    cy.findByRole('heading', { name: /Identified needs for Tes'name User/ }).should('be.visible')
 
     cy.get('details').invoke('attr', 'open').should('not.exist')
     cy.get('summary').click()
