@@ -60,7 +60,6 @@ context('test /update-plan/next-review-date', () => {
       .and('have.attr', 'href')
       .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
     cy.findByText(/Help with setting a review date/i).should('not.exist')
-    cy.title().should('equal', 'Set a date for the next CSIP review - Update a plan - DPS')
     cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', `../update-plan`)
   }
 

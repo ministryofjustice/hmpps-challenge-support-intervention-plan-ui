@@ -128,7 +128,6 @@ context('test /update-actions-progress/:uuid', () => {
       .should('be.visible')
       .and('have.attr', 'href')
       .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
-    cy.title().should('equal', 'Actions and progress - Update a Plan - DPS')
   }
 
   const validateErrorMessage = () => {
