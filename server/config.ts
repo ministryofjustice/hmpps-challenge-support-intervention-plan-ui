@@ -123,7 +123,7 @@ export default {
   serviceUrls: {
     digitalPrison: get('DPS_HOME_PAGE_URL', 'http://localhost:3001', requiredInProduction),
     miniProfile: get(
-      'MINI_PROFILE_URL',
+      'PRISONER_PROFILE_URL',
       get('DPS_HOME_PAGE_URL', 'http://localhost:3001', requiredInProduction),
       requiredInProduction,
     ),

@@ -15,6 +15,7 @@ generic-service:
     COMPONENT_API_URL: "https://frontend-components.hmpps.service.justice.gov.uk" # used by hmpps-connect-dps-components module
     COMMON_COMPONENTS_ENABLED: true
     DPS_HOME_PAGE_URL: "https://digital.prison.service.justice.gov.uk"
+    PRISONER_PROFILE_URL: "https://prisoner.digital.prison.service.justice.gov.uk"
     AUDIT_ENABLED: "false"
     SENTRY_ENVIRONMENT: PRODUCTION
 
