@@ -127,10 +127,7 @@
     }) }}
   {% endif %}
 
-  <div id="print-header" class="govuk-body">
-    <div class="flex-half-length">{{ today | formatDisplayDate }}</div>
-    <div>{{ basePageHeader }}</div>
-  </div>
+  <div id="print-header" class="govuk-body"></div>
   {% if isUpdate %}
     <h1 class="govuk-heading-l">Update {{ basePageHeader }}</h1>
   {% else %}

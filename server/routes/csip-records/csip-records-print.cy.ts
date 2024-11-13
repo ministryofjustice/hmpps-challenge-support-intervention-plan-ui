@@ -28,13 +28,25 @@ context('test /csip-records - print mode', () => {
     )
     cy.findByRole('heading', { name: /csip for testname user/i }).should('be.visible')
 
+    checkPrintView()
+
+    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550/reviews`)
+    checkPrintView()
+
+    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550/investigation`)
+    checkPrintView()
+
+    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550/referral`)
+    checkPrintView()
+  })
+
+  const checkPrintView = () => {
     cy.findAllByRole('link').should('have.length', 0)
     cy.findAllByRole('button').should('have.length', 0)
     cy.findAllByRole('banner').should('have.length', 0)
     cy.findByText(/Beta/).should('not.be.visible')
-    cy.findAllByRole('separator').should('have.length', 0)
-    cy.findByText(format(new Date(), 'd LLLL yyyy')).should('be.visible')
-  })
+    cy.findAllByRole('separator').should('have.length', 1) // Just the one separator, under the main heading
+  }
 
   const navigateToTestPage = () => {
     cy.signIn()
