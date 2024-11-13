@@ -78,9 +78,9 @@
       }]
 }) }}
 
-<hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-8">
+<hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-8 hide-print">
 
-<div class="govuk-grid-row">
+<div class="govuk-grid-row page-break-print">
     <div class="govuk-grid-column-two-thirds">
         <h2 class="govuk-heading-m">Identified needs</h2>
     </div>
@@ -92,17 +92,14 @@
 </div>
 
 {% for need in identifiedNeeds %}
+    {% set cardClasses = "page-break-print " if loop.index % 2 !== 0 and loop.index !== 1 else "" %}
     {{ govukSummaryList({
         card: {
-            classes: "govuk-!-margin-bottom-7 dropshadow" if loop.index === identifiedNeeds.length else "dropshadow",
-            title: { 
-              text: need.identifiedNeed,
-              classes: "govuk-!-font-size-24"
-            },
-            actions: {
-              items: [{
-                html: '<strong class="govuk-tag govuk-tag--grey">Closed</strong>' if need.closedDate else '<strong class="govuk-tag">Open</strong>'
-              }]
+            classes: (cardClasses + "govuk-!-margin-bottom-7" if loop.index === identifiedNeeds.length else cardClasses) + " dropshadow",
+            title: {
+              {# We create our own html here because we dont want the tag to be rendered as a link, so cant use actions, but summarylist puts the content of `html` beside a h2, so we need to hide the extraneous h2 with the `hide` class (see local.scss) #}
+              html: "<h2 class='govuk-summary-card__title govuk-!-font-size-24'>" + need.identifiedNeed + "</h2><div class='govuk-summary-card__actions'>" + ("<strong class='govuk-tag govuk-tag--grey'>Closed</strong>" if need.closedDate else "<strong class='govuk-tag'>Open</strong>") + "</div>",
+              classes: "hide" 
             }
         },
         rows: [

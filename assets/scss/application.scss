@@ -17,3 +17,4 @@ $govuk-page-width: $moj-page-width;
 @import './components/summary-card';
 @import './local';
 @import '../../server/views/partials/miniProfile/all';
+@import './print-view'

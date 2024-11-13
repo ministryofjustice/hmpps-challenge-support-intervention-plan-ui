@@ -1,7 +1,8 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
 {% if not isUpdate %}
-    <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    {% set headingClasses = "govuk-grid-row govuk-!-margin-bottom-6" + (" page-break-print" if decision else "") %}
+    <div class="{{ headingClasses }}">
         <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Investigation</h1>
         </div>
@@ -129,12 +130,13 @@
       ]
   }) }}
 
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-7">Interviews</h2>
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-7 page-break-print">Interviews</h2>
 
   {% for interview in investigation.interviews %}
+      {% set cardClasses = "page-break-print " if loop.index % 2 !== 0 and loop.index !== 1 else "" %}
       {{ govukSummaryList({
           card: {
-              classes: "govuk-!-margin-bottom-7 govuk-!-font-size-24" if loop.index === investigation.interviews.length else undefined,
+              classes: cardClasses + "govuk-!-margin-bottom-7 govuk-!-font-size-24" if loop.index === investigation.interviews.length else cardClasses,
               title: { text: "Interview with " + interview.interviewee }
           },
           rows: [{

@@ -1,7 +1,8 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
 {% if not isUpdate %}
-    <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    {% set headingClasses = "govuk-grid-row govuk-!-margin-bottom-6" + (" page-break-print" if screening else "") %}
+    <div class="{{ headingClasses }}">
         <div class="govuk-grid-column-two-thirds">
             <h2 class="govuk-heading-l">Referral</h2>
         </div>
@@ -88,7 +89,7 @@
     {% include './reactive.njk' %}
 {% endif %}
 
-<h1 class="govuk-heading-m">Contributory factors</h1>
+<h1 class="govuk-heading-m page-break-print">Contributory factors</h1>
 
 {% for factor in contributoryFactors %}
     {{ govukSummaryList({
@@ -154,7 +155,7 @@
     rows: contributoryFactorRows
 }) }}
 
-<h1 class="govuk-heading-m">Additional information</h1>
+<h1 class="govuk-heading-m page-break-print">Additional information</h1>
 {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
     rows: [

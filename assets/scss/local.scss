@@ -3,13 +3,13 @@
 }
 
 .single-row-textarea {
-  resize: none!important;
-  white-space: nowrap!important;
-  overflow-x: hidden!important;
+  resize: none !important;
+  white-space: nowrap !important;
+  overflow-x: hidden !important;
 }
 
 .custom-task-list-first-row {
-  border-top: 0!important;
+  border-top: 0 !important;
 }
 
 .disabled-card-action {
@@ -52,4 +52,8 @@
 .dropshadow {
   border: 1px solid govuk-colour('dark-grey');
   box-shadow: 0 5px govuk-colour('mid-grey');
+}
+
+.hide {
+  display: none;
 }
