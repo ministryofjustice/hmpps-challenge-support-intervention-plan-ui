@@ -97,7 +97,7 @@
   {% for csipRecord in records %}
     {% set csipRecordRows = (csipRecordRows.push([
       {
-        html: '<a class="govuk-link--no-visited-state" href="' + digitalPrisonServicesUrl + '/prisoner/' + csipRecord.prisoner.prisonNumber + '">' + csipRecord.prisoner | lastNameCommaFirstName + "</a><br/>" + csipRecord.prisoner.prisonNumber
+        html: '<a class="govuk-link--no-visited-state" href="' + prisonerProfileUrl + '/prisoner/' + csipRecord.prisoner.prisonNumber + '">' + csipRecord.prisoner | lastNameCommaFirstName + "</a><br/>" + csipRecord.prisoner.prisonNumber
       },
       {
         classes: 'col-width-200',

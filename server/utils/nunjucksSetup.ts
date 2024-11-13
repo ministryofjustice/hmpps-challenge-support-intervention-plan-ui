@@ -42,8 +42,10 @@ export default function nunjucksSetup(app: express.Express): void {
   }
 
   app.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
+  app.locals['prisonerProfileUrl'] = config.serviceUrls.prisonerProfile
   app.use((_req, res, next) => {
     res.locals['digitalPrisonServicesUrl'] = config.serviceUrls.digitalPrison
+    app.locals['prisonerProfileUrl'] = config.serviceUrls.prisonerProfile
     return next()
   })
 
