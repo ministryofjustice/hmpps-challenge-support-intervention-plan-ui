@@ -121,6 +121,7 @@ context('test /update-actions-progress/:uuid', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Add information to actions and progress - Update plan - DPS')
     cy.findByRole('heading', { name: 'Add information to actions and progress' }).should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /Cancel/i })

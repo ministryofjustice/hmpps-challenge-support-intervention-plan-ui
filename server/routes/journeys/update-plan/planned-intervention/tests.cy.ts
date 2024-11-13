@@ -77,6 +77,7 @@ context('test /update-planned-intervention/:uuid', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Add information to the planned intervention - Update plan - DPS')
     cy.findByRole('heading', { name: 'Add information to the planned intervention' }).should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /Cancel/i })

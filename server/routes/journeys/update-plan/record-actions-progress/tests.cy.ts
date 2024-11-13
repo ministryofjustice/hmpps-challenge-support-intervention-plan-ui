@@ -55,7 +55,7 @@ context('test /update-plan/record-actions-progress', () => {
 
   const validatePageContents = () => {
     cy.findByRole('heading', { name: 'Record any actions or progress (optional)' }).should('be.visible')
-    cy.title().should('equal', 'Record any actions or progress - Update a plan - DPS')
+    cy.title().should('equal', 'Record any actions or progress - Update plan - DPS')
 
     cy.findByRole('link', { name: /^back/i })
       .should('have.attr', 'href')

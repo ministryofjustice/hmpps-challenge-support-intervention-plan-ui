@@ -60,6 +60,7 @@ context('test /update-plan/update-intervention-details', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Add information to the planned intervention - Update plan - DPS')
     cy.findByRole('heading', { name: 'Intervention details' }).should('be.visible')
     cy.findByText('Identified need summary:').should('be.visible')
     cy.findByText('first need').should('be.visible')

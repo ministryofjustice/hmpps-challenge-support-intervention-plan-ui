@@ -10,7 +10,7 @@
 
 {% switch updatingEntity %}
 {% case 'plan' %}
-  {% set pageTitle = "Update a plan - CSIP" %}
+  {% set pageTitle = "Update a plan" %}
 {% default %}
   {% set pageTitle = ("Update a CSIP " + updatingEntity) if isUpdate else "CSIP record - CSIP" %}
 {% endswitch %}

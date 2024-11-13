@@ -50,6 +50,7 @@ context('test /update-plan/summarise-identified-need', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Summarise the identified need - Update plan - DPS')
     cy.findByRole('heading', { name: 'Summarise the identified need' }).should('be.visible')
 
     cy.findByRole('link', { name: /^back/i })

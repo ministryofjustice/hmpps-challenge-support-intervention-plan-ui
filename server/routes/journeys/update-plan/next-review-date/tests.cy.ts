@@ -50,6 +50,7 @@ context('test /update-plan/next-review-date', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Change the date for the next CSIP review - Update plan - DPS')
     cy.findByRole('heading', { name: /change the date of the next csip review/i }).should('be.visible')
     cy.findByRole('heading', { name: /when will you next review the plan with/i }).should('be.visible')
     cy.findByDisplayValue('25/5/2024').should('be.visible')

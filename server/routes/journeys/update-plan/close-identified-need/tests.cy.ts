@@ -46,6 +46,7 @@ context('test /updatel-plan/close-identified-need', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Are you sure you want to close this identified need? - Update plan - DPS')
     cy.findByRole('link', { name: /^back/i }).should('be.visible')
     cy.findByRole('heading', { name: /Are you sure you want to close this identified need\?/i }).should('be.visible')
 

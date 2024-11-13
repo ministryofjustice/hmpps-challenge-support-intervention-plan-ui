@@ -4,7 +4,7 @@
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "Close identified need - Update a plan" %}
+{% set pageTitle = "Are you sure you want to close this identified need? - Update plan" %}
 
 {% block innerContent %}
     <div class="govuk-grid-row">
@@ -16,10 +16,8 @@
 
     {{ govukSummaryList({
         card: {
-            title: { text: identifiedNeed.identifiedNeed }
-        },
-        card: {
             title: { text: identifiedNeed.identifiedNeed },
+            classes: "dropshadow",
             actions: {
                 items: [{
                     html: '<strong class="govuk-tag govuk-tag--grey">Closed</strong>' if identifiedNeed.closedDate else '<strong class="govuk-tag">Open</strong>'
