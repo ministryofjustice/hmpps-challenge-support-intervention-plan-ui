@@ -1,4 +1,3 @@
-import { format } from 'date-fns'
 import { checkAxeAccessibility } from '../../../integration_tests/support/accessibilityViolations'
 
 context('test /csip-records - print mode', () => {
