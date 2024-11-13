@@ -85,7 +85,7 @@
   {% include './beforeContent.njk' %}
 
   {% if prisoner %}
-    {{ miniProfile(prisoner, '/prisoner-image/' + prisoner.prisonerNumber, miniProfileUrl + '/prisoner/' + prisoner.prisonerNumber) }}
+    {{ miniProfile(prisoner, '/prisoner-image/' + prisoner.prisonerNumber, prisonerProfileUrl + '/prisoner/' + prisoner.prisonerNumber) }}
   {% endif %}
 
   {% block pageHeader %}{% endblock %}
