@@ -68,7 +68,8 @@
             {% for attendee in review.attendees %}
                 {{ govukSummaryList({
                     card: {
-                        title: { text: "Participant: " + (attendee.name or loop.index) }
+                        title: { text: "Participant: " + (attendee.name or loop.index) },
+                        classes: "dropshadow"
                     },
                     rows: [{
                         key: {

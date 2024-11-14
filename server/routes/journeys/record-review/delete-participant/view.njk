@@ -10,7 +10,8 @@
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Are you sure you want to delete the information about this participant?</h1>
     {{ govukSummaryList({
         card: {
-            title: { text: "Participant: " + attendee.name }
+            title: { text: "Participant: " + attendee.name },
+            classes: "dropshadow"
         },
         rows: [{
             key: {

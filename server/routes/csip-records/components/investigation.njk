@@ -133,7 +133,7 @@
   <h2 class="govuk-heading-m govuk-!-margin-bottom-7 page-break-print">Interviews</h2>
 
   {% for interview in investigation.interviews %}
-      {% set cardClasses = "page-break-print " if loop.index % 2 !== 0 and loop.index !== 1 else "" %}
+      {% set cardClasses = "page-break-print dropshadow " if loop.index % 2 !== 0 and loop.index !== 1 else "dropshadow " %}
       {{ govukSummaryList({
           card: {
               classes: cardClasses + "govuk-!-margin-bottom-7 govuk-!-font-size-24" if loop.index === investigation.interviews.length else cardClasses,
