@@ -55,6 +55,7 @@ context('test /update-plan/case-management', () => {
   })
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Case management - Update plan - DPS')
     cy.findByRole('heading', { name: 'Case management' }).should('be.visible')
 
     cy.findByText('Update a plan').should('be.visible')

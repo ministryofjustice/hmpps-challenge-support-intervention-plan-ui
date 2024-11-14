@@ -4,7 +4,7 @@
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "Identified needs - Update a plan" %}
+{% set pageTitle = "Identified needs - Update plan" %}
 
 {% block pageHeader %}
     <div class="govuk-grid-row">
@@ -22,7 +22,7 @@
   {% for need in identifiedNeeds %}
       {{ govukSummaryList({
           card: {
-              classes: "govuk-!-margin-bottom-7" if loop.index === identifiedNeeds.length else undefined,
+              classes: "govuk-!-margin-bottom-7 dropshadow" if loop.index === identifiedNeeds.length else "dropshadow",
               title: { text: need.identifiedNeed },
               actions: {
                 items: [{
@@ -105,7 +105,7 @@
             actions: {
               items: [
                 {
-                  href: "planned-intervention/" + need.identifiedNeedUuid + "#intervention",
+                  href: "update-planned-intervention/" + need.identifiedNeedUuid + "#intervention",
                   text: "Add information",
                   visuallyHiddenText: "to the planned intervention",
                   classes: "govuk-link--no-visited-state"

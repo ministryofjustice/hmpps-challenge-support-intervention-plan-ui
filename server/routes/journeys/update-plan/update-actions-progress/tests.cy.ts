@@ -121,13 +121,13 @@ context('test /update-actions-progress/:uuid', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Add information to actions and progress - Update plan - DPS')
     cy.findByRole('heading', { name: 'Add information to actions and progress' }).should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /Cancel/i })
       .should('be.visible')
       .and('have.attr', 'href')
       .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
-    cy.title().should('equal', 'Actions and progress - Update a Plan - DPS')
   }
 
   const validateErrorMessage = () => {

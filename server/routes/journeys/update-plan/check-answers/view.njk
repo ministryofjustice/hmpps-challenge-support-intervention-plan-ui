@@ -4,7 +4,7 @@
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "Check answers - Update a plan" %}
+{% set pageTitle = "Check your answers before adding this new identified need - Update plan" %}
 
 {% block innerContent %}
 
@@ -17,7 +17,8 @@
 
     {{ govukSummaryList({
           card: {
-              title: { text: need.identifiedNeed }
+              title: { text: need.identifiedNeed },
+              classes: "dropshadow"
           },
           rows: [
           {
@@ -85,8 +86,8 @@
               items: [
                 {
                   href: "intervention-details#intervention",
-                  text: "Add information",
-                  visuallyHiddenText: "to the planned intervention",
+                  text: "Change",
+                  visuallyHiddenText: "the planned intervention",
                   classes: "govuk-link--no-visited-state"
                 }
               ]
@@ -103,8 +104,8 @@
               items: [
                 {
                   href: "record-actions-progress#progression",
-                  text: "Add information",
-                  visuallyHiddenText: "to the actions and progress",
+                  text: "Change",
+                  visuallyHiddenText: "the actions and progress",
                   classes: "govuk-link--no-visited-state"
                 }
               ]

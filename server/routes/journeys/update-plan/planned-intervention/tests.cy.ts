@@ -77,13 +77,13 @@ context('test /update-planned-intervention/:uuid', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Add information to the planned intervention - Update plan - DPS')
     cy.findByRole('heading', { name: 'Add information to the planned intervention' }).should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /Cancel/i })
       .should('be.visible')
       .and('have.attr', 'href')
       .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
-    cy.title().should('equal', 'Planned intervention - Update a Plan - DPS')
   }
 
   const validateErrorMessage = () => {

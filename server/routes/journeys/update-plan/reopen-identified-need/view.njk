@@ -4,7 +4,7 @@
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "Reopen identified need - Update a plan" %}
+{% set pageTitle = "Are you sure you want to reopen this identified need? - Update plan" %}
 
 {% block innerContent %}
     <div class="govuk-grid-row">
@@ -16,7 +16,7 @@
 
     {{ govukSummaryList({
         card: {
-            classes: "govuk-!-margin-bottom-7",
+            classes: "govuk-!-margin-bottom-7 dropshadow",
             title: { 
               text: need.identifiedNeed
             },

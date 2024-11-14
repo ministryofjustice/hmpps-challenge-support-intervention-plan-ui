@@ -67,7 +67,7 @@ context('test /update-plan/check-answers', () => {
     cy.findByRole('button', { name: /continue/i }).click()
     cy.contains('dt', 'Identified need summary').next().should('include.text', 'needsummary123')
 
-    cy.findByRole('link', { name: /Add information to the planned intervention/i }).click()
+    cy.findByRole('link', { name: /Change the planned intervention/i }).click()
     cy.url().should('to.match', /intervention-details#intervention/i)
     cy.findByRole('textbox', { name: /What’s the planned intervention for this identified need\?/i })
       .clear()
@@ -75,7 +75,7 @@ context('test /update-plan/check-answers', () => {
     cy.findByRole('button', { name: /continue/i }).click()
     cy.contains('dt', 'Planned intervention').next().should('include.text', 'interven123')
 
-    cy.findByRole('link', { name: /Add information to the actions and progress/i }).click()
+    cy.findByRole('link', { name: /Change the actions and progress/i }).click()
     cy.url().should('to.match', /record-actions-progress#progression/i)
     cy.findByRole('textbox', { name: /Record any actions or progress \(optional\)/i }).clear()
     cy.findByRole('button', { name: /continue/i }).click()
@@ -83,6 +83,7 @@ context('test /update-plan/check-answers', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Check your answers before adding this new identified need - Update plan - DPS')
     cy.url().should('to.match', /\/check-answers$/)
     cy.findByRole('heading', { name: /Check your answers before adding this new identified need/ }).should('be.visible')
 

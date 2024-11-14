@@ -5,7 +5,7 @@
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = identifiedNeeds.length %}
-{% set pageTitle = "Set a date for the next CSIP review - " + ("Update a" if isUpdate else "Develop an initial") + " plan" %}
+{% set pageTitle = "Change the date for the next CSIP review - Update plan" if isUpdate else "Set a date for the next CSIP review - Develop an initial plan" %}
 
 {% block innerContent %}
     <div class="govuk-grid-row">

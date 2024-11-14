@@ -57,6 +57,7 @@ context('test /update-plan/update-identified-need', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Change the identified need summary - Update plan - DPS')
     cy.findByText('Update a plan').should('be.visible')
 
     getTextbox().should('be.visible').and('have.value', 'first need')

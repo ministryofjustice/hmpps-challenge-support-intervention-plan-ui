@@ -71,6 +71,7 @@ context('test /updatel-plan/reopen-identified-need', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Are you sure you want to reopen this identified need? - Update plan - DPS')
     cy.findByRole('heading', { name: /Are you sure you want to reopen this identified need\?/i }).should('be.visible')
 
     cy.findByRole('heading', { name: 'closed need' }).should('be.visible')

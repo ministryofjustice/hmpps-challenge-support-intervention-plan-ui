@@ -94,7 +94,7 @@
 {% for need in identifiedNeeds %}
     {{ govukSummaryList({
         card: {
-            classes: "govuk-!-margin-bottom-7" if loop.index === identifiedNeeds.length else undefined,
+            classes: "govuk-!-margin-bottom-7 dropshadow" if loop.index === identifiedNeeds.length else "dropshadow",
             title: { 
               text: need.identifiedNeed,
               classes: "govuk-!-font-size-24"

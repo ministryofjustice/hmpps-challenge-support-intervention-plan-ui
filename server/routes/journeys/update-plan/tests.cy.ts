@@ -39,7 +39,7 @@ context('test /update-plan', () => {
   }
 
   const validatePageContents = () => {
-    cy.title().should('to.match', /Update a plan - CSIP - DPS/)
+    cy.title().should('to.match', /Update a plan - DPS/)
     cy.findByRole('heading', { name: /Update Tes'name User’s plan/ }).should('be.visible')
     cy.findByRole('link', { name: /cancel/i })
       .should('be.visible')

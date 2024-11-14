@@ -50,6 +50,7 @@ context('test /update-plan/next-review-date', () => {
   }
 
   const validatePageContents = () => {
+    cy.title().should('equal', 'Change the date for the next CSIP review - Update plan - DPS')
     cy.findByRole('heading', { name: /change the date of the next csip review/i }).should('be.visible')
     cy.findByRole('heading', { name: /when will you next review the plan with/i }).should('be.visible')
     cy.findByDisplayValue('25/5/2024').should('be.visible')
@@ -59,7 +60,6 @@ context('test /update-plan/next-review-date', () => {
       .and('have.attr', 'href')
       .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
     cy.findByText(/Help with setting a review date/i).should('not.exist')
-    cy.title().should('equal', 'Set a date for the next CSIP review - Update a plan - DPS')
     cy.findByRole('link', { name: /^back/i }).should('have.attr', 'href').and('include', `../update-plan`)
   }
 
