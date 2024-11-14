@@ -1,0 +1,47 @@
+#print-header {
+  display: none;
+}
+
+@media print {
+
+  .govuk-details__summary {
+    color: #10403c;
+  }
+
+  .page-break-print {
+    break-before: always;
+    page-break-before: always;
+  }
+
+  a,
+  button,
+  header,
+  .govuk-phase-banner,
+  .csip-breadcrumbs,
+  .mini-profile {
+    display: none !important;
+  }
+
+  #print-header {
+    display: flex;
+    padding-bottom: 100px;
+    padding-top: 10px;
+
+    .flex-half-length {
+      flex: 0.5;
+    }
+  }
+
+  .govuk-tag {
+    background-color: rgb(228.75, 230.25, 231);
+  }
+
+  @page {
+    size: auto;
+    margin: 5% 0%;
+  }
+
+  .hide-print {
+    display: none;
+  }
+}

@@ -15,5 +15,6 @@ $govuk-page-width: $moj-page-width;
 @import './components/horizontal-search-form';
 @import './components/miniSummary';
 @import './components/summary-card';
+@import './components/print-view';
 @import './local';
 @import '../../server/views/partials/miniProfile/all';

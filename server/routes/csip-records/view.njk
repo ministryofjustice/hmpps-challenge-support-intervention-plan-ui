@@ -6,6 +6,71 @@
 
 {% set fullWidth = true %}
 
+{% block additionalScripts %}
+  <script type="text/javascript" nonce="{{ cspNonce }}">
+      const printButton = document.getElementById('print-button');
+      if (printButton === null) {
+        if (!window.__customPrintObserver) {
+          const observer = new MutationObserver(mutationList => {
+            mutationList.forEach(mutation => {
+              if (mutation.type === 'childList') {
+                mutation.addedNodes.forEach(node => {
+                  if (node.id === 'print-button' && node.classList.contains('govuk-!-display-none')) {
+                    node.classList.remove('govuk-!-display-none');
+                    node.ariaHidden = false;
+                    node.onclick = function () { print(); }
+                  }
+                });
+              }
+            })
+          });
+
+          observer.observe(document.documentElement, { attributes: false, childList: true, subtree: true })
+
+          window.__customPrintObserver = observer
+        }
+      } else {
+        printButton.classList.remove('govuk-!-display-none');
+        printButton.removeAttribute('aria-hidden');
+        printButton.onclick = function () { print(); }
+      }
+
+      // open closed details elements for printing
+      window.addEventListener('beforeprint',() =>
+      {
+          const allDetails = document.body.querySelectorAll('details');
+          for(let i=0; i<allDetails.length; i++)
+          {
+              if(allDetails[i].open)
+              {
+                  allDetails[i].dataset.open = '1';
+              }
+              else
+              {
+                  allDetails[i].setAttribute('open', '');
+              }
+          }
+      });
+
+      // after printing close details elements not opened before
+      window.addEventListener('afterprint',() =>
+      {
+          const allDetails = document.body.querySelectorAll('details');
+          for(let i=0; i<allDetails.length; i++)
+          {
+              if(allDetails[i].dataset.open)
+              {
+                  allDetails[i].dataset.open = '';
+              }
+              else
+              {
+                  allDetails[i].removeAttribute('open');
+              }
+          }
+      });
+  </script>
+{% endblock %}
+
 
 
 {% switch updatingEntity %}
@@ -31,6 +96,20 @@
   {% endset %}
 {% endif %}
 
+{% set printButtonHtml %}
+  {{ govukButton({
+    text: "Print",
+    type: "button",
+    preventDoubleClick: true,
+    attributes: {
+      id: "print-button",
+      "aria-hidden": true,
+      onclick: "javascript:print();"
+    },
+    classes: 'govuk-button--secondary govuk-!-margin-bottom-0 govuk-!-margin-left-4 govuk-!-display-none'
+  }) }}
+{% endset %}
+
 {% switch (updatingEntity or 'null') %}
   {% case 'null' %}
     {% set basePageHeader = 'CSIP for ' + (prisoner | firstNameSpaceLastName) %}
@@ -48,6 +127,7 @@
     }) }}
   {% endif %}
 
+  <div id="print-header" class="govuk-body"></div>
   {% if isUpdate %}
     <h1 class="govuk-heading-l">Update {{ basePageHeader }}</h1>
   {% else %}
@@ -57,10 +137,19 @@
         text: basePageHeader,
         classes: 'govuk-heading-xl'
       },
-      items: [{
-        html: actionButtonHtml,
-        classes: 'govuk-!-display-none'
-      }] if actionButton else []
+      items: [
+        {
+          html: actionButtonHtml,
+          classes: 'govuk-!-display-none'
+        },
+        {
+          html: printButtonHtml,
+          classes: 'govuk-!-display-none'
+        }
+      ] if actionButton else [{
+          html: printButtonHtml,
+          classes: 'govuk-!-display-none'
+        }]
     }) }}
     <hr class="govuk-section-break govuk-section-break--visible">
   {% endif %}
@@ -69,7 +158,7 @@
 {% block innerContent %}
   {% if not isUpdate %}
     <p class="govuk-!-margin-bottom-6">
-      {{ statusTag({ record: record }) }}
+      <strong>Status</strong>: {{ statusTag({ record: record }) }}
     </p>
     <p class="govuk-!-margin-bottom-8">
       <strong>CSIP log code:</strong> {{ record.logCode or "Not provided" }}

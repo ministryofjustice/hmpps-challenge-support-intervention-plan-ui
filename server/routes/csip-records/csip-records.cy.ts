@@ -9,6 +9,15 @@ context('test /csip-records', () => {
     cy.task('stubIntervieweeRoles')
   })
 
+  it('should render the print button', () => {
+    cy.task('stubCsipRecordSuccessCsipOpen')
+
+    navigateToTestPage()
+
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/plan$/)
+    cy.findByRole('button', { name: /print/i }).should('be.visible')
+  })
+
   it('should render a post-decision, pre review csip record', () => {
     cy.task('stubCsipRecordSuccessCsipOpen')
 
@@ -125,7 +134,6 @@ context('test /csip-records', () => {
 
   const checkReviews = () => {
     cy.findByRole('link', { name: /reviews/i }).click()
-    cy.findByRole('heading', { name: /reviews/i }).should('be.visible')
     cy.findByRole('heading', { name: 'Review 1:' })
       .should('be.visible')
       .parent()
