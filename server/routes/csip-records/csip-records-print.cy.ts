@@ -25,7 +25,7 @@ context('test /csip-records - print mode', () => {
         },
       }),
     )
-    cy.findByRole('heading', { name: /csip for testname user/i }).should('be.visible')
+    cy.findByRole('heading', { name: /csip for tes'name user/i }).should('be.visible')
 
     checkPrintView()
 
