@@ -4,6 +4,10 @@
 
 @media print {
 
+  .govuk-details__summary {
+    color: #10403c;
+  }
+
   .page-break-print {
     break-before: always;
     page-break-before: always;
