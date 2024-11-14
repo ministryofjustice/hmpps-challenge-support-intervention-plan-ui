@@ -108,7 +108,7 @@
             {{ govukSummaryList({
                 card: {
                     title: { text: "Participant: " + attendee.name },
-                    classes: "govuk-!-margin-bottom-8" if loop.index === attendees.length else undefined
+                    classes: "govuk-!-margin-bottom-8 dropshadow" if loop.index === attendees.length else "dropshadow"
                 },
                 rows: [{
                     key: {
