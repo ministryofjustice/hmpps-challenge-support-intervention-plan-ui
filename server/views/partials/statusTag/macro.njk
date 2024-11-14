@@ -1,3 +1,3 @@
 {% macro statusTag(params) %}
-    <span class="govuk-tag {{ params.record | csipStatusTagClass }} nowrap">{{ params.record | csipStatusDisplayText }}</span>
+    <strong class="govuk-tag status-tag {{ params.record | csipStatusTagClass }}">{{ params.record | csipStatusDisplayText }}</strong>
 {% endmacro %}
