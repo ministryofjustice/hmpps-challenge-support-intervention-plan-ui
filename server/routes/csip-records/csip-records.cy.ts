@@ -105,6 +105,7 @@ context('test /csip-records', () => {
     cy.contains('dt', 'Screening outcome').next().should('include.text', `Progress to investigation`)
     cy.contains('dt', 'Reasons for decision').next().should('include.text', `a very well thought out reason`)
     cy.contains('dt', 'Recorded by').next().should('include.text', `Test User`)
+    cy.findAllByText(/Recorded by/).should('have.length', 1) // Only screening recorded by should show as we set referralCompletedByDisplayName to undefined
   })
 
   it('should render a post-decision, pre-plan csip record', () => {
@@ -233,6 +234,11 @@ context('test /csip-records', () => {
       .click()
     checkAxeAccessibility()
     cy.findByRole('link', { name: /referral/i, current: 'page' }).should('be.visible')
+    cy.contains('dt', 'Referral date').next().should('include.text', `1 August 2024`)
+    cy.contains('dt', 'Referrer name').next().should('include.text', `<script>alert("Test User")</script>`)
+    cy.contains('dt', 'Area of work').next().should('include.text', `<script>alert("Area")</script>`)
+    cy.contains('dt', 'Proactive or reactive referral').next().should('include.text', `Proactive`)
+    cy.contains('dt', 'Recorded by').next().should('include.text', `Test`)
   }
 
   const checkDecision = () => {

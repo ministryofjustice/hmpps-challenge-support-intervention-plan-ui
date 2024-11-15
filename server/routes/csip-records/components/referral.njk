@@ -79,7 +79,15 @@
                     }
                 ]
             } if isUpdate else undefined
-        }
+        },
+        {
+            key: {
+                text: "Recorded by"
+            },
+            value: {
+                text: referral.referralCompletedByDisplayName
+            }
+        } if referral.referralCompletedByDisplayName else undefined
     ]
 }) }}
 
