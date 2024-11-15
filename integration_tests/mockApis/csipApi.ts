@@ -644,6 +644,7 @@ const csipRecordWithScreeningOutcome = (
     status,
     referral: {
       ...csip.referral,
+      referralCompletedByDisplayName: undefined,
       saferCustodyScreeningOutcome: {
         date: '2024-08-01',
         recordedBy: 'TEST_USER',
@@ -917,9 +918,11 @@ export const csip = {
     description: 'Referral submitted',
   },
   referral: {
+    referralDate: '2024-08-01',
     isOnBehalfOfReferral: true,
     referredBy: '<script>alert("Test User")</script>',
     refererArea: { code: 'A', description: '<script>alert("Area")</script>' },
+    referralCompletedByDisplayName: 'Test User',
     isProactiveReferral: true,
     incidentLocation: { code: 'A', description: '<script>alert("Location")</script>' },
     incidentType: { code: 'A', description: '<script>alert("IncidentType")</script>' },
