@@ -102,5 +102,25 @@ context('test /develop-an-initial-plan/identified-needs', () => {
       cy.findByText(/test stafferson/i).should('be.visible')
       cy.findByText(/progression goes here/).should('be.visible')
     }
+
+    cy.findByText('The plan should:').should('be.visible')
+    cy.findByText(
+      'be based on a multi-disciplinary approach, and communicated with all appropriate staff members',
+    ).should('be.visible')
+    cy.findByText('respond to the needs identified within the referral, investigation and other records').should(
+      'be.visible',
+    )
+    cy.findByText('include achievable targets, developed and agreed with the prisoner').should('be.visible')
+    cy.findByText('detail small steps to behaviour change, including the ’how’ and ’what it looks like’').should(
+      'be.visible',
+    )
+
+    cy.findByText(
+      'other types of support — for example, helping the prisoner improve their contact with family or engage more with activities',
+    ).should('be.visible')
+    cy.findByText(
+      'intervention programmes — for example, behavioural programmes and other specialist services (if these match the prisoner’s needs)',
+    ).should('be.visible')
+    cy.findByText('lighter touch initiatives — for example, peer support schemes').should('be.visible')
   }
 })
