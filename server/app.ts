@@ -5,6 +5,7 @@ import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
 import * as Sentry from '@sentry/node'
 // @ts-expect-error Import untyped middleware for cypress coverage
 import cypressCoverage from '@cypress/code-coverage/middleware/express'
+import { validate } from 'uuid'
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import { appInsightsMiddleware } from './utils/azureAppInsights'
@@ -53,6 +54,30 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpStaticResources())
   nunjucksSetup(app)
   app.use(setUpAuthentication())
+  app.use((req, res, next) => {
+    console.log('1')
+    const hasJourneyId = validate(req.url.split('/')[1])
+    console.log('2')
+    res.locals.auditEvent = {
+      pageNameSuffix: hasJourneyId
+        ? `${req.url.split('/')[1]}_${req.url.replace(/\?.*/, '').split('/').slice(2)}` // JOURNEYID_PAGE
+        : req.url.replace(/\?.*/, ''), // PAGE
+      who: res.locals.user.username,
+    }
+
+    console.log('3')
+
+    const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
+    console.log('4')
+    res.prependOnceListener('close', async () => {
+      console.log('prep')
+      await services.auditService.logPageView(`ACCESS_ATTEMPT_${pageNameSuffix}`, {
+        ...auditEventProperties,
+      })
+    })
+    console.log('5')
+    next()
+  })
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())

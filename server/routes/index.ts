@@ -15,11 +15,6 @@ export default function routes(services: Services): Router {
   const controller = new HomePageController(services.csipApiService)
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
-  // TODO: determine whether we need to implement audit service
-  // import { Page } from '../services/auditService'
-  // await services.auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
-  get('/', controller.GET)
-
   router.use('/csip-records/:recordUuid', CsipRecordRoutes(services))
   router.use('/manage-csips', SearchCsipRoutes(services))
   router.get('/how-to-make-a-referral', (_req, res) =>
@@ -27,6 +22,32 @@ export default function routes(services: Services): Router {
   )
 
   router.use(insertJourneyIdentifier())
+
+  router.use((_req, res, next) => {
+    console.log('6')
+    const resRender = res.render
+    console.log('7')
+    res.render = (view: string, options?) => {
+      console.log('resre')
+      type resRenderCb = (view: string, options?: object, callback?: (err: Error, html: string) => void) => void
+      ;(resRender as resRenderCb).call(res, view, options, async (err: Error, html: string) => {
+        if (err) {
+          res.status(500).send(err)
+          return
+        }
+        const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
+        const ret = await services.auditService.logPageView(`${pageNameSuffix}`, {
+          ...auditEventProperties,
+        })
+        console.log(`access ret: ${JSON.stringify(ret)}`)
+        res.send(html)
+      })
+    }
+    console.log('8')
+    next()
+  })
+
+  get('/', controller.GET)
   router.use(
     redirectCheckAnswersMiddleware([
       /on-behalf-of$/,
@@ -46,6 +67,7 @@ export default function routes(services: Services): Router {
       /record-review\/next-review-date$/,
     ]),
   )
+
   router.use(journeyStateMachine())
   router.use('/:journeyId', JourneyRoutes(services))
 
