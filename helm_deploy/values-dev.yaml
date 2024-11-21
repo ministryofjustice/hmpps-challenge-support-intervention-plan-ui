@@ -3,6 +3,13 @@
 
 generic-service:
   replicaCount: 2
+  serviceAccountName: hmpps-challenge-support-intervention-plan-ui
+
+  namespace_secrets:
+    hmpps-challenge-support-intervention-plan-ui:
+      sqs-hmpps-audit-secret:
+        AUDIT_SQS_QUEUE_URL: "sqs_queue_url"
+        AUDIT_SQS_QUEUE_NAME: "sqs_queue_name"
 
   ingress:
     host: csip-dev.hmpps.service.justice.gov.uk
@@ -22,8 +29,11 @@ generic-service:
     DPS_HOME_PAGE_URL: "https://digital-dev.prison.service.justice.gov.uk"
     PRISONER_PROFILE_URL: "https://prisoner-dev.digital.prison.service.justice.gov.uk"
     ENVIRONMENT_NAME: DEV # Phase banner tag label
-    AUDIT_ENABLED: "false"
+    AUDIT_ENABLED: "true"
     SENTRY_ENVIRONMENT: DEV
+    AUDIT_SQS_REGION: "eu-west-2"
+    AUDIT_SERVICE_NAME: "hmpps-challenge-support-intervention-plan-ui"
+
 
 generic-prometheus-alerts:
   alertSeverity: move-and-improve-alerts-non-prod
