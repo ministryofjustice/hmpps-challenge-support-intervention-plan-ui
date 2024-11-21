@@ -138,7 +138,7 @@ workflows:
             branches:
               only:
                 - main
-                - MIC-780_audit-events
+                - MIC-780_audit-events_tmpjrtest
       - hmpps/deploy_env:
           name: deploy_dev
           env: "dev"
@@ -150,7 +150,7 @@ workflows:
             branches:
               only:
                 - main
-                - MIC-780_audit-events
+                - MIC-780_audit-events_tmpjrtest
           requires:
             - helm_lint
             # - integration_tests
