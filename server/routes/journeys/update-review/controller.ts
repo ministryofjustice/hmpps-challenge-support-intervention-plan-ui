@@ -48,6 +48,7 @@ export class UpdateReviewController extends BaseJourneyController {
       recordUuid: record.recordUuid,
       showBreadcrumbs: true,
       secondaryButton,
+      isCsipProcessor: res.locals.user.userRoles.includes('CSIP_PROCESSOR'),
     })
   }
 }

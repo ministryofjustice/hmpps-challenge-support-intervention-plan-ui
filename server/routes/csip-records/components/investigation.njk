@@ -227,7 +227,7 @@
 {% else %}
   <p class="govuk-!-margin-bottom-8">No investigation recorded.</p>
 
-  {% if not plan %}
+  {% if isCsipProcessor and not plan %}
     <p>
       <a class="govuk-link govuk-link--no-visited-state" href="/csip-record/{{recordUuid}}/record-investigation/start">Record an investigation</a>
     </p>
