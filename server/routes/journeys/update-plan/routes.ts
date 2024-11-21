@@ -15,6 +15,8 @@ import { ReopenIdentifiedNeedRoutes } from './reopen-identified-need/routes'
 import { NewIdentifiedNeedRoutes } from './summarise-identified-need/routes'
 import { NewActionsProgressionRoutes } from './record-actions-progress/routes'
 import { NewIdentifiedNeedCheckAnswersRoutes } from './check-answers/routes'
+import authorisationMiddleware from '../../../middleware/authorisationMiddleware'
+import AuthorisedRoles from '../../../authentication/authorisedRoles'
 
 function Routes({ csipApiService }: Services) {
   const { router, get } = JourneyRouter()
@@ -46,12 +48,17 @@ function Routes({ csipApiService }: Services) {
 export const UpdatePlanRoutes = ({ services, path }: { services: Services; path: string }) => {
   const { router } = JourneyRouter()
 
-  router.use('/csip-record/:csipRecordId/update-plan/start', StartJourneyRoutes(services, '/update-plan'))
+  router.use(
+    '/csip-record/:csipRecordId/update-plan/start',
+    authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]),
+    StartJourneyRoutes(services, '/update-plan'),
+  )
   router.use(
     '/csip-record/:csipRecordId/update-plan/identified-needs/start',
+    authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]),
     StartJourneyRoutes(services, '/update-plan/identified-needs'),
   )
-  router.use(path, Routes(services))
+  router.use(path, authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]), Routes(services))
 
   return router
 }

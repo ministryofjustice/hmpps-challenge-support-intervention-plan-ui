@@ -12,6 +12,8 @@ import { NextReviewDateRoutes } from './next-review-date/routes'
 import { InterventionDetailsRoutes } from './intervention-details/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
 import { PlanCheckAnswersRoutes } from './check-answers/routes'
+import authorisationMiddleware from '../../../middleware/authorisationMiddleware'
+import AuthorisedRoles from '../../../authentication/authorisedRoles'
 
 function Routes({ csipApiService }: Services) {
   const { router, get, post } = JourneyRouter()
@@ -35,8 +37,12 @@ function Routes({ csipApiService }: Services) {
 export const DevelopPlanRoutes = ({ services, path }: { services: Services; path: string }) => {
   const { router } = JourneyRouter()
 
-  router.use('/csip-record/:csipRecordId/develop-an-initial-plan/start', StartJourneyRoutes(services))
-  router.use(path, Routes(services))
+  router.use(
+    '/csip-record/:csipRecordId/develop-an-initial-plan/start',
+    authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]),
+    StartJourneyRoutes(services),
+  )
+  router.use(path, authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]), Routes(services))
 
   return router
 }

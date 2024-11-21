@@ -6,6 +6,8 @@ import { JourneyRouter } from '../base/routes'
 import { ScreenController } from './controller'
 import { schemaFactory } from './schemas'
 import { validate } from '../../../middleware/validationMiddleware'
+import authorisationMiddleware from '../../../middleware/authorisationMiddleware'
+import AuthorisedRoles from '../../../authentication/authorisedRoles'
 
 function Routes({ csipApiService }: Services) {
   const { router, get, post } = JourneyRouter()
@@ -23,8 +25,12 @@ function Routes({ csipApiService }: Services) {
 export const ScreenRoutes = ({ services, path }: { services: Services; path: string }) => {
   const { router } = JourneyRouter()
 
-  router.use('/csip-record/:csipRecordId/screen/start', StartJourneyRoutes(services))
-  router.use(path, Routes(services))
+  router.use(
+    '/csip-record/:csipRecordId/screen/start',
+    authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]),
+    StartJourneyRoutes(services),
+  )
+  router.use(path, authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]), Routes(services))
 
   return router
 }

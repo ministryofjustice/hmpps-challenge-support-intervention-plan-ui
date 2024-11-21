@@ -20,6 +20,13 @@ export default function routes(services: Services): Router {
   // await services.auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
   get('/', controller.GET)
 
+  router.get('/not-authorised', (_req, res) => {
+    res.status(403)
+    return res.render('not-authorised', {
+      showBreadcrumbs: true,
+    })
+  })
+
   router.use('/csip-records/:recordUuid', CsipRecordRoutes(services))
   router.use('/manage-csips', SearchCsipRoutes(services))
   router.get('/how-to-make-a-referral', (_req, res) =>

@@ -82,7 +82,7 @@
 
 {% extends "partials/layout.njk" %}
 
-{% if actionButton %}
+{% if actionButton and isCsipProcessor %}
   {% set actionButtonHtml %}
     <form method="post" action="/csip-records/{{ recordUuid }}">
       <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
@@ -162,7 +162,9 @@
     </p>
     <p class="govuk-!-margin-bottom-8">
       <strong>CSIP log code:</strong> {{ record.logCode or "Not provided" }}
-      <a class="govuk-link govuk-link--no-visited-state govuk-!-margin-left-2" href="/csip-record/{{ recordUuid }}/edit-log-code/start">Edit log code</a>
+      {% if isCsipProcessor %}
+        <a class="govuk-link govuk-link--no-visited-state govuk-!-margin-left-2" href="/csip-record/{{ recordUuid }}/edit-log-code/start">Edit log code</a>
+      {% endif %}
     </p>
     {% if not shouldShowTabs %}
       <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-8">
@@ -224,14 +226,14 @@
   <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
   <input type="hidden" name="action" value="{{ actionButton.action }}"/>
   <div class="govuk-button-group">
-    {% if actionButton %}
+    {% if actionButton and isCsipProcessor %}
       {{ govukButton({
         text: actionButton.label,
         preventDoubleClick: true,
         classes: 'govuk-body govuk-!-margin-bottom-0'
       }) }}
     {% endif %}
-    {% if secondaryButton %}
+    {% if secondaryButton and (isCsipProcessor or secondaryButton.label == 'Update referral') %}
       <a class="govuk-link govuk-body govuk-link--no-visited-state" href="{{ secondaryButton.link }}">{{ secondaryButton.label }}</a>
     {% endif %}
   </div>

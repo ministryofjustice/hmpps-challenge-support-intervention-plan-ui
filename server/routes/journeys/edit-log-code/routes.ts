@@ -4,6 +4,8 @@ import { JourneyRouter } from '../base/routes'
 import { EditLogCodeController } from './controller'
 import { validate } from '../../../middleware/validationMiddleware'
 import { schema } from './schemas'
+import authorisationMiddleware from '../../../middleware/authorisationMiddleware'
+import AuthorisedRoles from '../../../authentication/authorisedRoles'
 
 function Routes({ csipApiService }: Services) {
   const { router, get, post } = JourneyRouter()
@@ -18,8 +20,12 @@ function Routes({ csipApiService }: Services) {
 export const EditLogCodeRoutes = ({ services, path }: { services: Services; path: string }) => {
   const { router } = JourneyRouter()
 
-  router.use('/csip-record/:csipRecordId/edit-log-code/start', StartJourneyRoutes(services))
-  router.use(path, Routes(services))
+  router.use(
+    '/csip-record/:csipRecordId/edit-log-code/start',
+    authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]),
+    StartJourneyRoutes(services),
+  )
+  router.use(path, authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]), Routes(services))
 
   return router
 }

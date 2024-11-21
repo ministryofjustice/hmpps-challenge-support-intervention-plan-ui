@@ -174,6 +174,7 @@ export class CsipRecordController {
       showBreadcrumbs: true,
       secondaryButton,
       successMessage: req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE)[0],
+      isCsipProcessor: res.locals.user.userRoles.includes('CSIP_PROCESSOR'),
     })
   }
 
