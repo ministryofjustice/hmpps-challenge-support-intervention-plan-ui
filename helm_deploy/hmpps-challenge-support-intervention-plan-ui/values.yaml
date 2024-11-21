@@ -6,6 +6,7 @@ generic-service:
   # serviceAccountName: "hmpps-challenge-support-intervention-plan-ui"
 
   replicaCount: 4
+  serviceAccountName: hmpps-csip-ui
 
   image:
     repository: quay.io/hmpps/hmpps-challenge-support-intervention-plan-ui

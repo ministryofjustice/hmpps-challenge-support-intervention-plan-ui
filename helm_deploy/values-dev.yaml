@@ -3,7 +3,6 @@
 
 generic-service:
   replicaCount: 2
-  serviceAccountName: hmpps-challenge-support-intervention-plan-ui
 
   ingress:
     host: csip-dev.hmpps.service.justice.gov.uk
