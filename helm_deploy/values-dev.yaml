@@ -5,12 +5,6 @@ generic-service:
   replicaCount: 2
   serviceAccountName: hmpps-challenge-support-intervention-plan-ui
 
-  namespace_secrets:
-    hmpps-challenge-support-intervention-plan-ui:
-      sqs-hmpps-audit-secret:
-        AUDIT_SQS_QUEUE_URL: "sqs_queue_url"
-        AUDIT_SQS_QUEUE_NAME: "sqs_queue_name"
-
   ingress:
     host: csip-dev.hmpps.service.justice.gov.uk
 
