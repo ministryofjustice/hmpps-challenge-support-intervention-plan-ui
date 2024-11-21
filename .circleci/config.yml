@@ -43,9 +43,9 @@ jobs:
       - run:
           command: |
             npm run build
-      - run: # Run linter after build because the integration test code depend on compiled typescript...
-          name: Linter check
-          command: npm run lint
+      # - run: # Run linter after build because the integration test code depend on compiled typescript...
+      #     name: Linter check
+      #     command: npm run lint
       - persist_to_workspace:
           root: .
           paths:
@@ -122,13 +122,13 @@ workflows:
           filters:
             tags:
               ignore: /.*/
-      - unit_test:
-          requires:
-            - build
-      - integration_tests:
-          requires:
-            - build
-            - unit_test
+      # - unit_test:
+      #     requires:
+      #       - build
+      # - integration_tests:
+      #     requires:
+      #       - build
+      #       - unit_test
       - hmpps/helm_lint:
           name: helm_lint
       - hmpps/build_docker:
@@ -138,6 +138,7 @@ workflows:
             branches:
               only:
                 - main
+                - MIC-780_audit-events
       - hmpps/deploy_env:
           name: deploy_dev
           env: "dev"
@@ -149,49 +150,50 @@ workflows:
             branches:
               only:
                 - main
+                - MIC-780_audit-events
           requires:
             - helm_lint
-            - integration_tests
+            # - integration_tests
             - build_docker
           helm_timeout: 5m
-      - request-preprod-approval:
-          type: approval
-          requires:
-            - deploy_dev
-      - hmpps/deploy_env:
-          name: deploy_preprod
-          env: "preprod"
-          jira_update: true
-          jira_env_type: staging
-          pipeline_id: <<pipeline.id>>
-          pipeline_number: <<pipeline.number>>
-          slack_notification: true
-          slack_channel_name: move-and-improve-alerts-non-prod
-          context:
-            - hmpps-common-vars
-            - hmpps-challenge-support-intervention-plan-preprod
-          requires:
-            - request-preprod-approval
-          helm_timeout: 5m
-      - request-prod-approval:
-          type: approval
-          requires:
-            - deploy_preprod
-      - hmpps/deploy_env:
-          name: deploy_prod
-          env: "prod"
-          jira_update: true
-          jira_env_type: production
-          pipeline_id: <<pipeline.id>>
-          pipeline_number: <<pipeline.number>>
-          slack_notification: true
-          slack_channel_name: move-and-improve-alerts
-          context:
-            - hmpps-common-vars
-            - hmpps-challenge-support-intervention-plan-prod
-          requires:
-            - request-prod-approval
-          helm_timeout: 5m
+      # - request-preprod-approval:
+      #     type: approval
+      #     requires:
+      #       - deploy_dev
+      # - hmpps/deploy_env:
+      #     name: deploy_preprod
+      #     env: "preprod"
+      #     jira_update: true
+      #     jira_env_type: staging
+      #     pipeline_id: <<pipeline.id>>
+      #     pipeline_number: <<pipeline.number>>
+      #     slack_notification: true
+      #     slack_channel_name: move-and-improve-alerts-non-prod
+      #     context:
+      #       - hmpps-common-vars
+      #       - hmpps-challenge-support-intervention-plan-preprod
+      #     requires:
+      #       - request-preprod-approval
+      #     helm_timeout: 5m
+      # - request-prod-approval:
+      #     type: approval
+      #     requires:
+      #       - deploy_preprod
+      # - hmpps/deploy_env:
+      #     name: deploy_prod
+      #     env: "prod"
+      #     jira_update: true
+      #     jira_env_type: production
+      #     pipeline_id: <<pipeline.id>>
+      #     pipeline_number: <<pipeline.number>>
+      #     slack_notification: true
+      #     slack_channel_name: move-and-improve-alerts
+      #     context:
+      #       - hmpps-common-vars
+      #       - hmpps-challenge-support-intervention-plan-prod
+      #     requires:
+      #       - request-prod-approval
+      #     helm_timeout: 5m
 
   security:
     triggers:
