@@ -233,7 +233,7 @@
         classes: 'govuk-body govuk-!-margin-bottom-0'
       }) }}
     {% endif %}
-    {% if secondaryButton and (isCsipProcessor or secondaryButton.label == 'Update referral') %}
+    {% if secondaryButton and (isCsipProcessor or secondaryButton.label == 'Update referral' or secondaryButton.label == "Cancel") %}
       <a class="govuk-link govuk-body govuk-link--no-visited-state" href="{{ secondaryButton.link }}">{{ secondaryButton.label }}</a>
     {% endif %}
   </div>
