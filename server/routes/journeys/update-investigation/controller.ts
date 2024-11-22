@@ -3,6 +3,7 @@ import type PrisonerSearchService from '../../../services/prisonerSearch/prisone
 import { BaseJourneyController } from '../base/controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import { interviewSorter } from '../../../utils/sorters'
+import { isCsipProcessor } from '../../../authentication/authorisedRoles'
 
 export class UpdateInvestigationController extends BaseJourneyController {
   constructor(
@@ -50,7 +51,7 @@ export class UpdateInvestigationController extends BaseJourneyController {
       prisoner,
       showBreadcrumbs: true,
       secondaryButton,
-      isCsipProcessor: res.locals.user.userRoles.includes('CSIP_PROCESSOR'),
+      isCsipProcessor: isCsipProcessor(res),
     })
   }
 }

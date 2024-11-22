@@ -9,8 +9,6 @@ import { ConclusionRoutes } from './conclusion/routes'
 import { DecisionAdditionalInformationRoutes } from './additional-information/routes'
 import { DecisionCheckAnswersRoutes } from './check-answers/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
-import authorisationMiddleware from '../../../middleware/authorisationMiddleware'
-import AuthorisedRoles from '../../../authentication/authorisedRoles'
 
 function Routes({ csipApiService }: Services) {
   const { router, get, post } = JourneyRouter()
@@ -30,12 +28,8 @@ function Routes({ csipApiService }: Services) {
 export const DecisionRoutes = ({ services, path }: { services: Services; path: string }) => {
   const { router } = JourneyRouter()
 
-  router.use(
-    '/csip-record/:csipRecordId/record-decision/start',
-    authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]),
-    StartJourneyRoutes(services),
-  )
-  router.use(path, authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]), Routes(services))
+  router.use('/csip-record/:csipRecordId/record-decision/start', StartJourneyRoutes(services))
+  router.use(path, Routes(services))
 
   return router
 }

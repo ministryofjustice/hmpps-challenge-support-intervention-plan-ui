@@ -13,8 +13,6 @@ import { InterviewDetailsRoutes } from './interview-details/routes'
 import { DeleteInterviewRoutes } from './delete-interview/routes'
 import { InvestigationCheckAnswersRoutes } from './check-answers/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
-import authorisationMiddleware from '../../../middleware/authorisationMiddleware'
-import AuthorisedRoles from '../../../authentication/authorisedRoles'
 
 function Routes(services: Services) {
   const { router, get } = JourneyRouter()
@@ -39,12 +37,8 @@ function Routes(services: Services) {
 export const InvestigationRoutes = ({ services, path }: { services: Services; path: string }) => {
   const { router } = JourneyRouter()
 
-  router.use(
-    '/csip-record/:csipRecordId/record-investigation/start',
-    authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]),
-    StartJourneyRoutes(services),
-  )
-  router.use(path, authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]), Routes(services))
+  router.use('/csip-record/:csipRecordId/record-investigation/start', StartJourneyRoutes(services))
+  router.use(path, Routes(services))
 
   return router
 }

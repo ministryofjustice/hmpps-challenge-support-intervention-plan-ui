@@ -5,8 +5,6 @@ import { UpdateDecisionController } from './controller'
 import { UpdateConclusionRoutes } from './conclusion/routes'
 import { UpdateAdditionalInformationRoutes } from './additional-information/routes'
 import { UpdateNextStepsRoutes } from './next-steps/routes'
-import authorisationMiddleware from '../../../middleware/authorisationMiddleware'
-import AuthorisedRoles from '../../../authentication/authorisedRoles'
 
 function Routes({ csipApiService, prisonerSearchService }: Services) {
   const { router, get } = JourneyRouter()
@@ -24,12 +22,8 @@ function Routes({ csipApiService, prisonerSearchService }: Services) {
 export const UpdateDecisionRoutes = ({ services, path }: { services: Services; path: string }) => {
   const { router } = JourneyRouter()
 
-  router.use(
-    '/csip-record/:csipRecordId/update-decision/start',
-    authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]),
-    StartJourneyRoutes(services),
-  )
-  router.use(path, authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]), Routes(services))
+  router.use('/csip-record/:csipRecordId/update-decision/start', StartJourneyRoutes(services))
+  router.use(path, Routes(services))
 
   return router
 }

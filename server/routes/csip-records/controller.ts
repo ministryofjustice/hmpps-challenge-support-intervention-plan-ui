@@ -4,6 +4,7 @@ import CsipApiService from '../../services/csipApi/csipApiService'
 import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchService'
 import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../utils/constants'
 import { attendeeSorter, identifiedNeedSorter, interviewSorter } from '../../utils/sorters'
+import { isCsipProcessor } from '../../authentication/authorisedRoles'
 
 export class CsipRecordController {
   constructor(
@@ -174,7 +175,7 @@ export class CsipRecordController {
       showBreadcrumbs: true,
       secondaryButton,
       successMessage: req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE)[0],
-      isCsipProcessor: res.locals.user.userRoles.includes('CSIP_PROCESSOR'),
+      isCsipProcessor: isCsipProcessor(res),
     })
   }
 
