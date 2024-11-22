@@ -1,5 +1,4 @@
 import { type RequestHandler, Router } from 'express'
-
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import type { Services } from '../services'
 import insertJourneyIdentifier from '../middleware/insertJourneyIdentifier'
@@ -15,6 +14,8 @@ export default function routes(services: Services): Router {
   const controller = new HomePageController(services.csipApiService)
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
+  get('/', controller.GET)
+
   router.use('/csip-records/:recordUuid', CsipRecordRoutes(services))
   router.use('/manage-csips', SearchCsipRoutes(services))
   router.get('/how-to-make-a-referral', (_req, res) =>
@@ -23,31 +24,6 @@ export default function routes(services: Services): Router {
 
   router.use(insertJourneyIdentifier())
 
-  router.use((_req, res, next) => {
-    console.log('6')
-    const resRender = res.render
-    console.log('7')
-    res.render = (view: string, options?) => {
-      console.log('resre')
-      type resRenderCb = (view: string, options?: object, callback?: (err: Error, html: string) => void) => void
-      ;(resRender as resRenderCb).call(res, view, options, async (err: Error, html: string) => {
-        if (err) {
-          res.status(500).send(err)
-          return
-        }
-        const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
-        const ret = await services.auditService.logPageView(`${pageNameSuffix}`, {
-          ...auditEventProperties,
-        })
-        console.log(`access ret: ${JSON.stringify(ret)}`)
-        res.send(html)
-      })
-    }
-    console.log('8')
-    next()
-  })
-
-  get('/', controller.GET)
   router.use(
     redirectCheckAnswersMiddleware([
       /on-behalf-of$/,

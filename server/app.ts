@@ -55,29 +55,50 @@ export default function createApp(services: Services): express.Application {
   nunjucksSetup(app)
   app.use(setUpAuthentication())
   app.use((req, res, next) => {
-    console.log('1')
     const hasJourneyId = validate(req.url.split('/')[1])
-    console.log('2')
     res.locals.auditEvent = {
       pageNameSuffix: hasJourneyId
         ? `${req.url.split('/')[1]}_${req.url.replace(/\?.*/, '').split('/').slice(2)}` // JOURNEYID_PAGE
         : req.url.replace(/\?.*/, ''), // PAGE
       who: res.locals.user.username,
+      correlationId: req.id,
     }
-
-    console.log('3')
-
-    const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
-    console.log('4')
     res.prependOnceListener('close', async () => {
-      console.log('prep')
+      const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
       await services.auditService.logPageView(`ACCESS_ATTEMPT_${pageNameSuffix}`, {
+        // console.log(
+        // JSON.stringify({
         ...auditEventProperties,
+        ...(req.query ? { details: req.query } : {}),
+        ...(req.journeyData?.csipRecord?.recordUuid ? { subjectId: req.journeyData.csipRecord.recordUuid } : {}),
+        ...(req.journeyData?.csipRecord?.recordUuid ? { subjectType: req.journeyData.csipRecord.recordUuid } : {}),
       })
+      // )
     })
-    console.log('5')
+    const resRender = res.render
+    res.render = (view: string, options?) => {
+      type resRenderCb = (view: string, options?: object, callback?: (err: Error, html: string) => void) => void
+      ;(resRender as resRenderCb).call(res, view, options, async (err: Error, html: string) => {
+        if (err) {
+          res.status(500).send(err)
+          return
+        }
+        const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
+        await services.auditService.logPageView(`${pageNameSuffix}`, {
+          // console.log(
+          //   JSON.stringify({
+          ...auditEventProperties,
+          ...(req.query ? { details: req.query } : {}),
+          ...(req.journeyData?.csipRecord?.recordUuid ? { subjectId: req.journeyData.csipRecord.recordUuid } : {}),
+          ...(req.journeyData?.csipRecord?.recordUuid ? { subjectType: req.journeyData.csipRecord.recordUuid } : {}),
+        })
+        // )
+        res.send(html)
+      })
+    }
     next()
   })
+
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
