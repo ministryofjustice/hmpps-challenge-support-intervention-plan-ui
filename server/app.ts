@@ -58,7 +58,7 @@ export default function createApp(services: Services): express.Application {
     const hasJourneyId = validate(req.url.split('/')[1])
     res.locals.auditEvent = {
       pageNameSuffix: hasJourneyId
-        ? `${req.url.split('/')[1]}_${req.url.replace(/\?.*/, '').split('/').slice(2).join('/')}` // JOURNEYID_PAGE
+        ? `${req.url.split('/')[1]}/${req.url.replace(/\?.*/, '').split('/').slice(2).join('/')}` // JOURNEYID_PAGE
         : req.url.replace(/\?.*/, ''), // PAGE
       who: res.locals.user.username,
       correlationId: req.id,
