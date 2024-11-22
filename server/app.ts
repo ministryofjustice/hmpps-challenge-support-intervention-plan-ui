@@ -5,6 +5,7 @@ import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
 import * as Sentry from '@sentry/node'
 // @ts-expect-error Import untyped middleware for cypress coverage
 import cypressCoverage from '@cypress/code-coverage/middleware/express'
+import { validate } from 'uuid'
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import { appInsightsMiddleware } from './utils/azureAppInsights'
@@ -53,6 +54,41 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpStaticResources())
   nunjucksSetup(app)
   app.use(setUpAuthentication())
+  app.use((req, res, next) => {
+    const hasJourneyId = validate(req.originalUrl.split('/')[1])
+    res.locals.auditEvent = {
+      pageNameSuffix: hasJourneyId
+        ? `${req.originalUrl.split('/')[1]}/${req.originalUrl.replace(/\?.*/, '').split('/').slice(2).join('/')}` // JOURNEYID_PAGE
+        : req.originalUrl.replace(/\?.*/, ''), // PAGE
+      who: res.locals.user.username,
+      correlationId: req.id,
+    }
+
+    res.prependOnceListener('close', async () => {
+      await services.auditService.logPageView(
+        req.originalUrl,
+        req.journeyData,
+        req.query,
+        res.locals.auditEvent,
+        `ACCESS_ATTEMPT_`,
+      )
+    })
+
+    const resRender = res.render
+    res.render = (view: string, options?) => {
+      type resRenderCb = (view: string, options?: object, callback?: (err: Error, html: string) => void) => void
+      ;(resRender as resRenderCb).call(res, view, options, async (err: Error, html: string) => {
+        if (err) {
+          res.status(500).send(err)
+          return
+        }
+        await services.auditService.logPageView(req.originalUrl, req.journeyData, req.query, res.locals.auditEvent)
+        res.send(html)
+      })
+    }
+    next()
+  })
+
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())

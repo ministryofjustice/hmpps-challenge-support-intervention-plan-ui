@@ -1,4 +1,4 @@
-import AuditService, { Page } from './auditService'
+import AuditService from './auditService'
 import HmppsAuditClient from '../data/hmppsAuditClient'
 
 jest.mock('../data/hmppsAuditClient')
@@ -41,19 +41,22 @@ describe('Audit service', () => {
 
   describe('logPageView', () => {
     it('sends page view event audit message using audit client', async () => {
-      await auditService.logPageView(Page.EXAMPLE_PAGE, {
-        who: 'user1',
-        subjectId: 'subject123',
-        subjectType: 'exampleType',
-        correlationId: 'request123',
-        details: { extraDetails: 'example' },
-      })
+      await auditService.logPageView(
+        '/csip-records/0192d2fb-6920-749f-86fb-f0c6c2deaec8',
+        {},
+        { extraDetails: 'example' },
+        {
+          pageNameSuffix: 'EXAMPLE_PAGE',
+          who: 'user1',
+          correlationId: 'request123',
+        },
+      )
 
       expect(hmppsAuditClient.sendMessage).toHaveBeenCalledWith({
         what: 'PAGE_VIEW_EXAMPLE_PAGE',
         who: 'user1',
-        subjectId: 'subject123',
-        subjectType: 'exampleType',
+        subjectId: '0192d2fb-6920-749f-86fb-f0c6c2deaec8',
+        subjectType: '0192d2fb-6920-749f-86fb-f0c6c2deaec8',
         correlationId: 'request123',
         details: { extraDetails: 'example' },
       })

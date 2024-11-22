@@ -24,6 +24,8 @@ generic-service:
     ENVIRONMENT_NAME: PRE-PRODUCTION # Phase banner tag label
     AUDIT_ENABLED: "false"
     SENTRY_ENVIRONMENT: PRE-PRODUCTION
+    AUDIT_SQS_REGION: "eu-west-2"
+    AUDIT_SERVICE_NAME: "hmpps-challenge-support-intervention-plan-ui"
 
 generic-prometheus-alerts:
   alertSeverity: move-and-improve-alerts-non-prod
