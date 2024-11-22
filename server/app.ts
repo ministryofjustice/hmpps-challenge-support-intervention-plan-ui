@@ -65,13 +65,15 @@ export default function createApp(services: Services): express.Application {
     }
     res.prependOnceListener('close', async () => {
       const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
+      const csipFromUrl = req.url.includes('csip-record') ? req.url.split('/').filter(Boolean)[1] : undefined
+      const csipIdInRequest = csipFromUrl ?? req.journeyData?.csipRecord?.recordUuid
       await services.auditService.logPageView(`ACCESS_ATTEMPT_${pageNameSuffix}`, {
         // console.log(
         // JSON.stringify({
         ...auditEventProperties,
         ...(req.query ? { details: req.query } : {}),
-        ...(req.journeyData?.csipRecord?.recordUuid ? { subjectId: req.journeyData.csipRecord.recordUuid } : {}),
-        ...(req.journeyData?.csipRecord?.recordUuid ? { subjectType: req.journeyData.csipRecord.recordUuid } : {}),
+        ...(csipIdInRequest ? { subjectId: csipIdInRequest } : {}),
+        ...(csipIdInRequest ? { subjectType: csipIdInRequest } : {}),
       })
       // )
     })
@@ -84,13 +86,15 @@ export default function createApp(services: Services): express.Application {
           return
         }
         const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
+        const csipFromUrl = req.url.includes('csip-record') ? req.url.split('/').filter(Boolean)[1] : undefined
+        const csipIdInRequest = csipFromUrl ?? req.journeyData?.csipRecord?.recordUuid
         await services.auditService.logPageView(`${pageNameSuffix}`, {
           // console.log(
           //   JSON.stringify({
           ...auditEventProperties,
           ...(req.query ? { details: req.query } : {}),
-          ...(req.journeyData?.csipRecord?.recordUuid ? { subjectId: req.journeyData.csipRecord.recordUuid } : {}),
-          ...(req.journeyData?.csipRecord?.recordUuid ? { subjectType: req.journeyData.csipRecord.recordUuid } : {}),
+          ...(csipIdInRequest ? { subjectId: csipIdInRequest } : {}),
+          ...(csipIdInRequest ? { subjectType: csipIdInRequest } : {}),
         })
         // )
         res.send(html)
