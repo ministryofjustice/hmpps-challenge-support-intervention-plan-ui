@@ -7,7 +7,7 @@ export default function insertJourneyIdentifier() {
     if (!validate(uuid)) {
       return res.redirect(`${req.baseUrl}/${uuidV4()}${req.url}`)
     }
-    res.locals.auditEvent.pageNameSuffix = `${req.url.split('/')[1]}_${req.url.replace(/\?.*/, '').split('/').slice(2)}` // JOURNEYID_PAGE
+    res.locals.auditEvent.pageNameSuffix = `${req.url.split('/')[1]}_${req.url.replace(/\?.*/, '').split('/').slice(2).join('/')}` // JOURNEYID_PAGE
     return next()
   }
 }
