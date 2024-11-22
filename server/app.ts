@@ -66,7 +66,7 @@ export default function createApp(services: Services): express.Application {
     res.prependOnceListener('close', async () => {
       const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
       const csipFromUrl = req.url.includes('csip-record') ? req.url.split('/').filter(Boolean)[1] : undefined
-      const csipIdInRequest = csipFromUrl ?? req.journeyData?.csipRecord?.recordUuid
+      const csipIdInRequest = csipFromUrl || req.journeyData?.csipRecord?.recordUuid
       await services.auditService.logPageView(`ACCESS_ATTEMPT_${pageNameSuffix}`, {
         // console.log(
         // JSON.stringify({
@@ -87,7 +87,7 @@ export default function createApp(services: Services): express.Application {
         }
         const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
         const csipFromUrl = req.url.includes('csip-record') ? req.url.split('/').filter(Boolean)[1] : undefined
-        const csipIdInRequest = csipFromUrl ?? req.journeyData?.csipRecord?.recordUuid
+        const csipIdInRequest = csipFromUrl || req.journeyData?.csipRecord?.recordUuid
         await services.auditService.logPageView(`${pageNameSuffix}`, {
           // console.log(
           //   JSON.stringify({
