@@ -1,3 +1,4 @@
+import { Request, Response } from 'express'
 import HmppsAuditClient, { AuditEvent } from '../data/hmppsAuditClient'
 
 export enum Page {
@@ -19,10 +20,20 @@ export default class AuditService {
     await this.hmppsAuditClient.sendMessage(event)
   }
 
-  async logPageView(page: string, eventDetails: PageViewEventDetails) {
+  async logPageView(req: Request, res: Response, pagePrefix: string = '') {
+    const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
+
+    const csipFromUrl = req.originalUrl.includes('csip-record')
+      ? req.originalUrl.split('/').filter(Boolean)[1]
+      : undefined
+    const csipIdInRequest = csipFromUrl || req.journeyData?.csipRecord?.recordUuid
+
     const event: AuditEvent = {
-      ...eventDetails,
-      what: `PAGE_VIEW_${page}`,
+      ...auditEventProperties,
+      ...(req.query ? { details: req.query } : {}),
+      ...(csipIdInRequest ? { subjectId: csipIdInRequest } : {}),
+      ...(csipIdInRequest ? { subjectType: csipIdInRequest } : {}),
+      what: `PAGE_VIEW_${pagePrefix + pageNameSuffix}`,
     }
     await this.hmppsAuditClient.sendMessage(event)
   }

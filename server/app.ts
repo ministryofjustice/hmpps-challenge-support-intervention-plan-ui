@@ -63,34 +63,11 @@ export default function createApp(services: Services): express.Application {
       who: res.locals.user.username,
       correlationId: req.id,
     }
+
     res.prependOnceListener('close', async () => {
-      const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
-      console.log(`access req.originalUrl: ${req.originalUrl}`)
-      console.log(`access auditeventproperties: ${JSON.stringify(auditEventProperties)}`)
-      const csipFromUrl = req.originalUrl.includes('csip-record')
-        ? req.originalUrl.split('/').filter(Boolean)[1]
-        : undefined
-      console.log(`access csipfrmourl ${csipFromUrl}`)
-      const csipIdInRequest = csipFromUrl || req.journeyData?.csipRecord?.recordUuid
-      console.log(`access csipIdInRequest ${csipIdInRequest}`)
-      console.log(
-        `access logpageview props: ${JSON.stringify({
-          ...auditEventProperties,
-          ...(req.query ? { details: req.query } : {}),
-          ...(csipIdInRequest ? { subjectId: csipIdInRequest } : {}),
-          ...(csipIdInRequest ? { subjectType: csipIdInRequest } : {}),
-        })}`,
-      )
-      await services.auditService.logPageView(`ACCESS_ATTEMPT_${pageNameSuffix}`, {
-        // console.log(
-        // JSON.stringify({
-        ...auditEventProperties,
-        ...(req.query ? { details: req.query } : {}),
-        ...(csipIdInRequest ? { subjectId: csipIdInRequest } : {}),
-        ...(csipIdInRequest ? { subjectType: csipIdInRequest } : {}),
-      })
-      // )
+      await services.auditService.logPageView(req, res, `ACCESS_ATTEMPT_`)
     })
+
     const resRender = res.render
     res.render = (view: string, options?) => {
       type resRenderCb = (view: string, options?: object, callback?: (err: Error, html: string) => void) => void
@@ -99,34 +76,7 @@ export default function createApp(services: Services): express.Application {
           res.status(500).send(err)
           return
         }
-        const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
-
-        console.log(`req.originalUrl: ${req.originalUrl}`)
-        console.log(`auditeventproperties: ${JSON.stringify(auditEventProperties)}`)
-
-        const csipFromUrl = req.originalUrl.includes('csip-record')
-          ? req.originalUrl.split('/').filter(Boolean)[1]
-          : undefined
-        console.log(`csipfrmourl ${csipFromUrl}`)
-        const csipIdInRequest = csipFromUrl || req.journeyData?.csipRecord?.recordUuid
-        console.log(`csipIdInRequest ${csipIdInRequest}`)
-        console.log(
-          `logpageview props: ${JSON.stringify({
-            ...auditEventProperties,
-            ...(req.query ? { details: req.query } : {}),
-            ...(csipIdInRequest ? { subjectId: csipIdInRequest } : {}),
-            ...(csipIdInRequest ? { subjectType: csipIdInRequest } : {}),
-          })}`,
-        )
-        await services.auditService.logPageView(`${pageNameSuffix}`, {
-          // console.log(
-          //   JSON.stringify({
-          ...auditEventProperties,
-          ...(req.query ? { details: req.query } : {}),
-          ...(csipIdInRequest ? { subjectId: csipIdInRequest } : {}),
-          ...(csipIdInRequest ? { subjectType: csipIdInRequest } : {}),
-        })
-        // )
+        await services.auditService.logPageView(req, res)
         res.send(html)
       })
     }
