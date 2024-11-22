@@ -74,10 +74,10 @@ export default function createApp(services: Services): express.Application {
       )
     })
 
-    const resRender = res.render
+    type resRenderCb = (view: string, options?: object, callback?: (err: Error, html: string) => void) => void
+    const resRender = res.render as resRenderCb
     res.render = (view: string, options?) => {
-      type resRenderCb = (view: string, options?: object, callback?: (err: Error, html: string) => void) => void
-      ;(resRender as resRenderCb).call(res, view, options, async (err: Error, html: string) => {
+      resRender.call(res, view, options, async (err: Error, html: string) => {
         if (err) {
           res.status(500).send(err)
           return
