@@ -15,8 +15,9 @@ context('Record a decision journey', () => {
 
   it('should deny access to non CSIP_PROCESSOR role', () => {
     cy.task('stubSignIn', { roles: [] })
+    cy.signIn()
 
-    cy.visit('csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-decision/start')
+    cy.visit('csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-decision/start', { failOnStatusCode: false })
 
     cy.url().should('to.match', /\/not-authorised$/)
   })

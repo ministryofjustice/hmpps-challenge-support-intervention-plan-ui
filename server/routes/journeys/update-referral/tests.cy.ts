@@ -12,9 +12,11 @@ context('test /update-referral', () => {
 
   it('should allow access to non CSIP_PROCESSOR role', () => {
     cy.task('stubSignIn', { roles: [] })
+    cy.task('stubContribFactors')
+    cy.task('stubCsipRecordGetSuccess')
 
-    cy.signIn()
-    cy.visit(`csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start`)
+    navigateToTestPage()
+    goToUpdatePage(true)
 
     cy.url().should('to.match', /\/update-referral/)
   })
@@ -116,10 +118,12 @@ context('test /update-referral', () => {
     cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
   }
 
-  const goToUpdatePage = () => {
+  const goToUpdatePage = (readonly = false) => {
     cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/referral$/)
     checkAxeAccessibility()
-    cy.findAllByRole('button', { name: /[\s\S]*screen referral[\s\S]*/i }).should('be.visible')
+    if (!readonly) {
+      cy.findAllByRole('button', { name: /[\s\S]*screen referral[\s\S]*/i }).should('be.visible')
+    }
 
     cy.findAllByRole('link', { name: /update referral/i })
       .should('be.visible')
