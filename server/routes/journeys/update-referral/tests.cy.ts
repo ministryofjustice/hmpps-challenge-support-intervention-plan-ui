@@ -10,6 +10,15 @@ context('test /update-referral', () => {
     cy.task('stubIntervieweeRoles')
   })
 
+  it('should allow access to non CSIP_PROCESSOR role', () => {
+    cy.task('stubSignIn', { roles: [] })
+
+    cy.signIn()
+    cy.visit(`csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start`)
+
+    cy.url().should('to.match', /\/update-referral/)
+  })
+
   it('should render the update referral screen with more contrib factors available', () => {
     cy.task('stubContribFactors')
     cy.task('stubCsipRecordGetSuccess')

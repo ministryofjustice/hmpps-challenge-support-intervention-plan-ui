@@ -27,6 +27,19 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     cy.task('stubPostInvestigation')
   })
 
+  it('should deny access to non CSIP_PROCESSOR role', () => {
+    cy.task('stubSignIn', { roles: [] })
+
+    cy.signIn()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-investigation/start`, {
+      failOnStatusCode: false,
+    })
+
+    cy.url().should('to.match', /\/not-authorised$/)
+    cy.visit(`${uuid}/record-investigation/check-answers`, { failOnStatusCode: false })
+    cy.url().should('to.match', /\/not-authorised$/)
+  })
+
   it('happy path', () => {
     cy.signIn()
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-investigation/start`)

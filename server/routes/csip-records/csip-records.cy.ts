@@ -18,6 +18,26 @@ context('test /csip-records', () => {
     cy.findByRole('button', { name: /print/i }).should('be.visible')
   })
 
+  it('should render a post-decision, pre review csip record (read only role)', () => {
+    cy.task('stubSignIn', { roles: [] })
+    cy.task('stubCsipRecordSuccessCsipOpen')
+
+    navigateToTestPage()
+
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/plan$/)
+
+    cy.findAllByRole('button', { name: /[\s\S]*record csip review[\s\S]*/i }).should('not.exist')
+    cy.findAllByRole('link', { name: /update plan/i }).should('have.length', 0)
+    cy.findByRole('link', { name: /add, change, close or reopen/i }).should('not.exist')
+
+    checkAxeAccessibility()
+    checkPlanDetailsExist()
+
+    checkTabsForPlan()
+
+    checkReviews()
+  })
+
   it('should render a post-decision, pre review csip record', () => {
     cy.task('stubCsipRecordSuccessCsipOpen')
 
@@ -40,6 +60,22 @@ context('test /csip-records', () => {
     checkReviews()
   })
 
+  it('should render a post-investigation, pre decision csip record (read only)', () => {
+    cy.task('stubSignIn', { roles: [] })
+    cy.task('stubCsipRecordSuccessAwaitingDecision')
+
+    navigateToTestPage()
+
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/investigation$/)
+    cy.findAllByRole('button', { name: /[\s\S]*record decision[\s\S]*/i }).should('not.exist')
+    cy.findByRole('heading', { name: /decision/i }).should('not.exist')
+    cy.findAllByRole('link', { name: /update referral/i }).should('have.length', 0)
+    cy.findAllByRole('link', { name: /update investigation/i }).should('have.length', 0)
+    checkInvestigationDetailsExist()
+
+    checkTabsAndReferral()
+  })
+
   it('should render a post-investigation, pre decision csip record', () => {
     cy.task('stubCsipRecordSuccessAwaitingDecision')
 
@@ -52,6 +88,26 @@ context('test /csip-records', () => {
     checkInvestigationDetailsExist()
 
     checkTabsAndReferral()
+  })
+
+  it('should render pre-investigation csip record (read only)', () => {
+    cy.task('stubSignIn', { roles: [] })
+    cy.task('stubCsipRecordGetSuccess')
+
+    navigateToTestPage()
+
+    cy.findByRole('link', { name: /investigation/i }).should('not.exist')
+    cy.findByRole('link', { name: /referral/i }).should('not.exist')
+    cy.findByRole('heading', { name: /referral details/i }).should('be.visible')
+    cy.findAllByRole('button', { name: /screen referral/i }).should('not.exist')
+    cy.findAllByRole('link', { name: /update referral/i }).should('have.length', 2)
+    cy.findAllByRole('link', { name: /update referral/i }).should(
+      'have.attr',
+      'href',
+      '/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start',
+    )
+
+    checkContributoryFactors()
   })
 
   it('should render pre-investigation csip record', () => {
@@ -71,6 +127,19 @@ context('test /csip-records', () => {
     )
 
     checkContributoryFactors()
+  })
+
+  it('should render a post-screen csip record (read only)', () => {
+    cy.task('stubSignIn', { roles: [] })
+    cy.task('stubCsipRecordGetSuccessAfterScreeningWithoutReason')
+
+    navigateToTestPage()
+
+    cy.findByRole('link', { name: /investigation/i }).should('not.exist')
+    cy.findByRole('link', { name: /referral/i }).should('not.exist')
+    cy.findByRole('heading', { name: /referral details/i }).should('be.visible')
+    cy.findByRole('heading', { name: /referral screening/i }).should('be.visible')
+    cy.findAllByRole('button', { name: /record investigation/i }).should('not.exist')
   })
 
   it('should render a post-screen csip record (no screening reason)', () => {
@@ -106,6 +175,21 @@ context('test /csip-records', () => {
     cy.contains('dt', 'Reasons for decision').next().should('include.text', `a very well thought out reason`)
     cy.contains('dt', 'Recorded by').next().should('include.text', `Test User`)
     cy.findAllByText(/Recorded by/).should('have.length', 1) // Only screening recorded by should show as we set referralCompletedByDisplayName to undefined
+  })
+
+  it('should render a post-decision, pre-plan csip record (read only)', () => {
+    cy.task('stubSignIn', { roles: [] })
+    cy.task('stubCsipRecordSuccessPlanPending')
+
+    navigateToTestPage()
+
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/investigation$/)
+    cy.findAllByRole('button', { name: /develop initial plan/i }).should('not.exist')
+    cy.findAllByRole('link', { name: /update decision/i }).should('not.exist')
+    checkInvestigationDetailsExist()
+
+    checkDecision()
+    checkTabsAndReferral()
   })
 
   it('should render a post-decision, pre-plan csip record', () => {
