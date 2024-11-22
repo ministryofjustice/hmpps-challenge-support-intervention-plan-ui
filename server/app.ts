@@ -55,18 +55,32 @@ export default function createApp(services: Services): express.Application {
   nunjucksSetup(app)
   app.use(setUpAuthentication())
   app.use((req, res, next) => {
-    const hasJourneyId = validate(req.url.split('/')[1])
+    const hasJourneyId = validate(req.originalUrl.split('/')[1])
     res.locals.auditEvent = {
       pageNameSuffix: hasJourneyId
-        ? `${req.url.split('/')[1]}/${req.url.replace(/\?.*/, '').split('/').slice(2).join('/')}` // JOURNEYID_PAGE
-        : req.url.replace(/\?.*/, ''), // PAGE
+        ? `${req.originalUrl.split('/')[1]}/${req.originalUrl.replace(/\?.*/, '').split('/').slice(2).join('/')}` // JOURNEYID_PAGE
+        : req.originalUrl.replace(/\?.*/, ''), // PAGE
       who: res.locals.user.username,
       correlationId: req.id,
     }
     res.prependOnceListener('close', async () => {
       const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
-      const csipFromUrl = req.url.includes('csip-record') ? req.url.split('/').filter(Boolean)[1] : undefined
+      console.log(`access req.originalUrl: ${req.originalUrl}`)
+      console.log(`access auditeventproperties: ${JSON.stringify(auditEventProperties)}`)
+      const csipFromUrl = req.originalUrl.includes('csip-record')
+        ? req.originalUrl.split('/').filter(Boolean)[1]
+        : undefined
+      console.log(`access csipfrmourl ${csipFromUrl}`)
       const csipIdInRequest = csipFromUrl || req.journeyData?.csipRecord?.recordUuid
+      console.log(`access csipIdInRequest ${csipIdInRequest}`)
+      console.log(
+        `access logpageview props: ${JSON.stringify({
+          ...auditEventProperties,
+          ...(req.query ? { details: req.query } : {}),
+          ...(csipIdInRequest ? { subjectId: csipIdInRequest } : {}),
+          ...(csipIdInRequest ? { subjectType: csipIdInRequest } : {}),
+        })}`,
+      )
       await services.auditService.logPageView(`ACCESS_ATTEMPT_${pageNameSuffix}`, {
         // console.log(
         // JSON.stringify({
@@ -86,8 +100,24 @@ export default function createApp(services: Services): express.Application {
           return
         }
         const { pageNameSuffix, ...auditEventProperties } = res.locals.auditEvent
-        const csipFromUrl = req.url.includes('csip-record') ? req.url.split('/').filter(Boolean)[1] : undefined
+
+        console.log(`req.originalUrl: ${req.originalUrl}`)
+        console.log(`auditeventproperties: ${JSON.stringify(auditEventProperties)}`)
+
+        const csipFromUrl = req.originalUrl.includes('csip-record')
+          ? req.originalUrl.split('/').filter(Boolean)[1]
+          : undefined
+        console.log(`csipfrmourl ${csipFromUrl}`)
         const csipIdInRequest = csipFromUrl || req.journeyData?.csipRecord?.recordUuid
+        console.log(`csipIdInRequest ${csipIdInRequest}`)
+        console.log(
+          `logpageview props: ${JSON.stringify({
+            ...auditEventProperties,
+            ...(req.query ? { details: req.query } : {}),
+            ...(csipIdInRequest ? { subjectId: csipIdInRequest } : {}),
+            ...(csipIdInRequest ? { subjectType: csipIdInRequest } : {}),
+          })}`,
+        )
         await services.auditService.logPageView(`${pageNameSuffix}`, {
           // console.log(
           //   JSON.stringify({
