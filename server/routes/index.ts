@@ -1,5 +1,4 @@
 import { type RequestHandler, Router } from 'express'
-
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import type { Services } from '../services'
 import insertJourneyIdentifier from '../middleware/insertJourneyIdentifier'
@@ -15,9 +14,6 @@ export default function routes(services: Services): Router {
   const controller = new HomePageController(services.csipApiService)
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
-  // TODO: determine whether we need to implement audit service
-  // import { Page } from '../services/auditService'
-  // await services.auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
   get('/', controller.GET)
 
   router.use('/csip-records/:recordUuid', CsipRecordRoutes(services))
@@ -27,6 +23,7 @@ export default function routes(services: Services): Router {
   )
 
   router.use(insertJourneyIdentifier())
+
   router.use(
     redirectCheckAnswersMiddleware([
       /on-behalf-of$/,
@@ -46,6 +43,7 @@ export default function routes(services: Services): Router {
       /record-review\/next-review-date$/,
     ]),
   )
+
   router.use(journeyStateMachine())
   router.use('/:journeyId', JourneyRoutes(services))
 

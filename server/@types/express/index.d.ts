@@ -174,6 +174,14 @@ export declare global {
       validationErrors?: fieldErrors
       digitalPrisonServicesUrl: string
       breadcrumbs: Breadcrumbs
+      auditEvent: {
+        pageNameSuffix: string
+        who: string
+        subjectId?: string
+        subjectType?: string
+        correlationId?: string
+        details?: Record<string, unknown>
+      }
       prisoner?: PrisonerSummary
       feComponentsMeta?: {
         activeCaseLoad: CaseLoad

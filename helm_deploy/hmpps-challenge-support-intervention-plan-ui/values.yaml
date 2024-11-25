@@ -6,6 +6,7 @@ generic-service:
   # serviceAccountName: "hmpps-challenge-support-intervention-plan-ui"
 
   replicaCount: 4
+  serviceAccountName: hmpps-csip-ui
 
   image:
     repository: quay.io/hmpps/hmpps-challenge-support-intervention-plan-ui
@@ -54,9 +55,9 @@ generic-service:
     csip-ui-sentry:
       SENTRY_DSN: "SENTRY_DSN"
       SENTRY_LOADER_SCRIPT_ID: "SENTRY_LOADER_SCRIPT_ID"
-    #sqs-hmpps-audit-secret:
-    #  AUDIT_SQS_QUEUE_URL: "sqs_queue_url"
-    #  AUDIT_SQS_QUEUE_NAME: "sqs_queue_name"
+    sqs-hmpps-audit-secret:
+     AUDIT_SQS_QUEUE_URL: "sqs_queue_url"
+     AUDIT_SQS_QUEUE_NAME: "sqs_queue_name"
 
   allowlist:
     groups:
