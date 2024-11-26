@@ -15,6 +15,15 @@ context('Make a Referral Journey', () => {
     cy.task('stubCsipRecordPostSuccess')
   })
 
+  it('should allow access to non CSIP_PROCESSOR role', () => {
+    cy.task('stubSignIn', { roles: [] })
+
+    cy.signIn()
+    cy.visit('/prisoners/A1111AA/referral/start')
+
+    cy.url().should('to.match', /\/on-behalf-of$/)
+  })
+
   it('happy path', () => {
     signinAndStart()
 

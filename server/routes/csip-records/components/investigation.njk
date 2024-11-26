@@ -6,7 +6,7 @@
         <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Investigation</h1>
         </div>
-        {% if secondaryButton and secondaryButton.label === 'Update investigation' %}
+        {% if secondaryButton and secondaryButton.label === 'Update investigation' and isCsipProcessor %}
             <div class="govuk-summary-list govuk-summary-list__actions">
                 <a class="govuk-link govuk-link--no-visited-state" href="{{secondaryButton.link}}">{{ secondaryButton.label }}</a>
             </div>
@@ -227,7 +227,7 @@
 {% else %}
   <p class="govuk-!-margin-bottom-8">No investigation recorded.</p>
 
-  {% if not plan %}
+  {% if isCsipProcessor and not plan %}
     <p>
       <a class="govuk-link govuk-link--no-visited-state" href="/csip-record/{{recordUuid}}/record-investigation/start">Record an investigation</a>
     </p>

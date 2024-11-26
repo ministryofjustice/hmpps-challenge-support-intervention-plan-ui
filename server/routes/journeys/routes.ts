@@ -13,6 +13,8 @@ import { UpdateDecisionRoutes } from './update-decision/routes'
 import { UpdatePlanRoutes } from './update-plan/routes'
 import { RecordReviewRoutes } from './record-review/routes'
 import { UpdateReviewRoutes } from './update-review/routes'
+import authorisationMiddleware from '../../middleware/authorisationMiddleware'
+import AuthorisedRoles from '../../authentication/authorisedRoles'
 
 export const JourneyRoutes = (services: Services) => {
   const router = Router({ mergeParams: true })
@@ -20,11 +22,14 @@ export const JourneyRoutes = (services: Services) => {
   router.use(populatePrisonerSummary())
 
   router.use('/', ReferralRoutes({ services, path: '/referral' }))
+  router.use('/', UpdateReferralRoutes({ services, path: '/update-referral' }))
+
+  router.use(authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]))
+
   router.use('/', ScreenRoutes({ services, path: '/screen' }))
   router.use('/', InvestigationRoutes({ services, path: '/record-investigation' }))
   router.use('/', DecisionRoutes({ services, path: '/record-decision' }))
   router.use('/', DevelopPlanRoutes({ services, path: '/develop-an-initial-plan' }))
-  router.use('/', UpdateReferralRoutes({ services, path: '/update-referral' }))
   router.use('/', EditLogCodeRoutes({ services, path: '/edit-log-code' }))
   router.use('/', UpdateInvestigationRoutes({ services, path: '/update-investigation' }))
   router.use('/', UpdateDecisionRoutes({ services, path: '/update-decision' }))

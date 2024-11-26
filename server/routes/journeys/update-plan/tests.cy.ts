@@ -9,6 +9,15 @@ context('test /update-plan', () => {
     cy.task('stubComponents')
   })
 
+  it('should deny access to non CSIP_PROCESSOR role', () => {
+    cy.task('stubSignIn', { roles: [] })
+
+    cy.signIn()
+    cy.visit(`csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-plan/start`, { failOnStatusCode: false })
+
+    cy.url().should('to.match', /\/not-authorised$/)
+  })
+
   it('should render the update plan screen', () => {
     cy.task('stubCsipRecordSuccessCsipOpen')
     navigateToTestPage()

@@ -3,7 +3,7 @@
 
 {% if not isUpdate %}
     <div class="govuk-grid-row govuk-!-margin-bottom-6">
-        {% if reviews.length > 1 and status == 'CSIP_OPEN' %}
+        {% if reviews.length > 1 and status == 'CSIP_OPEN' and isCsipProcessor %}
             <div class="govuk-summary-list govuk-summary-list__actions">
                 <a class="govuk-link govuk-link--no-visited-state" href="/csip-record/{{ recordUuid }}/update-review/start">Update most recent review</a>
             </div>
@@ -21,7 +21,7 @@
         <div class="govuk-grid-column-two-thirds">
             <h2 class="govuk-heading-l">Review {{ loop.index }}:</h2>
         </div>
-        {% if loop.index == reviews.length and status == 'CSIP_OPEN' %}
+        {% if loop.index == reviews.length and status == 'CSIP_OPEN' and isCsipProcessor %}
             <div class="govuk-summary-list govuk-summary-list__actions">
                 <a class="govuk-link govuk-link--no-visited-state" href="/csip-record/{{ recordUuid }}/update-review/start">Update review</a>
             </div>

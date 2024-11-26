@@ -16,6 +16,13 @@ export default function routes(services: Services): Router {
 
   get('/', controller.GET)
 
+  router.get('/not-authorised', (_req, res) => {
+    res.status(403)
+    return res.render('not-authorised', {
+      showBreadcrumbs: true,
+    })
+  })
+
   router.use('/csip-records/:recordUuid', CsipRecordRoutes(services))
   router.use('/manage-csips', SearchCsipRoutes(services))
   router.get('/how-to-make-a-referral', (_req, res) =>

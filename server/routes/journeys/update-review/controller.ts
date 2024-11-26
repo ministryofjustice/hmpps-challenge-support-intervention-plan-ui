@@ -4,6 +4,7 @@ import { BaseJourneyController } from '../base/controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import { getNonUndefinedProp } from '../../../utils/utils'
 import { attendeeSorter } from '../../../utils/sorters'
+import { isCsipProcessor } from '../../../authentication/authorisedRoles'
 
 export class UpdateReviewController extends BaseJourneyController {
   constructor(
@@ -48,6 +49,7 @@ export class UpdateReviewController extends BaseJourneyController {
       recordUuid: record.recordUuid,
       showBreadcrumbs: true,
       secondaryButton,
+      isCsipProcessor: isCsipProcessor(res),
     })
   }
 }

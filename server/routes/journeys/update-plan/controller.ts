@@ -3,6 +3,7 @@ import { BaseJourneyController } from '../base/controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import { getNonUndefinedProp } from '../../../utils/utils'
 import { identifiedNeedSorter } from '../../../utils/sorters'
+import { isCsipProcessor } from '../../../authentication/authorisedRoles'
 
 export class UpdatePlanController extends BaseJourneyController {
   constructor(override readonly csipApiService: CsipApiService) {
@@ -51,6 +52,7 @@ export class UpdatePlanController extends BaseJourneyController {
       recordUuid: record.recordUuid,
       showBreadcrumbs: true,
       secondaryButton,
+      isCsipProcessor: isCsipProcessor(res),
     })
   }
 }

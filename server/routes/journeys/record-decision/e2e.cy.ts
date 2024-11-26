@@ -1,6 +1,6 @@
 import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
 
-context('Make a Referral Journey', () => {
+context('Record a decision journey', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
@@ -11,6 +11,15 @@ context('Make a Referral Journey', () => {
     cy.task('stubPutDecisionSuccess')
     cy.task('stubComponents')
     cy.task('stubCsipRecordSuccessAwaitingDecision')
+  })
+
+  it('should deny access to non CSIP_PROCESSOR role', () => {
+    cy.task('stubSignIn', { roles: [] })
+    cy.signIn()
+
+    cy.visit('csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-decision/start', { failOnStatusCode: false })
+
+    cy.url().should('to.match', /\/not-authorised$/)
   })
 
   it('happy path', () => {

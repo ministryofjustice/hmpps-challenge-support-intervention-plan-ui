@@ -25,6 +25,19 @@ context('Screen a CSIP Referral Journey', () => {
   const getCyaSubmitButton = () => cy.findByRole('button', { name: /Record outcome/i })
   const getChangeLink = () => cy.findAllByRole('link', { name: /Change/ }).first()
 
+  it('should deny access to non CSIP_PROCESSOR role', () => {
+    cy.task('stubSignIn', { roles: [] })
+
+    cy.signIn()
+    cy.visit(`02e5854f-f7b1-4c56-bec8-69e390eb8550/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/screen/start`, {
+      failOnStatusCode: false,
+    })
+
+    cy.url().should('to.match', /\/not-authorised$/)
+    cy.visit(`02e5854f-f7b1-4c56-bec8-69e390eb8550/screen/check-answers`, { failOnStatusCode: false })
+    cy.url().should('to.match', /\/not-authorised$/)
+  })
+
   it('happy path', () => {
     cy.signIn()
     cy.visit(START_URL)
