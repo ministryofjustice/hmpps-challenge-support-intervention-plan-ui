@@ -28,6 +28,7 @@ export class ReopenIdentifiedNeedController extends PatchPlanController {
 
     return this.reopenIdentifiedNeed({
       req,
+      res,
       next,
       identifiedNeedUuid: identifiedNeed.identifiedNeedUuid!,
     })

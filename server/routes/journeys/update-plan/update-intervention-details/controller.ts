@@ -28,6 +28,7 @@ export class UpdateInterventionDetailsController extends PatchPlanController {
     }
     return this.submitIdentifiedNeedChanges({
       req,
+      res,
       next,
       changes: {
         responsiblePerson: req.body.responsiblePerson,

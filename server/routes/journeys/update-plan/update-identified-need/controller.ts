@@ -26,6 +26,7 @@ export class UpdateIdentifiedNeedController extends PatchPlanController {
     }
     return this.submitIdentifiedNeedChanges({
       req,
+      res,
       next,
       changes: {
         identifiedNeed: req.body.identifiedNeed,

@@ -37,6 +37,7 @@ export class UpdateAttendeeController extends PatchReviewController {
 
     return this.submitAttendeeChanges({
       req,
+      res,
       next,
       attendeeUuid: attendee.attendeeUuid!,
       changes: {

@@ -2,8 +2,17 @@ import { NextFunction, Request, Response } from 'express'
 import { format } from 'date-fns'
 import { BaseJourneyController } from '../../base/controller'
 import { components } from '../../../../@types/csip'
+import CsipApiService from '../../../../services/csipApi/csipApiService'
+import AuditService from '../../../../services/auditService'
 
 export class ReviewCheckAnswersController extends BaseJourneyController {
+  constructor(
+    override readonly csipApiService: CsipApiService,
+    private readonly auditService: AuditService,
+  ) {
+    super(csipApiService)
+  }
+
   GET = async (req: Request, res: Response) => {
     req.journeyData.isCheckAnswers = true
     delete req.journeyData.review!.outcomeSubJourney
@@ -36,6 +45,13 @@ export class ReviewCheckAnswersController extends BaseJourneyController {
       })
       req.journeyData.csipRecord = await this.csipApiService.getCsipRecord(req, req.journeyData.csipRecord!.recordUuid)
       req.journeyData.journeyCompleted = true
+      await this.auditService.logModificationApiCall(
+        'CREATE',
+        'REVIEW',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       next()
     } catch (e) {
       next(e)

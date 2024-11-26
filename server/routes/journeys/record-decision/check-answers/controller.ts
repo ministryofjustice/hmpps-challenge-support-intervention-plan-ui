@@ -1,8 +1,17 @@
 import { NextFunction, Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
 import { todayString } from '../../../../utils/datetimeUtils'
+import CsipApiService from '../../../../services/csipApi/csipApiService'
+import AuditService from '../../../../services/auditService'
 
 export class DecisionCheckAnswersController extends BaseJourneyController {
+  constructor(
+    override readonly csipApiService: CsipApiService,
+    private readonly auditService: AuditService,
+  ) {
+    super(csipApiService)
+  }
+
   GET = async (req: Request, res: Response) => {
     req.journeyData.isCheckAnswers = true
 
@@ -29,6 +38,13 @@ export class DecisionCheckAnswersController extends BaseJourneyController {
       })
       req.journeyData.csipRecord = await this.csipApiService.getCsipRecord(req, req.journeyData.csipRecord!.recordUuid)
       req.journeyData.journeyCompleted = true
+      await this.auditService.logModificationApiCall(
+        'CREATE',
+        'DECISION_AND_ACTIONS',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       next()
     } catch (e) {
       next(e)

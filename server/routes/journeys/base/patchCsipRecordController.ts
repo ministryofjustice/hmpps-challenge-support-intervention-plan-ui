@@ -1,17 +1,28 @@
-import { NextFunction, Request } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { BaseJourneyController } from './controller'
 import { components } from '../../../@types/csip'
 import { getNonUndefinedProp } from '../../../utils/utils'
 import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../../utils/constants'
+import CsipApiService from '../../../services/csipApi/csipApiService'
+import AuditService from '../../../services/auditService'
 
 export class PatchCsipRecordController extends BaseJourneyController {
+  constructor(
+    override readonly csipApiService: CsipApiService,
+    readonly auditService: AuditService,
+  ) {
+    super(csipApiService)
+  }
+
   submitCsipChanges = async <T>({
     req,
+    res,
     next,
     changes,
     successMessage,
   }: {
     req: Request<unknown, unknown, T>
+    res: Response
     next: NextFunction
     changes: Omit<components['schemas']['UpdateCsipRecordRequest'], 'referral'> & {
       referral?: Partial<components['schemas']['UpdateReferralRequest']>
@@ -48,6 +59,13 @@ export class PatchCsipRecordController extends BaseJourneyController {
         },
       })
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, successMessage)
+      await this.auditService.logModificationApiCall(
+        'UPDATE',
+        'RECORD',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       next()
     } catch (e) {
       next(e)

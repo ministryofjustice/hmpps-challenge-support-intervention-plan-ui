@@ -11,9 +11,10 @@ export class UpdateCloseCsipController extends PatchReviewController {
     })
   }
 
-  checkSubmitToAPI = async (req: Request<unknown, unknown, unknown>, _: Response, next: NextFunction) =>
+  checkSubmitToAPI = async (req: Request<unknown, unknown, unknown>, res: Response, next: NextFunction) =>
     this.submitChanges({
       req,
+      res,
       next,
       changes: {
         actions: ['CLOSE_CSIP'],

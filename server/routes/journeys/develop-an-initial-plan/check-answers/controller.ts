@@ -1,7 +1,16 @@
 import { NextFunction, Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
+import CsipApiService from '../../../../services/csipApi/csipApiService'
+import AuditService from '../../../../services/auditService'
 
 export class PlanCheckAnswersController extends BaseJourneyController {
+  constructor(
+    override readonly csipApiService: CsipApiService,
+    private readonly auditService: AuditService,
+  ) {
+    super(csipApiService)
+  }
+
   GET = async (req: Request, res: Response) => {
     req.journeyData.isCheckAnswers = true
 
@@ -18,7 +27,7 @@ export class PlanCheckAnswersController extends BaseJourneyController {
     })
   }
 
-  checkSubmitToAPI = async (req: Request, _res: Response, next: NextFunction) => {
+  checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction) => {
     const plan = req.journeyData.plan!
     try {
       await this.csipApiService.createPlan(req, {
@@ -31,6 +40,13 @@ export class PlanCheckAnswersController extends BaseJourneyController {
         })),
       })
       req.journeyData.journeyCompleted = true
+      await this.auditService.logModificationApiCall(
+        'CREATE',
+        'PLAN',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       next()
     } catch (e) {
       next(e)

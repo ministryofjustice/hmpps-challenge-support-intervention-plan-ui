@@ -23,6 +23,7 @@ export class UpdatePlannedInterventionController extends PatchPlanController {
     const identifiedNeed = this.getSelectedIdentifiedNeed(req)
     return this.submitIdentifiedNeedChanges({
       req,
+      res,
       next,
       changes: {
         intervention: getTextForApiSubmission(
