@@ -4,10 +4,6 @@ import AuditService from '../services/auditService'
 
 export const auditPageViewMiddleware = (auditService: AuditService): RequestHandler => {
   return async (req, res, next) => {
-    if (req.method !== 'GET') {
-      next()
-      return
-    }
     const hasJourneyId = validate(req.originalUrl.split('/')[1])
     const hasCsipId = req.originalUrl.includes('csip-record') && validate(req.originalUrl.split('/')[2])
     let pageNameSuffix = req.originalUrl.replace(/\?.*/, '')
