@@ -39,6 +39,14 @@ export class PatchInvestigationController extends BaseJourneyController {
     const csipRecord = req.journeyData.csipRecord!
 
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'UPDATE',
+        'INVESTIGATION',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.updateInvestigation(req as Request, {
         ...getNonUndefinedProp(csipRecord.referral.investigation!, 'staffInvolved'),
         ...getNonUndefinedProp(csipRecord.referral.investigation!, 'evidenceSecured'),
@@ -50,6 +58,7 @@ export class PatchInvestigationController extends BaseJourneyController {
       })
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, successMessage)
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'UPDATE',
         'INVESTIGATION',
         req.originalUrl,
@@ -74,9 +83,18 @@ export class PatchInvestigationController extends BaseJourneyController {
     body: components['schemas']['CreateInterviewRequest']
   }) => {
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'CREATE',
+        'INTERVIEW',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.addInterview(req as Request, body)
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_INTERVIEW_ADDED)
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'CREATE',
         'INTERVIEW',
         req.originalUrl,
@@ -103,9 +121,18 @@ export class PatchInvestigationController extends BaseJourneyController {
     interviewUuid: string
   }) => {
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'UPDATE',
+        'INTERVIEW',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.updateInterview(req as Request, interviewUuid, body)
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_INTERVIEW_DETAILS_UPDATED)
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'UPDATE',
         'INTERVIEW',
         req.originalUrl,

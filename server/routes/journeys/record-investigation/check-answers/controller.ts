@@ -24,6 +24,14 @@ export class InvestigationCheckAnswersController extends BaseJourneyController {
   checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction) => {
     const investigation = req.journeyData.investigation!
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'CREATE',
+        'INVESTIGATION',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.createInvestigation(req, {
         staffInvolved: investigation.staffInvolved!,
         evidenceSecured: investigation.evidenceSecured!,
@@ -40,6 +48,7 @@ export class InvestigationCheckAnswersController extends BaseJourneyController {
       })
       req.journeyData.journeyCompleted = true
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'CREATE',
         'INVESTIGATION',
         req.originalUrl,

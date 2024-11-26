@@ -26,12 +26,21 @@ export class NewContributoryFactorCommentController extends BaseJourneyControlle
 
   checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, res: Response, next: NextFunction) => {
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'CREATE',
+        'CONTRIBUTORY_FACTOR',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.addContributoryFactor(req as Request, {
         factorTypeCode: req.journeyData.referral!.contributoryFactorSubJourney!.factorType!.code!,
         ...(req.body.comment ? { comment: req.body.comment } : {}),
       })
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_CONTRIBUTORY_FACTOR_UPDATED)
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'CREATE',
         'CONTRIBUTORY_FACTOR',
         req.originalUrl,

@@ -48,6 +48,7 @@ export class PatchPlanController extends BaseJourneyController {
       })
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_PLAN_UPDATED)
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'UPDATE',
         'PLAN',
         req.originalUrl,
@@ -78,12 +79,21 @@ export class PatchPlanController extends BaseJourneyController {
     )!
 
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'UPDATE',
+        'IDENTIFIED_NEED',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.updateIdentifiedNeed(req as Request, identifiedNeedUuid, {
         ...identifiedNeed,
         ...changes,
       })
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_IDENTIFIED_NEED_UPDATED)
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'UPDATE',
         'IDENTIFIED_NEED',
         req.originalUrl,
@@ -112,12 +122,21 @@ export class PatchPlanController extends BaseJourneyController {
     )!
 
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'UPDATE',
+        'IDENTIFIED_NEED',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.updateIdentifiedNeed(req as Request, identifiedNeedUuid, {
         ...identifiedNeed,
         closedDate: todayString(),
       })
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_IDENTIFIED_NEED_CLOSED)
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'UPDATE',
         'IDENTIFIED_NEED',
         req.originalUrl,
@@ -148,9 +167,18 @@ export class PatchPlanController extends BaseJourneyController {
     const { closedDate, ...openIdentifiedNeed } = identifiedNeed
 
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'UPDATE',
+        'IDENTIFIED_NEED',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.updateIdentifiedNeed(req as Request, identifiedNeedUuid, openIdentifiedNeed)
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_IDENTIFIED_NEED_REOPENED)
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'UPDATE',
         'IDENTIFIED_NEED',
         req.originalUrl,

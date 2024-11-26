@@ -30,6 +30,14 @@ export class PlanCheckAnswersController extends BaseJourneyController {
   checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction) => {
     const plan = req.journeyData.plan!
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'CREATE',
+        'PLAN',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.createPlan(req, {
         caseManager: plan.caseManager!,
         nextCaseReviewDate: plan.nextCaseReviewDate!,
@@ -41,6 +49,7 @@ export class PlanCheckAnswersController extends BaseJourneyController {
       })
       req.journeyData.journeyCompleted = true
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'CREATE',
         'PLAN',
         req.originalUrl,

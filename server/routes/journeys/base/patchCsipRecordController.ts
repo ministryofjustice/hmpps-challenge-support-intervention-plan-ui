@@ -32,6 +32,14 @@ export class PatchCsipRecordController extends BaseJourneyController {
     const csipRecord = req.journeyData.csipRecord!
 
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'UPDATE',
+        'RECORD',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.updateCsipRecord(req as Request, {
         ...getNonUndefinedProp(changes, 'logCode'),
         referral: {
@@ -60,6 +68,7 @@ export class PatchCsipRecordController extends BaseJourneyController {
       })
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, successMessage)
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'UPDATE',
         'RECORD',
         req.originalUrl,

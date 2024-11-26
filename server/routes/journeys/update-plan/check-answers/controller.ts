@@ -26,6 +26,14 @@ export class NewIdentifiedNeedCheckAnswersController extends BaseJourneyControll
   checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const need = req.journeyData.plan!.identifiedNeedSubJourney!
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'UPDATE',
+        'PLAN',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.addIdentifiedNeed(req, {
         identifiedNeed: need.identifiedNeed!,
         intervention: need.intervention!,
@@ -37,6 +45,7 @@ export class NewIdentifiedNeedCheckAnswersController extends BaseJourneyControll
       req.journeyData.journeyCompleted = true
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, `You’ve added another identified need to this plan.`)
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'UPDATE',
         'PLAN',
         req.originalUrl,

@@ -65,9 +65,18 @@ export class PatchReviewController extends BaseJourneyController {
     }
 
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'UPDATE',
+        'REVIEW',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.updateReview(req as Request, payload)
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, message)
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'UPDATE',
         'REVIEW',
         req.originalUrl,
@@ -92,9 +101,18 @@ export class PatchReviewController extends BaseJourneyController {
     changes: components['schemas']['CreateAttendeeRequest']
   }) => {
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'CREATE',
+        'ATTENDEE',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.addNewAttendee(req as Request, changes)
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_ADDED_ATTENDEE)
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'CREATE',
         'ATTENDEE',
         req.originalUrl,
@@ -121,6 +139,14 @@ export class PatchReviewController extends BaseJourneyController {
     changes: components['schemas']['UpdateAttendeeRequest']
   }) => {
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'UPDATE',
+        'ATTENDEE',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.updateAttendee(req as Request, attendeeUuid, changes)
       req.flash(
         FLASH_KEY__CSIP_SUCCESS_MESSAGE,
@@ -129,6 +155,7 @@ export class PatchReviewController extends BaseJourneyController {
           : MESSAGE_REVIEW_UPDATED,
       )
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'UPDATE',
         'ATTENDEE',
         req.originalUrl,

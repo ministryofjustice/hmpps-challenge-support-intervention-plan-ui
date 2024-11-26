@@ -23,6 +23,7 @@ export default class AuditService {
   }
 
   async logModificationApiCall(
+    auditType: 'ATTEMPT' | 'SUCCESS',
     modificationType: 'CREATE' | 'UPDATE',
     entity: components['schemas']['ResponseMapping']['component'],
     requestUrl: string,
@@ -35,7 +36,7 @@ export default class AuditService {
     const pageName = requestUrl.replace(/\?.*/, '').split('/').slice(2).join('/').replace('/', '_').replace('-', '_')
     const event: AuditEvent = {
       ...auditEvent,
-      what: `${modificationType}_${entity}_${pageName}`,
+      what: `${auditType}_${modificationType}_${entity}_${pageName}`,
       ...(csipIdInRequest ? { subjectId: csipIdInRequest } : {}),
       ...(csipIdInRequest ? { subjectType: csipIdInRequest } : {}),
     }

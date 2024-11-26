@@ -23,6 +23,14 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
     const prisoner = req.journeyData.prisoner!
     const referral = req.journeyData.referral!
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'CREATE',
+        'REFERRAL',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.createReferral(req, {
         logCode: prisoner.prisonId,
         referral: {
@@ -49,6 +57,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
       })
       req.journeyData.journeyCompleted = true
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'CREATE',
         'REFERRAL',
         req.originalUrl,

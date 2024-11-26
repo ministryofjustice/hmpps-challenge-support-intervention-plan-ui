@@ -28,6 +28,14 @@ export class ReviewCheckAnswersController extends BaseJourneyController {
     const review = req.journeyData.review!
     try {
       const action = review.outcome! as components['schemas']['CreateReviewRequest']['actions'][number]
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'CREATE',
+        'REVIEW',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.createReview(req, {
         nextReviewDate: review.nextReviewDate!,
         actions: [action],
@@ -46,6 +54,7 @@ export class ReviewCheckAnswersController extends BaseJourneyController {
       req.journeyData.csipRecord = await this.csipApiService.getCsipRecord(req, req.journeyData.csipRecord!.recordUuid)
       req.journeyData.journeyCompleted = true
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'CREATE',
         'REVIEW',
         req.originalUrl,

@@ -25,6 +25,14 @@ export class DecisionCheckAnswersController extends BaseJourneyController {
   checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction) => {
     const decision = req.journeyData.decisionAndActions!
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'CREATE',
+        'DECISION_AND_ACTIONS',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.createDecision(req, {
         date: todayString(),
         recordedBy: res.locals.user.username,
@@ -39,6 +47,7 @@ export class DecisionCheckAnswersController extends BaseJourneyController {
       req.journeyData.csipRecord = await this.csipApiService.getCsipRecord(req, req.journeyData.csipRecord!.recordUuid)
       req.journeyData.journeyCompleted = true
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'CREATE',
         'DECISION_AND_ACTIONS',
         req.originalUrl,

@@ -24,12 +24,21 @@ export class UpdateReferralContributoryFactorController extends PatchReferralCon
     comment?: string | undefined,
   ) => {
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'UPDATE',
+        'CONTRIBUTORY_FACTOR',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.updateContributoryFactor(req, selectedCf.factorUuid!, {
         factorTypeCode,
         ...getNonUndefinedProp({ comment: comment || selectedCf.comment }, 'comment'),
       })
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_CONTRIBUTORY_FACTOR_UPDATED)
       await this.auditService.logModificationApiCall(
+        'SUCCESS',
         'UPDATE',
         'CONTRIBUTORY_FACTOR',
         req.originalUrl,
