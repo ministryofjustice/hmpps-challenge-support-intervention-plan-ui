@@ -14,7 +14,7 @@ import { DeleteInterviewRoutes } from './delete-interview/routes'
 import { InvestigationCheckAnswersRoutes } from './check-answers/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
 
-function Routes(services: Services) {
+function Routes({ csipApiService, auditService }: Services) {
   const { router, get } = JourneyRouter()
   const controller = new RecordInvestigationController()
 
@@ -26,9 +26,9 @@ function Routes(services: Services) {
   router.use('/triggers', TriggersRoutes())
   router.use('/protective-factors', ProtectiveFactorsRoutes())
   router.use('/interviews-summary', InterviewsSummaryRoutes())
-  router.use('/interview-details/:index', InterviewDetailsRoutes(services.csipApiService))
+  router.use('/interview-details/:index', InterviewDetailsRoutes(csipApiService))
   router.use('/delete-interview/:index', DeleteInterviewRoutes())
-  router.use('/check-answers', InvestigationCheckAnswersRoutes(services.csipApiService))
+  router.use('/check-answers', InvestigationCheckAnswersRoutes(csipApiService, auditService))
   router.use('/confirmation', ConfirmationRoutes())
 
   return router

@@ -5,9 +5,9 @@ import { EditLogCodeController } from './controller'
 import { validate } from '../../../middleware/validationMiddleware'
 import { schema } from './schemas'
 
-function Routes({ csipApiService }: Services) {
+function Routes({ csipApiService, auditService }: Services) {
   const { router, get, post } = JourneyRouter()
-  const controller = new EditLogCodeController(csipApiService)
+  const controller = new EditLogCodeController(csipApiService, auditService)
 
   get('/', controller.GET)
   post('/', validate(schema), controller.checkSubmitToAPI, controller.POST)

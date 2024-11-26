@@ -4,10 +4,11 @@ import { validate as validateSchema } from '../../../../middleware/validationMid
 import type CsipApiService from '../../../../services/csipApi/csipApiService'
 import { JourneyRouter } from '../../base/routes'
 import { schemaFactory } from './schemas'
+import AuditService from '../../../../services/auditService'
 
-export const UpdateContributoryFactorsCommentRoutes = (csipApiService: CsipApiService) => {
+export const UpdateContributoryFactorsCommentRoutes = (csipApiService: CsipApiService, auditService: AuditService) => {
   const { router, get, post } = JourneyRouter()
-  const controller = new UpdateContributoryFactorsCommentController(csipApiService)
+  const controller = new UpdateContributoryFactorsCommentController(csipApiService, auditService)
 
   const validate = (req: Request, res: Response, next: NextFunction) => {
     return validateSchema(schemaFactory(res, controller.getSelectedCf(req)!))(req, res, next)

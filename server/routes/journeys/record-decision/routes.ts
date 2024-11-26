@@ -10,7 +10,7 @@ import { DecisionAdditionalInformationRoutes } from './additional-information/ro
 import { DecisionCheckAnswersRoutes } from './check-answers/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
 
-function Routes({ csipApiService }: Services) {
+function Routes({ csipApiService, auditService }: Services) {
   const { router, get, post } = JourneyRouter()
   const controller = new RecordDecisionController(csipApiService)
 
@@ -19,7 +19,7 @@ function Routes({ csipApiService }: Services) {
   router.use('/next-steps', NextStepsRoutes())
   router.use('/conclusion', ConclusionRoutes(csipApiService))
   router.use('/additional-information', DecisionAdditionalInformationRoutes())
-  router.use('/check-answers', DecisionCheckAnswersRoutes(csipApiService))
+  router.use('/check-answers', DecisionCheckAnswersRoutes(csipApiService, auditService))
   router.use('/confirmation', ConfirmationRoutes())
 
   return router

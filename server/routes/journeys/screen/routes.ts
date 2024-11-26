@@ -7,14 +7,14 @@ import { ScreenController } from './controller'
 import { schemaFactory } from './schemas'
 import { validate } from '../../../middleware/validationMiddleware'
 
-function Routes({ csipApiService }: Services) {
+function Routes({ csipApiService, auditService }: Services) {
   const { router, get, post } = JourneyRouter()
   const controller = new ScreenController(csipApiService)
 
   get('/', controller.GET)
   post('/', validate(schemaFactory(csipApiService)), controller.POST)
 
-  router.use('/check-answers', ScreenCheckAnswersRoutes(csipApiService))
+  router.use('/check-answers', ScreenCheckAnswersRoutes(csipApiService, auditService))
   router.use('/confirmation', ConfirmationRoutes())
 
   return router

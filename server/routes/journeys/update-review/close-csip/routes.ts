@@ -1,10 +1,11 @@
 import { UpdateCloseCsipController } from './controller'
 import type CsipApiService from '../../../../services/csipApi/csipApiService'
 import { JourneyRouter } from '../../base/routes'
+import AuditService from '../../../../services/auditService'
 
-export const UpdateCloseCsipRoutes = (csipApiService: CsipApiService) => {
+export const UpdateCloseCsipRoutes = (csipApiService: CsipApiService, auditService: AuditService) => {
   const { router, get, post } = JourneyRouter()
-  const controller = new UpdateCloseCsipController(csipApiService)
+  const controller = new UpdateCloseCsipController(csipApiService, auditService)
 
   get('/', controller.GET)
   post('/', controller.checkSubmitToAPI, controller.POST)

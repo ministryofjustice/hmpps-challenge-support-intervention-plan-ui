@@ -3,10 +3,11 @@ import { validate } from '../../../../middleware/validationMiddleware'
 import { schema } from '../../develop-an-initial-plan/next-review-date/schemas'
 import type CsipApiService from '../../../../services/csipApi/csipApiService'
 import { JourneyRouter } from '../../base/routes'
+import AuditService from '../../../../services/auditService'
 
-export const UpdateNextReviewDateRoutes = (csipApiService: CsipApiService) => {
+export const UpdateNextReviewDateRoutes = (csipApiService: CsipApiService, auditService: AuditService) => {
   const { router, get, post } = JourneyRouter()
-  const controller = new UpdateNextReviewDateController(csipApiService)
+  const controller = new UpdateNextReviewDateController(csipApiService, auditService)
 
   get('/', controller.GET)
   post('/', validate(schema), controller.checkSubmitToAPI, controller.POST)

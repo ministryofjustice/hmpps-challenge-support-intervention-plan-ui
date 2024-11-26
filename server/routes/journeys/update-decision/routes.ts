@@ -6,15 +6,15 @@ import { UpdateConclusionRoutes } from './conclusion/routes'
 import { UpdateAdditionalInformationRoutes } from './additional-information/routes'
 import { UpdateNextStepsRoutes } from './next-steps/routes'
 
-function Routes({ csipApiService, prisonerSearchService }: Services) {
+function Routes({ csipApiService, prisonerSearchService, auditService }: Services) {
   const { router, get } = JourneyRouter()
   const updateController = new UpdateDecisionController(csipApiService, prisonerSearchService)
 
   get('/', updateController.UPDATE)
 
-  router.use('/conclusion', UpdateConclusionRoutes(csipApiService))
-  router.use('/additional-information', UpdateAdditionalInformationRoutes(csipApiService))
-  router.use('/next-steps', UpdateNextStepsRoutes(csipApiService))
+  router.use('/conclusion', UpdateConclusionRoutes(csipApiService, auditService))
+  router.use('/additional-information', UpdateAdditionalInformationRoutes(csipApiService, auditService))
+  router.use('/next-steps', UpdateNextStepsRoutes(csipApiService, auditService))
 
   return router
 }

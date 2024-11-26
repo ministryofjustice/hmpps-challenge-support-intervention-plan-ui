@@ -12,7 +12,7 @@ import { ReviewCheckAnswersRoutes } from './check-answers/routes'
 import { CloseCsipRoutes } from './close-csip/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
 
-function Routes({ csipApiService }: Services) {
+function Routes({ csipApiService, auditService }: Services) {
   const { router, get } = JourneyRouter()
   const controller = new RecordReviewController(csipApiService)
 
@@ -24,7 +24,7 @@ function Routes({ csipApiService }: Services) {
   router.use('/delete-participant/:index', DeleteParticipantRoutes(csipApiService))
   router.use('/participant-contribution-details/:index', ParticipantDetailsRoutes(csipApiService))
   router.use('/next-review-date', NextReviewDateRoutes())
-  router.use('/check-answers', ReviewCheckAnswersRoutes(csipApiService))
+  router.use('/check-answers', ReviewCheckAnswersRoutes(csipApiService, auditService))
   router.use('/close-csip', CloseCsipRoutes())
   router.use('/confirmation', ConfirmationRoutes())
 
