@@ -177,10 +177,13 @@ export declare global {
       auditEvent: {
         pageNameSuffix: string
         who: string
+        correlationId: string
         subjectId?: string
         subjectType?: string
-        correlationId?: string
-        details?: Record<string, unknown>
+        details?: {
+          prisonerNumber?: string
+          [key: string]: unknown
+        }
       }
       prisoner?: PrisonerSummary
       feComponentsMeta?: {
