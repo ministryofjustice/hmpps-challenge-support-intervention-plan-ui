@@ -40,6 +40,14 @@ export class PatchPlanController extends BaseJourneyController {
     const plan = req.journeyData.csipRecord!.plan!
 
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'UPDATE',
+        'PLAN',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.updatePlan(req as Request, {
         ...getNonUndefinedProp(plan, 'caseManager'),
         ...getNonUndefinedProp(plan, 'reasonForPlan'),
