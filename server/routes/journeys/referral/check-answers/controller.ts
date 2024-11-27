@@ -1,7 +1,16 @@
 import { NextFunction, Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
+import AuditService from '../../../../services/auditService'
+import CsipApiService from '../../../../services/csipApi/csipApiService'
 
 export class ReferralCheckAnswersController extends BaseJourneyController {
+  constructor(
+    override readonly csipApiService: CsipApiService,
+    private readonly auditService: AuditService,
+  ) {
+    super(csipApiService)
+  }
+
   GET = async (req: Request, res: Response) => {
     req.journeyData.isCheckAnswers = true
     delete req.journeyData.referral!.onBehalfOfSubJourney
@@ -10,10 +19,18 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
     res.render('referral/check-answers/view', { referral })
   }
 
-  checkSubmitToAPI = async (req: Request, _res: Response, next: NextFunction) => {
+  checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction) => {
     const prisoner = req.journeyData.prisoner!
     const referral = req.journeyData.referral!
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'CREATE',
+        'REFERRAL',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.createReferral(req, {
         logCode: prisoner.prisonId,
         referral: {
@@ -39,6 +56,14 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
         },
       })
       req.journeyData.journeyCompleted = true
+      await this.auditService.logModificationApiCall(
+        'SUCCESS',
+        'CREATE',
+        'REFERRAL',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       next()
     } catch (e) {
       next(e)

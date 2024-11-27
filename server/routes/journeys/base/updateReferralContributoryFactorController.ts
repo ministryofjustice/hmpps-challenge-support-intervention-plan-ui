@@ -1,4 +1,4 @@
-import { NextFunction, Request } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../../utils/constants'
 import { MESSAGE_CONTRIBUTORY_FACTOR_UPDATED, PatchReferralController } from './patchReferralController'
 import { ContributoryFactor } from '../../../@types/express'
@@ -17,17 +17,34 @@ export class UpdateReferralContributoryFactorController extends PatchReferralCon
 
   updateContributoryFactor = async (
     req: Request,
+    res: Response,
     next: NextFunction,
     selectedCf: ContributoryFactor,
     factorTypeCode: string,
     comment?: string | undefined,
   ) => {
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'UPDATE',
+        'CONTRIBUTORY_FACTOR',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.updateContributoryFactor(req, selectedCf.factorUuid!, {
         factorTypeCode,
         ...getNonUndefinedProp({ comment: comment || selectedCf.comment }, 'comment'),
       })
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_CONTRIBUTORY_FACTOR_UPDATED)
+      await this.auditService.logModificationApiCall(
+        'SUCCESS',
+        'UPDATE',
+        'CONTRIBUTORY_FACTOR',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       next()
     } catch (e) {
       next(e)

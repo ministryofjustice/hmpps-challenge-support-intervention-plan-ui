@@ -20,9 +20,10 @@ export class UpdateReferrerController extends PatchReferralController {
     })
   }
 
-  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, _res: Response, next: NextFunction) =>
+  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, res: Response, next: NextFunction) =>
     this.submitChanges({
       req,
+      res,
       next,
       changes: { referredBy: req.body.referredBy, refererAreaCode: req.body.areaOfWork.code },
       successMessage: MESSAGE_REFERRAL_DETAILS_UPDATED,

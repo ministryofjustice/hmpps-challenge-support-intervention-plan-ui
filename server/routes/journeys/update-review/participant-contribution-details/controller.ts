@@ -16,9 +16,10 @@ export class AddParticipantContributionDetailsController extends PatchReviewCont
     })
   }
 
-  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, _: Response, next: NextFunction) =>
+  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, res: Response, next: NextFunction) =>
     this.addNewAttendee({
       req,
+      res,
       next,
       changes: {
         name: req.body.name,

@@ -14,9 +14,10 @@ export class UpdateSaferCustodyController extends PatchReferralController {
     })
   }
 
-  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, _res: Response, next: NextFunction) =>
+  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, res: Response, next: NextFunction) =>
     this.submitChanges({
       req,
+      res,
       next,
       changes: { isSaferCustodyTeamInformed: req.body.isSaferCustodyTeamInformed },
       successMessage: MESSAGE_REFERRAL_ADDITIONAL_INFO_UPDATED,

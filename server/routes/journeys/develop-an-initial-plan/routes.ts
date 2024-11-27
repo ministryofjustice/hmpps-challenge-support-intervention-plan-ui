@@ -13,7 +13,7 @@ import { InterventionDetailsRoutes } from './intervention-details/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
 import { PlanCheckAnswersRoutes } from './check-answers/routes'
 
-function Routes({ csipApiService }: Services) {
+function Routes({ csipApiService, auditService }: Services) {
   const { router, get, post } = JourneyRouter()
   const controller = new DevelopPlanController()
 
@@ -27,7 +27,7 @@ function Routes({ csipApiService }: Services) {
   router.use('/next-review-date', NextReviewDateRoutes())
   router.use('/intervention-details/:index', InterventionDetailsRoutes())
   router.use('/confirmation', ConfirmationRoutes())
-  router.use('/check-answers', PlanCheckAnswersRoutes(csipApiService))
+  router.use('/check-answers', PlanCheckAnswersRoutes(csipApiService, auditService))
 
   return router
 }

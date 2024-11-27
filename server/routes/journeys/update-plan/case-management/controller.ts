@@ -12,9 +12,10 @@ export class CaseManagementController extends PatchPlanController {
     })
   }
 
-  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, _: Response, next: NextFunction) =>
+  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, res: Response, next: NextFunction) =>
     this.submitChanges({
       req,
+      res,
       next,
       changes: {
         reasonForPlan: req.body.reasonForPlan,

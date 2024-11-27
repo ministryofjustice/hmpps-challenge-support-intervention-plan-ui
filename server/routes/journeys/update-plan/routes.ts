@@ -16,29 +16,35 @@ import { NewIdentifiedNeedRoutes } from './summarise-identified-need/routes'
 import { NewActionsProgressionRoutes } from './record-actions-progress/routes'
 import { NewIdentifiedNeedCheckAnswersRoutes } from './check-answers/routes'
 
-function Routes({ csipApiService }: Services) {
+function Routes({ csipApiService, auditService }: Services) {
   const { router, get } = JourneyRouter()
   const updateController = new UpdatePlanController(csipApiService)
 
   // update plan journeys
   get('/', updateController.UPDATE)
-  router.use('/case-management', CaseManagementRoutes(csipApiService))
-  router.use('/next-review-date', UpdateNextReviewDateRoutes(csipApiService))
+  router.use('/case-management', CaseManagementRoutes(csipApiService, auditService))
+  router.use('/next-review-date', UpdateNextReviewDateRoutes(csipApiService, auditService))
 
   // update identified needs journeys
-  router.use('/identified-needs', UpdateIdentifiedNeedsRoutes(csipApiService))
-  router.use('/update-identified-need/:identifiedNeedUuid', UpdateIdentifiedNeedRoutes(csipApiService))
-  router.use('/update-intervention-details/:identifiedNeedUuid', UpdateInterventionDetailsRoutes(csipApiService))
-  router.use('/update-planned-intervention/:identifiedNeedUuid', UpdatePlannedInterventionRoutes(csipApiService))
-  router.use('/update-actions-progress/:identifiedNeedUuid', UpdateActionsProgressRoutes(csipApiService))
-  router.use('/close-identified-need/:identifiedNeedUuid', CloseIdentifiedNeedRoutes(csipApiService))
-  router.use('/reopen-identified-need/:identifiedNeedUuid', ReopenIdentifiedNeedRoutes(csipApiService))
+  router.use('/identified-needs', UpdateIdentifiedNeedsRoutes(csipApiService, auditService))
+  router.use('/update-identified-need/:identifiedNeedUuid', UpdateIdentifiedNeedRoutes(csipApiService, auditService))
+  router.use(
+    '/update-intervention-details/:identifiedNeedUuid',
+    UpdateInterventionDetailsRoutes(csipApiService, auditService),
+  )
+  router.use(
+    '/update-planned-intervention/:identifiedNeedUuid',
+    UpdatePlannedInterventionRoutes(csipApiService, auditService),
+  )
+  router.use('/update-actions-progress/:identifiedNeedUuid', UpdateActionsProgressRoutes(csipApiService, auditService))
+  router.use('/close-identified-need/:identifiedNeedUuid', CloseIdentifiedNeedRoutes(csipApiService, auditService))
+  router.use('/reopen-identified-need/:identifiedNeedUuid', ReopenIdentifiedNeedRoutes(csipApiService, auditService))
 
   // add new identified need journey
   router.use('/summarise-identified-need', NewIdentifiedNeedRoutes())
   router.use('/intervention-details', NewInterventionDetailsRoutes())
   router.use('/record-actions-progress', NewActionsProgressionRoutes())
-  router.use('/check-answers', NewIdentifiedNeedCheckAnswersRoutes(csipApiService))
+  router.use('/check-answers', NewIdentifiedNeedCheckAnswersRoutes(csipApiService, auditService))
 
   return router
 }

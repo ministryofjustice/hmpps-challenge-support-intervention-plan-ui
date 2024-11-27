@@ -1,7 +1,16 @@
 import { NextFunction, Request, Response } from 'express'
 import { BaseJourneyController } from '../../base/controller'
+import CsipApiService from '../../../../services/csipApi/csipApiService'
+import AuditService from '../../../../services/auditService'
 
 export class InvestigationCheckAnswersController extends BaseJourneyController {
+  constructor(
+    override readonly csipApiService: CsipApiService,
+    private readonly auditService: AuditService,
+  ) {
+    super(csipApiService)
+  }
+
   GET = async (req: Request, res: Response) => {
     req.journeyData.isCheckAnswers = true
 
@@ -12,9 +21,17 @@ export class InvestigationCheckAnswersController extends BaseJourneyController {
     })
   }
 
-  checkSubmitToAPI = async (req: Request, _res: Response, next: NextFunction) => {
+  checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction) => {
     const investigation = req.journeyData.investigation!
     try {
+      await this.auditService.logModificationApiCall(
+        'ATTEMPT',
+        'CREATE',
+        'INVESTIGATION',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       await this.csipApiService.createInvestigation(req, {
         staffInvolved: investigation.staffInvolved!,
         evidenceSecured: investigation.evidenceSecured!,
@@ -30,6 +47,14 @@ export class InvestigationCheckAnswersController extends BaseJourneyController {
         })),
       })
       req.journeyData.journeyCompleted = true
+      await this.auditService.logModificationApiCall(
+        'SUCCESS',
+        'CREATE',
+        'INVESTIGATION',
+        req.originalUrl,
+        req.journeyData,
+        res.locals.auditEvent,
+      )
       next()
     } catch (e) {
       next(e)

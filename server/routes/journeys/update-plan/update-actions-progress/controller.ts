@@ -32,6 +32,7 @@ export class UpdateActionsProgressController extends PatchPlanController {
     const identifiedNeed = this.getSelectedIdentifiedNeed(req)
     return this.submitIdentifiedNeedChanges({
       req,
+      res,
       next,
       changes: {
         progression: getTextForApiSubmission(

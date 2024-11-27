@@ -15,24 +15,24 @@ import { UpdateReasonsRoutes } from './reasons/routes'
 import { UpdateAdditionalInfoRoutes } from './additional-information/routes'
 import { UpdateContributoryFactorsCommentRoutes } from './contributory-factor-comment/routes'
 
-function Routes({ csipApiService, prisonerSearchService }: Services) {
+function Routes({ csipApiService, prisonerSearchService, auditService }: Services) {
   const { router, get } = JourneyRouter()
   const updateController = new UpdateReferralController(csipApiService, prisonerSearchService)
 
   get('/', updateController.UPDATE)
 
-  router.use('/involvement', UpdateInvolvementRoutes(csipApiService))
-  router.use('/proactive-or-reactive', UpdateProactiveOrReactiveRoutes(csipApiService))
-  router.use('/details', UpdateReferralDetailsRoutes(csipApiService))
-  router.use('/new-:factorTypeCode-comment', NewContributoryFactorCommentRoutes(csipApiService))
-  router.use('/safer-custody', UpdateSaferCustodyRoutes(csipApiService))
-  router.use('/referrer', UpdateReferrerRoutes(csipApiService))
+  router.use('/involvement', UpdateInvolvementRoutes(csipApiService, auditService))
+  router.use('/proactive-or-reactive', UpdateProactiveOrReactiveRoutes(csipApiService, auditService))
+  router.use('/details', UpdateReferralDetailsRoutes(csipApiService, auditService))
+  router.use('/new-:factorTypeCode-comment', NewContributoryFactorCommentRoutes(csipApiService, auditService))
+  router.use('/safer-custody', UpdateSaferCustodyRoutes(csipApiService, auditService))
+  router.use('/referrer', UpdateReferrerRoutes(csipApiService, auditService))
   router.use('/add-contributory-factor', AddContributoryFactorRoutes(csipApiService))
-  router.use('/description', UpdateDescriptionRoutes(csipApiService))
-  router.use('/:factorUuid-comment', UpdateContributoryFactorsCommentRoutes(csipApiService))
-  router.use('/:factorUuid-type', UpdateContributoryFactorsRoutes(csipApiService))
-  router.use('/reasons', UpdateReasonsRoutes(csipApiService))
-  router.use('/additional-information', UpdateAdditionalInfoRoutes(csipApiService))
+  router.use('/description', UpdateDescriptionRoutes(csipApiService, auditService))
+  router.use('/:factorUuid-comment', UpdateContributoryFactorsCommentRoutes(csipApiService, auditService))
+  router.use('/:factorUuid-type', UpdateContributoryFactorsRoutes(csipApiService, auditService))
+  router.use('/reasons', UpdateReasonsRoutes(csipApiService, auditService))
+  router.use('/additional-information', UpdateAdditionalInfoRoutes(csipApiService, auditService))
 
   return router
 }

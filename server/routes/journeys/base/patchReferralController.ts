@@ -1,4 +1,4 @@
-import { NextFunction, Request } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { getNonUndefinedProp } from '../../../utils/utils'
 import { components } from '../../../@types/csip'
 import { PatchCsipRecordController } from './patchCsipRecordController'
@@ -27,17 +27,20 @@ type UpdateReferralSuccessMessage =
 export class PatchReferralController extends PatchCsipRecordController {
   submitChanges = async <T>({
     req,
+    res,
     next,
     changes,
     successMessage,
   }: {
     req: Request<unknown, unknown, T>
+    res: Response
     next: NextFunction
     changes: Partial<components['schemas']['UpdateReferralRequest']>
     successMessage: UpdateReferralSuccessMessage
   }) =>
     this.submitCsipChanges({
       req,
+      res,
       next,
       successMessage,
       changes: {

@@ -19,6 +19,7 @@ export class UpdateAdditionalInformationController extends PatchDecisionControll
   checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, res: Response, next: NextFunction) =>
     this.submitChanges({
       req,
+      res,
       next,
       changes: {
         actionOther: getTextForApiSubmission(

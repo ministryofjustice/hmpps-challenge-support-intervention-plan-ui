@@ -35,7 +35,7 @@ export class UpdateContributoryFactorsController extends UpdateReferralContribut
       return res.notFound()
     }
 
-    return this.updateContributoryFactor(req, next, selectedCf, req.body.contributoryFactor.code)
+    return this.updateContributoryFactor(req, res, next, selectedCf, req.body.contributoryFactor.code)
   }
 
   POST = async (req: Request, res: Response) => {

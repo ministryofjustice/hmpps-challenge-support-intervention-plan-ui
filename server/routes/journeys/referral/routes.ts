@@ -17,7 +17,7 @@ import { ConfirmationRoutes } from './confirmation/routes'
 import { Services } from '../../../services'
 import { JourneyRouter } from '../base/routes'
 
-function Routes({ csipApiService }: Services) {
+function Routes({ csipApiService, auditService }: Services) {
   const { router } = JourneyRouter()
 
   router.use('/on-behalf-of', OnBehalfOfRoutes())
@@ -33,7 +33,7 @@ function Routes({ csipApiService }: Services) {
   router.use('/safer-custody', ReferralSaferCustodyRoutes())
   router.use('/additional-information', ReferralAdditionalInformationRoutes())
   router.use('/involvement', InvolvementRoutes(csipApiService))
-  router.use('/check-answers', ReferralCheckAnswersRoutes(csipApiService))
+  router.use('/check-answers', ReferralCheckAnswersRoutes(csipApiService, auditService))
   router.use('/confirmation', ConfirmationRoutes())
 
   return router

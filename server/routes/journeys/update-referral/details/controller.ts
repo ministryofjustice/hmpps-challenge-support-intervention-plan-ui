@@ -43,9 +43,10 @@ export class UpdateReferralDetailsController extends PatchReferralController {
     })
   }
 
-  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, _res: Response, next: NextFunction) =>
+  checkSubmitToAPI = async (req: Request<unknown, unknown, SchemaType>, res: Response, next: NextFunction) =>
     this.submitChanges({
       req,
+      res,
       next,
       changes: {
         incidentLocationCode: req.body.incidentLocation.code,

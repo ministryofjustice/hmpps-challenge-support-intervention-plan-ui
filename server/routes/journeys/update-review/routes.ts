@@ -9,18 +9,21 @@ import { UpdateAttendeeRoutes } from './update-participant-contribution-details/
 import { UpdateCloseCsipRoutes } from './close-csip/routes'
 import { AddParticipantContributionDetailsRoutes } from './participant-contribution-details/routes'
 
-function Routes({ csipApiService, prisonerSearchService }: Services) {
+function Routes({ csipApiService, prisonerSearchService, auditService }: Services) {
   const { router, get } = JourneyRouter()
   const updateController = new UpdateReviewController(csipApiService, prisonerSearchService)
 
   get('/', updateController.UPDATE)
 
   router.use('/outcome', UpdateOutcomeRoutes())
-  router.use('/details', UpdateDetailsRoutes(csipApiService))
-  router.use('/next-review-date', UpdateNextReviewDateRoutes(csipApiService))
-  router.use('/update-participant-contribution-details/:attendeeUuid', UpdateAttendeeRoutes(csipApiService))
-  router.use('/participant-contribution-details', AddParticipantContributionDetailsRoutes(csipApiService))
-  router.use('/close-csip', UpdateCloseCsipRoutes(csipApiService))
+  router.use('/details', UpdateDetailsRoutes(csipApiService, auditService))
+  router.use('/next-review-date', UpdateNextReviewDateRoutes(csipApiService, auditService))
+  router.use(
+    '/update-participant-contribution-details/:attendeeUuid',
+    UpdateAttendeeRoutes(csipApiService, auditService),
+  )
+  router.use('/participant-contribution-details', AddParticipantContributionDetailsRoutes(csipApiService, auditService))
+  router.use('/close-csip', UpdateCloseCsipRoutes(csipApiService, auditService))
 
   return router
 }
