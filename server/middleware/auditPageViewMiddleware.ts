@@ -14,6 +14,12 @@ export const auditPageViewMiddleware = (auditService: AuditService): RequestHand
     if (hasCsipId) {
       pageNameSuffix = `${splitUrl[1]}_${splitUrl.slice(3)}`
     }
+    if (pageNameSuffix[0] === '/') {
+      pageNameSuffix = pageNameSuffix.slice(1)
+    }
+    if (pageNameSuffix.length === 0) {
+      pageNameSuffix = 'HOMEPAGE'
+    }
     res.locals.auditEvent = {
       pageNameSuffix: pageNameSuffix.replace('/', '_').replace('-', '_'),
       who: res.locals.user.username,
