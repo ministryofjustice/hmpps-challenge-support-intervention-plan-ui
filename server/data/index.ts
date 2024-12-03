@@ -22,15 +22,16 @@ import CsipApiClient from '../services/csipApi/csipApiClient'
 
 type RestClientBuilder<T> = (token: string) => T
 
+const tokenStore = config.redis.enabled ? new RedisTokenStore(createRedisClient()) : new InMemoryTokenStore()
+
 export const dataAccess = () => ({
   applicationInfo,
-  hmppsAuthClient: new HmppsAuthClient(
-    config.redis.enabled ? new RedisTokenStore(createRedisClient()) : new InMemoryTokenStore(),
-  ),
+  hmppsAuthClient: new HmppsAuthClient(tokenStore),
   hmppsAuditClient: new HmppsAuditClient(config.sqs.audit),
   csipApiClient: (token: string) => new CsipApiClient(token),
   prisonerSearchApiClient: (token: string) => new PrisonerSearchRestClient(token),
   prisonerImageClient: (token: string) => new PrisonApiRestClient(token),
+  tokenStore,
 })
 
 export type DataAccess = ReturnType<typeof dataAccess>

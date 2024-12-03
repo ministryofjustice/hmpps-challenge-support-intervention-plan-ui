@@ -31,8 +31,7 @@ export default function testRequestCaptor(injectJourneyData?: JourneyData, uuid?
     (req: Request) => {
       captured.setRequest(req)
       if (injectJourneyData && uuid) {
-        req.session.journeyDataMap ??= {}
-        req.session.journeyDataMap[uuid] ??= injectJourneyData
+        req.journeyData ??= injectJourneyData
       }
     },
   ]
