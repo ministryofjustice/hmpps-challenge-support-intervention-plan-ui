@@ -20,3 +20,4 @@ export type CsipRecordStatus =
 
 export type CsipSearchResults = components['schemas']['CsipSearchResults']
 export type CsipOverview = components['schemas']['CsipOverview']
+export type CurrentCsipSummary = components['schemas']['CurrentCsipDetail']

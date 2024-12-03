@@ -10,11 +10,24 @@ context('Make a Referral Journey', () => {
     cy.task('stubAreaOfWork')
   })
 
+  it('should show already on a csip notification if prisoner is already on a csip', () => {
+    cy.task('stubCurrentCsipStatusOnCsip')
+    setupDataSignInAndGo()
+
+    cy.findByRole('heading', { name: /tes'name user is already on a csip/i }).should('be.visible')
+    cy.findByRole('link', { name: /view csip details for tes'name user/i }).should('be.visible')
+    cy.findByRole('link', { name: /view csip details for tes'name user/i })
+      .should('have.attr', 'href')
+      .and('match', /manage-csips\?query=Tes'name User/)
+  })
+
   it('test involvement, including all edge cases', () => {
     setupDataSignInAndGo()
 
     cy.findByRole('heading', { name: /make a csip referral/i }).should('be.visible')
     cy.findByText(/are you making this referral on someone else’s behalf\?/i).should('be.visible')
+
+    cy.findByRole('heading', { name: /tes'name user is already on a csip/i }).should('not.exist')
 
     checkAxeAccessibility()
 

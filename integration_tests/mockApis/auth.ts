@@ -4,6 +4,7 @@ import { Response } from 'superagent'
 import { stubFor, getMatchingRequests } from './wiremock'
 import tokenVerification from './tokenVerification'
 import AuthorisedRoles from '../../server/authentication/authorisedRoles'
+import { stubCurrentCsipStatusNoCsip } from './csipApi'
 
 interface UserToken {
   name?: string
@@ -178,11 +179,12 @@ export default {
   stubAuthManageDetails: manageDetails,
   stubSignIn: (
     userToken: UserToken = { roles: [AuthorisedRoles.ROLE_CSIP_PROCESSOR] },
-  ): Promise<[Response, Response, Response, Response, Response, Response, Response]> =>
+  ): Promise<[Response, Response, Response, Response, Response, Response, Response, Response]> =>
     Promise.all([
       favicon(),
       redirect(),
       signOut(),
+      stubCurrentCsipStatusNoCsip(),
       stubGetServiceInfoOneAgencyLEI(),
       stubGetCaseLoads(),
       token(userToken),

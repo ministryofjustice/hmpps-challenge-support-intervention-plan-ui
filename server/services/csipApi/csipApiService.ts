@@ -5,6 +5,7 @@ import {
   CsipRecord,
   CsipRecordStatus,
   CsipSearchResults,
+  CurrentCsipSummary,
   ReferenceData,
   ReferenceDataType,
 } from '../../@types/csip/csipApiTypes'
@@ -37,6 +38,10 @@ export default class CsipApiService {
 
   getCsipOverview(req: Request, prisonCode: string): Promise<CsipOverview> {
     return this.csipApiClientBuilder(req.systemClientToken).getCsipOverview(prisonCode)
+  }
+
+  getCurrentCsipRecord(req: Request, prisonerNumber: string): Promise<CurrentCsipSummary> {
+    return this.csipApiClientBuilder(req.systemClientToken).getCurrentCsipRecord(prisonerNumber)
   }
 
   getServiceConfigInfo(req: Request): Promise<ServiceConfigInfo> {
