@@ -7,10 +7,20 @@ export class ReferralOnBehalfOfController {
   constructor(readonly csipApiService: CsipApiService) {}
 
   GET = async (req: Request, res: Response) => {
-    const { currentCsip } = await this.csipApiService.getCurrentCsipRecord(
-      req,
-      req.journeyData.prisoner!.prisonerNumber,
-    )
+    let currentCsipCode: CsipRecordStatus | '' = ''
+    try {
+      const currentCsipData = await this.csipApiService.getCurrentCsipRecord(
+        req,
+        req.journeyData.prisoner!.prisonerNumber,
+      )
+      currentCsipCode = currentCsipData.currentCsip?.status?.code as CsipRecordStatus
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_err: unknown) {
+      res.render('pages/errorServiceProblem', {
+        showBreadcrumbs: true,
+      })
+      return
+    }
     const onCsipOrOngoingReferralStatuses: CsipRecordStatus[] = [
       'CSIP_OPEN',
       'REFERRAL_SUBMITTED',
@@ -19,7 +29,7 @@ export class ReferralOnBehalfOfController {
       'PLAN_PENDING',
     ]
     res.render('referral/on-behalf-of/view', {
-      showNotificationBanner: onCsipOrOngoingReferralStatuses.includes(currentCsip?.status?.code as CsipRecordStatus),
+      showNotificationBanner: onCsipOrOngoingReferralStatuses.includes(currentCsipCode as CsipRecordStatus),
       isOnBehalfOfReferral: req.journeyData.referral!.onBehalfOfSubJourney
         ? req.journeyData.referral?.onBehalfOfSubJourney?.isOnBehalfOfReferral
         : req.journeyData.referral!.isOnBehalfOfReferral,
