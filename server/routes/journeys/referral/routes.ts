@@ -20,7 +20,7 @@ import { JourneyRouter } from '../base/routes'
 function Routes({ csipApiService, auditService }: Services) {
   const { router } = JourneyRouter()
 
-  router.use('/on-behalf-of', OnBehalfOfRoutes())
+  router.use('/on-behalf-of', OnBehalfOfRoutes(csipApiService))
   router.use('/area-of-work', ReferralAreaOfWorkRoutes(csipApiService))
   router.use('/referrer', ReferralReferrerRoutes(csipApiService))
   router.use('/proactive-or-reactive', ReferralProactiveOrReactiveRoutes())
