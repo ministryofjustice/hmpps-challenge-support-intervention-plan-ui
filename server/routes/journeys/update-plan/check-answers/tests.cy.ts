@@ -96,6 +96,7 @@ context('test /update-plan/check-answers', () => {
 
   const navigateToTestPage = () => {
     cy.signIn()
+    injectJourneyDataAndReload(uuid, { isCheckAnswers: false, journeyCompleted: false })
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-plan/identified-needs/start`)
     cy.findByRole('button', { name: /add another identified need/i }).click()
     injectJourneyDataAndReload(uuid, {

@@ -77,7 +77,7 @@ describe('setUpJourneyData', () => {
     expect(tokenStore.setToken).toHaveBeenCalledWith(
       `journey.tester.${journeyId}`,
       '{"prisoner":{"firstName":"Newname"}}',
-      12 * 60 * 60,
+      20 * 60 * 60,
     )
   })
 })

@@ -10,7 +10,7 @@ export default function setUpJourneyData(store: TokenStore) {
     const cached = await store.getToken(journeyTokenKey)
     req.journeyData = cached ? (JSON.parse(cached) as JourneyData) : { instanceUnixEpoch: Date.now() }
     res.prependOnceListener('close', async () => {
-      await store.setToken(journeyTokenKey, JSON.stringify(req.journeyData), 12 * 60 * 60)
+      await store.setToken(journeyTokenKey, JSON.stringify(req.journeyData), 20 * 60 * 60)
     })
     next()
   }
