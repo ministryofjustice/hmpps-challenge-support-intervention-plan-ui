@@ -38,6 +38,7 @@ context('test /record-investigation/check-answers', () => {
     cy.task('stubGetPrisoner')
 
     cy.signIn()
+    injectJourneyDataAndReload(uuid, { isCheckAnswers: false, journeyCompleted: false })
     cy.visit(START_URL)
 
     injectJourneyDataAndReload(uuid, {

@@ -117,6 +117,7 @@ context('test /record-investigation/check-answers', () => {
 
   const navigateToTestPage = () => {
     cy.signIn()
+    injectJourneyDataAndReload(uuid, { isCheckAnswers: false, journeyCompleted: false })
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/develop-an-initial-plan/start`)
     cy.visit(`${uuid}/develop-an-initial-plan/check-answers`)
 
