@@ -78,7 +78,6 @@ const journeyStates: { [journey: string]: JourneyStateGuard } = {
     'intervention-details': (req: Request) => {
       const { success, isNew, index } = parseIdentifiedNeedIndex(req)
 
-      console.log(`URL is ${req.url} and success: ${success} isNew: ${isNew} index: ${index}`)
       if (!success) {
         return ''
       }
@@ -93,7 +92,6 @@ const journeyStates: { [journey: string]: JourneyStateGuard } = {
     'record-actions-progress': (req: Request) => {
       const { success, isNew, index } = parseIdentifiedNeedIndex(req)
 
-      console.log(`URL is ${req.url} and success: ${success} isNew: ${isNew} index: ${index}`)
       if (!success) {
         return ''
       }
@@ -198,8 +196,6 @@ export default function journeyStateGuard() {
     }
 
     if (!req.session.journeyDataMap?.[uuid!]?.stateGuard) {
-      console.log(`STATE GUARD DISABLED - Loading ${req.url.toString()}`)
-      console.log(JSON.stringify(req.session.journeyDataMap![uuid!]))
       return next()
     }
 
