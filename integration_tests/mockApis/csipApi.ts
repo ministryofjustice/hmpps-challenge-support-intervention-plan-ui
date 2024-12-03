@@ -566,6 +566,12 @@ const stubGetServiceInfoOneAgencyLEI = () => {
   })
 }
 
+const stubGetServiceInfoAllAgencies = () => {
+  return createBasicHttpStub('GET', '/csip-api/info', 200, {
+    activeAgencies: ['***'],
+  })
+}
+
 const stubGetServiceInfoOneAgencyMDI = () => {
   return createBasicHttpStub('GET', '/csip-api/info', 200, {
     activeAgencies: ['MDI'],
@@ -1053,4 +1059,5 @@ export default {
   stubGetServiceInfoOneAgencyLEI,
   stubGetServiceInfoOneAgencyMDI,
   stubGetServiceInfoNoAgencies,
+  stubGetServiceInfoAllAgencies,
 }
