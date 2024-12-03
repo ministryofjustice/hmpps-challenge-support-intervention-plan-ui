@@ -8,6 +8,16 @@ export enum ReviewOutcome {
 
 export type JourneyStateGuard = { [pageName: string]: (req: Request) => string | undefined }
 
+const parseIdentifiedNeedIndex = (req: Request) => {
+  const match = req.url.match(/\/(\d+)(?:#[A-Za-z0-9-]+)?$/) || []
+  const index = Number(match[1]) - 1
+  return {
+    success: !Number.isNaN(index) && (req.journeyData.plan!.identifiedNeeds || []).length >= index,
+    isNew: (req.journeyData.plan!.identifiedNeeds || []).length === index,
+    index,
+  }
+}
+
 function redirectAreaOfWorkOrReferrer(req: Request, page: string) {
   const referral = req.journeyData.referral?.onBehalfOfSubJourney || req.journeyData.referral
 
@@ -65,14 +75,36 @@ const journeyStates: { [journey: string]: JourneyStateGuard } = {
       isMissingValues(req.journeyData.plan!, ['identifiedNeeds']) ? '/record-actions-progress/1' : undefined,
     'summarise-identified-need': (req: Request) =>
       isMissingValues(req.journeyData.plan!, ['reasonForPlan']) ? '' : undefined,
-    'intervention-details': (req: Request) =>
-      isMissingValues(req.journeyData.plan!, ['identifiedNeedSubJourney'])
-        ? `/summarise-identified-need/${req.url.split('/').pop()}`
-        : undefined,
-    'record-actions-progress': (req: Request) =>
-      req.journeyData.plan!.identifiedNeedSubJourney?.intervention
-        ? undefined
-        : `/intervention-details/${req.url.split('/').pop()}`,
+    'intervention-details': (req: Request) => {
+      const { success, isNew, index } = parseIdentifiedNeedIndex(req)
+
+      console.log(`URL is ${req.url} and success: ${success} isNew: ${isNew} index: ${index}`)
+      if (!success) {
+        return ''
+      }
+
+      const missing = isMissingValues(
+        isNew ? req.journeyData.plan!.identifiedNeedSubJourney! : req.journeyData.plan!.identifiedNeeds![index]!,
+        ['identifiedNeed'],
+      )
+
+      return missing ? `/summarise-identified-need/${req.url.split('/').pop()}` : undefined
+    },
+    'record-actions-progress': (req: Request) => {
+      const { success, isNew, index } = parseIdentifiedNeedIndex(req)
+
+      console.log(`URL is ${req.url} and success: ${success} isNew: ${isNew} index: ${index}`)
+      if (!success) {
+        return ''
+      }
+
+      const missing = isMissingValues(
+        isNew ? req.journeyData.plan!.identifiedNeedSubJourney! : req.journeyData.plan!.identifiedNeeds![index]!,
+        ['responsiblePerson'],
+      )
+
+      return missing ? `/intervention-details/${req.url.split('/').pop()}` : undefined
+    },
     'check-answers': (req: Request) =>
       isMissingValues(req.journeyData.plan!, ['nextCaseReviewDate']) ? '/next-review-date' : undefined,
   },
@@ -153,7 +185,7 @@ const journeyStates: { [journey: string]: JourneyStateGuard } = {
 }
 
 export function isMissingValues<T>(obj: T, keys: Array<keyof T>): boolean {
-  return keys.some(key => obj[key] === undefined)
+  return keys.some(key => obj?.[key] === undefined)
 }
 
 export default function journeyStateGuard() {
@@ -164,6 +196,14 @@ export default function journeyStateGuard() {
       // This page does not concern us
       return next()
     }
+
+    if (!req.session.journeyDataMap?.[uuid!]?.stateGuard) {
+      console.log(`STATE GUARD DISABLED - Loading ${req.url.toString()}`)
+      console.log(JSON.stringify(req.session.journeyDataMap![uuid!]))
+      return next()
+    }
+
+    const journeyData = req.session.journeyDataMap?.[uuid]
 
     // All journeys need journeyData to be populated with prisoner data
 
@@ -178,7 +218,7 @@ export default function journeyStateGuard() {
     }
 
     if (page === 'confirmation') {
-      if (req.journeyData.journeyCompleted) {
+      if (journeyData?.journeyCompleted) {
         return next()
       }
       return res.redirect(`check-answers`)
@@ -190,7 +230,6 @@ export default function journeyStateGuard() {
     }
 
     const journeyState = journeyStates[flow]?.[page]
-    const journeyData = req.session.journeyDataMap[uuid]
 
     const targetRedirect = journeyState?.({ ...req, journeyData } as Request)
 

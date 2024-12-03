@@ -9,6 +9,7 @@ import { CsipRecordRoutes } from './csip-records/routes'
 import { SearchCsipRoutes } from './manage-csips/routes'
 import { HomePageController } from './controller'
 import journeyStateGuard from '../middleware/journeyStateGuard'
+import config from '../config'
 
 export default function routes(services: Services): Router {
   const router = Router({ mergeParams: true })
@@ -53,8 +54,11 @@ export default function routes(services: Services): Router {
   )
 
   router.use(journeyStateMachine())
-  router.use(journeyStateGuard())
-  router.use('/:journeyId', JourneyRoutes(services))
 
+  if (config.features.stateGuard || process.env.NODE_ENV === 'e2e-test') {
+    router.use(journeyStateGuard())
+  }
+
+  router.use('/:journeyId', JourneyRoutes(services))
   return router
 }

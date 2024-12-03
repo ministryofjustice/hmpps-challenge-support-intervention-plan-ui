@@ -1,4 +1,8 @@
+import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
+
+const uuid = uuidV4()
 
 context('Make a Referral Journey', () => {
   beforeEach(() => {
@@ -26,6 +30,7 @@ context('Make a Referral Journey', () => {
 
   it('happy path', () => {
     signinAndStart()
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
 
     prisonerProfileShouldDisplay()
 
@@ -81,7 +86,7 @@ context('Make a Referral Journey', () => {
 
 const signinAndStart = () => {
   cy.signIn()
-  cy.visit('/prisoners/A1111AA/referral/start')
+  cy.visit(`${uuid}/prisoners/A1111AA/referral/start`)
 }
 
 const prisonerProfileShouldDisplay = () => {

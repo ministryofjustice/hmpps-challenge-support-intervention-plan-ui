@@ -1,4 +1,5 @@
 import { v4 as uuidV4 } from 'uuid'
+import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /csip-record/:recordUuid/develop-an-initial-plan/start', () => {
   const uuid = uuidV4()
@@ -31,7 +32,11 @@ context('test /csip-record/:recordUuid/develop-an-initial-plan/start', () => {
   it('happy path', () => {
     cy.signIn()
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/develop-an-initial-plan/start`)
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
 
+    cy.url().should('to.match', /\/develop-an-initial-plan$/)
+
+    cy.visit(`${uuid}/develop-an-initial-plan/check-answers`)
     cy.url().should('to.match', /\/develop-an-initial-plan$/)
 
     cy.findByRole('radio', { name: 'Yes' }).click()
@@ -45,12 +50,16 @@ context('test /csip-record/:recordUuid/develop-an-initial-plan/start', () => {
     cy.findByText('No identified needs recorded.')
     cy.findByRole('button', { name: 'Add identified need' }).click()
 
+    cy.visit(`${uuid}/develop-an-initial-plan/check-answers`)
+    cy.url().should('to.match', /\/develop-an-initial-plan\/summarise-identified-need\/1$/)
+
     addNewIntervention()
     verifyIntervention()
     changeIntervention()
 
     getContinueButton().click()
 
+    cy.visit(`${uuid}/develop-an-initial-plan/check-answers`)
     cy.url().should('to.match', /\/develop-an-initial-plan\/next-review-date/)
 
     cy.findByRole('textbox', { name: "When will you next review the plan with Tes'name User?" })
@@ -59,6 +68,7 @@ context('test /csip-record/:recordUuid/develop-an-initial-plan/start', () => {
 
     getContinueButton().click()
 
+    cy.visit(`${uuid}/develop-an-initial-plan/confirmation`)
     cy.url().should('to.match', /\/check-answers/)
 
     verifyCyaAndChange()
@@ -71,6 +81,8 @@ context('test /csip-record/:recordUuid/develop-an-initial-plan/start', () => {
 
     getContinueButton().click()
 
+    cy.visit(`${uuid}/develop-an-initial-plan/check-answers`)
+
     cy.url().should('to.match', /\/develop-an-initial-plan\/intervention-details\/1$/)
     cy.findByRole('textbox', { name: 'What’s the planned intervention for this identified need?' }).type(
       'Intervention',
@@ -81,6 +93,7 @@ context('test /csip-record/:recordUuid/develop-an-initial-plan/start', () => {
 
     getContinueButton().click()
 
+    cy.visit(`${uuid}/develop-an-initial-plan/check-answers`)
     cy.url().should('to.match', /\/develop-an-initial-plan\/record-actions-progress\/1$/)
     cy.findByRole('textbox', { name: 'Record any actions or progress (optional)' }).type('Actions and progress', {
       delay: 0,

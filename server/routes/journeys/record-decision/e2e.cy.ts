@@ -1,6 +1,10 @@
+import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
 
 context('Record a decision journey', () => {
+  const uuid = uuidV4()
+
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
@@ -24,13 +28,24 @@ context('Record a decision journey', () => {
 
   it('happy path', () => {
     signinAndStart()
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
 
     prisonerProfileShouldDisplay()
 
+    cy.visit(`${uuid}/record-decision/check-answers`)
+    cy.url().should('to.match', /\/record-decision\/$/)
+
     fillInSignOff()
+
+    cy.visit(`${uuid}/record-decision/check-answers`)
+    cy.url().should('to.match', /\/record-decision\/conclusion$/)
+
     fillInConclusion()
+
     fillInNextSteps()
+
     fillInAdditionalInformation()
+
     reviewCheckAnswersConfirm()
     reviewChangeLinks()
     reivewConfirmation()
@@ -121,8 +136,7 @@ context('Record a decision journey', () => {
 
   const signinAndStart = () => {
     cy.signIn()
-    cy.visit('csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550/investigation')
-    cy.findAllByText('Record decision').first().click()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-decision/start`)
   }
 
   const prisonerProfileShouldDisplay = () => {

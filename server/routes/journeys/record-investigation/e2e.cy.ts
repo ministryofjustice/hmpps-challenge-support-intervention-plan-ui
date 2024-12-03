@@ -1,4 +1,5 @@
 import { v4 as uuidV4 } from 'uuid'
+import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /csip-record/:recordUuid/record-investigation/start', () => {
   const uuid = uuidV4()
@@ -43,6 +44,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
   it('happy path', () => {
     cy.signIn()
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-investigation/start`)
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
 
     cy.url().should('to.match', /\/record-investigation$/)
 
