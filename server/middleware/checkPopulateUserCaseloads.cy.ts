@@ -29,6 +29,14 @@ context('test check populating user caseloads', () => {
     cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
   })
 
+  it('should allow me to the csip record page when the dps components api fails but csip api and caseloads can be fetched and are *** (all prisons enabled)', () => {
+    cy.task('stubComponentsFail')
+    cy.task('stubGetServiceInfoAllAgencies')
+    cy.signIn()
+    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`)
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
+  })
+
   it('should take me to the journey as we dont check start or uuid-based urls', () => {
     // If the checks were checking the wrong urls, this would bump us out to the service-not-enabled page
     cy.task('stubGetServiceInfoNoAgencies')
