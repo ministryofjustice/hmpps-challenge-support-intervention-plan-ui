@@ -18,7 +18,7 @@ context('Make a Referral Journey', () => {
     cy.findByRole('link', { name: /view csip details for tes'name user/i }).should('be.visible')
     cy.findByRole('link', { name: /view csip details for tes'name user/i })
       .should('have.attr', 'href')
-      .and('match', /manage-csips\?query=Tes'name User/)
+      .and('match', /manage-csips\?query=A1111AA/)
   })
 
   it('test involvement, including all edge cases', () => {
