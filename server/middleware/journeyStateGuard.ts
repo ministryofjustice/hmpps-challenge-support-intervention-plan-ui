@@ -79,7 +79,17 @@ const journeyStates: { [journey: string]: JourneyStateGuard } = {
       const { success, isNew, index } = parseIdentifiedNeedIndex(req)
 
       if (!success) {
-        return ''
+        if (!req.journeyData.plan?.reasonForPlan) {
+          return ''
+        }
+
+        if (!req.journeyData.plan?.identifiedNeedSubJourney) {
+          // There's no sub journey present so the intent is not to create a new one
+          return '/identified-needs'
+        }
+
+        // We can figure out if they're in the sub journey and what index they're editing
+        return `/summarise-identified-need/${(req.journeyData.plan?.identifiedNeeds?.length || 0) + 1}`
       }
 
       const missing = isMissingValues(
@@ -93,7 +103,17 @@ const journeyStates: { [journey: string]: JourneyStateGuard } = {
       const { success, isNew, index } = parseIdentifiedNeedIndex(req)
 
       if (!success) {
-        return ''
+        if (!req.journeyData.plan?.reasonForPlan) {
+          return ''
+        }
+
+        if (!req.journeyData.plan?.identifiedNeedSubJourney) {
+          // There's no sub journey present so the intent is not to create a new one
+          return '/identified-needs'
+        }
+
+        // We can figure out if they're in the sub journey and what index they're editing
+        return `/intervention-details/${(req.journeyData.plan?.identifiedNeeds?.length || 0) + 1}`
       }
 
       const missing = isMissingValues(
@@ -213,26 +233,47 @@ export default function journeyStateGuard() {
       return next()
     }
 
-    if (page === 'confirmation') {
-      if (journeyData?.journeyCompleted) {
-        return next()
+    let redirectTo
+    let currentPage = page
+
+    while (true) {
+      if (currentPage === 'confirmation') {
+        if (journeyData?.journeyCompleted) {
+          return next()
+        }
+
+        currentPage = 'check-answers'
+        redirectTo = '/check-answers'
       }
-      return res.redirect(`check-answers`)
+
+      const journeyState = journeyStates[flow]?.[currentPage]
+
+      if (journeyState === undefined) {
+        // We've backtracked all the way to a page that requires no validation
+        if (page === currentPage) {
+          return next()
+        }
+        return res.redirect(`/${uuid}/${flow}${redirectTo}`)
+      }
+
+      const targetRedirect = journeyState?.({
+        ...req,
+        journeyData,
+        url: redirectTo ? `/${uuid}/${flow}${redirectTo}` : req.url,
+      } as Request)
+
+      if (targetRedirect !== undefined) {
+        currentPage = targetRedirect.startsWith('/') ? targetRedirect.split('/')[1] || '' : targetRedirect
+        redirectTo = targetRedirect
+      }
+
+      if (targetRedirect === undefined) {
+        // We passed validation for this page, either redirect if we've had to backtrack or next() if not
+        if (page === currentPage) {
+          return next()
+        }
+        return res.redirect(`/${uuid}/${flow}${redirectTo}`)
+      }
     }
-
-    if (!journeyStates[flow]?.[page]) {
-      // We haven't defined a guard for this page
-      return next()
-    }
-
-    const journeyState = journeyStates[flow]?.[page]
-
-    const targetRedirect = journeyState?.({ ...req, journeyData } as Request)
-
-    if (typeof targetRedirect === 'string') {
-      return res.redirect(`/${uuid}/${flow}${targetRedirect}`)
-    }
-
-    return next()
   }
 }

@@ -49,7 +49,7 @@ context('test /csip-record/:recordUuid/develop-an-initial-plan/start', () => {
     cy.findByText('No identified needs recorded.')
     cy.findByRole('button', { name: 'Add identified need' }).click()
 
-    stateGuardShouldBounceBackTo(/\/develop-an-initial-plan\/summarise-identified-need\/1$/)
+    stateGuardShouldBounceBackTo(/develop-an-initial-plan\/summarise-identified-need\/1$/)
 
     addNewIntervention()
     verifyIntervention()

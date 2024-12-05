@@ -3,8 +3,6 @@ import { v4 as uuidV4 } from 'uuid'
 import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /csip-record/:recordUuid/record-investigation/start', () => {
-  const uuid = uuidV4()
-
   const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
 
   beforeEach(() => {
@@ -19,6 +17,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
   })
 
   it('should deny access to non CSIP_PROCESSOR role', () => {
+    const uuid = uuidV4()
     cy.task('stubSignIn', { roles: [] })
 
     cy.signIn()
@@ -32,13 +31,14 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
   })
 
   it('happy path - keep on plan', () => {
+    const uuid = uuidV4()
     cy.signIn()
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-review/start`)
     injectJourneyDataAndReload(uuid, { stateGuard: true })
 
     cy.url().should('to.match', /\/record-review$/)
 
-    stateGuardShouldBounceBackTo(/record-review$/)
+    stateGuardShouldBounceBackTo(uuid, /record-review$/)
 
     cy.findByRole('link', { name: 'Check and save report' }).should('not.exist')
     cy.findAllByText('Incomplete').should('have.length', 3)
@@ -46,15 +46,15 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
 
     clickAndCompleteDetails()
 
-    stateGuardShouldBounceBackTo(/record-review$/)
+    stateGuardShouldBounceBackTo(uuid, /record-review$/)
 
     clickAndCompleteParticipants()
 
-    stateGuardShouldBounceBackTo(/record-review$/)
+    stateGuardShouldBounceBackTo(uuid, /record-review$/)
 
     clickAndCompleteOutcomeKeepOnPlan()
 
-    stateGuardShouldBounceBackTo(/record-review\/next-review-date$/)
+    stateGuardShouldBounceBackTo(uuid, /record-review\/next-review-date$/)
 
     completeNextReviewDate()
 
@@ -65,13 +65,14 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
   })
 
   it('happy path - close CSIP', () => {
+    const uuid = uuidV4()
     cy.signIn()
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-review/start`)
     injectJourneyDataAndReload(uuid, { stateGuard: true })
 
     cy.url().should('to.match', /\/record-review$/)
 
-    stateGuardShouldBounceBackTo(/record-review$/)
+    stateGuardShouldBounceBackTo(uuid, /record-review$/)
 
     cy.findByRole('link', { name: 'Check and save report' }).should('not.exist')
     cy.findAllByText('Incomplete').should('have.length', 3)
@@ -79,17 +80,17 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
 
     clickAndCompleteDetails()
 
-    stateGuardShouldBounceBackTo(/record-review$/)
+    stateGuardShouldBounceBackTo(uuid, /record-review$/)
 
     clickAndCompleteParticipants()
 
-    stateGuardShouldBounceBackTo(/record-review$/)
+    stateGuardShouldBounceBackTo(uuid, /record-review$/)
 
     cy.findByRole('link', { name: /Outcome/ }).click()
     cy.findByRole('radio', { name: `Close the CSIP` }).click()
     getContinueButton().click()
 
-    stateGuardShouldBounceBackTo(/record-review\/close-csip/)
+    stateGuardShouldBounceBackTo(uuid, /record-review\/close-csip/)
 
     cy.findByRole('button', { name: /Yes, close CSIP/ }).click()
     cy.findByRole('button', { name: /Record review and close CSIP/ }).click()
@@ -201,7 +202,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     cy.findByText(/CSIP review recorded for Tes'name User/)
   }
 
-  const stateGuardShouldBounceBackTo = (backTo: RegExp | string) => {
+  const stateGuardShouldBounceBackTo = (uuid: string, backTo: RegExp | string) => {
     cy.visit(`${uuid}/record-review/confirmation`)
     cy.url().should('to.match', backTo)
   }
