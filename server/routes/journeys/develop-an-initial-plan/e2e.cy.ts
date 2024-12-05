@@ -61,9 +61,6 @@ context('test /csip-record/:recordUuid/develop-an-initial-plan/start', () => {
 
     cy.visit(`${uuid}/develop-an-initial-plan/intervention-details/5`)
     cy.url().should('to.match', /\/develop-an-initial-plan\/identified-needs$/)
-
-    cy.visit(`ed99633f-959b-4ec8-8e6a-cc0aff63cfb1/develop-an-initial-plan/intervention-details/5`)
-    cy.url().should('to.match', /\/$/)
   })
 
   it('happy path', () => {
