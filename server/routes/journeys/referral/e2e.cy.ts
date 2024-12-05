@@ -28,6 +28,28 @@ context('Make a Referral Journey', () => {
     cy.url().should('to.match', /\/on-behalf-of$/)
   })
 
+  it('state guard correctly differentiates between area-of-work and referrer', () => {
+    signinAndStart()
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
+
+    stateGuardShouldBounceBackTo(/referral\/on-behalf-of$/)
+    cy.url().should('include', '/on-behalf-of')
+    cy.findByRole('radio', { name: /no/i }).click()
+    checkAxeAccessibility()
+    cy.findByRole('button', { name: /continue/i }).click()
+
+    stateGuardShouldBounceBackTo(/referral\/area-of-work$/)
+
+    cy.go('back')
+
+    cy.url().should('include', '/on-behalf-of')
+    cy.findByRole('radio', { name: /yes/i }).click()
+    checkAxeAccessibility()
+    cy.findByRole('button', { name: /continue/i }).click()
+
+    stateGuardShouldBounceBackTo(/referral\/referrer$/)
+  })
+
   it('happy path', () => {
     signinAndStart()
     injectJourneyDataAndReload(uuid, { stateGuard: true })

@@ -26,7 +26,7 @@ context('Screen a CSIP Referral Journey', () => {
   const getCyaSubmitButton = () => cy.findByRole('button', { name: /Record outcome/i })
   const getChangeLink = () => cy.findAllByRole('link', { name: /Change/ }).first()
 
-  xit('should deny access to non CSIP_PROCESSOR role', () => {
+  it('should deny access to non CSIP_PROCESSOR role', () => {
     cy.task('stubSignIn', { roles: [] })
 
     cy.signIn()
@@ -83,7 +83,7 @@ context('Screen a CSIP Referral Journey', () => {
     cy.url().should('include', '/screen/confirmation')
   })
 
-  xit('should prepopulate radios after an invalid input', () => {
+  it('should prepopulate radios after an invalid input', () => {
     cy.signIn()
     cy.visit(START_URL)
     getScreenReferralButton().click()
@@ -97,7 +97,7 @@ context('Screen a CSIP Referral Journey', () => {
     cy.title().should('equal', 'Error: Screen CSIP referral - DPS')
   })
 
-  xit('should prepopulate textbox after an invalid input', () => {
+  it('should prepopulate textbox after an invalid input', () => {
     cy.signIn()
     cy.visit(START_URL)
     getScreenReferralButton().click()
@@ -111,7 +111,7 @@ context('Screen a CSIP Referral Journey', () => {
     getDescribeTextbox().should('include.text', 'no action needed')
   })
 
-  xit('should prepopulate data when navigating back', () => {
+  it('should prepopulate data when navigating back', () => {
     cy.signIn()
     cy.visit(START_URL)
     getScreenReferralButton().click()

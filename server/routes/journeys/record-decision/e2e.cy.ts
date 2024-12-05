@@ -32,13 +32,11 @@ context('Record a decision journey', () => {
 
     prisonerProfileShouldDisplay()
 
-    cy.visit(`${uuid}/record-decision/check-answers`)
-    cy.url().should('to.match', /\/record-decision\/$/)
+    stateGuardShouldBounceBackTo(/\/record-decision\/$/)
 
     fillInSignOff()
 
-    cy.visit(`${uuid}/record-decision/check-answers`)
-    cy.url().should('to.match', /\/record-decision\/conclusion$/)
+    stateGuardShouldBounceBackTo(/\/record-decision\/conclusion$/)
 
     fillInConclusion()
 
@@ -48,7 +46,7 @@ context('Record a decision journey', () => {
 
     reviewCheckAnswersConfirm()
     reviewChangeLinks()
-    reivewConfirmation()
+    reviewConfirmation()
   })
 
   const fillInSignOff = () => {
@@ -85,7 +83,7 @@ context('Record a decision journey', () => {
     cy.contains('dt', 'Additional information').next().should('include.text', 'additional info goes here!')
   }
 
-  const reivewConfirmation = () => {
+  const reviewConfirmation = () => {
     cy.findByRole('button', { name: /Confirm and record decision/i }).click()
     cy.url().should('include', '/confirmation')
     checkAxeAccessibility()
@@ -147,5 +145,10 @@ context('Record a decision journey', () => {
     cy.findByText('HMP Kirkham').should('be.visible')
     cy.findByText('A-1-1').should('be.visible')
     cy.findByText('On remand').should('be.visible')
+  }
+
+  const stateGuardShouldBounceBackTo = (backTo: RegExp | string) => {
+    cy.visit(`${uuid}/record-decision/confirmation`)
+    cy.url().should('to.match', backTo)
   }
 })
