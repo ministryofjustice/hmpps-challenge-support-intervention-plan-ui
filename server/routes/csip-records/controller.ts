@@ -76,9 +76,16 @@ export class CsipRecordController {
     let secondaryButton
     switch (record.status.code) {
       case 'REFERRAL_PENDING':
-        secondaryButton = {
-          label: 'Update referral',
-          link: `/csip-record/${recordUuid}/update-referral/start`,
+        if (!referral.isReferralComplete) {
+          actionButton = {
+            label: 'Complete referral',
+            action: 'complete-referral',
+          }
+        } else {
+          secondaryButton = {
+            label: 'Update referral',
+            link: `/csip-record/${recordUuid}/update-referral/start`,
+          }
         }
         break
       case 'REFERRAL_SUBMITTED':
@@ -198,6 +205,9 @@ export class CsipRecordController {
         break
       case 'review':
         res.redirect(`/csip-record/${recordUuid}/record-review/start`)
+        break
+      case 'complete-referral':
+        res.redirect(`/csip-record/${recordUuid}/referral/start`)
         break
       default:
         res.redirect('back')
