@@ -85,6 +85,7 @@ context('Make a Referral Journey', () => {
 
   it('user stays on page after inputting invalid data after changing their answers', () => {
     signinAndStart()
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
 
     fillInformationReactiveNotOnBehalf()
 
