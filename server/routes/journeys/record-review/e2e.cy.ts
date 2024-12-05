@@ -38,6 +38,8 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
 
     cy.url().should('to.match', /\/record-review$/)
 
+    stateGuardShouldBounceBackTo(/record-review$/)
+
     cy.findByRole('link', { name: 'Check and save report' }).should('not.exist')
     cy.findAllByText('Incomplete').should('have.length', 3)
     cy.findByText('Cannot save yet').should('be.visible')
@@ -46,6 +48,8 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     cy.findByRole('textbox', { name: 'Enter details of the review' }).clear().type('review details', { delay: 0 })
     getContinueButton().click()
     cy.url().should('to.match', /record-review$/)
+
+    stateGuardShouldBounceBackTo(/record-review$/)
 
     cy.findByRole('link', { name: /Participants and contributions/ }).click()
     cy.findByRole('button', { name: 'Add participant' }).click()
@@ -64,9 +68,14 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     getContinueButton().click()
     cy.url().should('to.match', /record-review$/)
 
+    stateGuardShouldBounceBackTo(/record-review$/)
+
     cy.findByRole('link', { name: /Outcome/ }).click()
     cy.findByRole('radio', { name: 'What’s the outcome of this review? Keep the prisoner on the plan' }).click()
     getContinueButton().click()
+
+    stateGuardShouldBounceBackTo(/record-review\/next-review-date$/)
+
     cy.url().should('to.match', /\/next-review-date$/)
     cy.findByRole('textbox', { name: "When will you next review the plan with Tes'name User?" }).type(
       formatDate(new Date(), 'dd/MM/yyyy'),
@@ -143,5 +152,10 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     cy.findByRole('button', { name: /Record review and close CSIP/ }).click()
 
     cy.findByText(/CSIP review recorded for Tes'name User/)
+  }
+
+  const stateGuardShouldBounceBackTo = (backTo: RegExp | string) => {
+    cy.visit(`${uuid}/record-review/confirmation`)
+    cy.url().should('to.match', backTo)
   }
 })

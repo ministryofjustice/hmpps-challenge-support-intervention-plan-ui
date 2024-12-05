@@ -48,6 +48,8 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
 
     cy.url().should('to.match', /\/record-investigation$/)
 
+    stateGuardShouldBounceBackTo(/record-investigation$/)
+
     allSectionsShouldBeIncomplete()
 
     completeInterviewDetails()
@@ -55,12 +57,14 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
 
     getContinueButton().click()
 
+    stateGuardShouldBounceBackTo(/record-investigation$/)
     cy.findAllByText('Cannot save yet').should('have.length', 1)
     govukTaskListStatusShouldBe(sections.DETAILS, 'Completed')
     cy.findAllByText('Incomplete').should('have.length', 6)
 
     completeTextboxSection(sections.STAFF, /staff-involved$/, 'Which staff have been involved in the investigation?')
 
+    stateGuardShouldBounceBackTo(/record-investigation$/)
     cy.findAllByText('Cannot save yet').should('have.length', 1)
     govukTaskListStatusShouldBe(sections.DETAILS, 'Completed')
     govukTaskListStatusShouldBe(sections.STAFF, 'Completed')
@@ -68,6 +72,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
 
     completeTextboxSection(sections.WHY_BEHAVIOUR, /why-behaviour-occurred$/, 'Why did the behaviour occur?')
 
+    stateGuardShouldBounceBackTo(/record-investigation$/)
     cy.findAllByText('Cannot save yet').should('have.length', 1)
     govukTaskListStatusShouldBe(sections.DETAILS, 'Completed')
     govukTaskListStatusShouldBe(sections.STAFF, 'Completed')
@@ -76,6 +81,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
 
     completeTextboxSection(sections.EVIDENCE, /evidence-secured$/, 'What evidence has been secured?')
 
+    stateGuardShouldBounceBackTo(/record-investigation$/)
     cy.findAllByText('Cannot save yet').should('have.length', 1)
     govukTaskListStatusShouldBe(sections.DETAILS, 'Completed')
     govukTaskListStatusShouldBe(sections.STAFF, 'Completed')
@@ -89,6 +95,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
       "What is Tes'name User’s usual behaviour presentation?",
     )
 
+    stateGuardShouldBounceBackTo(/record-investigation$/)
     cy.findAllByText('Cannot save yet').should('have.length', 1)
     govukTaskListStatusShouldBe(sections.DETAILS, 'Completed')
     govukTaskListStatusShouldBe(sections.STAFF, 'Completed')
@@ -99,6 +106,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
 
     completeTextboxSection(sections.TRIGGERS, /triggers$/, "What are Tes'name User’s triggers?")
 
+    stateGuardShouldBounceBackTo(/record-investigation$/)
     cy.findAllByText('Cannot save yet').should('have.length', 1)
     govukTaskListStatusShouldBe(sections.DETAILS, 'Completed')
     govukTaskListStatusShouldBe(sections.STAFF, 'Completed')
@@ -124,6 +132,8 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     govukTaskListStatusShouldBe(sections.PROTECTIVE_FACTORS, 'Completed')
 
     verifyCya()
+
+    stateGuardShouldBounceBackTo(/record-investigation\/check-answers$/)
 
     cy.findByText('Confirm and save report').click()
 
@@ -277,5 +287,10 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     cy.get('textarea').clear().type('protective-factors changed', { delay: 0 })
     getContinueButton().click()
     verifySummaryText(sections.PROTECTIVE_FACTORS, 'protective-factors changed')
+  }
+
+  const stateGuardShouldBounceBackTo = (backTo: RegExp | string) => {
+    cy.visit(`${uuid}/record-investigation/confirmation`)
+    cy.url().should('to.match', backTo)
   }
 })
