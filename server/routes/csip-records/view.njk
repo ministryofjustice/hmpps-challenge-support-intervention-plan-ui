@@ -3,6 +3,7 @@
 {%- from "moj/components/sub-navigation/macro.njk" import mojSubNavigation -%}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "partials/statusTag/macro.njk" import statusTag %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% set fullWidth = true %}
 
@@ -160,6 +161,13 @@
     <p class="govuk-!-margin-bottom-6">
       <strong>Status</strong>: {{ statusTag({ record: record }) }}
     </p>
+    {% if record.status.code == 'REFERRAL_PENDING' %}
+      <p class="govuk-!-margin-bottom-6">
+        {{ govukWarningText({
+            text: "This referral is incomplete."
+        }) }}
+      </p>
+    {% endif %}
     <p class="govuk-!-margin-bottom-8">
       <strong>CSIP log code:</strong> {{ record.logCode or "Not provided" }}
       {% if isCsipProcessor %}
