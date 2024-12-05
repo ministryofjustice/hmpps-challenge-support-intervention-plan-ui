@@ -32,7 +32,7 @@ context('Record a decision journey', () => {
 
     prisonerProfileShouldDisplay()
 
-    stateGuardShouldBounceBackTo(/\/record-decision\/$/)
+    stateGuardShouldBounceBackTo(/\/record-decision$/)
 
     fillInSignOff()
 

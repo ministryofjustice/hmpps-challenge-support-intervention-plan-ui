@@ -1,3 +1,4 @@
+import { Request } from 'express'
 import StartJourneyRoutes from './start/routes'
 import { ScreenCheckAnswersRoutes } from './check-answers/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
@@ -6,6 +7,7 @@ import { JourneyRouter } from '../base/routes'
 import { ScreenController } from './controller'
 import { schemaFactory } from './schemas'
 import { validate } from '../../../middleware/validationMiddleware'
+import journeyStateGuard, { isMissingValues } from '../../../middleware/journeyStateGuard'
 
 function Routes({ csipApiService, auditService }: Services) {
   const { router, get, post } = JourneyRouter()
@@ -24,7 +26,13 @@ export const ScreenRoutes = ({ services, path }: { services: Services; path: str
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/screen/start', StartJourneyRoutes(services))
+  router.use(path, journeyStateGuard(guard))
   router.use(path, Routes(services))
 
   return router
+}
+
+const guard = {
+  'check-answers': (req: Request) =>
+    isMissingValues(req.journeyData.saferCustodyScreening!, ['outcomeType', 'reasonForDecision']) ? '' : undefined,
 }

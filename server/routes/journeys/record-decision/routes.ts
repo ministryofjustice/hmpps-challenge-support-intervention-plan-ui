@@ -1,3 +1,4 @@
+import { Request } from 'express'
 import StartJourneyRoutes from './start/routes'
 import { Services } from '../../../services'
 import { JourneyRouter } from '../base/routes'
@@ -9,6 +10,7 @@ import { ConclusionRoutes } from './conclusion/routes'
 import { DecisionAdditionalInformationRoutes } from './additional-information/routes'
 import { DecisionCheckAnswersRoutes } from './check-answers/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
+import journeyStateGuard, { JourneyStateGuard, isMissingValues } from '../../../middleware/journeyStateGuard'
 
 function Routes({ csipApiService, auditService }: Services) {
   const { router, get, post } = JourneyRouter()
@@ -29,7 +31,19 @@ export const DecisionRoutes = ({ services, path }: { services: Services; path: s
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/record-decision/start', StartJourneyRoutes(services))
+  router.use(path, journeyStateGuard(guard))
   router.use(path, Routes(services))
 
   return router
+}
+
+const guard: JourneyStateGuard = {
+  conclusion: (req: Request) =>
+    isMissingValues(req.journeyData.decisionAndActions!, ['signedOffByRole']) ? '' : undefined,
+  'next-steps': (req: Request) =>
+    isMissingValues(req.journeyData.decisionAndActions!, ['outcome', 'conclusion']) ? '/conclusion' : undefined,
+  'additional-information': (req: Request) =>
+    isMissingValues(req.journeyData.decisionAndActions!, ['outcome', 'conclusion']) ? '/conclusion' : undefined,
+  'check-answers': (req: Request) =>
+    isMissingValues(req.journeyData.decisionAndActions!, ['outcome', 'conclusion']) ? '/conclusion' : undefined,
 }
