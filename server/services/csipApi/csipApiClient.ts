@@ -5,6 +5,7 @@ import {
   CsipRecord,
   CsipRecordStatus,
   CsipSearchResults,
+  CurrentCsipSummary,
   ReferenceData,
   ReferenceDataType,
 } from '../../@types/csip/csipApiTypes'
@@ -72,6 +73,12 @@ export default class CsipApiClient {
   async getCsipOverview(prisonCode: string): Promise<CsipOverview> {
     return this.restClient.get<CsipOverview>({
       path: `/prisons/${prisonCode}/csip-records/overview`,
+    })
+  }
+
+  async getCurrentCsipRecord(prisonerNumber: string): Promise<CurrentCsipSummary> {
+    return this.restClient.get<CurrentCsipSummary>({
+      path: `/prisoners/${prisonerNumber}/csip-records/current`,
     })
   }
 

@@ -39,6 +39,7 @@ export default function checkPopulateUserCaseloads(
 
       // Check that the user's active caseload is enabled on the API side
       if (
+        req.method === 'GET' &&
         !uuidValidate(splitUrl[0] || '') &&
         !req.url.endsWith('/start') &&
         !req.url.includes('prisoner-image') &&
@@ -46,9 +47,11 @@ export default function checkPopulateUserCaseloads(
       ) {
         if (isEligibleForService === undefined) {
           const configInfo = await csipApiService.getServiceConfigInfo(req)
-          isEligibleForService = (configInfo as ServiceConfigInfo).activeAgencies.includes(
-            res.locals.user.caseloads!.find(caseload => caseload.currentlyActive)?.caseLoadId || '',
-          )
+          const { activeAgencies } = configInfo as ServiceConfigInfo
+          isEligibleForService =
+            activeAgencies.includes(
+              res.locals.user.caseloads!.find(caseload => caseload.currentlyActive)?.caseLoadId || '',
+            ) || activeAgencies.includes('***')
         }
         if (!isEligibleForService) {
           res.redirect('/service-not-enabled')

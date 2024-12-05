@@ -566,6 +566,12 @@ const stubGetServiceInfoOneAgencyLEI = () => {
   })
 }
 
+const stubGetServiceInfoAllAgencies = () => {
+  return createBasicHttpStub('GET', '/csip-api/info', 200, {
+    activeAgencies: ['***'],
+  })
+}
+
 const stubGetServiceInfoOneAgencyMDI = () => {
   return createBasicHttpStub('GET', '/csip-api/info', 200, {
     activeAgencies: ['MDI'],
@@ -905,6 +911,25 @@ const stubGetCsipOverview = () => {
   })
 }
 
+const stubCurrentCsipStatusOnCsip = () => {
+  return createBasicHttpStub('GET', '/csip-api/prisoners/[a-zA-Z0-9]*/csip-records/current', 200, {
+    totalOpenedCsipCount: 1,
+    totalReferralCount: 1,
+    currentCsip: {
+      status: {
+        code: 'CSIP_OPEN',
+      },
+    },
+  })
+}
+
+export const stubCurrentCsipStatusNoCsip = () => {
+  return createBasicHttpStub('GET', '/csip-api/prisoners/[a-zA-Z0-9]*/csip-records/current', 200, {
+    totalOpenedCsipCount: 0,
+    totalReferralCount: 0,
+  })
+}
+
 export const csip = {
   recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
   prisonNumber: 'A1111AA',
@@ -1053,4 +1078,7 @@ export default {
   stubGetServiceInfoOneAgencyLEI,
   stubGetServiceInfoOneAgencyMDI,
   stubGetServiceInfoNoAgencies,
+  stubGetServiceInfoAllAgencies,
+  stubCurrentCsipStatusOnCsip,
+  stubCurrentCsipStatusNoCsip,
 }
