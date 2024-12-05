@@ -70,13 +70,13 @@ const guard: JourneyStateGuard = {
         return ''
       }
 
-      if (!req.journeyData.plan?.identifiedNeedSubJourney) {
-        // There's no sub journey present so the intent is not to create a new one
+      const correctIndex = (req.journeyData.plan?.identifiedNeeds?.length || 0) + 1
+
+      if (!req.journeyData.plan?.identifiedNeedSubJourney || correctIndex !== index) {
         return '/identified-needs'
       }
 
-      // We can figure out if they're in the sub journey and what index they're editing
-      return `/summarise-identified-need/${(req.journeyData.plan?.identifiedNeeds?.length || 0) + 1}`
+      return `/summarise-identified-need/${correctIndex}`
     }
 
     const missing = isMissingValues(
@@ -94,13 +94,13 @@ const guard: JourneyStateGuard = {
         return ''
       }
 
-      if (!req.journeyData.plan?.identifiedNeedSubJourney) {
-        // There's no sub journey present so the intent is not to create a new one
+      const correctIndex = (req.journeyData.plan?.identifiedNeeds?.length || 0) + 1
+
+      if (!req.journeyData.plan?.identifiedNeedSubJourney || correctIndex !== index) {
         return '/identified-needs'
       }
 
-      // We can figure out if they're in the sub journey and what index they're editing
-      return `/intervention-details/${(req.journeyData.plan?.identifiedNeeds?.length || 0) + 1}`
+      return `/intervention-details/${correctIndex}`
     }
 
     const missing = isMissingValues(

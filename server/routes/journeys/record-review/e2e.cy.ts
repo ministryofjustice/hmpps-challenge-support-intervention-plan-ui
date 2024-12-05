@@ -30,6 +30,53 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     cy.url().should('to.match', /\/not-authorised$/)
   })
 
+  it('state guard - edge cases', () => {
+    const uuid = uuidV4()
+    cy.signIn()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-review/start`)
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
+
+    cy.url().should('to.match', /\/record-review$/)
+
+    cy.visit(`${uuid}/record-review/close-csip`)
+    cy.url().should('to.match', /\/record-review\/outcome$/)
+
+    cy.visit(`${uuid}/record-review/next-review-date`)
+    cy.url().should('to.match', /\/record-review\/outcome$/)
+
+    stateGuardShouldBounceBackTo(uuid, /record-review$/)
+
+    clickAndCompleteDetails()
+
+    stateGuardShouldBounceBackTo(uuid, /record-review$/)
+
+    clickAndCompleteParticipants()
+
+    stateGuardShouldBounceBackTo(uuid, /record-review$/)
+
+    clickAndCompleteOutcomeKeepOnPlan()
+
+    cy.visit(`${uuid}/record-review/close-csip`)
+    cy.url().should('to.match', /\/record-review\/next-review-date$/)
+
+    completeNextReviewDate()
+
+    cy.visit(`${uuid}/record-review/close-csip`)
+    cy.url().should('to.match', /\/record-review\/check-answers$/)
+
+    cy.visit(`${uuid}/record-review/outcome`)
+    cy.findByRole('radio', { name: `Close the CSIP` }).click()
+    getContinueButton().click()
+
+    cy.visit(`${uuid}/record-review/next-review-date`)
+    cy.url().should('to.match', /\/record-review\/close-csip$/)
+
+    cy.findByRole('button', { name: /Yes, close CSIP/ }).click()
+
+    cy.visit(`${uuid}/record-review/next-review-date`)
+    cy.url().should('to.match', /\/record-review\/check-answers$/)
+  })
+
   it('happy path - keep on plan', () => {
     const uuid = uuidV4()
     cy.signIn()
