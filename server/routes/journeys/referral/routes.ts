@@ -16,6 +16,7 @@ import { ReferralCheckAnswersRoutes } from './check-answers/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
 import { Services } from '../../../services'
 import { JourneyRouter } from '../base/routes'
+import ContinueJourneyRoutes from './continue/routes'
 
 function Routes({ csipApiService, auditService }: Services) {
   const { router } = JourneyRouter()
@@ -43,6 +44,7 @@ export const ReferralRoutes = ({ services, path }: { services: Services; path: s
   const { router } = JourneyRouter()
 
   router.use('/prisoners/:prisonerNumber/referral/start', StartJourneyRoutes(services))
+  router.use('/csip-record/:csipRecordId/referral/start', ContinueJourneyRoutes(services))
   router.use(path, Routes(services))
 
   return router

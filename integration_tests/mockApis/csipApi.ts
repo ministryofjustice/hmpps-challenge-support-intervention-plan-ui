@@ -560,6 +560,22 @@ const stubCsipRecordGetSuccess = () => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, csip)
 }
 
+const stubCsipRecordGetSuccessReferralPending = () => {
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
+    ...csip,
+    referral: {
+      ...csip.referral,
+      isReferralComplete: false,
+      incidentDate: '2024-01-01',
+      isOnBehalfOfReferral: undefined,
+    },
+    status: {
+      code: 'REFERRAL_PENDING',
+      description: 'Referral pending',
+    },
+  })
+}
+
 const stubGetServiceInfoOneAgencyLEI = () => {
   return createBasicHttpStub('GET', '/csip-api/info', 200, {
     activeAgencies: ['LEI'],
@@ -1081,4 +1097,5 @@ export default {
   stubGetServiceInfoAllAgencies,
   stubCurrentCsipStatusOnCsip,
   stubCurrentCsipStatusNoCsip,
+  stubCsipRecordGetSuccessReferralPending,
 }
