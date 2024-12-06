@@ -2,7 +2,7 @@ import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
 import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
 
-const uuid = uuidV4()
+let uuid = uuidV4()
 
 context('Make a Referral Journey', () => {
   beforeEach(() => {
@@ -17,6 +17,7 @@ context('Make a Referral Journey', () => {
     cy.task('stubIncidentInvolvement')
     cy.task('stubContribFactors')
     cy.task('stubCsipRecordPostSuccess')
+    uuid = uuidV4()
   })
 
   it('should allow access to non CSIP_PROCESSOR role', () => {

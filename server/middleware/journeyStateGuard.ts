@@ -24,15 +24,15 @@ export default function journeyStateGuard(rules: JourneyStateGuard) {
       return next()
     }
 
-    if (!req.session.journeyDataMap?.[uuid!]?.stateGuard) {
+    if (!req.journeyData?.stateGuard) {
       return next()
     }
 
-    const journeyData = req.session.journeyDataMap?.[uuid]
+    const { journeyData } = req
 
     // All journeys need journeyData to be populated with prisoner data
 
-    if (!req.session.journeyDataMap?.[uuid]?.prisoner) {
+    if (!req.journeyData?.prisoner) {
       // The relevant /start for this journey has not been visited
       // We don't have a CSIP record id so we can't automatically do this.
       return res.redirect(`/`)

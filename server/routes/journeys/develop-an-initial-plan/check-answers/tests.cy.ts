@@ -3,7 +3,7 @@ import { injectJourneyDataAndReload } from '../../../../../integration_tests/uti
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
 context('test /record-investigation/check-answers', () => {
-  const uuid = uuidV4()
+  let uuid = uuidV4()
 
   beforeEach(() => {
     cy.task('reset')
@@ -13,6 +13,7 @@ context('test /record-investigation/check-answers', () => {
     cy.task('stubComponents')
     cy.task('stubCsipRecordGetSuccess')
     cy.task('stubPostPlan')
+    uuid = uuidV4()
   })
 
   it('should be able to change answers and proceed to confirmation', () => {
