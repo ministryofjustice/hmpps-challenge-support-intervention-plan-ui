@@ -35,6 +35,7 @@ export class StartJourneyController {
     const { csipRecordId, journeyId } = req.params
 
     try {
+      delete req.journeyData.csipRecord
       const csip = await this.csipService.getCsipRecord(req, csipRecordId as string)
       req.journeyData.csipRecord = csip
       req.journeyData.saferCustodyScreening = {}

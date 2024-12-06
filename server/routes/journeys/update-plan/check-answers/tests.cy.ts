@@ -5,7 +5,7 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 import { formatDateLongMonthConcise } from '../../../../utils/datetimeUtils'
 
 context('test /update-plan/check-answers', () => {
-  const uuid = uuidV4()
+  let uuid = uuidV4()
   const getContinueButton = () => cy.findByRole('button', { name: /Confirm and save/ })
 
   beforeEach(() => {
@@ -15,6 +15,7 @@ context('test /update-plan/check-answers', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
     cy.task('stubCsipRecordSuccessCsipOpen')
+    uuid = uuidV4()
   })
 
   it('should show need up for submitting, links should work, should submit and go to confirmation', () => {
