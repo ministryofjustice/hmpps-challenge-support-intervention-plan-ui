@@ -23,17 +23,16 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
     const prisoner = req.journeyData.prisoner!
     const referral = req.journeyData.referral!
     try {
-      await this.auditService.logModificationApiCall(
-        'ATTEMPT',
-        'CREATE',
-        'REFERRAL',
-        req.originalUrl,
-        req.journeyData,
-        res.locals.auditEvent,
-      )
-      await this.csipApiService.createReferral(req, {
-        logCode: prisoner.prisonId,
-        referral: {
+      if (referral.continuingReferral) {
+        await this.auditService.logModificationApiCall(
+          'ATTEMPT',
+          'UPDATE',
+          'REFERRAL',
+          req.originalUrl,
+          req.journeyData,
+          res.locals.auditEvent,
+        )
+        await this.csipApiService.mergeReferral(req, {
           contributoryFactors: referral.contributoryFactors!.map(factor => ({
             factorTypeCode: factor.factorType.code,
             ...(factor.comment !== undefined && { comment: factor.comment }),
@@ -53,17 +52,58 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
           isStaffAssaulted: referral.isStaffAssaulted!,
           knownReasons: referral.knownReasons!,
           ...(typeof referral.otherInformation === 'string' && { otherInformation: referral.otherInformation }),
-        },
-      })
+        })
+        await this.auditService.logModificationApiCall(
+          'SUCCESS',
+          'UPDATE',
+          'REFERRAL',
+          req.originalUrl,
+          req.journeyData,
+          res.locals.auditEvent,
+        )
+      } else {
+        await this.auditService.logModificationApiCall(
+          'ATTEMPT',
+          'CREATE',
+          'REFERRAL',
+          req.originalUrl,
+          req.journeyData,
+          res.locals.auditEvent,
+        )
+        await this.csipApiService.createReferral(req, {
+          logCode: prisoner.prisonId,
+          referral: {
+            contributoryFactors: referral.contributoryFactors!.map(factor => ({
+              factorTypeCode: factor.factorType.code,
+              ...(factor.comment !== undefined && { comment: factor.comment }),
+            })),
+            incidentDate: referral.incidentDate!,
+            incidentLocationCode: referral.incidentLocation!.code,
+            incidentTypeCode: referral.incidentType!.code,
+            refererAreaCode: referral.refererArea!.code,
+            referredBy: referral.referredBy!,
+            ...(typeof referral.assaultedStaffName === 'string' && { assaultedStaffName: referral.assaultedStaffName }),
+            descriptionOfConcern: referral.descriptionOfConcern!,
+            incidentInvolvementCode: referral.incidentInvolvement!.code,
+            ...(referral.incidentTime && { incidentTime: referral.incidentTime }),
+            isProactiveReferral: referral.isProactiveReferral!,
+            isSaferCustodyTeamInformed: referral.isSaferCustodyTeamInformed!,
+            isReferralComplete: true,
+            isStaffAssaulted: referral.isStaffAssaulted!,
+            knownReasons: referral.knownReasons!,
+            ...(typeof referral.otherInformation === 'string' && { otherInformation: referral.otherInformation }),
+          },
+        })
+        await this.auditService.logModificationApiCall(
+          'SUCCESS',
+          'CREATE',
+          'REFERRAL',
+          req.originalUrl,
+          req.journeyData,
+          res.locals.auditEvent,
+        )
+      }
       req.journeyData.journeyCompleted = true
-      await this.auditService.logModificationApiCall(
-        'SUCCESS',
-        'CREATE',
-        'REFERRAL',
-        req.originalUrl,
-        req.journeyData,
-        res.locals.auditEvent,
-      )
       next()
     } catch (e) {
       next(e)

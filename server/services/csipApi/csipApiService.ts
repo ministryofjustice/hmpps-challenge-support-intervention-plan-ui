@@ -58,6 +58,16 @@ export default class CsipApiService {
     )
   }
 
+  async mergeReferral(
+    req: Request,
+    mergeReferralRequest: components['schemas']['MergeReferralRequest'],
+  ): Promise<components['schemas']['CsipRecord']> {
+    return this.csipApiClientBuilder(req.systemClientToken).mergeReferral(
+      req.journeyData.prisoner!.prisonerNumber,
+      mergeReferralRequest,
+    )
+  }
+
   updateCsipRecord(
     req: Request,
     updateCsipRecordRequest: components['schemas']['UpdateCsipRecordRequest'],

@@ -16,6 +16,18 @@ context('test /csip-record/:recordUuid/referral/start', () => {
     cy.task('stubCsipRecordGetSuccessReferralPending')
   })
 
+  it('should set on behalf of to no due to display name matching referredBy', () => {
+    cy.signIn()
+    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`, { failOnStatusCode: false })
+    cy.findByText(/This referral is incomplete./).should('be.visible')
+    cy.findAllByRole('button', { name: /Complete referral/i })
+      .first()
+      .click()
+
+    cy.url().should('to.match', /\/referral\/on-behalf-of$/)
+    cy.findByRole('radio', { name: /no/i }).should('be.checked')
+  })
+
   it('should populate the entirety of the referral, with all values being set properly', () => {
     cy.signIn()
     cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`, { failOnStatusCode: false })
