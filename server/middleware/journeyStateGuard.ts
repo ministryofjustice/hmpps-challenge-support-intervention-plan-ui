@@ -15,7 +15,7 @@ export default function journeyStateGuard(rules: JourneyStateGuard) {
       return next()
     }
 
-    const [, uuid, flow, page] = req.originalUrl.split('/')
+    const [, uuid, flow, requestedPage] = req.originalUrl.split('/')
 
     if (!uuid || !validate(uuid) || flow === 'csip-record' || req.originalUrl.endsWith('/start')) {
       // This page does not concern us
@@ -36,34 +36,34 @@ export default function journeyStateGuard(rules: JourneyStateGuard) {
       return res.redirect(`/`)
     }
 
-    if (!page || !flow) {
+    if (!requestedPage || !flow) {
       return next()
     }
 
     let redirectTo
-    let currentPage = page
+    let latestValidPage = requestedPage
 
-    while (currentPage !== null) {
-      if (currentPage === 'confirmation') {
+    while (latestValidPage !== null) {
+      if (latestValidPage === 'confirmation') {
         if (journeyData?.journeyCompleted) {
           return next()
         }
 
-        currentPage = 'check-answers'
+        latestValidPage = 'check-answers'
         redirectTo = '/check-answers'
       }
 
-      const journeyState = rules[currentPage]
+      const guardFn = rules[latestValidPage]
 
-      if (journeyState === undefined) {
+      if (guardFn === undefined) {
         // We've backtracked all the way to a page that requires no validation
-        if (page === currentPage) {
+        if (requestedPage === latestValidPage) {
           return next()
         }
         return res.redirect(`/${uuid}/${flow}${redirectTo}`)
       }
 
-      const targetRedirect = journeyState?.({
+      const targetRedirect = guardFn({
         ...req,
         journeyData,
         url: redirectTo ? `/${uuid}/${flow}${redirectTo}` : req.originalUrl,
@@ -71,12 +71,12 @@ export default function journeyStateGuard(rules: JourneyStateGuard) {
 
       if (targetRedirect === undefined) {
         // We passed validation for this page, either redirect if we've had to backtrack or next() if not
-        if (page === currentPage) {
+        if (requestedPage === latestValidPage) {
           return next()
         }
         return res.redirect(`/${uuid}/${flow}${redirectTo}`)
       }
-      currentPage = targetRedirect.startsWith('/') ? targetRedirect.split('/')[1] || '' : targetRedirect
+      latestValidPage = targetRedirect.startsWith('/') ? targetRedirect.split('/')[1] || '' : targetRedirect
       redirectTo = targetRedirect
     }
 
