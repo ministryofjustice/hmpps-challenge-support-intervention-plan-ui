@@ -41,6 +41,7 @@ export type JourneyData = {
   journeyCompleted?: boolean
   isUpdate?: boolean
   review?: Review
+  stateGuard?: boolean
 }
 
 export type PrisonerSummary = Prisoner

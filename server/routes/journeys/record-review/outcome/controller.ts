@@ -15,6 +15,7 @@ export class OutcomeController {
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
     req.journeyData.review!.outcomeSubJourney ??= {}
     req.journeyData.review!.outcomeSubJourney.outcome = req.body.outcome
+    delete req.journeyData.review!.outcome
     if (req.body.outcome === 'CLOSE_CSIP') {
       return res.redirect('close-csip')
     }

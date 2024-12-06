@@ -1,4 +1,8 @@
+import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
+
+const uuid = uuidV4()
 
 context('Make a Referral Journey', () => {
   beforeEach(() => {
@@ -24,8 +28,31 @@ context('Make a Referral Journey', () => {
     cy.url().should('to.match', /\/on-behalf-of$/)
   })
 
+  it('state guard correctly differentiates between area-of-work and referrer', () => {
+    signinAndStart()
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
+
+    stateGuardShouldBounceBackTo(/referral\/on-behalf-of$/)
+    cy.url().should('include', '/on-behalf-of')
+    cy.findByRole('radio', { name: /no/i }).click()
+    checkAxeAccessibility()
+    cy.findByRole('button', { name: /continue/i }).click()
+
+    stateGuardShouldBounceBackTo(/referral\/area-of-work$/)
+
+    cy.go('back')
+
+    cy.url().should('include', '/on-behalf-of')
+    cy.findByRole('radio', { name: /yes/i }).click()
+    checkAxeAccessibility()
+    cy.findByRole('button', { name: /continue/i }).click()
+
+    stateGuardShouldBounceBackTo(/referral\/referrer$/)
+  })
+
   it('happy path', () => {
     signinAndStart()
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
 
     prisonerProfileShouldDisplay()
 
@@ -58,6 +85,7 @@ context('Make a Referral Journey', () => {
 
   it('user stays on page after inputting invalid data after changing their answers', () => {
     signinAndStart()
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
 
     fillInformationReactiveNotOnBehalf()
 
@@ -81,7 +109,7 @@ context('Make a Referral Journey', () => {
 
 const signinAndStart = () => {
   cy.signIn()
-  cy.visit('/prisoners/A1111AA/referral/start')
+  cy.visit(`${uuid}/prisoners/A1111AA/referral/start`)
 }
 
 const prisonerProfileShouldDisplay = () => {
@@ -206,21 +234,25 @@ const goBackCheckInfoSaved = (onBehalfOf: boolean, proactive: boolean) => {
 }
 
 const fillInformationReactiveNotOnBehalf = () => {
+  stateGuardShouldBounceBackTo(/referral\/on-behalf-of$/)
   cy.url().should('include', '/on-behalf-of')
   cy.findByRole('radio', { name: /no/i }).click()
   checkAxeAccessibility()
   cy.findByRole('button', { name: /continue/i }).click()
 
+  stateGuardShouldBounceBackTo(/referral\/area-of-work$/)
   cy.url().should('include', '/area-of-work')
   cy.findByRole('combobox', { name: /which area do you work in\?/i }).select('AreaA')
   checkAxeAccessibility()
   cy.findByRole('button', { name: /continue/i }).click()
 
+  stateGuardShouldBounceBackTo(/referral\/proactive-or-reactive$/)
   cy.url().should('include', '/proactive-or-reactive')
   cy.findByRole('radio', { name: /reactive/i }).click()
   checkAxeAccessibility()
   cy.findByRole('button', { name: /continue/i }).click()
 
+  stateGuardShouldBounceBackTo(/referral\/details$/)
   cy.url().should('include', '/details')
   cy.findByRole('heading', { name: /incident details/i }).should('be.visible')
   cy.findByRole('heading', { name: /When was the incident\?/i }).should('be.visible')
@@ -232,6 +264,7 @@ const fillInformationReactiveNotOnBehalf = () => {
   checkAxeAccessibility()
   cy.findByRole('button', { name: /continue/i }).click()
 
+  stateGuardShouldBounceBackTo(/referral\/involvement$/)
   cy.url().should('include', '/involvement')
   cy.findByRole('heading', { name: /incident involvement/i }).should('be.visible')
   cy.findByRole('radio', { name: /factor1/i }).click()
@@ -240,6 +273,7 @@ const fillInformationReactiveNotOnBehalf = () => {
   checkAxeAccessibility()
   cy.findByRole('button', { name: /continue/i }).click()
 
+  stateGuardShouldBounceBackTo(/referral\/description$/)
   cy.url().should('include', '/description')
   cy.findByRole('heading', { name: /Describe the incident and the concerns relating to the incident/i }).should(
     'be.visible',
@@ -255,6 +289,7 @@ const fillInformationReactiveNotOnBehalf = () => {
   checkAxeAccessibility()
   cy.findByRole('button', { name: /continue/i }).click()
 
+  stateGuardShouldBounceBackTo(/referral\/reasons$/)
   cy.url().should('include', '/reasons')
   cy.findByRole('heading', { name: /what reasons have been given for the incident\?/i }).should('be.visible')
   cy.findByRole('textbox', { name: /what reasons have been given for the incident/i }).type(
@@ -264,6 +299,7 @@ const fillInformationReactiveNotOnBehalf = () => {
   checkAxeAccessibility()
   cy.findByRole('button', { name: /continue/i }).click()
 
+  stateGuardShouldBounceBackTo(/referral\/contributory-factors$/)
   cy.url().should('include', '/contributory-factors')
   cy.findByRole('heading', { name: /what are the contributory factors\?/i }).should('be.visible')
   cy.findByRole('checkbox', { name: /factor1/i }).click()
@@ -294,6 +330,7 @@ const fillInformationReactiveNotOnBehalf = () => {
   checkAxeAccessibility()
   cy.findByRole('button', { name: /continue/i }).click()
 
+  stateGuardShouldBounceBackTo(/referral\/safer-custody$/)
   cy.url().should('include', '/safer-custody')
   cy.findByRole('heading', { name: /is the safer custody team already aware of this referral\?/i }).should('be.visible')
   cy.findByRole('radio', { name: /yes/i }).click()
@@ -605,4 +642,9 @@ const changeAnswersOnCYAReactiveSection = () => {
   )
   cy.findByRole('button', { name: /continue/i }).click()
   cy.contains('dt', 'Reasons given for the incident').next().should('include.text', 'incident reasons foobar789')
+}
+
+const stateGuardShouldBounceBackTo = (backTo: RegExp | string) => {
+  cy.visit(`${uuid}/referral/confirmation`)
+  cy.url().should('to.match', backTo)
 }

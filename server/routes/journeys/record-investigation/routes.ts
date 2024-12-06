@@ -1,3 +1,4 @@
+import { Request } from 'express'
 import StartJourneyRoutes from './start/routes'
 import { RecordInvestigationController } from './controller'
 import { StaffInvolvedRoutes } from './staff-involved/routes'
@@ -13,6 +14,7 @@ import { InterviewDetailsRoutes } from './interview-details/routes'
 import { DeleteInterviewRoutes } from './delete-interview/routes'
 import { InvestigationCheckAnswersRoutes } from './check-answers/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
+import journeyStateGuard, { JourneyStateGuard, isMissingValues } from '../../../middleware/journeyStateGuard'
 
 function Routes({ csipApiService, auditService }: Services) {
   const { router, get } = JourneyRouter()
@@ -38,7 +40,23 @@ export const InvestigationRoutes = ({ services, path }: { services: Services; pa
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/record-investigation/start', StartJourneyRoutes(services))
+  router.use(path, journeyStateGuard(guard))
   router.use(path, Routes(services))
 
   return router
+}
+
+const guard: JourneyStateGuard = {
+  'check-answers': (req: Request) =>
+    isMissingValues(req.journeyData.investigation!, [
+      'occurrenceReason',
+      'personsTrigger',
+      'personsUsualBehaviour',
+      'evidenceSecured',
+      'protectiveFactors',
+      'staffInvolved',
+      'interviews',
+    ])
+      ? ''
+      : undefined,
 }

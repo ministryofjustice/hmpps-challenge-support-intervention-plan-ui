@@ -1,4 +1,5 @@
 import { RequestHandler } from 'express'
+import config from '../config'
 
 const MAX_CONCURRENT_JOURNEYS = 100
 
@@ -11,6 +12,9 @@ export default function setUpJourneyData(): RequestHandler {
         const journeyId = req.params['journeyId'] ?? 'default'
         if (!req.session.journeyDataMap[journeyId]) {
           req.session.journeyDataMap[journeyId] = { instanceUnixEpoch: Date.now() }
+
+          req.session.journeyDataMap[journeyId]!.stateGuard =
+            process.env.NODE_ENV === 'e2e-test' ? false : config.features.stateGuard
 
           if (Object.keys(req.session.journeyDataMap).length > MAX_CONCURRENT_JOURNEYS) {
             const oldestKey = Object.entries(req.session.journeyDataMap).reduce((a, b) =>

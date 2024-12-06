@@ -52,7 +52,7 @@ export default function routes(services: Services): Router {
   )
 
   router.use(journeyStateMachine())
-  router.use('/:journeyId', JourneyRoutes(services))
 
+  router.use('/:journeyId', JourneyRoutes(services))
   return router
 }

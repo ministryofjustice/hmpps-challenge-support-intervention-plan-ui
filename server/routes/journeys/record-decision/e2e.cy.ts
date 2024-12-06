@@ -1,6 +1,10 @@
+import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
 
 context('Record a decision journey', () => {
+  const uuid = uuidV4()
+
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
@@ -24,16 +28,25 @@ context('Record a decision journey', () => {
 
   it('happy path', () => {
     signinAndStart()
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
 
     prisonerProfileShouldDisplay()
 
+    stateGuardShouldBounceBackTo(/\/record-decision$/)
+
     fillInSignOff()
+
+    stateGuardShouldBounceBackTo(/\/record-decision\/conclusion$/)
+
     fillInConclusion()
+
     fillInNextSteps()
+
     fillInAdditionalInformation()
+
     reviewCheckAnswersConfirm()
     reviewChangeLinks()
-    reivewConfirmation()
+    reviewConfirmation()
   })
 
   const fillInSignOff = () => {
@@ -70,7 +83,7 @@ context('Record a decision journey', () => {
     cy.contains('dt', 'Additional information').next().should('include.text', 'additional info goes here!')
   }
 
-  const reivewConfirmation = () => {
+  const reviewConfirmation = () => {
     cy.findByRole('button', { name: /Confirm and record decision/i }).click()
     cy.url().should('include', '/confirmation')
     checkAxeAccessibility()
@@ -121,8 +134,7 @@ context('Record a decision journey', () => {
 
   const signinAndStart = () => {
     cy.signIn()
-    cy.visit('csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550/investigation')
-    cy.findAllByText('Record decision').first().click()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-decision/start`)
   }
 
   const prisonerProfileShouldDisplay = () => {
@@ -133,5 +145,10 @@ context('Record a decision journey', () => {
     cy.findByText('HMP Kirkham').should('be.visible')
     cy.findByText('A-1-1').should('be.visible')
     cy.findByText('On remand').should('be.visible')
+  }
+
+  const stateGuardShouldBounceBackTo = (backTo: RegExp | string) => {
+    cy.visit(`${uuid}/record-decision/confirmation`)
+    cy.url().should('to.match', backTo)
   }
 })

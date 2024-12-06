@@ -1,4 +1,5 @@
 import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
 
 context('Screen a CSIP Referral Journey', () => {
   beforeEach(() => {
@@ -42,9 +43,15 @@ context('Screen a CSIP Referral Journey', () => {
     cy.signIn()
     cy.visit(START_URL)
 
-    getScreenReferralButton().click()
+    cy.visit(`02e5854f-f7b1-4c56-bec8-69e390eb8550/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/screen/start`)
+
+    injectJourneyDataAndReload('02e5854f-f7b1-4c56-bec8-69e390eb8550', { stateGuard: true })
 
     cy.url().should('include', '/screen')
+
+    cy.visit(`02e5854f-f7b1-4c56-bec8-69e390eb8550/screen/check-answers`)
+    cy.url().should('match', /screen$/)
+
     getNfaRadio().click()
     checkAxeAccessibility()
     getDescribeTextbox().type('no action needed', { delay: 0 })
@@ -58,6 +65,9 @@ context('Screen a CSIP Referral Journey', () => {
     cy.url().should('include', '/screen')
     getDescribeTextbox().type('modified', { delay: 0 })
     getContinueButton().click()
+
+    cy.visit(`02e5854f-f7b1-4c56-bec8-69e390eb8550/screen/confirmation`)
+    cy.url().should('match', /screen\/check-answers$/)
 
     cy.url().should('include', '/screen/check-answers')
     cy.title().should('equal', 'Check your answers before recording the screening outcome - Screen CSIP referral - DPS')

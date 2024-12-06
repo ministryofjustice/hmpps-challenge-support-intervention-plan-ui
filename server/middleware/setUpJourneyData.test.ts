@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { v4 as uuidV4 } from 'uuid'
 import setUpJourneyData from './setUpJourneyData'
 import { JourneyData } from '../@types/express'
+import config from '../config'
 
 const middleware = setUpJourneyData()
 
@@ -67,6 +68,17 @@ describe('setUpJourneyData', () => {
 
       expect(req.journeyData).not.toBeUndefined()
       expect(req.journeyData).not.toBeNull()
+      expect(req.journeyData.stateGuard).toBeFalsy()
+    })
+
+    it('journey data should be created with stateGuard when feature flag is set to true', async () => {
+      config.features.stateGuard = true
+      middleware(req, res, next)
+
+      expect(req.journeyData).not.toBeUndefined()
+      expect(req.journeyData).not.toBeNull()
+      expect(req.journeyData.stateGuard).toBe(true)
+      config.features.stateGuard = false
     })
 
     it('should return existing journey data when journey data is found for the journey id', async () => {

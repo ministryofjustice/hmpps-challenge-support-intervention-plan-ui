@@ -1,3 +1,4 @@
+import { Request } from 'express'
 import StartJourneyRoutes from './start/routes'
 import { Services } from '../../../services'
 import { JourneyRouter } from '../base/routes'
@@ -11,6 +12,7 @@ import { NextReviewDateRoutes } from './next-review-date/routes'
 import { ReviewCheckAnswersRoutes } from './check-answers/routes'
 import { CloseCsipRoutes } from './close-csip/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
+import journeyStateGuard, { isMissingValues } from '../../../middleware/journeyStateGuard'
 
 function Routes({ csipApiService, auditService }: Services) {
   const { router, get } = JourneyRouter()
@@ -35,7 +37,64 @@ export const RecordReviewRoutes = ({ services, path }: { services: Services; pat
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/record-review/start', StartJourneyRoutes(services))
+  router.use(path, journeyStateGuard(guard))
   router.use(path, Routes(services))
 
   return router
+}
+
+enum ReviewOutcome {
+  CLOSE_CSIP = 'CLOSE_CSIP',
+  REMAIN_ON_CSIP = 'REMAIN_ON_CSIP',
+}
+
+const guard = {
+  'next-review-date': (req: Request) => {
+    if (req.journeyData.review?.outcomeSubJourney?.outcome === ReviewOutcome.CLOSE_CSIP) {
+      return '/close-csip'
+    }
+
+    if (req.journeyData.review?.outcome === ReviewOutcome.CLOSE_CSIP) {
+      return '/check-answers'
+    }
+
+    if (!req.journeyData.review?.outcome && !req.journeyData.review?.outcomeSubJourney?.outcome) {
+      return '/outcome'
+    }
+    return undefined
+  },
+  'close-csip': (req: Request) => {
+    if (req.journeyData.review?.outcomeSubJourney?.outcome === ReviewOutcome.REMAIN_ON_CSIP) {
+      return '/next-review-date'
+    }
+
+    if (req.journeyData.review?.outcome === ReviewOutcome.REMAIN_ON_CSIP) {
+      return '/check-answers'
+    }
+
+    if (!req.journeyData.review?.outcome && !req.journeyData.review?.outcomeSubJourney?.outcome) {
+      return '/outcome'
+    }
+    return undefined
+  },
+  'check-answers': (req: Request) => {
+    if (req.journeyData.review?.outcomeSubJourney?.outcome === ReviewOutcome.CLOSE_CSIP) {
+      return '/close-csip'
+    }
+
+    if (
+      req.journeyData.review?.outcomeSubJourney?.outcome === ReviewOutcome.REMAIN_ON_CSIP &&
+      !req.journeyData.review?.nextReviewDate
+    ) {
+      return '/next-review-date'
+    }
+
+    if (
+      req.journeyData.review?.outcome !== ReviewOutcome.CLOSE_CSIP &&
+      isMissingValues(req.journeyData.review!, ['attendees', 'nextReviewDate', 'outcome', 'summary'])
+    ) {
+      return ''
+    }
+    return undefined
+  },
 }
