@@ -98,6 +98,16 @@ export default class CsipApiClient {
     })
   }
 
+  async mergeReferral(
+    recordUuid: string,
+    mergeReferralRequest: components['schemas']['MergeReferralRequest'],
+  ): Promise<components['schemas']['CsipRecord']> {
+    return this.restClient.put<components['schemas']['CsipRecord']>({
+      path: `/csip-records/${recordUuid}/referral`,
+      data: mergeReferralRequest,
+    })
+  }
+
   async updateCsipRecord(
     recordUuid: string,
     updateCsipRecordRequest: components['schemas']['UpdateCsipRecordRequest'],

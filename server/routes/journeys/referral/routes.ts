@@ -17,6 +17,7 @@ import { ReferralCheckAnswersRoutes } from './check-answers/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
 import { Services } from '../../../services'
 import { JourneyRouter } from '../base/routes'
+import ContinueJourneyRoutes from './continue/routes'
 import journeyStateGuard, { isMissingValues } from '../../../middleware/journeyStateGuard'
 
 function Routes({ csipApiService, auditService }: Services) {
@@ -45,6 +46,7 @@ export const ReferralRoutes = ({ services, path }: { services: Services; path: s
   const { router } = JourneyRouter()
 
   router.use('/prisoners/:prisonerNumber/referral/start', StartJourneyRoutes(services))
+  router.use('/csip-record/:csipRecordId/referral/start', ContinueJourneyRoutes(services))
   router.use(path, journeyStateGuard(guard))
   router.use(path, Routes(services))
 
