@@ -15,6 +15,9 @@ export class ContinueJourneyController {
       const csip = await this.csipService.getCsipRecord(req, csipRecordId as string)
       req.journeyData.csipRecord = csip
       req.journeyData.referral = csip.referral
+      req.journeyData.referral.continuingReferral = true
+      req.journeyData.referral.isOnBehalfOfReferral =
+        req.journeyData.referral?.referredBy === res.locals.user.displayName
       req.journeyData.prisoner = await this.prisonerSearchService.getPrisonerDetails(req, csip.prisonNumber as string)
       return res.redirect(`/${journeyId}${url}`)
     } catch (error: unknown) {
