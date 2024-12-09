@@ -44,6 +44,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/csip-records/{recordUuid}/referral': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Merge the referral with contributory factors
+     * @description
+     *
+     *     Requires one of the following roles:
+     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
+     */
+    put: operations['mergeReferral']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/csip-records/{recordUuid}/referral/decision-and-actions': {
     parameters: {
       query?: never
@@ -313,7 +336,7 @@ export interface paths {
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
      */
-    delete: operations['deleteCsipRecord_1']
+    delete: operations['deleteCsipRecord']
     options?: never
     head?: never
     /**
@@ -546,6 +569,7 @@ export interface paths {
      *
      *     Requires one of the following roles:
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__RO
+     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
      */
     get: operations['getCurrentCsipRecord']
     put?: never
@@ -570,7 +594,7 @@ export interface paths {
      *
      *     Requires one of the following roles:
      *     * ROLE_NOMIS_CSIP */
-    delete: operations['deleteCsipRecord']
+    delete: operations['deleteCsipRecord_1']
     options?: never
     head?: never
     patch?: never
@@ -584,8 +608,10 @@ export interface components {
       firstName: string
       lastName: string
       status: string
+      restrictedPatient?: boolean
       prisonCode?: string
       cellLocation?: string
+      supportingPrisonCode?: string
     }
     /** @description The attendees/contributors to the review. */
     SyncAttendeeRequest: {
@@ -741,12 +767,6 @@ export interface components {
       identifiedNeeds: components['schemas']['SyncNeedRequest'][]
       /** @description The reviews of the CSIP plan. */
       reviews: components['schemas']['SyncReviewRequest'][]
-      /**
-       * Format: date
-       * @description The next date the CSIP plan should be reviewed.
-       * @example 2021-09-27
-       */
-      nextCaseReviewDate?: string
     }
     /** @description The referral that results in the creation of this CSIP record. */
     SyncReferralRequest: {
@@ -888,103 +908,17 @@ export interface components {
       toPrisonNumber: string
       recordUuids: string[]
     }
-    /** @description The request body to create a Decision and Actions for a CSIP referral */
-    UpsertDecisionAndActionsRequest: {
-      /** @description The conclusion of the referral and reasons for the outcome decision. */
-      conclusion?: string
-      /** @description The outcome decision for the referral. */
-      outcomeTypeCode: string
-      /** @description The role of the person making the outcome decision. */
-      signedOffByRoleCode: string
-      /** @description The username of the user who recorded the outcome decision. */
-      recordedBy?: string
-      /** @description The displayable name of the user who recorded the outcome decision. */
-      recordedByDisplayName?: string
-      /**
-       * Format: date
-       * @description The date the outcome decision was made.
-       * @example 2021-09-27
-       */
-      date?: string
-      /** @description The next steps that should be taken following the outcome decision. */
-      nextSteps?: string
-      /** @description Any other actions that are recommended to be considered. */
-      actionOther?: string
-      /** @description A list of recommended actions. */
-      actions: (
-        | 'OPEN_CSIP_ALERT'
-        | 'NON_ASSOCIATIONS_UPDATED'
-        | 'OBSERVATION_BOOK'
-        | 'UNIT_OR_CELL_MOVE'
-        | 'CSRA_OR_RSRA_REVIEW'
-        | 'SERVICE_REFERRAL'
-        | 'SIM_REFERRAL'
-      )[]
-    }
-    /** @description The Decision and Actions for the CSIP referral */
-    DecisionAndActions: {
-      /** @description The conclusion of the referral and reasons for the outcome decision. */
-      conclusion?: string
-      outcome?: components['schemas']['ReferenceData']
-      signedOffByRole?: components['schemas']['ReferenceData']
-      /** @description The username of the user who recorded the outcome decision. */
-      recordedBy?: string
-      /** @description The displayable name of the user who recorded the outcome decision. */
-      recordedByDisplayName?: string
-      /**
-       * Format: date
-       * @description The date the outcome decision was made.
-       * @example 2021-09-27
-       */
-      date?: string
-      /** @description The next steps that should be taken following the outcome decision. */
-      nextSteps?: string
-      /** @description A list of recommended actions. */
-      actions: (
-        | 'OPEN_CSIP_ALERT'
-        | 'NON_ASSOCIATIONS_UPDATED'
-        | 'OBSERVATION_BOOK'
-        | 'UNIT_OR_CELL_MOVE'
-        | 'CSRA_OR_RSRA_REVIEW'
-        | 'SERVICE_REFERRAL'
-        | 'SIM_REFERRAL'
-      )[]
-      /** @description Any other actions that are recommended to be considered. */
-      actionOther?: string
-    }
-    /** @description A reference data code to categorise various aspects related to a CSIP record */
-    ReferenceData: {
-      /** @description The short code of a reference data */
-      code: string
-      /** @description The description of the reference data code */
-      description?: string
-      /**
-       * Format: int32
-       * @description The sequence number of the code. Used for ordering codes correctly in lists and drop downs.
-       * @example 3
-       */
-      listSequence?: number
-      /**
-       * Format: date-time
-       * @description The date and time the code was deactivated
-       */
-      deactivatedAt?: string
-    }
-    /** @description The request body to create a contributory factor to the incident that motivated the CSIP referral */
-    CreateContributoryFactorRequest: {
+    /** @description The request body to update a contributory factor to the incident that motivated the CSIP referral */
+    MergeContributoryFactorRequest: {
       /** @description The type of contributory factor to the incident or motivation for CSIP referral. */
       factorTypeCode: string
       /** @description Additional information about the contributory factor to the incident or motivation for CSIP referral. */
       comment?: string
+      /** Format: uuid */
+      id?: string
     }
-    /** @description The request body for creating a new CSIP Record for a person */
-    CreateCsipRecordRequest: {
-      /** @description User entered identifier for the CSIP record. Defaults to the prison code. */
-      logCode?: string
-      referral: components['schemas']['CreateReferralRequest']
-    }
-    /** @description The request body for creating a CSIP referral */
-    CreateReferralRequest: {
+    /** @description The detail for updating a CSIP referral */
+    MergeReferralRequest: {
       /**
        * Format: date
        * @description The date the incident that motivated the CSIP referral occurred
@@ -1027,7 +961,7 @@ export interface components {
       /** @description Is the referral complete. */
       isReferralComplete?: boolean
       /** @description Contributory factors to the incident that motivated the referral. */
-      contributoryFactors: components['schemas']['CreateContributoryFactorRequest'][]
+      contributoryFactors: components['schemas']['MergeContributoryFactorRequest'][]
     }
     /** @description An Attendee or Contributor to a Review of a CSIP Plan */
     Attendee: {
@@ -1075,6 +1009,37 @@ export interface components {
       referral: components['schemas']['Referral']
       plan?: components['schemas']['Plan']
       status: components['schemas']['ReferenceData']
+    }
+    /** @description The Decision and Actions for the CSIP referral */
+    DecisionAndActions: {
+      /** @description The conclusion of the referral and reasons for the outcome decision. */
+      conclusion?: string
+      outcome?: components['schemas']['ReferenceData']
+      signedOffByRole?: components['schemas']['ReferenceData']
+      /** @description The username of the user who recorded the outcome decision. */
+      recordedBy?: string
+      /** @description The displayable name of the user who recorded the outcome decision. */
+      recordedByDisplayName?: string
+      /**
+       * Format: date
+       * @description The date the outcome decision was made.
+       * @example 2021-09-27
+       */
+      date?: string
+      /** @description The next steps that should be taken following the outcome decision. */
+      nextSteps?: string
+      /** @description A list of recommended actions. */
+      actions: (
+        | 'OPEN_CSIP_ALERT'
+        | 'NON_ASSOCIATIONS_UPDATED'
+        | 'OBSERVATION_BOOK'
+        | 'UNIT_OR_CELL_MOVE'
+        | 'CSRA_OR_RSRA_REVIEW'
+        | 'SERVICE_REFERRAL'
+        | 'SIM_REFERRAL'
+      )[]
+      /** @description Any other actions that are recommended to be considered. */
+      actionOther?: string
     }
     /** @description A need identified in the CSIP Plan */
     IdentifiedNeed: {
@@ -1170,6 +1135,24 @@ export interface components {
       identifiedNeeds: components['schemas']['IdentifiedNeed'][]
       /** @description Regular reviews of the CSIP Plan */
       reviews: components['schemas']['Review'][]
+    }
+    /** @description A reference data code to categorise various aspects related to a CSIP record */
+    ReferenceData: {
+      /** @description The short code of a reference data */
+      code: string
+      /** @description The description of the reference data code */
+      description?: string
+      /**
+       * Format: int32
+       * @description The sequence number of the code. Used for ordering codes correctly in lists and drop downs.
+       * @example 3
+       */
+      listSequence?: number
+      /**
+       * Format: date-time
+       * @description The date and time the code was deactivated
+       */
+      deactivatedAt?: string
     }
     /** @description The referral of a CSIP record */
     Referral: {
@@ -1288,6 +1271,98 @@ export interface components {
       date: string
       /** @description The reasons for the safer custody screening outcome decision. */
       reasonForDecision?: string
+    }
+    /** @description The request body to create a Decision and Actions for a CSIP referral */
+    UpsertDecisionAndActionsRequest: {
+      /** @description The conclusion of the referral and reasons for the outcome decision. */
+      conclusion?: string
+      /** @description The outcome decision for the referral. */
+      outcomeTypeCode: string
+      /** @description The role of the person making the outcome decision. */
+      signedOffByRoleCode: string
+      /** @description The username of the user who recorded the outcome decision. */
+      recordedBy?: string
+      /** @description The displayable name of the user who recorded the outcome decision. */
+      recordedByDisplayName?: string
+      /**
+       * Format: date
+       * @description The date the outcome decision was made.
+       * @example 2021-09-27
+       */
+      date?: string
+      /** @description The next steps that should be taken following the outcome decision. */
+      nextSteps?: string
+      /** @description Any other actions that are recommended to be considered. */
+      actionOther?: string
+      /** @description A list of recommended actions. */
+      actions: (
+        | 'OPEN_CSIP_ALERT'
+        | 'NON_ASSOCIATIONS_UPDATED'
+        | 'OBSERVATION_BOOK'
+        | 'UNIT_OR_CELL_MOVE'
+        | 'CSRA_OR_RSRA_REVIEW'
+        | 'SERVICE_REFERRAL'
+        | 'SIM_REFERRAL'
+      )[]
+    }
+    /** @description The request body to create a contributory factor to the incident that motivated the CSIP referral */
+    CreateContributoryFactorRequest: {
+      /** @description The type of contributory factor to the incident or motivation for CSIP referral. */
+      factorTypeCode: string
+      /** @description Additional information about the contributory factor to the incident or motivation for CSIP referral. */
+      comment?: string
+    }
+    /** @description The request body for creating a new CSIP Record for a person */
+    CreateCsipRecordRequest: {
+      /** @description User entered identifier for the CSIP record. Defaults to the prison code. */
+      logCode?: string
+      referral: components['schemas']['CreateReferralRequest']
+    }
+    /** @description The request body for creating a CSIP referral */
+    CreateReferralRequest: {
+      /**
+       * Format: date
+       * @description The date the incident that motivated the CSIP referral occurred
+       * @example 2021-09-27
+       */
+      incidentDate: string
+      /**
+       * Format: partial-time
+       * @description The time the incident that motivated the CSIP referral occurred
+       * @example 14:19:25
+       */
+      incidentTime?: string
+      /** @description The type of incident that motivated the CSIP referral. */
+      incidentTypeCode: string
+      /** @description The location of incident that motivated the CSIP referral. */
+      incidentLocationCode: string
+      /** @description The person reporting the incident or creating the CSIP referral. */
+      referredBy: string
+      /** @description The area of work of the person reporting the incident or creating the CSIP referral. */
+      refererAreaCode: string
+      /** @description Was this referral proactive or preventative. */
+      isProactiveReferral?: boolean
+      /** @description Were any members of staff assaulted in the incident. */
+      isStaffAssaulted?: boolean
+      /** @description Name or names of assaulted members of staff if any. */
+      assaultedStaffName?: string
+      /** @description The type of involvement the person had in the incident */
+      incidentInvolvementCode?: string
+      /** @description The reasons why there is cause for concern. */
+      descriptionOfConcern?: string
+      /** @description The reasons already known about the causes of the incident or motivation for CSIP referral. */
+      knownReasons?: string
+      /** @description Any other information about the incident or reasons for CSIP referral. */
+      otherInformation?: string
+      /**
+       * @description Records whether the safer custody team been informed.
+       * @enum {string}
+       */
+      isSaferCustodyTeamInformed: 'YES' | 'NO' | 'DO_NOT_KNOW'
+      /** @description Is the referral complete. */
+      isReferralComplete?: boolean
+      /** @description Contributory factors to the incident that motivated the referral. */
+      contributoryFactors: components['schemas']['CreateContributoryFactorRequest'][]
     }
     /** @description The request body to create the Safer Custody Screening Outcome to the CSIP referral */
     CreateSaferCustodyScreeningOutcomeRequest: {
@@ -1758,6 +1833,69 @@ export interface operations {
       }
       /** @description Forbidden, requires an appropriate role */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  mergeReferral: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description CSIP record unique identifier */
+        recordUuid: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MergeReferralRequest']
+      }
+    }
+    responses: {
+      /** @description Referral updated and contributory factors merged */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CsipRecord']
+        }
+      }
+      /** @description Bad request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorised, requires a valid Oauth2 token */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires an appropriate role */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The CSIP referral associated with this identifier was not found. */
+      404: {
         headers: {
           [name: string]: unknown
         }
@@ -2627,7 +2765,7 @@ export interface operations {
       }
     }
   }
-  deleteCsipRecord_1: {
+  deleteCsipRecord: {
     parameters: {
       query?: never
       header?: never
@@ -3121,6 +3259,8 @@ export interface operations {
           | 'REFERRAL_SUBMITTED'
           | 'REFERRAL_PENDING'
           | 'UNKNOWN'
+        prisonCodes?: string[]
+        includeRestrictedPatients?: boolean
         page?: number
         size?: number
         sort?: string
@@ -3320,7 +3460,7 @@ export interface operations {
       }
     }
   }
-  deleteCsipRecord: {
+  deleteCsipRecord_1: {
     parameters: {
       query?: never
       header?: never

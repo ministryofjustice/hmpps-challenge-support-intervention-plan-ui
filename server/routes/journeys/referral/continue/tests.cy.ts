@@ -13,10 +13,23 @@ context('test /csip-record/:recordUuid/referral/start', () => {
     cy.task('stubCsipRecordPostSuccess')
     cy.task('stubGetPrisoner')
     cy.task('stubGetPrisonerImage')
+  })
+
+  it('should set on behalf of to no due to display name matching referredBy', () => {
     cy.task('stubCsipRecordGetSuccessReferralPending')
+    cy.signIn()
+    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`, { failOnStatusCode: false })
+    cy.findByText(/This referral is incomplete./).should('be.visible')
+    cy.findAllByRole('button', { name: /Complete referral/i })
+      .first()
+      .click()
+
+    cy.url().should('to.match', /\/referral\/on-behalf-of$/)
+    cy.findByRole('radio', { name: /no/i }).should('be.checked')
   })
 
   it('should populate the entirety of the referral, with all values being set properly', () => {
+    cy.task('stubCsipRecordGetSuccessReferralPendingMatchingReferrer')
     cy.signIn()
     cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`, { failOnStatusCode: false })
     cy.findByText(/This referral is incomplete./).should('be.visible')
@@ -27,12 +40,11 @@ context('test /csip-record/:recordUuid/referral/start', () => {
 
     cy.url().should('to.match', /\/referral\/on-behalf-of$/)
     cy.findByRole('radio', { name: /no/i }).should('not.be.checked')
-    cy.findByRole('radio', { name: /yes/i }).should('not.be.checked')
-    cy.findByRole('radio', { name: /yes/i }).click()
+    cy.findByRole('radio', { name: /yes/i }).should('be.checked')
     continueNext()
 
     cy.url().should('to.match', /\/referral\/referrer$/)
-    cy.findByDisplayValue('<script>alert("Test User")</script>').should('be.visible')
+    cy.findByDisplayValue('John Smith').should('be.visible')
     cy.findByDisplayValue('AreaA').should('be.visible')
     continueNext()
 
