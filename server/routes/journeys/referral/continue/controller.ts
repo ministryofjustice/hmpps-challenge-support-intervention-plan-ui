@@ -24,10 +24,7 @@ export class ContinueJourneyController {
       if (error instanceof Error) {
         const sanitisedError = error as SanitisedError
         if (sanitisedError.status === 404) {
-          if (!req.journeyData.csipRecord) {
-            return res.redirect('/')
-          }
-          return res.redirect(`/csip-records/${csipRecordId}`)
+          return res.redirect('/')
         }
       }
 

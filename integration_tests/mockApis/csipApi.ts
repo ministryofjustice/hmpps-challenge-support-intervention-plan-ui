@@ -306,6 +306,10 @@ const stubCsipRecordPatchSuccess = () => {
   return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*', 200, {})
 }
 
+const stubCsipRecordPutSuccess = () => {
+  return createBasicHttpStub('PUT', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral', 200, {})
+}
+
 const stubCsipRecordPatchFail = () => {
   return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*', 500, {
     userMessage: 'Simulated Error for E2E testing',
@@ -976,6 +980,7 @@ export const csip = {
     description: 'Referral submitted',
   },
   referral: {
+    isReferralComplete: true,
     referralDate: '2024-08-01',
     isOnBehalfOfReferral: true,
     referredBy: '<script>alert("Test User")</script>',
@@ -1116,4 +1121,5 @@ export default {
   stubCurrentCsipStatusNoCsip,
   stubCsipRecordGetSuccessReferralPending,
   stubCsipRecordGetSuccessReferralPendingMatchingReferrer,
+  stubCsipRecordPutSuccess,
 }
