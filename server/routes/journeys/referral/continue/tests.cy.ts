@@ -10,7 +10,7 @@ context('test /csip-record/:recordUuid/referral/start', () => {
     cy.task('stubIncidentType')
     cy.task('stubIncidentInvolvement')
     cy.task('stubContribFactors')
-    cy.task('stubCsipRecordPostSuccess')
+    cy.task('stubCsipRecordPutSuccess')
     cy.task('stubGetPrisoner')
     cy.task('stubGetPrisonerImage')
   })
@@ -26,6 +26,30 @@ context('test /csip-record/:recordUuid/referral/start', () => {
 
     cy.url().should('to.match', /\/referral\/on-behalf-of$/)
     cy.findByRole('radio', { name: /no/i }).should('be.checked')
+  })
+
+  it('should redirect back to record page if error with prisoner details call', () => {
+    cy.task('stubCsipRecordGetSuccessReferralPending')
+    cy.signIn()
+    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`, { failOnStatusCode: false })
+    cy.findByText(/This referral is incomplete./).should('be.visible')
+    cy.task('stubGetPrisoner500')
+    cy.findAllByRole('button', { name: /Complete referral/i })
+      .first()
+      .click()
+    cy.findByRole('heading', { name: /sorry, there is a problem/i }).should('be.visible')
+  })
+
+  it('should redirect back to record page if prisoner details call 404s', () => {
+    cy.task('stubCsipRecordGetSuccessReferralPending')
+    cy.signIn()
+    cy.visit(`csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550`, { failOnStatusCode: false })
+    cy.findByText(/This referral is incomplete./).should('be.visible')
+    cy.task('stubGetPrisoner404')
+    cy.findAllByRole('button', { name: /Complete referral/i })
+      .first()
+      .click()
+    cy.url().should('to.match', /\/$/)
   })
 
   it('should populate the entirety of the referral, with all values being set properly', () => {
@@ -92,5 +116,8 @@ context('test /csip-record/:recordUuid/referral/start', () => {
     cy.url().should('to.match', /\/referral\/additional-information$/)
     cy.findByDisplayValue(/<button>otherinfo button should be escaped<\/button>/).should('be.visible')
     continueNext()
+
+    cy.findByRole('button', { name: /confirm and submit/i }).click()
+    cy.findByRole('heading', { name: /csip referral complete/i }).should('be.visible')
   })
 })
