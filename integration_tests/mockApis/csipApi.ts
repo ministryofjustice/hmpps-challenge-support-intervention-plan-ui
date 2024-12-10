@@ -306,6 +306,10 @@ const stubCsipRecordPatchSuccess = () => {
   return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*', 200, {})
 }
 
+const stubCsipRecordPutSuccess = () => {
+  return createBasicHttpStub('PUT', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral', 200, {})
+}
+
 const stubCsipRecordPatchFail = () => {
   return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*', 500, {
     userMessage: 'Simulated Error for E2E testing',
@@ -558,6 +562,39 @@ const stubCsipRecordSuccessCsipOpen = (
 
 const stubCsipRecordGetSuccess = () => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, csip)
+}
+
+const stubCsipRecordGetSuccessReferralPending = () => {
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
+    ...csip,
+    referral: {
+      ...csip.referral,
+      isReferralComplete: false,
+      incidentDate: '2024-01-01',
+      isOnBehalfOfReferral: undefined,
+    },
+    status: {
+      code: 'REFERRAL_PENDING',
+      description: 'Referral pending',
+    },
+  })
+}
+
+const stubCsipRecordGetSuccessReferralPendingMatchingReferrer = () => {
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
+    ...csip,
+    referral: {
+      ...csip.referral,
+      isReferralComplete: false,
+      incidentDate: '2024-01-01',
+      isOnBehalfOfReferral: undefined,
+      referredBy: 'John Smith',
+    },
+    status: {
+      code: 'REFERRAL_PENDING',
+      description: 'Referral pending',
+    },
+  })
 }
 
 const stubGetServiceInfoOneAgencyLEI = () => {
@@ -943,6 +980,7 @@ export const csip = {
     description: 'Referral submitted',
   },
   referral: {
+    isReferralComplete: true,
     referralDate: '2024-08-01',
     isOnBehalfOfReferral: true,
     referredBy: '<script>alert("Test User")</script>',
@@ -1081,4 +1119,7 @@ export default {
   stubGetServiceInfoAllAgencies,
   stubCurrentCsipStatusOnCsip,
   stubCurrentCsipStatusNoCsip,
+  stubCsipRecordGetSuccessReferralPending,
+  stubCsipRecordGetSuccessReferralPendingMatchingReferrer,
+  stubCsipRecordPutSuccess,
 }
