@@ -37,6 +37,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
           contributoryFactors: referral.contributoryFactors!.map(factor => ({
             factorTypeCode: factor.factorType.code,
             ...(factor.comment !== undefined && { comment: factor.comment }),
+            ...(factor.factorUuid && { factorUuid: factor.factorUuid }),
           })),
           incidentDate: referral.incidentDate!,
           incidentLocationCode: referral.incidentLocation!.code,
