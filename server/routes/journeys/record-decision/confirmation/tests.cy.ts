@@ -3,9 +3,7 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /record-decision/confirmation', () => {
-  const uuid = uuidV4()
-  const START_URL = `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-decision/start`
-  const PAGE_URL = `${uuid}/record-decision/confirmation`
+  let uuid = uuidV4()
 
   beforeEach(() => {
     cy.task('reset')
@@ -16,30 +14,21 @@ context('test /record-decision/confirmation', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubGetPrisoner')
     cy.task('stubCsipRecordSuccessPlanPending')
+    uuid = uuidV4()
   })
 
-  it('should display page correctly for all outcomes', () => {
-    cy.signIn()
-    cy.visit(START_URL, { failOnStatusCode: false })
-
-    cy.visit(PAGE_URL)
-    setupData('PLAN_PENDING')
+  it('should display page correctly for PLAN_PENDING', () => {
+    navigateToTestPage('PLAN_PENDING')
     checkAxeAccessibility()
     validatePageContents()
     cy.findByText(
       "A CSIP Case Manager should be allocated to work with Tes'name User to develop an initial plan.",
     ).should('be.visible')
     cy.findByRole('heading', { name: 'Other actions to consider' }).should('be.visible')
+  })
 
-    setupData('NO_FURTHER_ACTION')
-    checkAxeAccessibility()
-    validatePageContents()
-    cy.findByText(
-      "A CSIP Case Manager should be allocated to work with Tes'name User to develop an initial plan.",
-    ).should('not.exist')
-    cy.findByRole('heading', { name: 'Other actions to consider' }).should('be.visible')
-
-    setupData('SUPPORT_OUTSIDE_CSIP')
+  it('should display page correctly for NO_FURTHER_ACTION', () => {
+    navigateToTestPage('NO_FURTHER_ACTION')
     checkAxeAccessibility()
     validatePageContents()
     cy.findByText(
@@ -48,7 +37,22 @@ context('test /record-decision/confirmation', () => {
     cy.findByRole('heading', { name: 'Other actions to consider' }).should('be.visible')
   })
 
-  const setupData = (outcome: string) => {
+  it('should display page correctly for SUPPORT_OUTSIDE_CSIP', () => {
+    navigateToTestPage('SUPPORT_OUTSIDE_CSIP')
+    checkAxeAccessibility()
+    validatePageContents()
+    cy.findByText(
+      "A CSIP Case Manager should be allocated to work with Tes'name User to develop an initial plan.",
+    ).should('not.exist')
+    cy.findByRole('heading', { name: 'Other actions to consider' }).should('be.visible')
+  })
+
+  const navigateToTestPage = (outcome: string) => {
+    cy.signIn()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-decision/start`, {
+      failOnStatusCode: false,
+    })
+
     injectJourneyDataAndReload(uuid, {
       csipRecord: {
         status: {
@@ -57,6 +61,7 @@ context('test /record-decision/confirmation', () => {
         },
       },
     })
+    cy.visit(`${uuid}/record-decision/confirmation`)
   }
 
   const validatePageContents = () => {

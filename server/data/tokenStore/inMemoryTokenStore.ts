@@ -15,4 +15,11 @@ export default class InMemoryTokenStore implements TokenStore {
     }
     return Promise.resolve(tokenEntry.token)
   }
+
+  public async delToken(key: string): Promise<void> {
+    if (this.map.has(key)) {
+      this.map.delete(key)
+    }
+    return Promise.resolve()
+  }
 }

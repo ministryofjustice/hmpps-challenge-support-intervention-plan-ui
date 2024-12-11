@@ -8,7 +8,6 @@ import AuditService from '../../services/auditService'
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import setUpWebSession from '../../middleware/setUpWebSession'
 import HmppsAuditClient from '../../data/hmppsAuditClient'
-import setUpJourneyData from '../../middleware/setUpJourneyData'
 import logger from '../../../logger'
 import config from '../../config'
 import populateValidationErrors from '../../middleware/populateValidationErrors'
@@ -41,7 +40,7 @@ function appSetup(
   uuid: string,
   requestCaptor?: (req: Request) => void,
   validationErrors?: Locals['validationErrors'],
-  journeyData?: Omit<JourneyData, 'instanceUnixEpoch'>,
+  journeyData?: JourneyData,
 ): Express {
   const app = express()
 
@@ -70,7 +69,6 @@ function appSetup(
   })
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
-  app.use(setUpJourneyData())
   if (requestCaptor) {
     app.use((req, _res, next) => {
       requestCaptor(req)
@@ -78,9 +76,7 @@ function appSetup(
     })
   } else {
     app.use((req, _res, next) => {
-      req.session.journeyDataMap ??= {}
-      req.session.journeyDataMap[uuid] = {
-        instanceUnixEpoch: Date.now(),
+      req.journeyData = {
         ...journeyData,
       }
       next()
@@ -132,7 +128,7 @@ export function appWithAllRoutes({
   uuid: string
   requestCaptor?: (req: Request) => void
   validationErrors?: Locals['validationErrors']
-  journeyData?: Omit<JourneyData, 'instanceUnixEpoch'>
+  journeyData?: JourneyData
 }): Express {
   return appSetup(services as Services, production, userSupplier, uuid, requestCaptor, validationErrors, journeyData)
 }

@@ -1,6 +1,5 @@
 import type { NextFunction, Request, Response } from 'express'
 import { validate } from 'uuid'
-import config from '../config'
 
 export type JourneyStateGuard = { [pageName: string]: (req: Request) => string | undefined }
 
@@ -10,13 +9,6 @@ export function isMissingValues<T>(obj: T, keys: Array<keyof T>): boolean {
 
 export default function journeyStateGuard(rules: JourneyStateGuard) {
   return (req: Request, res: Response, next: NextFunction): void => {
-    // Off by default for cypress tests to enable the many isolated page tests to work without mocking
-    // Enable this in test explicitly by injecting journeyData with stateGuard set to true
-    if (!config.features.stateGuard && process.env.NODE_ENV !== 'e2e-test') {
-      // Feature flag is off and we're not cypress tests
-      return next()
-    }
-
     const [, uuid, flow, requestedPage] = req.originalUrl.split('/')
 
     if (!uuid || !validate(uuid) || flow === 'csip-record' || req.originalUrl.endsWith('/start')) {
@@ -24,15 +16,15 @@ export default function journeyStateGuard(rules: JourneyStateGuard) {
       return next()
     }
 
-    if (!req.session.journeyDataMap?.[uuid!]?.stateGuard) {
+    if (!req.journeyData?.stateGuard) {
       return next()
     }
 
-    const journeyData = req.session.journeyDataMap?.[uuid]
+    const { journeyData } = req
 
     // All journeys need journeyData to be populated with prisoner data
 
-    if (!req.session.journeyDataMap?.[uuid]?.prisoner) {
+    if (!req.journeyData?.prisoner) {
       // The relevant /start for this journey has not been visited
       // We don't have a CSIP record id so we can't automatically do this.
       return res.redirect(`/`)

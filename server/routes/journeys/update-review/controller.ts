@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import type PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
 import { BaseJourneyController } from '../base/controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
-import { getNonUndefinedProp } from '../../../utils/utils'
+import { getNonUndefinedProp, summarisePrisoner } from '../../../utils/utils'
 import { attendeeSorter } from '../../../utils/sorters'
 import { isCsipProcessor } from '../../../authentication/authorisedRoles'
 
@@ -20,7 +20,9 @@ export class UpdateReviewController extends BaseJourneyController {
       return res.redirect(`/csip-records/${record.recordUuid}`)
     }
 
-    req.journeyData.prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
+    req.journeyData.prisoner = summarisePrisoner(
+      await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber),
+    )
     const review = record.plan.reviews.reduce(
       (prev, cur) => (prev!.reviewSequence > cur.reviewSequence ? prev : cur),
       record.plan.reviews[0],

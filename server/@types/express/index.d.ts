@@ -10,13 +10,8 @@ export declare module 'express-session' {
   interface SessionData {
     returnTo: string
     nowInMinutes: number
-    journeyDataMap: JourneyDataMap
     searchCsipParams: SearchCsipParams
   }
-}
-
-type JourneyDataMap = {
-  [key: string]: JourneyData
 }
 
 type SearchCsipParams = Partial<{
@@ -27,7 +22,6 @@ type SearchCsipParams = Partial<{
 }>
 
 export type JourneyData = {
-  instanceUnixEpoch: number
   isCheckAnswers?: boolean
   prisoner?: PrisonerSummary
   logCode?: string

@@ -27,4 +27,9 @@ export default class RedisTokenStore implements TokenStore {
     await this.ensureConnected()
     return this.client.get(`${this.prefix}${key}`)
   }
+
+  public async delToken(key: string): Promise<void> {
+    await this.ensureConnected()
+    await this.client.del(`${this.prefix}${key}`)
+  }
 }

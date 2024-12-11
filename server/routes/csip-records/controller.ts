@@ -59,7 +59,9 @@ export class CsipRecordController {
   }
 
   GET = async (req: Request, res: Response) => {
-    req.journeyData.isUpdate = false
+    if (req.journeyData) {
+      req.journeyData.isUpdate = false
+    }
     const {
       record,
       prisoner,

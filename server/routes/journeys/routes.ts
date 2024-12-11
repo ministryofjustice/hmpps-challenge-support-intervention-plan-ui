@@ -15,9 +15,12 @@ import { RecordReviewRoutes } from './record-review/routes'
 import { UpdateReviewRoutes } from './update-review/routes'
 import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 import AuthorisedRoles from '../../authentication/authorisedRoles'
+import setUpJourneyData from '../../middleware/setUpJourneyData'
 
 export const JourneyRoutes = (services: Services) => {
   const router = Router({ mergeParams: true })
+
+  router.use(setUpJourneyData(services.tokenStore))
 
   router.use(populatePrisonerSummary())
 

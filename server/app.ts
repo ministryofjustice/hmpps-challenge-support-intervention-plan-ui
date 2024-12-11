@@ -21,7 +21,6 @@ import setUpWebSession from './middleware/setUpWebSession'
 
 import routes from './routes'
 import type { Services } from './services'
-import setUpJourneyData from './middleware/setUpJourneyData'
 import config from './config'
 import logger from '../logger'
 import populateClientToken from './middleware/populateSystemClientToken'
@@ -80,7 +79,6 @@ export default function createApp(services: Services): express.Application {
   app.use(breadcrumbs())
   app.use(checkPopulateUserCaseloads(services.prisonApiService, services.csipApiService))
   app.use(populateValidationErrors())
-  app.use(setUpJourneyData())
   app.use(routes(services))
   if (config.sentry.dsn) Sentry.setupExpressErrorHandler(app)
   app.use((_req, res) => res.notFound())
