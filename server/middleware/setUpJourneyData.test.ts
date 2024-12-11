@@ -41,6 +41,7 @@ describe('setUpJourneyData', () => {
     tokenStore = {
       getToken: async () => null,
       setToken: jest.fn(),
+      delToken: jest.fn(),
     }
 
     middleware = setUpJourneyData(tokenStore)
@@ -48,13 +49,13 @@ describe('setUpJourneyData', () => {
     expect(req.journeyData).toBeUndefined()
     await middleware(req, res, next)
     expect(req.journeyData).not.toBeUndefined()
-    expect(req.journeyData.instanceUnixEpoch).not.toBeUndefined()
   })
 
   it('should read journey data from store', async () => {
     tokenStore = {
       getToken: async () => `{ "prisoner" : { "firstName": "Testname" } }`,
       setToken: jest.fn(),
+      delToken: jest.fn(),
     }
 
     middleware = setUpJourneyData(tokenStore)
@@ -67,6 +68,7 @@ describe('setUpJourneyData', () => {
     tokenStore = {
       getToken: async () => `{ "prisoner" : { "firstName": "Testname" } }`,
       setToken: jest.fn(),
+      delToken: jest.fn(),
     }
 
     middleware = setUpJourneyData(tokenStore)

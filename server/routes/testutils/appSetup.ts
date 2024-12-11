@@ -40,7 +40,7 @@ function appSetup(
   uuid: string,
   requestCaptor?: (req: Request) => void,
   validationErrors?: Locals['validationErrors'],
-  journeyData?: Omit<JourneyData, 'instanceUnixEpoch'>,
+  journeyData?: JourneyData,
 ): Express {
   const app = express()
 
@@ -77,7 +77,6 @@ function appSetup(
   } else {
     app.use((req, _res, next) => {
       req.journeyData = {
-        instanceUnixEpoch: Date.now(),
         ...journeyData,
       }
       next()
@@ -129,7 +128,7 @@ export function appWithAllRoutes({
   uuid: string
   requestCaptor?: (req: Request) => void
   validationErrors?: Locals['validationErrors']
-  journeyData?: Omit<JourneyData, 'instanceUnixEpoch'>
+  journeyData?: JourneyData
 }): Express {
   return appSetup(services as Services, production, userSupplier, uuid, requestCaptor, validationErrors, journeyData)
 }

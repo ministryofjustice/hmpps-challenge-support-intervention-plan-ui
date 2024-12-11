@@ -22,7 +22,6 @@ type SearchCsipParams = Partial<{
 }>
 
 export type JourneyData = {
-  instanceUnixEpoch: number
   isCheckAnswers?: boolean
   prisoner?: PrisonerSummary
   logCode?: string

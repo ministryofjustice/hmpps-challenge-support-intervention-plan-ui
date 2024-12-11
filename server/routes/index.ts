@@ -3,7 +3,6 @@ import asyncMiddleware from '../middleware/asyncMiddleware'
 import type { Services } from '../services'
 import insertJourneyIdentifier from '../middleware/insertJourneyIdentifier'
 import redirectCheckAnswersMiddleware from '../middleware/redirectCheckAnswersMiddleware'
-import journeyStateMachine from '../middleware/journeyStateMachine'
 import { JourneyRoutes } from './journeys/routes'
 import { CsipRecordRoutes } from './csip-records/routes'
 import { SearchCsipRoutes } from './manage-csips/routes'
@@ -50,8 +49,6 @@ export default function routes(services: Services): Router {
       /record-review\/next-review-date$/,
     ]),
   )
-
-  router.use(journeyStateMachine())
 
   router.use('/:journeyId', JourneyRoutes(services))
   return router

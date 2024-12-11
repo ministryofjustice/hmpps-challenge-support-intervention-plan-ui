@@ -1,6 +1,5 @@
 import type { NextFunction, Request, Response } from 'express'
 import { validate } from 'uuid'
-import config from '../config'
 
 export type JourneyStateGuard = { [pageName: string]: (req: Request) => string | undefined }
 
@@ -10,13 +9,6 @@ export function isMissingValues<T>(obj: T, keys: Array<keyof T>): boolean {
 
 export default function journeyStateGuard(rules: JourneyStateGuard) {
   return (req: Request, res: Response, next: NextFunction): void => {
-    // Off by default for cypress tests to enable the many isolated page tests to work without mocking
-    // Enable this in test explicitly by injecting journeyData with stateGuard set to true
-    if (!config.features.stateGuard && process.env.NODE_ENV !== 'e2e-test') {
-      // Feature flag is off and we're not cypress tests
-      return next()
-    }
-
     const [, uuid, flow, requestedPage] = req.originalUrl.split('/')
 
     if (!uuid || !validate(uuid) || flow === 'csip-record' || req.originalUrl.endsWith('/start')) {

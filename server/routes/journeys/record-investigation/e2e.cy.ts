@@ -26,6 +26,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     cy.task('stubCsipRecordGetSuccess')
     cy.task('stubIntervieweeRoles')
     cy.task('stubPostInvestigation')
+    cy.task('stubGetCsipOverview')
   })
 
   it('should deny access to non CSIP_PROCESSOR role', () => {
@@ -144,8 +145,10 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
       .and('have.attr', 'href')
       .and('match', /\/manage-csips\?clear=true$/)
 
+    // Bounce back to homepage on trying to go back to the journey pages
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
     cy.go('back')
-    cy.url().should('to.match', /confirmation$/)
+    cy.findByRole('heading', { name: /CSIP caseload for Leeds \(HMP\)/ }).should('be.visible')
   })
 
   const govukTaskListStatusShouldBe = (link: string, status: string) => {

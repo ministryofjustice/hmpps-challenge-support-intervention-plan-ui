@@ -1,3 +1,5 @@
+import Prisoner from '../services/prisonerSearch/prisoner'
+
 const properCase = (word: string): string =>
   word.length >= 1 && word[0] ? word[0].toUpperCase() + word.toLowerCase().slice(1) : word
 
@@ -72,3 +74,28 @@ export const ordinalNumber = (number: number) => {
   const ordinal = ['st', 'nd', 'rd'][((((number + 90) % 100) - 10) % 10) - 1] || 'th'
   return number + ordinal
 }
+
+/**
+ * filter out unnecessary properties from the Prisoner objects, to reduce session storage size
+ * @param Prisoner raw Prisoner object from API calls
+ * @returns summarised Prisoner object with only properties used by hmpps-alerts-ui
+ */
+export const summarisePrisoner = ({
+  prisonerNumber,
+  firstName,
+  lastName,
+  cellLocation,
+  prisonId,
+  dateOfBirth,
+  status,
+  prisonName,
+}: Prisoner) => ({
+  prisonerNumber,
+  firstName,
+  lastName,
+  cellLocation,
+  prisonId,
+  dateOfBirth,
+  status,
+  prisonName,
+})

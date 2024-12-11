@@ -17,6 +17,7 @@ context('Make a Referral Journey', () => {
     cy.task('stubIncidentInvolvement')
     cy.task('stubContribFactors')
     cy.task('stubCsipRecordPostSuccess')
+    cy.task('stubGetCsipOverview')
     uuid = uuidV4()
   })
 
@@ -77,11 +78,10 @@ context('Make a Referral Journey', () => {
       .next()
       .should('include.text', 'Status: Referral submitted')
 
+    // Bounce back to homepage on trying to go back to the journey pages
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
     cy.go('back')
-    // There is nothing to test or wait on when going back here - the entire redirection is handled in the express middleware, so we just wait for a second to ensure
-    // that we arent just immediately testing that the same url is there, and then that the state handling has redirected us back to confirmation
-    cy.wait(1000)
-    cy.url().should('include', '/confirmation')
+    cy.findByRole('heading', { name: /CSIP caseload for Leeds \(HMP\)/ }).should('be.visible')
   })
 
   it('user stays on page after inputting invalid data after changing their answers', () => {
