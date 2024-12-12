@@ -9,7 +9,6 @@ context('test /update-review/close-csip', () => {
   const PAGE_URL = `${uuid}/update-review/close-csip`
 
   const getCloseButton = () => cy.findByRole('button', { name: 'Yes, close CSIP' })
-  const getCancelButton = () => cy.findByRole('link', { name: 'Cancel' })
 
   beforeEach(() => {
     cy.task('reset')
@@ -43,9 +42,6 @@ context('test /update-review/close-csip', () => {
     validatePageContents()
     getCloseButton().click()
     urlShouldMatchCsipRecordAndDisplaySuccessMessage()
-
-    cy.go('back')
-    getCancelButton().click()
   })
 
   it('should try out all cases - with one open identified need', () => {

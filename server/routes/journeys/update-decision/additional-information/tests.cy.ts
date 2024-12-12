@@ -4,7 +4,7 @@ import { generateSaveTimestamp } from '../../../../utils/appendFieldUtils'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /update-decision/additional-information', () => {
-  const uuid = uuidV4()
+  let uuid = uuidV4()
 
   const getInputTextbox = () => cy.findByRole('textbox', { name: 'Add additional information' })
   const getContinueButton = () => cy.findByRole('button', { name: /Confirm and save/ })
@@ -16,6 +16,7 @@ context('test /update-decision/additional-information', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
     cy.task('stubCsipRecordSuccessPlanPending')
+    uuid = uuidV4()
   })
 
   it('should try out all cases', () => {

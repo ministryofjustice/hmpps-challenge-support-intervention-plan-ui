@@ -31,6 +31,9 @@ export class UpdateOutcomeController {
         ? MESSAGE_MOST_RECENT_REVIEW_UPDATED
         : MESSAGE_REVIEW_UPDATED,
     )
-    return res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
+    const { recordUuid } = req.journeyData.csipRecord!
+    // @ts-expect-error delete non-optional req.journeyData to free up redis memory
+    delete req.journeyData
+    return res.redirect(`/csip-records/${recordUuid}`)
   }
 }

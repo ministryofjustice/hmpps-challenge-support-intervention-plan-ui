@@ -78,7 +78,7 @@ export const ordinalNumber = (number: number) => {
 /**
  * filter out unnecessary properties from the Prisoner objects, to reduce session storage size
  * @param Prisoner raw Prisoner object from API calls
- * @returns summarised Prisoner object with only properties used by hmpps-alerts-ui
+ * @returns summarised Prisoner object with only properties used by hmpps-challenge-support-intervention-plan-ui
  */
 export const summarisePrisoner = ({
   prisonerNumber,

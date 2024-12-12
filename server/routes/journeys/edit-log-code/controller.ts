@@ -23,7 +23,5 @@ export class EditLogCodeController extends PatchCsipRecordController {
       successMessage: MESSAGE_LOG_CODE_UPDATED,
     })
 
-  POST = async (req: Request, res: Response) => {
-    res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
-  }
+  POST = this.deleteJourneyDataAndGoBackToCsipRecordPage
 }

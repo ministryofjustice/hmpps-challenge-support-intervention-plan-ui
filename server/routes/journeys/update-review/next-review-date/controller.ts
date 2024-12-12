@@ -25,7 +25,5 @@ export class UpdateNextReviewDateController extends PatchReviewController {
       message: 'You’ve updated the next review date',
     })
 
-  POST = async (req: Request, res: Response) => {
-    res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
-  }
+  POST = this.deleteJourneyDataAndGoBackToCsipRecordPage
 }

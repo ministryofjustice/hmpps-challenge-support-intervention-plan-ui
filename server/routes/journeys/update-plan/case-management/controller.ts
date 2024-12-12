@@ -23,7 +23,5 @@ export class CaseManagementController extends PatchPlanController {
       },
     })
 
-  POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
-    res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
-  }
+  POST = this.deleteJourneyDataAndGoBackToCsipRecordPage
 }

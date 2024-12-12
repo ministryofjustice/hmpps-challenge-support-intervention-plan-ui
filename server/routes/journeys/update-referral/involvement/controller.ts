@@ -46,7 +46,5 @@ export class UpdateInvolvementController extends PatchReferralController {
         : MESSAGE_REACTIVE_INVOLVEMENT_UPDATED,
     })
 
-  POST = async (req: Request, res: Response) => {
-    res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
-  }
+  POST = this.deleteJourneyDataAndGoBackToCsipRecordPage
 }

@@ -49,9 +49,7 @@ export class UpdateAttendeeController extends PatchReviewController {
     })
   }
 
-  POST = async (req: Request, res: Response) => {
-    res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
-  }
+  POST = this.deleteJourneyDataAndGoBackToCsipRecordPage
 
   private getSelectedAttendee = (req: Request): Attendee | undefined => {
     const { attendeeUuid } = req.params

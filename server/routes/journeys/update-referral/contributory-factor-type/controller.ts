@@ -38,7 +38,5 @@ export class UpdateContributoryFactorsController extends UpdateReferralContribut
     return this.updateContributoryFactor(req, res, next, selectedCf, req.body.contributoryFactor.code)
   }
 
-  POST = async (req: Request, res: Response) => {
-    res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
-  }
+  POST = this.deleteJourneyDataAndGoBackToCsipRecordPage
 }

@@ -29,7 +29,5 @@ export class UpdateReferrerController extends PatchReferralController {
       successMessage: MESSAGE_REFERRAL_DETAILS_UPDATED,
     })
 
-  POST = async (req: Request, res: Response) => {
-    res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
-  }
+  POST = this.deleteJourneyDataAndGoBackToCsipRecordPage
 }

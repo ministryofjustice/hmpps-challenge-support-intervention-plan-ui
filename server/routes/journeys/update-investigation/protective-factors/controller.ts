@@ -31,7 +31,5 @@ export class UpdateProtectiveFactorsController extends PatchInvestigationControl
       successMessage: MESSAGE_INVESTIGATION_UPDATED,
     })
 
-  POST = async (req: Request, res: Response) => {
-    res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
-  }
+  POST = this.deleteJourneyDataAndGoBackToCsipRecordPage
 }
