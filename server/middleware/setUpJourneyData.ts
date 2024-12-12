@@ -19,7 +19,7 @@ export default function setUpJourneyData(store: TokenStore) {
       if (!req.journeyData) {
         await store.delToken(journeyTokenKey)
       } else {
-        await store.setToken(journeyTokenKey, JSON.stringify(req.journeyData ?? { stateGuard }), 20 * 60 * 60)
+        await store.setToken(journeyTokenKey, JSON.stringify(req.journeyData ?? { stateGuard }), 68 * 60 * 60)
       }
     })
     next()

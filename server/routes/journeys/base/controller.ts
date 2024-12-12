@@ -46,7 +46,6 @@ export class BaseJourneyController {
     const { recordUuid } = req.journeyData.csipRecord!
     // @ts-expect-error delete non-optional req.journeyData to free up redis memory
     delete req.journeyData
-    console.log(recordUuid)
     res.redirect(`/csip-records/${recordUuid}`)
   }
 }
