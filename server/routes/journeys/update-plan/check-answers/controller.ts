@@ -58,7 +58,5 @@ export class NewIdentifiedNeedCheckAnswersController extends BaseJourneyControll
     }
   }
 
-  POST = async (req: Request, res: Response) => {
-    res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
-  }
+  POST = this.deleteJourneyDataAndGoBackToCsipRecordPage
 }

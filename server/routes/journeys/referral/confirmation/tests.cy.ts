@@ -27,39 +27,13 @@ context('test /referral/confirmation', () => {
 
     injectJourneyDataAndReload(uuid, {
       journeyCompleted: true,
+      stateGuard: true,
     })
 
     cy.visit(PAGE_URL)
 
     checkAxeAccessibility()
     validatePageContents()
-
-    cy.visit(`${uuid}/referral/additional-information`)
-    cy.url().should('match', /confirmation$/)
-    cy.visit(`${uuid}/referral/area-of-work`)
-    cy.url().should('match', /confirmation$/)
-    cy.visit(`${uuid}/referral/check-answers`)
-    cy.url().should('match', /confirmation$/)
-    cy.visit(`${uuid}/referral/contributory-factors`)
-    cy.url().should('match', /confirmation$/)
-    cy.visit(`${uuid}/referral/contributory-factors-comments`)
-    cy.url().should('match', /confirmation$/)
-    cy.visit(`${uuid}/referral/description`)
-    cy.url().should('match', /confirmation$/)
-    cy.visit(`${uuid}/referral/details`)
-    cy.url().should('match', /confirmation$/)
-    cy.visit(`${uuid}/referral/involvement`)
-    cy.url().should('match', /confirmation$/)
-    cy.visit(`${uuid}/referral/on-behalf-of`)
-    cy.url().should('match', /confirmation$/)
-    cy.visit(`${uuid}/referral/proactive-or-reactive`)
-    cy.url().should('match', /confirmation$/)
-    cy.visit(`${uuid}/referral/reasons`)
-    cy.url().should('match', /confirmation$/)
-    cy.visit(`${uuid}/referral/referrer`)
-    cy.url().should('match', /confirmation$/)
-    cy.visit(`${uuid}/referral/safer-custody`)
-    cy.url().should('match', /confirmation$/)
   })
 
   const validatePageContents = () => {

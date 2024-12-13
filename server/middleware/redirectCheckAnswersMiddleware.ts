@@ -11,7 +11,7 @@ export default function redirectCheckAnswersMiddleware(excludePaths: RegExp[] = 
 
       const resRender = res.render
       res.render = (view: string, options?) => {
-        if (options && 'backUrl' in options && options.backUrl && req.journeyData.isCheckAnswers) {
+        if (options && 'backUrl' in options && options.backUrl && req.journeyData?.isCheckAnswers) {
           resRender.call(res, view, { ...options, backUrl: checkAnswersUrl } as never)
         } else {
           resRender.call(res, view, options as never)
@@ -27,7 +27,7 @@ export default function redirectCheckAnswersMiddleware(excludePaths: RegExp[] = 
         if (errors.length) {
           req.flash(FLASH_KEY__VALIDATION_ERRORS, errors[0]!)
         }
-        resRedirect.call(res, req.journeyData.isCheckAnswers && !errors.length ? checkAnswersUrl : url, status || 302)
+        resRedirect.call(res, req.journeyData?.isCheckAnswers && !errors.length ? checkAnswersUrl : url, status || 302)
       }
     }
     next()

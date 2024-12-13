@@ -1,4 +1,4 @@
-import { Request } from 'express'
+import { Request, Response } from 'express'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import { ReferenceData, ReferenceDataType } from '../../../@types/csip/csipApiTypes'
 
@@ -41,4 +41,11 @@ export class BaseJourneyController {
       text: refData.description,
       checked: Array.isArray(value) ? value.includes(refData.code) : refData.code === value,
     }))
+
+  deleteJourneyDataAndGoBackToCsipRecordPage = async (req: Request, res: Response) => {
+    const { recordUuid } = req.journeyData.csipRecord!
+    // @ts-expect-error delete non-optional req.journeyData to free up redis memory
+    delete req.journeyData
+    res.redirect(`/csip-records/${recordUuid}`)
+  }
 }

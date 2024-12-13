@@ -3,9 +3,7 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /screen/confirmation', () => {
-  const uuid = uuidV4()
-  const START_URL = `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/screen/start`
-  const PAGE_URL = `${uuid}/screen/confirmation`
+  let uuid = uuidV4()
 
   beforeEach(() => {
     cy.task('reset')
@@ -16,35 +14,29 @@ context('test /screen/confirmation', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubGetPrisoner')
     cy.task('stubCsipRecordGetSuccess')
+    uuid = uuidV4()
   })
 
-  it('should display page correctly for all outcomes', () => {
-    cy.signIn()
-    cy.visit(START_URL, { failOnStatusCode: false })
-
-    setupData('PLAN_PENDING')
-    cy.visit(PAGE_URL)
+  it('should display page correctly for PLAN_PENDING', () => {
+    navigateToTestPage('PLAN_PENDING')
     checkAxeAccessibility()
     validatePageContents()
     cy.findByText(
       "A CSIP Case Manager should be allocated to work with Tes'name User to develop an initial plan.",
     ).should('be.visible')
+  })
 
-    setupData('INVESTIGATION_PENDING')
+  it('should display page correctly for INVESTIGATION_PENDING', () => {
+    navigateToTestPage('INVESTIGATION_PENDING')
     checkAxeAccessibility()
     validatePageContents()
     cy.findByText(
       "This should include interviewing Tes'name User about the behaviour that led to the referral.",
     ).should('be.visible')
+  })
 
-    setupData('NO_FURTHER_ACTION')
-    checkAxeAccessibility()
-    validatePageContents()
-    cy.findByText(
-      'Make sure the people responsible for supporting the prisoner are informed of the screening decision.',
-    ).should('be.visible')
-
-    setupData('SUPPORT_OUTSIDE_CSIP')
+  it('should display page correctly for NO_FURTHER_ACTION', () => {
+    navigateToTestPage('NO_FURTHER_ACTION')
     checkAxeAccessibility()
     validatePageContents()
     cy.findByText(
@@ -52,7 +44,21 @@ context('test /screen/confirmation', () => {
     ).should('be.visible')
   })
 
-  const setupData = (outcome: string) => {
+  it('should display page correctly for SUPPORT_OUTSIDE_CSIP', () => {
+    navigateToTestPage('SUPPORT_OUTSIDE_CSIP')
+    checkAxeAccessibility()
+    validatePageContents()
+    cy.findByText(
+      'Make sure the people responsible for supporting the prisoner are informed of the screening decision.',
+    ).should('be.visible')
+  })
+
+  const navigateToTestPage = (outcome: string) => {
+    cy.signIn()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/screen/start`, {
+      failOnStatusCode: false,
+    })
+
     injectJourneyDataAndReload(uuid, {
       csipRecord: {
         status: {
@@ -61,6 +67,7 @@ context('test /screen/confirmation', () => {
         },
       },
     })
+    cy.visit(`${uuid}/screen/confirmation`)
   }
 
   const validatePageContents = () => {

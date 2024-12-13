@@ -3,8 +3,7 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /record-review/confirmation', () => {
-  const uuid = uuidV4()
-  const START_URL = `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-review/start`
+  let uuid = uuidV4()
 
   beforeEach(() => {
     cy.task('reset')
@@ -13,14 +12,11 @@ context('test /record-review/confirmation', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
     cy.task('stubCsipRecordSuccessCsipOpen')
+    uuid = uuidV4()
   })
 
-  it('should display page correctly for all outcomes', () => {
-    cy.signIn()
-    cy.visit(START_URL)
-    cy.visit(`${uuid}/record-review/confirmation`)
-
-    setupData('CSIP_OPEN')
+  it('should display page correctly for CSIP_OPEN', () => {
+    navigateToTestPage('CSIP_OPEN')
     validatePageContents()
     checkAxeAccessibility()
     cy.findByText('Tell the people responsible for supporting the prisoner that the plan has been reviewed.').should(
@@ -30,8 +26,10 @@ context('test /record-review/confirmation', () => {
       .should('be.visible')
       .and('have.attr', 'href')
       .and('match', /\/csip-record\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/update-plan\/identified-needs\/start$/)
+  })
 
-    setupData('CSIP_CLOSED')
+  it('should display page correctly for CSIP_CLOSED', () => {
+    navigateToTestPage('CSIP_CLOSED')
     validatePageContents()
     checkAxeAccessibility()
     cy.findByText("Tell the people responsible for supporting Tes'name User that the plan has been closed.").should(
@@ -39,7 +37,12 @@ context('test /record-review/confirmation', () => {
     )
   })
 
-  const setupData = (outcome: string) => {
+  const navigateToTestPage = (outcome: string) => {
+    cy.signIn()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-review/start`, {
+      failOnStatusCode: false,
+    })
+
     injectJourneyDataAndReload(uuid, {
       csipRecord: {
         recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
@@ -49,6 +52,7 @@ context('test /record-review/confirmation', () => {
         },
       },
     })
+    cy.visit(`${uuid}/record-review/confirmation`)
   }
 
   const validatePageContents = () => {

@@ -16,6 +16,7 @@ context('Screen a CSIP Referral Journey', () => {
     cy.task('stubScreeningOutcomeType')
     cy.task('stubCsipRecordGetSuccess')
     cy.task('stubPostSaferCustodyScreening')
+    cy.task('stubGetCsipOverview')
   })
 
   const START_URL = 'csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550'
@@ -78,9 +79,10 @@ context('Screen a CSIP Referral Journey', () => {
     cy.title().should('equal', 'CSIP screening outcome recorded - DPS')
     checkAxeAccessibility()
 
-    // Prevent double submissions after journey is complete
+    // Bounce back to homepage on trying to go back to the journey pages
+    injectJourneyDataAndReload('02e5854f-f7b1-4c56-bec8-69e390eb8550', { stateGuard: true })
     cy.go('back')
-    cy.url().should('include', '/screen/confirmation')
+    cy.findByRole('heading', { name: /CSIP caseload for Leeds \(HMP\)/ }).should('be.visible')
   })
 
   it('should prepopulate radios after an invalid input', () => {

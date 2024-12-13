@@ -3,9 +3,7 @@ import { injectJourneyDataAndReload } from '../../../../../integration_tests/uti
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
 context('test /record-investigation/check-answers', () => {
-  const uuid = uuidV4()
-  const START_URL = `${uuid}/prisoners/A1111AA/referral/start`
-  const PAGE_URL = `${uuid}/referral/check-answers`
+  let uuid = uuidV4()
   const ESCAPE_LITTLE = '<script>alert("Test User")</script>'
   const ESCAPE_AND_FORMAT_EXPECTED =
     "\n      Text\n      \n        • Bullet 1\n        • Bullet 2\n        • Bullet 3\n        \n        Paragraph\n        \n        <script>alert('xss');</script>\n        \n        <button>also should be escaped</button>\n    "
@@ -37,6 +35,10 @@ context('test /record-investigation/check-answers', () => {
     cy.task('stubGetPrisonerImage')
     cy.task('stubGetPrisoner')
 
+    uuid = uuidV4()
+    const START_URL = `${uuid}/prisoners/A1111AA/referral/start`
+    const PAGE_URL = `${uuid}/referral/check-answers`
+
     cy.signIn()
     cy.visit(START_URL)
 
@@ -56,6 +58,7 @@ context('test /record-investigation/check-answers', () => {
         referredBy: 'Test Person',
         isStaffAssaulted: false,
       },
+      stateGuard: false,
     })
 
     cy.visit(PAGE_URL)

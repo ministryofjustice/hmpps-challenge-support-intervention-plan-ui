@@ -39,7 +39,5 @@ export class UpdateDescriptionController extends PatchReferralController {
         : MESSAGE_REACTIVE_DESCRIPTION_UPDATED,
     })
 
-  POST = async (req: Request, res: Response) => {
-    res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
-  }
+  POST = this.deleteJourneyDataAndGoBackToCsipRecordPage
 }

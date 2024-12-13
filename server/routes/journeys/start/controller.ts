@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
-import { PrisonerSummary } from '../../../@types/express'
 import { SanitisedError } from '../../../sanitisedError'
 import CsipApiService from '../../../services/csipApi/csipApiService'
+import { summarisePrisoner } from '../../../utils/utils'
 
 export class StartJourneyController {
   constructor(
@@ -14,7 +14,7 @@ export class StartJourneyController {
     const { journeyId, prisonerNumber } = req.params
     try {
       const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, prisonerNumber as string)
-      req.journeyData.prisoner = prisoner as PrisonerSummary
+      req.journeyData.prisoner = summarisePrisoner(prisoner)
       req.journeyData.referral = {}
       req.journeyData.saferCustodyScreening = {}
       res.redirect(`/${journeyId}${url}`)
@@ -35,6 +35,7 @@ export class StartJourneyController {
     const { csipRecordId, journeyId } = req.params
 
     try {
+      delete req.journeyData.csipRecord
       const csip = await this.csipService.getCsipRecord(req, csipRecordId as string)
       req.journeyData.csipRecord = csip
       req.journeyData.saferCustodyScreening = {}
@@ -42,7 +43,9 @@ export class StartJourneyController {
       req.journeyData.decisionAndActions = {}
       req.journeyData.plan = {}
       req.journeyData.review = {}
-      req.journeyData.prisoner = await this.prisonerSearchService.getPrisonerDetails(req, csip.prisonNumber as string)
+      req.journeyData.prisoner = summarisePrisoner(
+        await this.prisonerSearchService.getPrisonerDetails(req, csip.prisonNumber as string),
+      )
 
       return res.redirect(`/${journeyId}${url}`)
     } catch (error: unknown) {

@@ -34,7 +34,5 @@ export class ReopenIdentifiedNeedController extends PatchPlanController {
     })
   }
 
-  POST = async (req: Request<unknown, unknown, unknown>, res: Response) => {
-    res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
-  }
+  POST = this.deleteJourneyDataAndGoBackToCsipRecordPage
 }

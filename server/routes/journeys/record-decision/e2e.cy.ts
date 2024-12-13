@@ -15,6 +15,7 @@ context('Record a decision journey', () => {
     cy.task('stubPutDecisionSuccess')
     cy.task('stubComponents')
     cy.task('stubCsipRecordSuccessAwaitingDecision')
+    cy.task('stubGetCsipOverview')
   })
 
   it('should deny access to non CSIP_PROCESSOR role', () => {
@@ -92,12 +93,10 @@ context('Record a decision journey', () => {
       .next()
       .should('include.text', 'Status: Awaiting decision')
 
-    // Test that going back from confirmation automatically redirects us back to confirmation
+    // Bounce back to homepage on trying to go back to the journey pages
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
     cy.go('back')
-    // There is nothing to test or wait on when going back here - the entire redirection is handled in the express middleware, so we just wait for a second to ensure
-    // that we arent just immediately testing before the navigation back has started, and then that the state handling has redirected us back to confirmation
-    cy.wait(1000)
-    cy.url().should('include', '/confirmation')
+    cy.findByRole('heading', { name: /CSIP caseload for Leeds \(HMP\)/ }).should('be.visible')
   }
 
   const reviewChangeLinks = () => {

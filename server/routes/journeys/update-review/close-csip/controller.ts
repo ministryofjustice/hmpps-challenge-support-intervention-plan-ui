@@ -22,7 +22,5 @@ export class UpdateCloseCsipController extends PatchReviewController {
       message: 'You’ve updated the review outcome and closed the CSIP.',
     })
 
-  POST = async (req: Request, res: Response) => {
-    res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
-  }
+  POST = this.deleteJourneyDataAndGoBackToCsipRecordPage
 }
