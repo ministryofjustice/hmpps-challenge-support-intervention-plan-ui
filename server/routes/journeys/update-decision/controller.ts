@@ -44,6 +44,7 @@ export class UpdateDecisionController extends BaseJourneyController {
       prisoner,
       showBreadcrumbs: true,
       secondaryButton,
+      username: res.locals.user.displayName,
     })
   }
 }

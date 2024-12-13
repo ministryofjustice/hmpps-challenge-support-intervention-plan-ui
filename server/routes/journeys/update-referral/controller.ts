@@ -133,6 +133,7 @@ export class UpdateReferralController extends BaseJourneyController {
       involvementFilter,
       showBreadcrumbs: true,
       secondaryButton,
+      username: res.locals.user.displayName,
     })
   }
 }

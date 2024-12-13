@@ -46,54 +46,42 @@
           text: 'Reason for decision'
         },
         value: {
-          html: (decision.conclusion or 'Not provided') | escape | boldAppendStamp | nl2br
-        },
-        actions: {
-        items: [
-          {
+          html: (decision.conclusion or 'Not provided') | escape | boldAppendStamp | nl2br | summaryListActionAddInformation(isUpdate, username, decision.conclusion, { 
             href: "update-decision/conclusion#conclusion",
             text: "Add information",
             visuallyHiddenText: "to the description of the reasons for the decision",
             classes: "govuk-link--no-visited-state"
-          }
-        ]
-      } if isUpdate else undefined
+                    }
+                )
+        }
       },
       {
         key: {
           text: 'Comments on next steps'
         },
         value: {
-          html: (decision.nextSteps or 'Not provided') | escape | boldAppendStamp | nl2br
-        },
-        actions: {
-        items: [
-          {
+          html: (decision.nextSteps or 'Not provided') | escape | boldAppendStamp | nl2br | summaryListActionAddInformation(isUpdate, username, decision.nextSteps, { 
             href: "update-decision/next-steps#nextSteps",
             text: "Add information",
             visuallyHiddenText: "to the comments on next steps",
             classes: "govuk-link--no-visited-state"
-          }
-        ]
-      } if isUpdate else undefined
+                    }
+                )
+        }
       },
       {
         key: {
           text: 'Additional information'
         },
         value: {
-          html: (decision.actionOther or 'Not provided') | escape | boldAppendStamp | nl2br
-        },
-        actions: {
-        items: [
-          {
+          html: (decision.actionOther or 'Not provided') | escape | boldAppendStamp | nl2br | summaryListActionAddInformation(isUpdate, username, decision.actionOther, { 
             href: "update-decision/additional-information#actionOther",
             text: "Add information",
             visuallyHiddenText: "to the additional information relating to the decision",
             classes: "govuk-link--no-visited-state"
-          }
-        ]
-      } if isUpdate else undefined
+                    }
+                )
+        }
       },
       {
         key: {

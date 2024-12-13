@@ -17,7 +17,15 @@ import {
 } from './miniProfileUtils'
 import logger from '../../logger'
 import { convertToSortableColumns, datePriority } from '../routes/manage-csips/components/filters'
-import { setSelected, boldAppendStamp, softHyphenate } from './viewUtils'
+import {
+  setSelected,
+  boldAppendStamp,
+  softHyphenate,
+  summaryListActionAddInformation,
+  summaryListActionChange,
+  yesNoNotKnown,
+} from './viewUtils'
+import { getMaxCharsAndThresholdForAppend } from './appendFieldUtils'
 
 export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')
@@ -89,4 +97,7 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addGlobal('YesNoDontKnow', YES_NO_ANSWER.enum)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
   njkEnv.addFilter('substring', (str: string, start: number, end?: number) => str && str.substring(start, end))
+  njkEnv.addFilter('summaryListActionAddInformation', summaryListActionAddInformation)
+  njkEnv.addFilter('summaryListActionChange', summaryListActionChange)
+  njkEnv.addFilter('yesNoNotKnown', yesNoNotKnown)
 }

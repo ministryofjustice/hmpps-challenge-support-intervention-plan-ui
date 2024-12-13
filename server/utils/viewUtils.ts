@@ -1,3 +1,6 @@
+import { YES_NO_ANSWER } from '../routes/journeys/referral/safer-custody/schemas'
+import { getMaxCharsAndThresholdForAppend } from './appendFieldUtils'
+
 interface SelectOption {
   text: string
   value: string | number
@@ -78,3 +81,60 @@ export const softHyphenate = (text: string | undefined, maxLength: number) => {
 }
 
 const addShys = (text: string, threshold: number) => (text.length > threshold ? text.split('').join('&shy;') : text)
+
+export function yesNoNotKnown(text: string) {
+  if (text === YES_NO_ANSWER.enum.YES) {
+    return 'Yes'
+  }
+
+  if (text === YES_NO_ANSWER.enum.NO) {
+    return 'No'
+  }
+
+  return 'Not known'
+}
+
+type SummaryListActionData = {
+  href: string
+  text: string
+  visuallyHiddenText: string
+  classes: string
+}
+
+export function summaryListActionAddInformation(
+  value: string,
+  isUpdate: boolean,
+  username: string,
+  existingText: string,
+  data: SummaryListActionData,
+) {
+  if (!isUpdate) {
+    return value
+  }
+
+  const { maxLengthChars } = getMaxCharsAndThresholdForAppend(username, existingText)
+
+  if (maxLengthChars <= 0) {
+    return `${value}
+    <dd class="govuk-summary-list__actions">
+      <span>This field has reached it’s character limit. You cannot add anymore characters.
+      </span>
+    </dd>`
+  }
+
+  return summaryListActionChange(value, isUpdate, data)
+}
+
+export function summaryListActionChange(value: string, isUpdate: boolean, data: SummaryListActionData) {
+  if (!isUpdate) {
+    return value
+  }
+
+  return `${value}
+  <dd class="govuk-summary-list__actions">
+    <a class="govuk-link govuk-link--no-visited-state" href="${data.href}">
+      ${data.text}
+      <span class="govuk-visually-hidden"> ${data.visuallyHiddenText}</span>
+    </a>
+  </dd>`
+}
