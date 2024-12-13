@@ -25,7 +25,6 @@ import {
   summaryListActionChange,
   yesNoNotKnown,
 } from './viewUtils'
-import { getMaxCharsAndThresholdForAppend } from './appendFieldUtils'
 
 export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')
