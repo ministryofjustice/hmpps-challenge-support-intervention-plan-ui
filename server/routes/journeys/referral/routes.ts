@@ -47,7 +47,7 @@ export const ReferralRoutes = ({ services, path }: { services: Services; path: s
 
   router.use('/prisoners/:prisonerNumber/referral/start', StartJourneyRoutes(services))
   router.use('/csip-record/:csipRecordId/referral/start', ContinueJourneyRoutes(services))
-  router.use(path, journeyStateGuard(guard))
+  router.use(path, journeyStateGuard(guard, services.appInsightsClient))
   router.use(path, Routes(services))
 
   return router

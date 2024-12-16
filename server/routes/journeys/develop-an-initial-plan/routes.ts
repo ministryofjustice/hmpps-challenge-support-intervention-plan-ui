@@ -39,7 +39,7 @@ export const DevelopPlanRoutes = ({ services, path }: { services: Services; path
 
   router.use('/csip-record/:csipRecordId/develop-an-initial-plan/start', StartJourneyRoutes(services))
 
-  router.use(path, journeyStateGuard(guard))
+  router.use(path, journeyStateGuard(guard, services.appInsightsClient))
 
   router.use(path, Routes(services))
 

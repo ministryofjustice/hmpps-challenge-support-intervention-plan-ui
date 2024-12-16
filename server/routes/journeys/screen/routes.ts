@@ -26,7 +26,7 @@ export const ScreenRoutes = ({ services, path }: { services: Services; path: str
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/screen/start', StartJourneyRoutes(services))
-  router.use(path, journeyStateGuard(guard))
+  router.use(path, journeyStateGuard(guard, services.appInsightsClient))
   router.use(path, Routes(services))
 
   return router
