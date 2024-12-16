@@ -63,7 +63,7 @@ export default class CsipApiService {
     mergeReferralRequest: components['schemas']['MergeReferralRequest'],
   ): Promise<components['schemas']['CsipRecord']> {
     return this.csipApiClientBuilder(req.systemClientToken).mergeReferral(
-      req.journeyData.prisoner!.prisonerNumber,
+      req.journeyData.csipRecord!.recordUuid,
       mergeReferralRequest,
     )
   }

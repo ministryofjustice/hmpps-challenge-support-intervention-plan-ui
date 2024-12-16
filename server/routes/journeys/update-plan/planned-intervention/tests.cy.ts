@@ -44,7 +44,7 @@ context('test /update-planned-intervention/:uuid', () => {
             targetDate: '2024-04-02',
             intervention: 'a'.repeat(3000),
             progression: 'progression done',
-            identifiedNeedUuid: 'big-123',
+            identifiedNeedUuid: 'a0000000-f7b1-4c56-bec8-69e390eb0003',
           } as IdentifiedNeed,
         ],
       },
@@ -73,7 +73,7 @@ context('test /update-planned-intervention/:uuid', () => {
       failOnStatusCode: false,
     })
     cy.url().should('to.match', /\/identified-needs$/)
-    cy.visit(`${uuid}/update-plan/update-planned-intervention/big-123`)
+    cy.visit(`${uuid}/update-plan/update-planned-intervention/a0000000-f7b1-4c56-bec8-69e390eb0003`)
   }
 
   const validatePageContents = () => {

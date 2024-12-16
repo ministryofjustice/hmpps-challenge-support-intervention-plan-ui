@@ -1,6 +1,8 @@
 import { stubFor } from './wiremock'
 import { YES_NO_ANSWER } from '../../server/routes/journeys/referral/safer-custody/schemas'
 
+const uuidRegex = '([a-zA-Z0-9]+-){4}[a-zA-Z0-9]+'
+
 const createBasicHttpStub = (method: string, urlPattern: string, status: number, jsonBody: object = {}) => {
   return stubFor({
     request: { method, urlPattern },
@@ -303,21 +305,21 @@ const stubCsipRecordPostSuccess = () => {
 }
 
 const stubCsipRecordPatchSuccess = () => {
-  return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*', 200, {})
+  return createBasicHttpStub('PATCH', `/csip-api/csip-records/${uuidRegex}`, 200, {})
 }
 
 const stubCsipRecordPutSuccess = () => {
-  return createBasicHttpStub('PUT', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral', 200, {})
+  return createBasicHttpStub('PUT', `/csip-api/csip-records/${uuidRegex}/referral`, 200, {})
 }
 
 const stubCsipRecordPatchFail = () => {
-  return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*', 500, {
+  return createBasicHttpStub('PATCH', `/csip-api/csip-records/${uuidRegex}`, 500, {
     userMessage: 'Simulated Error for E2E testing',
   })
 }
 
 const stubContributoryFactorPostSuccess = () => {
-  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/contributory-factors', 201, {})
+  return createBasicHttpStub('POST', `/csip-api/csip-records/${uuidRegex}/referral/contributory-factors`, 201, {})
 }
 
 const stubDecisionOutcomeType = () => {
@@ -350,12 +352,14 @@ const stubCsipRecordSuccessAwaitingDecision = () => {
             interviewDate: '2024-12-29',
             intervieweeRole: { code: 'A', description: 'Role1' },
             interviewText: 'some text',
+            interviewUuid: 'abc1-abc1-abc1-abc1-abc1',
           },
           {
             interviewee: 'Some Person',
             interviewDate: '2024-12-25',
             intervieweeRole: { code: 'B', description: 'Role2' },
             interviewText: 'other stuff',
+            interviewUuid: 'abc1-abc1-abc1-abc1-abc2',
           },
         ],
         staffInvolved: 'staff stafferson',
@@ -743,7 +747,7 @@ const stubCsipRecordGetSuccessCFEdgeCases = () => {
 }
 
 const stubPostSaferCustodyScreening = () => {
-  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/safer-custody-screening', 200, {
+  return createBasicHttpStub('POST', `/csip-api/csip-records/${uuidRegex}/referral/safer-custody-screening`, 200, {
     outcome: {
       code: 'string',
       description: 'string',
@@ -758,97 +762,97 @@ const stubPostSaferCustodyScreening = () => {
 }
 
 const stubPostInvestigation = () => {
-  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation', 200)
+  return createBasicHttpStub('POST', `/csip-api/csip-records/${uuidRegex}/referral/investigation`, 200)
 }
 
 const stubPostReview = () => {
-  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/plan/reviews', 200)
+  return createBasicHttpStub('POST', `/csip-api/csip-records/${uuidRegex}/plan/reviews`, 200)
 }
 
 const stubPatchInvestigationSuccess = () => {
-  return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation', 200)
+  return createBasicHttpStub('PATCH', `/csip-api/csip-records/${uuidRegex}/referral/investigation`, 200)
 }
 
 const stubPatchInvestigationFail = () => {
-  return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation', 500, {
+  return createBasicHttpStub('PATCH', `/csip-api/csip-records/${uuidRegex}/referral/investigation`, 500, {
     userMessage: 'Simulated Error for E2E testing',
   })
 }
 
 const stubPutDecisionSuccess = () => {
-  return createBasicHttpStub('PUT', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/decision-and-actions', 200)
+  return createBasicHttpStub('PUT', `/csip-api/csip-records/${uuidRegex}/referral/decision-and-actions`, 200)
 }
 
 const stubPutDecisionFail = () => {
-  return createBasicHttpStub('PUT', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/decision-and-actions', 500, {
+  return createBasicHttpStub('PUT', `/csip-api/csip-records/${uuidRegex}/referral/decision-and-actions`, 500, {
     userMessage: 'Simulated Error for E2E testing',
   })
 }
 
 const stubPostPlan = () => {
-  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/plan', 200)
+  return createBasicHttpStub('POST', `/csip-api/csip-records/${uuidRegex}/plan`, 200)
 }
 
 const stubPatchPlanSuccess = () => {
-  return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*/plan', 200)
+  return createBasicHttpStub('PATCH', `/csip-api/csip-records/${uuidRegex}/plan`, 200)
 }
 
 const stubPatchIdentifiedNeedSuccess = () => {
-  return createBasicHttpStub('PATCH', '/csip-api/csip-records/plan/identified-needs/[a-zA-Z0-9-]*', 200)
+  return createBasicHttpStub('PATCH', `/csip-api/csip-records/plan/identified-needs/${uuidRegex}`, 200)
 }
 
 const stubPutDecision = () => {
-  return createBasicHttpStub('PUT', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/decision-and-actions', 200)
+  return createBasicHttpStub('PUT', `/csip-api/csip-records/${uuidRegex}/referral/decision-and-actions`, 200)
 }
 
 const stubPatchContributoryFactorSuccess = () => {
-  return createBasicHttpStub('PATCH', '/csip-api/csip-records/referral/contributory-factors/[a-zA-Z0-9-]*', 200)
+  return createBasicHttpStub('PATCH', `/csip-api/csip-records/referral/contributory-factors/${uuidRegex}`, 200)
 }
 
 const stubPatchContributoryFactorFail = () => {
-  return createBasicHttpStub('PATCH', '/csip-api/csip-records/referral/contributory-factors/[a-zA-Z0-9-]*', 500, {
+  return createBasicHttpStub('PATCH', `/csip-api/csip-records/referral/contributory-factors/${uuidRegex}`, 500, {
     userMessage: 'Simulated Error for E2E testing',
   })
 }
 
 const stubPostInterviewSuccess = () => {
-  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation/interviews', 201)
+  return createBasicHttpStub('POST', `/csip-api/csip-records/${uuidRegex}/referral/investigation/interviews`, 201)
 }
 
 const stubPostInterviewFail = () => {
-  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/referral/investigation/interviews', 500, {
+  return createBasicHttpStub('POST', `/csip-api/csip-records/${uuidRegex}/referral/investigation/interviews`, 500, {
     userMessage: 'Simulated Error for E2E testing',
   })
 }
 
 const stubPatchPlanFail = () => {
-  return createBasicHttpStub('PATCH', '/csip-api/csip-records/[a-zA-Z0-9-]*/plan', 500, {
+  return createBasicHttpStub('PATCH', `/csip-api/csip-records/${uuidRegex}/plan`, 500, {
     userMessage: 'Simulated Error for E2E testing',
   })
 }
 
 const stubPatchIdentifiedNeedFail = () => {
-  return createBasicHttpStub('PATCH', '/csip-api/csip-records/plan/identified-needs/[a-zA-Z0-9-]*', 500, {
+  return createBasicHttpStub('PATCH', `/csip-api/csip-records/plan/identified-needs/${uuidRegex}`, 500, {
     userMessage: 'Simulated Error for E2E testing',
   })
 }
 
 const stubPatchInterviewSuccess = () => {
-  return createBasicHttpStub('PATCH', '/csip-api/csip-records/referral/investigation/interviews/[a-zA-Z0-9-]*', 200)
+  return createBasicHttpStub('PATCH', `/csip-api/csip-records/referral/investigation/interviews/${uuidRegex}`, 200)
 }
 
 const stubPatchInterviewFail = () => {
-  return createBasicHttpStub('PATCH', '/csip-api/csip-records/referral/investigation/interviews/[a-zA-Z0-9-]*', 500, {
+  return createBasicHttpStub('PATCH', `/csip-api/csip-records/referral/investigation/interviews/${uuidRegex}`, 500, {
     userMessage: 'Simulated Error for E2E testing',
   })
 }
 
 const stubPostIdentifiedNeedSuccess = () => {
-  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/plan/identified-needs', 201)
+  return createBasicHttpStub('POST', `/csip-api/csip-records/${uuidRegex}/plan/identified-needs`, 201)
 }
 
 const stubPostIdentifiedNeedFail = () => {
-  return createBasicHttpStub('POST', '/csip-api/csip-records/[a-zA-Z0-9-]*/plan/identified-needs', 500, {
+  return createBasicHttpStub('POST', `/csip-api/csip-records/${uuidRegex}/plan/identified-needs`, 500, {
     userMessage: 'Simulated Error for E2E testing',
   })
 }
