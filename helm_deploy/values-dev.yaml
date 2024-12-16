@@ -2,8 +2,6 @@
 # Per environment values which override defaults in hmpps-challenge-support-intervention-plan-ui/values.yaml
 
 generic-service:
-  replicaCount: 2
-
   ingress:
     host: csip-dev.hmpps.service.justice.gov.uk
 
