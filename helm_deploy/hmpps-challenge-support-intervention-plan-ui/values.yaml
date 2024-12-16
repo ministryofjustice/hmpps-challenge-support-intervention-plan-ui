@@ -5,7 +5,7 @@ generic-service:
   # the IRSA service account name for accessing AWS resources
   # serviceAccountName: "hmpps-challenge-support-intervention-plan-ui"
 
-  replicaCount: 4
+  replicaCount: 2
   serviceAccountName: hmpps-csip-ui
 
   image:
