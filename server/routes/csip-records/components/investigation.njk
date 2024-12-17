@@ -29,8 +29,7 @@
                 text: "Add information",
                 visuallyHiddenText: "on the staff involved in the investigation",
                 classes: "govuk-link--no-visited-state"
-                    }
-                )
+            })
           }
         },
         {
@@ -43,8 +42,7 @@
                 text: "Add information",
                 visuallyHiddenText: "on the evidence secured",
                 classes: "govuk-link--no-visited-state"
-                    }
-                )
+            })
           }
         },
         {
@@ -57,8 +55,7 @@
                 text: "Add information",
                 visuallyHiddenText: "on why the behaviour occurred",
                 classes: "govuk-link--no-visited-state"
-                    }
-                )
+              })
           }
         },
         {
@@ -67,12 +64,11 @@
           },
           value: {
             html: (investigation.personsUsualBehaviour or 'Not provided') | escape | boldAppendStamp | nl2br | summaryListActionAddInformation(isUpdate, username, investigation.personsUsualBehaviour, { 
-                href: "update-investigation/usual-behaviour-presentation#personsUsualBehaviour",
-                text: "Add information",
-                visuallyHiddenText: "about the prisoner’s usual behaviour presentation",
-                classes: "govuk-link--no-visited-state"
-                    }
-                )
+              href: "update-investigation/usual-behaviour-presentation#personsUsualBehaviour",
+              text: "Add information",
+              visuallyHiddenText: "about the prisoner’s usual behaviour presentation",
+              classes: "govuk-link--no-visited-state"
+            })
           }
         },
         {
@@ -85,8 +81,7 @@
                 text: "Add information",
                 visuallyHiddenText: "about the prisoner’s triggers",
                 classes: "govuk-link--no-visited-state"
-                    }
-                )
+            })
           }
         },
         {
@@ -99,8 +94,7 @@
                 text: "Add information",
                 visuallyHiddenText: "about the prisoner’s protective factors",
                 classes: "govuk-link--no-visited-state"
-                    }
-                )
+            })
           }
         }
       ]
