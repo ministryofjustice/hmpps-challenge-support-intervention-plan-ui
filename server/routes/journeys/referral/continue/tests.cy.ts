@@ -99,9 +99,15 @@ context('test /csip-record/:recordUuid/referral/start', () => {
     continueNext()
 
     cy.url().should('to.match', /\/referral\/contributory-factors$/)
-    cy.findByRole('checkbox', { name: /Factor1/i }).should('be.checked')
-    cy.findByRole('checkbox', { name: /Factor3/i }).should('be.checked')
-    cy.findByRole('checkbox', { name: /Factor4/i }).should('be.checked')
+    cy.findByRole('checkbox', { name: /Factor1/i })
+      .should('be.checked')
+      .should('be.disabled')
+    cy.findByRole('checkbox', { name: /Factor3/i })
+      .should('be.checked')
+      .should('be.disabled')
+    cy.findByRole('checkbox', { name: /Factor4/i })
+      .should('be.checked')
+      .should('be.disabled')
     continueNext()
 
     cy.url().should('to.match', /\/referral\/contributory-factors-comments$/)

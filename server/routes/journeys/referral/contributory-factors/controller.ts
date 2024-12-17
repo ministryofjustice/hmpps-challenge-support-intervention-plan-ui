@@ -4,13 +4,30 @@ import { SchemaType } from './schemas'
 
 export class ReferralContributoryFactorsController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
-    const contributoryFactorCheckboxes = await this.getReferenceDataOptionsForCheckboxes(
+    let contributoryFactorCheckboxes = await this.getReferenceDataOptionsForCheckboxes(
       req,
       'contributory-factor-type',
       res.locals.formResponses?.['contributoryFactors'] ||
         req.journeyData.referral!.contributoryFactors?.map(factors => factors.factorType.code),
     )
-    res.render('referral/contributory-factors/view', { contributoryFactorCheckboxes, backUrl: 'reasons' })
+
+    const hiddenExistingCFs: typeof contributoryFactorCheckboxes = []
+    if (req.journeyData.referral?.continuingReferral) {
+      contributoryFactorCheckboxes = contributoryFactorCheckboxes.map(cf => {
+        if (cf.checked) {
+          hiddenExistingCFs.push(cf)
+        }
+        return {
+          ...cf,
+          disabled: cf.checked,
+        }
+      })
+    }
+    res.render('referral/contributory-factors/view', {
+      hiddenExistingCFs,
+      contributoryFactorCheckboxes,
+      backUrl: 'reasons',
+    })
   }
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
