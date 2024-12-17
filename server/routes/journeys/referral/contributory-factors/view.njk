@@ -20,6 +20,9 @@
             },
             errorMessage: validationErrors | findError('contributoryFactors')
         }) }}
+        {% for hiddenExistingCF in hiddenExistingCFs %}
+            <input type="hidden" id="contributoryFactors{{ ('-' + loop.index) if loop.index > 1 else '' }}" name="contributoryFactors" value="{{ hiddenExistingCF.value }}" />
+        {% endfor %}
         {{ govukButton({
             text: "Continue",
             preventDoubleClick: true
