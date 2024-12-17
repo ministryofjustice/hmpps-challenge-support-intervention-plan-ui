@@ -10,6 +10,7 @@ export function isMissingValues<T>(obj: T, keys: Array<keyof T>): boolean {
 
 const recordJourneyGuardFailedEvent = (
   res: Response,
+  failReason: 'PRISONER_MISSING' | 'INVALID_STATE',
   csipId: string | undefined,
   flow: string | undefined,
   requestedPage: string | undefined,
@@ -22,6 +23,7 @@ const recordJourneyGuardFailedEvent = (
   appInsightsClient.trackEvent({
     name: 'JourneyStateGuardCheckFailed',
     properties: {
+      failReason,
       username: res.locals.user.displayName,
       ...(res.locals.user.activeCaseLoad?.caseLoadId && {
         activeCaseLoadId: res.locals.user.activeCaseLoad.caseLoadId,
@@ -56,7 +58,15 @@ export default function journeyStateGuard(rules: JourneyStateGuard, appInsightsC
     if (!req.journeyData?.prisoner) {
       // The relevant /start for this journey has not been visited
       // We don't have a CSIP record id so we can't automatically do this.
-      recordJourneyGuardFailedEvent(res, csipIdInRequest, flow, requestedPage, '/', appInsightsClient)
+      recordJourneyGuardFailedEvent(
+        res,
+        'PRISONER_MISSING',
+        csipIdInRequest,
+        flow,
+        requestedPage,
+        '/',
+        appInsightsClient,
+      )
       return res.redirect(`/`)
     }
 
@@ -84,7 +94,15 @@ export default function journeyStateGuard(rules: JourneyStateGuard, appInsightsC
         if (requestedPage === latestValidPage) {
           return next()
         }
-        recordJourneyGuardFailedEvent(res, csipIdInRequest, flow, requestedPage, redirectTo, appInsightsClient)
+        recordJourneyGuardFailedEvent(
+          res,
+          'INVALID_STATE',
+          csipIdInRequest,
+          flow,
+          requestedPage,
+          redirectTo,
+          appInsightsClient,
+        )
         return res.redirect(`/${uuid}/${flow}${redirectTo}`)
       }
 
@@ -99,7 +117,15 @@ export default function journeyStateGuard(rules: JourneyStateGuard, appInsightsC
         if (requestedPage === latestValidPage) {
           return next()
         }
-        recordJourneyGuardFailedEvent(res, csipIdInRequest, flow, requestedPage, redirectTo, appInsightsClient)
+        recordJourneyGuardFailedEvent(
+          res,
+          'INVALID_STATE',
+          csipIdInRequest,
+          flow,
+          requestedPage,
+          redirectTo,
+          appInsightsClient,
+        )
         return res.redirect(`/${uuid}/${flow}${redirectTo}`)
       }
       latestValidPage = targetRedirect.startsWith('/') ? targetRedirect.split('/')[1] || '' : targetRedirect
