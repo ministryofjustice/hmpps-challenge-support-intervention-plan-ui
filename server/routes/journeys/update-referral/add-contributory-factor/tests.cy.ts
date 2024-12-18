@@ -26,7 +26,7 @@ context('test /update-referral/add-contributory-factor', () => {
     completeInputs()
 
     getContinueButton().click()
-    cy.url().should('to.match', /\/new-code2-comment$/)
+    cy.url().should('to.match', /\/new-comment$/)
     cy.findByRole('link', { name: /^back$/i }).click()
 
     verifyDetailsAreRestoredFromJourney()
