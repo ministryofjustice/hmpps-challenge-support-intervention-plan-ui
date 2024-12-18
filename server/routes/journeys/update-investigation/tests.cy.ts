@@ -1,4 +1,7 @@
+import { v4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
+import { components } from '../../../@types/csip'
 
 context('test /update-investigation', () => {
   beforeEach(() => {
@@ -51,6 +54,40 @@ context('test /update-investigation', () => {
 
     cy.visit(`csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-investigation/start`)
     cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/referral$/)
+  })
+
+  describe('Should disallow editing of fields nearing 4000 characters', () => {
+    const limitReachedText = `This field has reached its character limit. You cannot add anymore characters.`
+    const addInformationFields: Array<[keyof components['schemas']['Investigation'], string]> = [
+      ['staffInvolved', 'Staff involved'],
+      ['evidenceSecured', 'Evidence secured'],
+      ['occurrenceReason', 'Why this occurred'],
+      ['personsUsualBehaviour', 'Usual behaviour presentation'],
+      ['personsTrigger', 'Triggers'],
+      ['protectiveFactors', 'Protective factors'],
+    ]
+
+    addInformationFields.forEach(([field, heading]) => {
+      it(`should disallow editing of ${heading} when nearing 4000 characters`, () => {
+        cy.task('stubCsipRecordSuccessAwaitingDecision')
+        const uuid = v4()
+
+        cy.signIn()
+        cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-investigation/start`)
+
+        injectJourneyDataAndReload(uuid, {
+          csipRecord: {
+            referral: {
+              investigation: {
+                [field]: '<a href="https://www.google.com">injecting</a>'.padEnd(3980, 'a'),
+              },
+            },
+          },
+        })
+        cy.findAllByRole('link', { name: /add information/i }).should('have.length', 5)
+        cy.findByText(heading).next().next().should('contain.text', limitReachedText)
+      })
+    })
   })
 
   const checkInterviews = () => {

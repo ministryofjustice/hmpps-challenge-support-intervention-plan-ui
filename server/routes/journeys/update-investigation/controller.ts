@@ -52,6 +52,7 @@ export class UpdateInvestigationController extends BaseJourneyController {
       showBreadcrumbs: true,
       secondaryButton,
       isCsipProcessor: isCsipProcessor(res),
+      username: res.locals.user.displayName,
     })
   }
 }

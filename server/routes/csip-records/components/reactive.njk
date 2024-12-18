@@ -149,36 +149,26 @@
                 text: "Description of incident and concerns"
             },
             value: {
-                html: (referral.descriptionOfConcern or 'Not provided') | escape | boldAppendStamp | nl2br
-            },
-            actions: {
-                items: [
-                    {
+                html: (referral.descriptionOfConcern or 'Not provided') | escape | boldAppendStamp | nl2br | summaryListActionAddInformation(isUpdate, username, referral.descriptionOfConcern, { 
                         href: "update-referral/description#descriptionOfConcern",
                         text: "Add information",
                         visuallyHiddenText: "the description of the incident and concerns",
                         classes: "govuk-link--no-visited-state"
-                    }
-                ]
-            } if isUpdate else undefined
+                })
+            }
         },
         {
             key: {
                 text: "Reasons given for the incident"
             },
             value: {
-                html: (referral.knownReasons or 'Not provided') | escape | boldAppendStamp | nl2br
-            },
-            actions: {
-                items: [
-                    {
+                html: (referral.knownReasons or 'Not provided') | escape | boldAppendStamp | nl2br | summaryListActionAddInformation(isUpdate, username, referral.knownReasons, { 
                         href: "update-referral/reasons#knownReasons",
                         text: "Add information",
                         visuallyHiddenText: "the reasons given for the incident",
                         classes: "govuk-link--no-visited-state"
-                    }
-                ]
-            } if isUpdate else undefined
+                })
+            }
         }
     ]
 }) }}

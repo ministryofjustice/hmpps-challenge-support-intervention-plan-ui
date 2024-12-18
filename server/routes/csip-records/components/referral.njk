@@ -113,35 +113,25 @@
                 text: 'Contributory factor'
             },
             value: {
-                text: factor.factorType.description
-            },
-            actions: {
-                items: [
-                    {
+                html: factor.factorType.description | escape | boldAppendStamp | nl2br | summaryListActionChange(isUpdate, { 
                         href: factor.changeLink,
                         text: "Change",
                         visuallyHiddenText: "the contributory factor",
                         classes: "govuk-link--no-visited-state"
-                    }
-                ]
-            } if isUpdate else undefined
+                })
+            }
         }, {
             key: {
                 text: 'Comment'
             },
             value: {
-                html: (factor.comment or 'Not provided') | escape | boldAppendStamp | nl2br
-            },
-            actions: {
-                items: [
-                    {
+                html: (factor.comment or 'Not provided') | escape | boldAppendStamp | nl2br | summaryListActionAddInformation(isUpdate, username, factor.comment, { 
                         href: "update-referral/" + factor.factorUuid + "-comment#comment",
                         text: "Add information",
                         visuallyHiddenText: factor.visuallyHiddenCommentText,
                         classes: "govuk-link--no-visited-state"
-                    }
-                ]
-            } if isUpdate else undefined
+                })
+            }
         }]
     }) }}
 {% endfor %}
@@ -172,36 +162,26 @@
                 text: "Safer Custody aware of referral"
             },
             value: {
-                text: "Yes" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.YES else ("No" if referral.isSaferCustodyTeamInformed === YesNoDontKnow.NO else "Not known")
-            },
-            actions: {
-                items: [
-                    {
+                html: (referral.isSaferCustodyTeamInformed | yesNoNotKnown) | summaryListActionChange(isUpdate, { 
                         href: "update-referral/safer-custody#isSaferCustodyTeamInformed",
                         text: "Change",
                         visuallyHiddenText: "if Safer Custody are aware of the referral or not",
                         classes: "govuk-link--no-visited-state"
-                    }
-                ]
-            } if isUpdate else undefined
+                })
+            }
         },
         {
             key: {
                 text: "Other information relating to this referral"
             },
             value: {
-                html: (referral.otherInformation or 'Not provided') | escape | boldAppendStamp | nl2br
-            },
-            actions: {
-                items: [
-                    {
+                html: (referral.otherInformation or 'Not provided') | escape | boldAppendStamp | nl2br | summaryListActionAddInformation(isUpdate, username, referral.otherInformation, { 
                         href: "update-referral/additional-information#otherInformation",
                         text: "Add information",
-                        visuallyHiddenText: "to the additional information relating to the referral",
-                        classes: "govuk-link--no-visited-state"
-                    }
-                ]
-            } if isUpdate else undefined
+                        visuallyHiddenText: "to the additional information relating to the referral", 
+                        classes: "govuk-link--no-visited-state" 
+                })
+            }
         }
     ]
 }) }}
