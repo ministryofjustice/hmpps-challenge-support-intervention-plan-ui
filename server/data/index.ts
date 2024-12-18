@@ -8,7 +8,7 @@ import applicationInfoSupplier from '../applicationInfo'
 
 const applicationInfo = applicationInfoSupplier()
 initialiseAppInsights()
-buildAppInsightsClient(applicationInfo)
+const appInsightsClient = buildAppInsightsClient(applicationInfo)
 
 import HmppsAuthClient from './hmppsAuthClient'
 import { createRedisClient } from './redisClient'
@@ -32,6 +32,7 @@ export const dataAccess = () => ({
   prisonerSearchApiClient: (token: string) => new PrisonerSearchRestClient(token),
   prisonerImageClient: (token: string) => new PrisonApiRestClient(token),
   tokenStore,
+  appInsightsClient,
 })
 
 export type DataAccess = ReturnType<typeof dataAccess>
