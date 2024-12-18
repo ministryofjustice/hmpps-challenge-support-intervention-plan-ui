@@ -57,7 +57,7 @@ context('test /update-investigation', () => {
   })
 
   describe('Should disallow editing of fields nearing 4000 characters', () => {
-    const limitReachedText = `This field has reached it’s character limit. You cannot add anymore characters.`
+    const limitReachedText = `This field has reached its character limit. You cannot add anymore characters.`
     const addInformationFields: Array<[keyof components['schemas']['Investigation'], string]> = [
       ['staffInvolved', 'Staff involved'],
       ['evidenceSecured', 'Evidence secured'],

@@ -117,7 +117,7 @@ export function summaryListActionAddInformation(
   if (maxLengthChars <= 0) {
     return `${value}
     <dd class="govuk-summary-list__actions">
-      <span>This field has reached it’s character limit. You cannot add anymore characters.
+      <span>This field has reached its character limit. You cannot add anymore characters.
       </span>
     </dd>`
   }

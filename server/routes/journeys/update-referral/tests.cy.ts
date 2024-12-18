@@ -71,7 +71,7 @@ context('test /update-referral', () => {
   })
 
   describe('Should disallow editing of fields nearing 4000 characters', () => {
-    const limitReachedText = `This field has reached it’s character limit. You cannot add anymore characters.`
+    const limitReachedText = `This field has reached its character limit. You cannot add anymore characters.`
     const addInformationFields: Array<[keyof components['schemas']['Referral'], string]> = [
       ['descriptionOfConcern', 'Description of behaviour and concerns'],
       ['knownReasons', 'Reasons given for the behaviour'],
