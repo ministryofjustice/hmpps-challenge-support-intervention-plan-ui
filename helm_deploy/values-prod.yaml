@@ -22,4 +22,4 @@ generic-service:
     AUDIT_SERVICE_NAME: "hmpps-challenge-support-intervention-plan-ui"
 
 generic-prometheus-alerts:
-  alertSeverity: move-and-improve-alerts
+  alertSeverity: hmpps-alerts-api-prod
