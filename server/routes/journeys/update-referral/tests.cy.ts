@@ -70,6 +70,29 @@ context('test /update-referral', () => {
     cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/referral$/)
   })
 
+  it('state guard should prevent accessing pages ahead in flow', () => {
+    cy.task('stubCsipRecordGetSuccess')
+    cy.task('stubContribFactors')
+
+    const uuid = v4()
+    cy.signIn()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-referral/start`)
+
+    injectJourneyDataAndReload(uuid, {
+      stateGuard: true,
+    })
+
+    cy.findByRole('button', { name: /Add another contributory factor/ }).click()
+
+    cy.visit(`${uuid}/update-referral/new-comment`)
+    cy.url().should('to.match', /update-referral\/add-contributory-factor$/)
+
+    cy.findAllByRole('radio').first().click()
+    cy.findByRole('button', { name: /Continue/ }).click()
+
+    cy.url().should('to.match', /update-referral\/new-comment$/)
+  })
+
   describe('Should disallow editing of fields nearing 4000 characters', () => {
     const limitReachedText = `This field has reached its character limit. You cannot add anymore characters.`
     const addInformationFields: Array<[keyof components['schemas']['Referral'], string]> = [

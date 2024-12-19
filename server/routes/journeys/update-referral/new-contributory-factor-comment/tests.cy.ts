@@ -23,7 +23,7 @@ context('test /update-referral/new-contributory-factor-comment', () => {
 
   it('should try out all cases', () => {
     navigateToTestPage()
-    cy.url().should('to.match', /\/new-code2-comment$/)
+    cy.url().should('to.match', /\/new-comment$/)
 
     checkAxeAccessibility()
     validatePageContents()

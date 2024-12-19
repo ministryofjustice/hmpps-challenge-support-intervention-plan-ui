@@ -1,3 +1,4 @@
+import { Request } from 'express'
 import StartJourneyRoutes from './start/routes'
 import { Services } from '../../../services'
 import { JourneyRouter } from '../base/routes'
@@ -14,6 +15,7 @@ import { UpdateContributoryFactorsRoutes } from './contributory-factor-type/rout
 import { UpdateReasonsRoutes } from './reasons/routes'
 import { UpdateAdditionalInfoRoutes } from './additional-information/routes'
 import { UpdateContributoryFactorsCommentRoutes } from './contributory-factor-comment/routes'
+import journeyStateGuard, { JourneyStateGuard } from '../../../middleware/journeyStateGuard'
 
 function Routes({ csipApiService, prisonerSearchService, auditService }: Services) {
   const { router, get } = JourneyRouter()
@@ -24,7 +26,7 @@ function Routes({ csipApiService, prisonerSearchService, auditService }: Service
   router.use('/involvement', UpdateInvolvementRoutes(csipApiService, auditService))
   router.use('/proactive-or-reactive', UpdateProactiveOrReactiveRoutes(csipApiService, auditService))
   router.use('/details', UpdateReferralDetailsRoutes(csipApiService, auditService))
-  router.use('/new-:factorTypeCode-comment', NewContributoryFactorCommentRoutes(csipApiService, auditService))
+  router.use('/new-comment', NewContributoryFactorCommentRoutes(csipApiService, auditService))
   router.use('/safer-custody', UpdateSaferCustodyRoutes(csipApiService, auditService))
   router.use('/referrer', UpdateReferrerRoutes(csipApiService, auditService))
   router.use('/add-contributory-factor', AddContributoryFactorRoutes(csipApiService))
@@ -41,7 +43,14 @@ export const UpdateReferralRoutes = ({ services, path }: { services: Services; p
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/update-referral/start', StartJourneyRoutes(services))
+  router.use(path, journeyStateGuard(guard))
   router.use(path, Routes(services))
 
   return router
+}
+
+const guard: JourneyStateGuard = {
+  'new-comment': (req: Request) => {
+    return req.journeyData.referral?.contributoryFactorSubJourney?.factorType ? undefined : '/add-contributory-factor'
+  },
 }

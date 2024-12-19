@@ -1,3 +1,4 @@
+import { Request } from 'express'
 import { CaseManagementRoutes } from './case-management/routes'
 import StartJourneyRoutes from './start/routes'
 import { Services } from '../../../services'
@@ -15,6 +16,7 @@ import { ReopenIdentifiedNeedRoutes } from './reopen-identified-need/routes'
 import { NewIdentifiedNeedRoutes } from './summarise-identified-need/routes'
 import { NewActionsProgressionRoutes } from './record-actions-progress/routes'
 import { NewIdentifiedNeedCheckAnswersRoutes } from './check-answers/routes'
+import journeyStateGuard, { JourneyStateGuard, isMissingValues } from '../../../middleware/journeyStateGuard'
 
 function Routes({ csipApiService, auditService }: Services) {
   const { router, get } = JourneyRouter()
@@ -57,7 +59,34 @@ export const UpdatePlanRoutes = ({ services, path }: { services: Services; path:
     '/csip-record/:csipRecordId/update-plan/identified-needs/start',
     StartJourneyRoutes(services, '/update-plan/identified-needs'),
   )
+  router.use(path, journeyStateGuard(guard))
   router.use(path, Routes(services))
 
   return router
+}
+
+const guard: JourneyStateGuard = {
+  'intervention-details': (req: Request) => {
+    return isMissingValues(req.journeyData.plan!.identifiedNeedSubJourney!, ['identifiedNeed'])
+      ? `/summarise-identified-need`
+      : undefined
+  },
+  'record-actions-progress': (req: Request) => {
+    return isMissingValues(req.journeyData.plan!.identifiedNeedSubJourney!, [
+      'responsiblePerson',
+      'intervention',
+      'targetDate',
+    ])
+      ? `/intervention-details`
+      : undefined
+  },
+  'check-answers': (req: Request) => {
+    return isMissingValues(req.journeyData.plan!.identifiedNeedSubJourney!, [
+      'responsiblePerson',
+      'intervention',
+      'targetDate',
+    ])
+      ? `/intervention-details`
+      : undefined
+  },
 }

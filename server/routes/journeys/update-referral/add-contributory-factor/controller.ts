@@ -23,6 +23,6 @@ export class AddContributoryFactorController extends BaseJourneyController {
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {
     req.journeyData.referral!.contributoryFactorSubJourney ??= {}
     req.journeyData.referral!.contributoryFactorSubJourney!.factorType = req.body.factorType
-    res.redirect(`new-${req.body.factorType.code.toLowerCase()}-comment`)
+    res.redirect(`new-comment`)
   }
 }

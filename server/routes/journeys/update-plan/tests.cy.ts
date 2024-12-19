@@ -1,4 +1,6 @@
+import { v4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /update-plan', () => {
   beforeEach(() => {
@@ -34,6 +36,38 @@ context('test /update-plan', () => {
 
     cy.visit(`csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-plan/start`)
     cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/investigation$/)
+  })
+
+  it('state guard should prevent accessing pages ahead in flow', () => {
+    cy.task('stubCsipRecordSuccessCsipOpen')
+
+    const uuid = v4()
+    cy.signIn()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-plan/identified-needs/start`)
+
+    injectJourneyDataAndReload(uuid, {
+      stateGuard: true,
+    })
+
+    cy.findByRole('button', { name: /Add another identified need/ }).click()
+
+    cy.visit(`${uuid}/update-plan/check-answers`)
+    cy.url().should('to.match', /update-plan\/summarise-identified-need$/)
+
+    cy.findByRole('textbox').type('identified need')
+    cy.findByRole('button', { name: /Continue/ }).click()
+
+    cy.visit(`${uuid}/update-plan/check-answers`)
+    cy.url().should('to.match', /update-plan\/intervention-details$/)
+
+    cy.findAllByRole('textbox').eq(0).type('idklol')
+    cy.findAllByRole('textbox').eq(1).type('idklol')
+    cy.findAllByRole('textbox').eq(2).type('01/01/2038')
+
+    cy.findByRole('button', { name: /Continue/ }).click()
+
+    cy.visit(`${uuid}/update-plan/check-answers`)
+    cy.url().should('to.match', /\/check-answers$/)
   })
 
   const navigateToTestPage = () => {

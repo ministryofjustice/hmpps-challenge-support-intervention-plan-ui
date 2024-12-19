@@ -4,8 +4,6 @@ import { formatDateConcise } from '../../../../utils/datetimeUtils'
 
 export class NewInterventionDetailsController {
   GET = async (req: Request, res: Response) => {
-    req.journeyData.plan!.identifiedNeedSubJourney ??= {}
-
     return res.render('develop-an-initial-plan/intervention-details/view', {
       identifiedNeed: req.journeyData.plan!.identifiedNeedSubJourney!.identifiedNeed,
       targetDate:
