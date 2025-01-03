@@ -26,6 +26,12 @@ generic-service:
     AUDIT_SERVICE_NAME: "hmpps-challenge-support-intervention-plan-ui"
     FEATURE_STATE_GUARD: "true"
 
+  allowlist:
+    groups:
+      - digital_staff_and_mojo
+      - moj_cloud_platform
+      - prisons
+      - accessibility-testing-1
 
 generic-prometheus-alerts:
   alertSeverity: hmpps-alerts-api-non-prod
