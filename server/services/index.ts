@@ -5,8 +5,15 @@ import PrisonApiService from './prisonApi/prisonApiService'
 import CsipApiService from './csipApi/csipApiService'
 
 export const services = () => {
-  const { applicationInfo, hmppsAuditClient, prisonerSearchApiClient, prisonerImageClient, csipApiClient, tokenStore } =
-    dataAccess()
+  const {
+    applicationInfo,
+    hmppsAuditClient,
+    prisonerSearchApiClient,
+    prisonerImageClient,
+    csipApiClient,
+    tokenStore,
+    appInsightsClient,
+  } = dataAccess()
 
   const auditService = new AuditService(hmppsAuditClient)
   const csipApiService = new CsipApiService(csipApiClient)
@@ -20,6 +27,7 @@ export const services = () => {
     prisonerSearchService,
     prisonApiService,
     tokenStore,
+    appInsightsClient,
   }
 }
 
