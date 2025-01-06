@@ -43,7 +43,7 @@ export const UpdateReferralRoutes = ({ services, path }: { services: Services; p
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/update-referral/start', StartJourneyRoutes(services))
-  router.use(path, journeyStateGuard(guard))
+  router.use(path, journeyStateGuard(guard, services.appInsightsClient))
   router.use(path, Routes(services))
 
   return router
