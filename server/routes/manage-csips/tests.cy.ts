@@ -32,7 +32,7 @@ context('test /manage-csips', () => {
     cy.findByText('Soon Due Manager').prev().get('span').should('have.class', 'govuk-tag--yellow')
 
     // on page change, filter and sort persist
-    cy.findAllByRole('link', { name: /Page 4 of 100/ })
+    cy.findAllByRole('link', { name: /Page 4 of 4/ })
       .first()
       .click()
     cy.get('[aria-current="page"]').first().should('have.text', '4')
