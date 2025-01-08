@@ -1,7 +1,7 @@
 import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../integration_tests/support/accessibilityViolations'
 
-context('test check populating user caseloads', () => {
+context('test check service is enabled for active case load', () => {
   const uuid = uuidV4()
 
   beforeEach(() => {

@@ -1,15 +1,10 @@
 import { RequestHandler, Router } from 'express'
 import { validate as uuidValidate } from 'uuid'
 import logger from '../../logger'
-import PrisonApiService from '../services/prisonApi/prisonApiService'
 import CsipApiService from '../services/csipApi/csipApiService'
 import { ServiceConfigInfo } from '../services/csipApi/csipApiClient'
-import { CaseLoad } from '../interfaces/caseLoad'
 
-export default function checkPopulateUserCaseloads(
-  prisonApiService: PrisonApiService,
-  csipApiService: CsipApiService,
-): RequestHandler {
+export default function checkServiceEnabledForActiveCaseLoad(csipApiService: CsipApiService): RequestHandler {
   const router = Router()
 
   router.get('/service-not-enabled', (_req, res) => {
@@ -19,24 +14,9 @@ export default function checkPopulateUserCaseloads(
 
   router.use(async (req, res, next) => {
     const splitUrl = req.url.split('/').filter(Boolean)
-    const services = res.locals.feComponentsMeta?.services
+    const services = res.locals.feComponents?.sharedData?.services
     let isEligibleForService = services ? services.find(service => service.id === 'csipUI') !== undefined : undefined
-    let caseloads
     try {
-      if (res.locals.feComponentsMeta?.caseLoads) {
-        res.locals.user.caseloads = res.locals.feComponentsMeta.caseLoads
-      }
-      if (res.locals.feComponentsMeta?.activeCaseLoad) {
-        res.locals.user.activeCaseLoad = res.locals.feComponentsMeta.activeCaseLoad
-      }
-      const refetchCaseloads = !res.locals.user.caseloads
-      if (refetchCaseloads) {
-        caseloads = caseloads ?? (await prisonApiService.getCaseLoads(req))
-        res.locals.user.caseloads = caseloads as CaseLoad[]
-        res.locals.user.activeCaseLoad =
-          (caseloads as CaseLoad[])!.find(caseload => caseload.currentlyActive) ?? res.locals.user.activeCaseLoad
-      }
-
       // Check that the user's active caseload is enabled on the API side
       if (
         req.method === 'GET' &&
@@ -50,7 +30,7 @@ export default function checkPopulateUserCaseloads(
           const { activeAgencies } = configInfo as ServiceConfigInfo
           isEligibleForService =
             activeAgencies.includes(
-              res.locals.user.caseloads!.find(caseload => caseload.currentlyActive)?.caseLoadId || '',
+              res.locals.user.caseLoads!.find(caseload => caseload.currentlyActive)?.caseLoadId || '',
             ) || activeAgencies.includes('***')
         }
         if (!isEligibleForService) {

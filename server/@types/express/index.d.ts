@@ -182,16 +182,18 @@ export declare global {
         }
       }
       prisoner?: PrisonerSummary
-      feComponentsMeta?: {
-        activeCaseLoad: CaseLoad
-        caseLoads: CaseLoad[]
-        services: {
-          id: string
-          heading: string
-          description: string
-          href: string
-          navEnabled: boolean
-        }[]
+      feComponents?: {
+        sharedData?: {
+          activeCaseLoad: CaseLoad
+          caseLoads: CaseLoad[]
+          services: {
+            id: string
+            heading: string
+            description: string
+            href: string
+            navEnabled: boolean
+          }[]
+        }
       }
       formResponses?: { [key: string]: string }
       appInsightsConnectionString?: string
