@@ -48,6 +48,17 @@ context('test /edit-log-code', () => {
     cy.findByText('You’ve edited the CSIP log code.').should('be.visible')
   })
 
+  it('should submit form on textarea Enter keypress', () => {
+    cy.task('stubCsipRecordPatchSuccess')
+    navigateToTestPage()
+    cy.url().should('to.match', /\/edit-log-code$/)
+
+    getLogCodeInput().clear().type('New-Code{enter}', { delay: 0 })
+
+    cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
+    cy.findByText('You’ve edited the CSIP log code.').should('be.visible')
+  })
+
   it('should handle API errors', () => {
     cy.task('stubCsipRecordPatchFail')
     navigateToTestPage()
