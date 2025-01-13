@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 import { createSchema } from '../../../../middleware/validationMiddleware'
 
 const ERROR_MSG = 'Enter details of the review'

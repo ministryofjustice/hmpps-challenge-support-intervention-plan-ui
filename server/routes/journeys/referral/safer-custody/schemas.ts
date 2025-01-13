@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 import { createSchema } from '../../../../middleware/validationMiddleware'
 
 const ERROR_MSG = 'Select if the Safer Custody team is already aware of this referral or not, or select ‘Not known’'

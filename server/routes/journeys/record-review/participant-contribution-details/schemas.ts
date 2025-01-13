@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 import { createSchema } from '../../../../middleware/validationMiddleware'
 
 const NAME_TEXT_TOO_LONG_ERROR_MSG = 'Participant’s name must be 100 characters or less'

@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 import { Request } from 'express'
 import { createSchema, validateAndTransformReferenceData } from '../../../../middleware/validationMiddleware'
 import CsipApiService from '../../../../services/csipApi/csipApiService'

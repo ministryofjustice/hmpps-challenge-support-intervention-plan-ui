@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 import { createSchema } from '../../../../middleware/validationMiddleware'
 
 const OUTCOME_REQUIRED_MSG = 'Select the outcome of the review.'

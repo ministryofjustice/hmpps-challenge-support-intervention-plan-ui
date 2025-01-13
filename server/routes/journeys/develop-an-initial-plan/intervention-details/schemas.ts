@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 import { createSchema, validateTransformDate } from '../../../../middleware/validationMiddleware'
 
 const TARGET_DATE_REQUIRED_MSG = 'Enter the target date'

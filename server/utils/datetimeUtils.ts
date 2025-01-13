@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import z from 'zod'
+import { z } from 'zod'
 
 const DATE_FORMAT_GB = new Intl.DateTimeFormat('en-GB', {
   year: 'numeric',
