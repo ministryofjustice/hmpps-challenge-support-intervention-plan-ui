@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 import { createSchema, validateTransformFutureDate } from '../../../../middleware/validationMiddleware'
 
 const NEXT_REVIEW_DATE_REQUIRED_MSG = 'Enter a date for the next review'

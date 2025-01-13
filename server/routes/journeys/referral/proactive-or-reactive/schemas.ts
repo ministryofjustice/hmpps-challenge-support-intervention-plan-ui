@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 import { createSchema, validateAndTransformReferenceData } from '../../../../middleware/validationMiddleware'
 
 const ERROR_MESSAGE = 'Select if this referral is proactive or reactive'

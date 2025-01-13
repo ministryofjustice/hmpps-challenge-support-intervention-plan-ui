@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 import { createSchema } from '../../../../middleware/validationMiddleware'
 
 const REASON_FOR_PLAN_REQUIRED_MSG = 'Enter the main reason why the prisoner needs a plan'

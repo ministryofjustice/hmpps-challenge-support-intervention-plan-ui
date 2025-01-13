@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 import { Request, Response } from 'express'
 import { createSchema } from '../../../../middleware/validationMiddleware'
 import { getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'

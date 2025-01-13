@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 import { createSchema } from '../../../middleware/validationMiddleware'
 
 const IS_CASE_MANAGER_ERROR_MSG = 'Select if you’re the Case Manager for this plan or not'

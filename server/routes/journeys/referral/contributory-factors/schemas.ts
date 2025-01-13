@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 import { Request } from 'express'
 import CsipApiService from '../../../../services/csipApi/csipApiService'
 import { ContributoryFactor } from '../../../../@types/express'
