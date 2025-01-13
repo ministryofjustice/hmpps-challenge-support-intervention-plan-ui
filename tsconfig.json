@@ -36,7 +36,8 @@
     "codecov_reports",
     "esbuild",
     "server/@types/csip/index.d.ts",
-    "test_results"
+    "test_results",
+    "eslint.config.mjs"
   ],
   "include": ["**/*.js", "**/*.ts"]
 }
