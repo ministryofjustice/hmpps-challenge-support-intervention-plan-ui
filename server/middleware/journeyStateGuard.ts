@@ -8,6 +8,10 @@ export function isMissingValues<T>(obj: T, keys: Array<keyof T>): boolean {
   return keys.some(key => obj?.[key] === undefined)
 }
 
+export function getRedirectToRecordOverviewOrHome(req: Request) {
+  return req.journeyData?.csipRecord?.recordUuid ? `/${req.journeyData.csipRecord.recordUuid}` : '/'
+}
+
 const recordJourneyGuardFailedEvent = (
   res: Response,
   failReason: 'PRISONER_MISSING' | 'INVALID_STATE',
@@ -67,6 +71,13 @@ export default function journeyStateGuard(rules: JourneyStateGuard, appInsightsC
         '/',
         appInsightsClient,
       )
+      return res.redirect(`/`)
+    }
+
+    if (!req.journeyData?.csipRecord) {
+      // The relevant /start for this journey has not been visited
+      // We don't have a CSIP record id so we can't automatically do this.
+      recordJourneyGuardFailedEvent(res, 'INVALID_STATE', csipIdInRequest, flow, requestedPage, '/', appInsightsClient)
       return res.redirect(`/`)
     }
 

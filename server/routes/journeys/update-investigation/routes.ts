@@ -1,3 +1,4 @@
+import { Request } from 'express'
 import StartJourneyRoutes from './start/routes'
 import { Services } from '../../../services'
 import { JourneyRouter } from '../base/routes'
@@ -9,6 +10,11 @@ import { UpdateEvidenceSecuredRoutes } from './evidence-secured/routes'
 import { UpdateTriggersRoutes } from './triggers/routes'
 import { UpdateInterviewRoutes } from './interview-details/routes'
 import { UpdateProtectiveFactorsRoutes } from './protective-factors/routes'
+import journeyStateGuard, {
+  JourneyStateGuard,
+  getRedirectToRecordOverviewOrHome,
+  isMissingValues,
+} from '../../../middleware/journeyStateGuard'
 
 function Routes({ csipApiService, prisonerSearchService, auditService }: Services) {
   const { router, get } = JourneyRouter()
@@ -31,7 +37,15 @@ export const UpdateInvestigationRoutes = ({ services, path }: { services: Servic
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/update-investigation/start', StartJourneyRoutes(services))
+  router.use(path, journeyStateGuard(guard, services.appInsightsClient))
   router.use(path, Routes(services))
 
   return router
+}
+
+const guard: JourneyStateGuard = {
+  'interview-details': (req: Request) =>
+    isMissingValues(req.journeyData.csipRecord!.referral.investigation!, ['interviews'])
+      ? getRedirectToRecordOverviewOrHome(req)
+      : undefined,
 }

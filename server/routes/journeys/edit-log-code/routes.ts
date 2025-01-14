@@ -4,6 +4,7 @@ import { JourneyRouter } from '../base/routes'
 import { EditLogCodeController } from './controller'
 import { validate } from '../../../middleware/validationMiddleware'
 import { schema } from './schemas'
+import journeyStateGuard from '../../../middleware/journeyStateGuard'
 
 function Routes({ csipApiService, auditService }: Services) {
   const { router, get, post } = JourneyRouter()
@@ -19,6 +20,7 @@ export const EditLogCodeRoutes = ({ services, path }: { services: Services; path
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/edit-log-code/start', StartJourneyRoutes(services))
+  router.use(path, journeyStateGuard({}, services.appInsightsClient))
   router.use(path, Routes(services))
 
   return router
