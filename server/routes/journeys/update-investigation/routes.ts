@@ -37,15 +37,8 @@ export const UpdateInvestigationRoutes = ({ services, path }: { services: Servic
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/update-investigation/start', StartJourneyRoutes(services))
-  router.use(path, journeyStateGuard(guard, services.appInsightsClient))
+  router.use(path, journeyStateGuard({}, services.appInsightsClient))
   router.use(path, Routes(services))
 
   return router
-}
-
-const guard: JourneyStateGuard = {
-  'interview-details': (req: Request) =>
-    isMissingValues(req.journeyData.csipRecord!.referral.investigation!, ['interviews'])
-      ? getRedirectToRecordOverviewOrHome(req)
-      : undefined,
 }
