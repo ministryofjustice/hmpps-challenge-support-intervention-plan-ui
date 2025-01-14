@@ -8,8 +8,8 @@ export function isMissingValues<T>(obj: T, keys: Array<keyof T>): boolean {
   return keys.some(key => obj?.[key] === undefined)
 }
 
-export function getRedirectToRecordOverviewOrHome(req: Request) {
-  return req.journeyData?.csipRecord?.recordUuid ? `/${req.journeyData.csipRecord.recordUuid}` : '/'
+export function allPagesRequireCsipRecord(): JourneyStateGuard {
+  return { '*': (req: Request) => (req.journeyData?.csipRecord ? undefined : '/') }
 }
 
 const recordJourneyGuardFailedEvent = (
@@ -74,13 +74,6 @@ export default function journeyStateGuard(rules: JourneyStateGuard, appInsightsC
       return res.redirect(`/`)
     }
 
-    if (!req.journeyData?.csipRecord) {
-      // The relevant /start for this journey has not been visited
-      // We don't have a CSIP record id so we can't automatically do this.
-      recordJourneyGuardFailedEvent(res, 'INVALID_STATE', csipIdInRequest, flow, requestedPage, '/', appInsightsClient)
-      return res.redirect(`/`)
-    }
-
     if (!requestedPage || !flow) {
       return next()
     }
@@ -98,7 +91,7 @@ export default function journeyStateGuard(rules: JourneyStateGuard, appInsightsC
         redirectTo = '/check-answers'
       }
 
-      const guardFn = rules[latestValidPage]
+      const guardFn = rules[latestValidPage] || rules['*']
 
       if (guardFn === undefined) {
         // We've backtracked all the way to a page that requires no validation

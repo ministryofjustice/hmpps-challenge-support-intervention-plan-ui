@@ -32,7 +32,7 @@ context('Make a Referral Journey', () => {
 
   it('state guard correctly differentiates between area-of-work and referrer', () => {
     signinAndStart()
-    injectJourneyDataAndReload(uuid, { stateGuard: true })
+    injectJourneyDataAndReload(uuid, { stateGuard: true, csipRecord: {} })
 
     stateGuardShouldBounceBackTo(/referral\/on-behalf-of$/)
     cy.url().should('include', '/on-behalf-of')

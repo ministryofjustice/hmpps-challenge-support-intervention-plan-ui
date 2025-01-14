@@ -5,7 +5,7 @@ import { UpdateDecisionController } from './controller'
 import { UpdateConclusionRoutes } from './conclusion/routes'
 import { UpdateAdditionalInformationRoutes } from './additional-information/routes'
 import { UpdateNextStepsRoutes } from './next-steps/routes'
-import journeyStateGuard from '../../../middleware/journeyStateGuard'
+import journeyStateGuard, { allPagesRequireCsipRecord } from '../../../middleware/journeyStateGuard'
 
 function Routes({ csipApiService, prisonerSearchService, auditService }: Services) {
   const { router, get } = JourneyRouter()
@@ -24,7 +24,7 @@ export const UpdateDecisionRoutes = ({ services, path }: { services: Services; p
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/update-decision/start', StartJourneyRoutes(services))
-  router.use(path, journeyStateGuard({}, services.appInsightsClient))
+  router.use(path, journeyStateGuard(allPagesRequireCsipRecord(), services.appInsightsClient))
   router.use(path, Routes(services))
 
   return router

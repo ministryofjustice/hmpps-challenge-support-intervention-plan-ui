@@ -8,7 +8,7 @@ import { UpdateNextReviewDateRoutes } from './next-review-date/routes'
 import { UpdateAttendeeRoutes } from './update-participant-contribution-details/routes'
 import { UpdateCloseCsipRoutes } from './close-csip/routes'
 import { AddParticipantContributionDetailsRoutes } from './participant-contribution-details/routes'
-import journeyStateGuard from '../../../middleware/journeyStateGuard'
+import journeyStateGuard, { allPagesRequireCsipRecord } from '../../../middleware/journeyStateGuard'
 
 function Routes({ csipApiService, prisonerSearchService, auditService }: Services) {
   const { router, get } = JourneyRouter()
@@ -33,7 +33,7 @@ export const UpdateReviewRoutes = ({ services, path }: { services: Services; pat
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/update-review/start', StartJourneyRoutes(services))
-  router.use(path, journeyStateGuard({}, services.appInsightsClient))
+  router.use(path, journeyStateGuard(allPagesRequireCsipRecord(), services.appInsightsClient))
   router.use(path, Routes(services))
 
   return router
