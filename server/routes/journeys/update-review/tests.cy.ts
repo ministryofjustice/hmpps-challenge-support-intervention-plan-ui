@@ -1,4 +1,5 @@
 import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /update-review', () => {
   beforeEach(() => {
@@ -7,6 +8,15 @@ context('test /update-review', () => {
     cy.task('stubGetPrisoner')
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
+  })
+
+  it('should redirect to home page when journey has expired or is not found', () => {
+    cy.signIn()
+
+    injectJourneyDataAndReload('12e5854f-f7b1-4c56-bec8-69e390eb8550', { stateGuard: true })
+    cy.visit(`12e5854f-f7b1-4c56-bec8-69e390eb8550/update-review/details`, { failOnStatusCode: false })
+
+    cy.url().should('to.match', /\/$/)
   })
 
   it('should deny access to non CSIP_PROCESSOR role', () => {

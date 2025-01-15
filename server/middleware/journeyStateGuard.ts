@@ -8,6 +8,10 @@ export function isMissingValues<T>(obj: T, keys: Array<keyof T>): boolean {
   return keys.some(key => obj?.[key] === undefined)
 }
 
+export function allPagesRequireCsipRecord(): JourneyStateGuard {
+  return { '*': (req: Request) => (req.journeyData?.csipRecord ? undefined : '/') }
+}
+
 const recordJourneyGuardFailedEvent = (
   res: Response,
   failReason: 'PRISONER_MISSING' | 'INVALID_STATE',
@@ -87,7 +91,7 @@ export default function journeyStateGuard(rules: JourneyStateGuard, appInsightsC
         redirectTo = '/check-answers'
       }
 
-      const guardFn = rules[latestValidPage]
+      const guardFn = rules[latestValidPage] || rules['*']
 
       if (guardFn === undefined) {
         // We've backtracked all the way to a page that requires no validation

@@ -9,6 +9,7 @@ import { UpdateEvidenceSecuredRoutes } from './evidence-secured/routes'
 import { UpdateTriggersRoutes } from './triggers/routes'
 import { UpdateInterviewRoutes } from './interview-details/routes'
 import { UpdateProtectiveFactorsRoutes } from './protective-factors/routes'
+import journeyStateGuard, { allPagesRequireCsipRecord } from '../../../middleware/journeyStateGuard'
 
 function Routes({ csipApiService, prisonerSearchService, auditService }: Services) {
   const { router, get } = JourneyRouter()
@@ -31,6 +32,7 @@ export const UpdateInvestigationRoutes = ({ services, path }: { services: Servic
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/update-investigation/start', StartJourneyRoutes(services))
+  router.use(path, journeyStateGuard(allPagesRequireCsipRecord(), services.appInsightsClient))
   router.use(path, Routes(services))
 
   return router

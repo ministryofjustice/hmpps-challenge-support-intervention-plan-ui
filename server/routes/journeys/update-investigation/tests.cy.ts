@@ -13,6 +13,15 @@ context('test /update-investigation', () => {
     cy.task('stubIntervieweeRoles')
   })
 
+  it('should redirect to home page when journey has expired or is not found', () => {
+    cy.signIn()
+
+    injectJourneyDataAndReload('12e5854f-f7b1-4c56-bec8-69e390eb8550', { stateGuard: true })
+    cy.visit(`12e5854f-f7b1-4c56-bec8-69e390eb8550/update-investigation/evidence-secured`, { failOnStatusCode: false })
+
+    cy.url().should('to.match', /\/$/)
+  })
+
   it('should deny access to non CSIP_PROCESSOR role', () => {
     cy.task('stubSignIn', { roles: [] })
 
