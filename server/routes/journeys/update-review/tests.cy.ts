@@ -1,4 +1,5 @@
 import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /update-review', () => {
   beforeEach(() => {
@@ -11,8 +12,8 @@ context('test /update-review', () => {
 
   it('should redirect to home page when journey has expired or is not found', () => {
     cy.signIn()
-    cy.visit(`csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-review/start`, { failOnStatusCode: false })
 
+    injectJourneyDataAndReload('12e5854f-f7b1-4c56-bec8-69e390eb8550', { stateGuard: true })
     cy.visit(`12e5854f-f7b1-4c56-bec8-69e390eb8550/update-review/details`, { failOnStatusCode: false })
 
     cy.url().should('to.match', /\/$/)

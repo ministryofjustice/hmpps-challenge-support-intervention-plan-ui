@@ -16,8 +16,8 @@ context('test /update-decision', () => {
 
   it('should redirect to home page when journey has expired or is not found', () => {
     cy.signIn()
-    cy.visit(`csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-decision/start`, { failOnStatusCode: false })
 
+    injectJourneyDataAndReload('12e5854f-f7b1-4c56-bec8-69e390eb8550', { stateGuard: true })
     cy.visit(`12e5854f-f7b1-4c56-bec8-69e390eb8550/update-decision/additional-information`, { failOnStatusCode: false })
 
     cy.url().should('to.match', /\/$/)
