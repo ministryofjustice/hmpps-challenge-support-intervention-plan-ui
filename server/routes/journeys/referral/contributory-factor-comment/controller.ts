@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { ParamsDictionary } from 'express-serve-static-core'
 import { SchemaType } from './schemas'
 import { ContributoryFactor } from '../../../../@types/express'
 
@@ -24,7 +23,7 @@ export class ReferralContributoryFactorCommentController {
     })
   }
 
-  POST = async (req: Request<ParamsDictionary, unknown, SchemaType>, res: Response) => {
+  POST = async (req: Request<{ [key: string]: string }, unknown, SchemaType>, res: Response) => {
     const factor = findFactor(req)
     if (req.body.comment) {
       factor.comment = req.body.comment

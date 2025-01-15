@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express'
-import { ParamsDictionary } from 'express-serve-static-core'
 import { SchemaType } from './schemas'
 import { PatchPlanController } from '../../base/patchPlanController'
 import { getMaxCharsAndThresholdForAppend, getTextForApiSubmission } from '../../../../utils/appendFieldUtils'
@@ -27,7 +26,11 @@ export class UpdateActionsProgressController extends PatchPlanController {
     })
   }
 
-  checkSubmitToAPI = async (req: Request<ParamsDictionary, unknown, SchemaType>, res: Response, next: NextFunction) => {
+  checkSubmitToAPI = async (
+    req: Request<{ [key: string]: string }, unknown, SchemaType>,
+    res: Response,
+    next: NextFunction,
+  ) => {
     const { identifiedNeedUuid } = req.params
     const identifiedNeed = this.getSelectedIdentifiedNeed(req)
     return this.submitIdentifiedNeedChanges({
