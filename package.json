@@ -76,7 +76,6 @@
     "@opentelemetry/api": "~1.8.0",
     "@sentry/cli": "^2.40.0",
     "@sentry/node": "^8.48.0",
-    "@types/express-serve-static-core": "^4.19.6",
     "agentkeepalive": "^4.6.0",
     "applicationinsights": "^2.9.6",
     "body-parser": "^1.20.3",
@@ -106,8 +105,8 @@
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
-    "@ministryofjustice/eslint-config-hmpps": "^0.0.1-beta.1",
     "@jgoz/esbuild-plugin-typecheck": "^4.0.2",
+    "@ministryofjustice/eslint-config-hmpps": "^0.0.1-beta.1",
     "@testing-library/cypress": "^10.0.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
