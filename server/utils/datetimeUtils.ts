@@ -28,7 +28,8 @@ const parseNumber = (value: string, min: number, max: number, length: number) =>
   const result =
     Number.isNaN(Number(value)) || Number(value) < min || Number(value) > max || value.length > length
       ? null
-      : value.padStart(length, '0')
+      : Number(value).toString().padStart(length, '0')
+
   return RESULT_VALIDATOR.safeParse(result)
 }
 
