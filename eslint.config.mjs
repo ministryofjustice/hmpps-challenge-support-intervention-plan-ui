@@ -8,6 +8,7 @@ export default [
     rules: {
       'dot-notation': 'off',
       'import/prefer-default-export': 0,
+      'import/no-extraneous-dependencies': ["error", {"devDependencies": ["**/*.cy.ts"]}]
     },
   },
 ]
