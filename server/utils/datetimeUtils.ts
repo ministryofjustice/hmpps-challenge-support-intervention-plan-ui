@@ -25,11 +25,13 @@ const DATE_TIME_FORMAT_GB_VERBOSE = new Intl.DateTimeFormat('en-GB', {
 const RESULT_VALIDATOR = z.string().min(1)
 
 const parseNumber = (value: string, min: number, max: number, length: number) => {
-  const result =
-    Number.isNaN(Number(value)) || Number(value) < min || Number(value) > max || value.length > length
-      ? null
-      : value.padStart(length, '0')
-  return RESULT_VALIDATOR.safeParse(result)
+  const numValue = Number(value)
+
+  if (Number.isNaN(numValue) || numValue < min || numValue > max) {
+    return RESULT_VALIDATOR.safeParse(null)
+  }
+
+  return RESULT_VALIDATOR.safeParse(numValue.toString().padStart(length, '0'))
 }
 
 export const parse24Hour = (value: string) => parseNumber(value, 0, 23, 2)

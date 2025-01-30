@@ -63,6 +63,10 @@ export const JourneyRoutes = (services: Services) => {
       mergeObjects(req.journeyData, json)
       res.sendStatus(200)
     })
+
+    router.get('/get-journey-data', (req, res) => {
+      res.status(200).send(req.journeyData)
+    })
   }
 
   return router
