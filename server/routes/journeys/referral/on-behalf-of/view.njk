@@ -7,9 +7,13 @@
 {% extends "partials/layout.njk" %}
 
 {% block innerContent %}
-  {% if showNotificationBanner %}
+  {% if isAlreadyOnReferral or isAlreadyOnCsip %}
     {% set notificationHtml %}
-      <h1 class="govuk-heading-m">{{ prisoner | firstNameSpaceLastName }} is already on a CSIP</h1>
+      {% if isAlreadyOnReferral %}
+        <h1 class="govuk-heading-m">A referral is already in progress for {{ prisoner | firstNameSpaceLastName }}</h1>
+      {% else %}
+        <h1 class="govuk-heading-m">{{ prisoner | firstNameSpaceLastName }} is already on a CSIP</h1>
+      {% endif %}
       <a class="govuk-link govuk-link--no-visited-state" href="/manage-csips?query={{ prisoner.prisonerNumber }}" target="_blank">View CSIP details for {{ prisoner | firstNameSpaceLastName }} (opens in a new tab)</a>
       <p class="govuk-body govuk-!-padding-top-4">You can still make a new referral, however you might want to check local procedures or contact Safer Custody before continuing.</p>
     {% endset %}

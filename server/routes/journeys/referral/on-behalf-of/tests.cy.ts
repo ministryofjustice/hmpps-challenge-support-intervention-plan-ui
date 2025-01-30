@@ -21,6 +21,17 @@ context('Make a Referral Journey', () => {
       .and('match', /manage-csips\?query=A1111AA/)
   })
 
+  it('should show a notification if prisoner already has a referral', () => {
+    cy.task('stubCurrentCsipStatusExistingReferral')
+    setupDataSignInAndGo()
+
+    cy.findByRole('heading', { name: /a referral is already in progress for tes'name user/i }).should('be.visible')
+    cy.findByRole('link', { name: /view csip details for tes'name user/i }).should('be.visible')
+    cy.findByRole('link', { name: /view csip details for tes'name user/i })
+      .should('have.attr', 'href')
+      .and('match', /manage-csips\?query=A1111AA/)
+  })
+
   it('test involvement, including all edge cases', () => {
     setupDataSignInAndGo()
 

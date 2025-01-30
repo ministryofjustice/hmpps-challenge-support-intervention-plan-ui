@@ -964,6 +964,18 @@ const stubCurrentCsipStatusOnCsip = () => {
   })
 }
 
+const stubCurrentCsipStatusExistingReferral = () => {
+  return createBasicHttpStub('GET', '/csip-api/prisoners/[a-zA-Z0-9]*/csip-records/current', 200, {
+    totalOpenedCsipCount: 1,
+    totalReferralCount: 1,
+    currentCsip: {
+      status: {
+        code: 'REFERRAL_SUBMITTED',
+      },
+    },
+  })
+}
+
 export const stubCurrentCsipStatusNoCsip = () => {
   return createBasicHttpStub('GET', '/csip-api/prisoners/[a-zA-Z0-9]*/csip-records/current', 200, {
     totalOpenedCsipCount: 0,
@@ -1126,4 +1138,5 @@ export default {
   stubCsipRecordGetSuccessReferralPending,
   stubCsipRecordGetSuccessReferralPendingMatchingReferrer,
   stubCsipRecordPutSuccess,
+  stubCurrentCsipStatusExistingReferral,
 }

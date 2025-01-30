@@ -21,15 +21,15 @@ export class ReferralOnBehalfOfController {
       })
       return
     }
-    const onCsipOrOngoingReferralStatuses: CsipRecordStatus[] = [
-      'CSIP_OPEN',
+    const ongoingReferralStatuses: CsipRecordStatus[] = [
       'REFERRAL_SUBMITTED',
       'INVESTIGATION_PENDING',
       'AWAITING_DECISION',
       'PLAN_PENDING',
     ]
     res.render('referral/on-behalf-of/view', {
-      showNotificationBanner: onCsipOrOngoingReferralStatuses.includes(currentCsipCode as CsipRecordStatus),
+      isAlreadyOnReferral: ongoingReferralStatuses.includes(currentCsipCode as CsipRecordStatus),
+      isAlreadyOnCsip: currentCsipCode === 'CSIP_OPEN',
       isOnBehalfOfReferral: req.journeyData.referral!.onBehalfOfSubJourney
         ? req.journeyData.referral?.onBehalfOfSubJourney?.isOnBehalfOfReferral
         : req.journeyData.referral!.isOnBehalfOfReferral,
