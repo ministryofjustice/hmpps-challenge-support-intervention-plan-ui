@@ -55,6 +55,14 @@
         },
         {
           key: {
+              text: 'Next review date'
+          },
+          value: {
+              html: ((review.nextReviewDate | formatDisplayDate) or 'Not provided') | escape | boldAppendStamp | nl2br
+          }
+        },
+        {
+          key: {
               text: 'Recorded by'
           },
           value: {
