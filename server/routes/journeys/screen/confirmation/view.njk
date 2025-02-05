@@ -37,5 +37,10 @@
         <p class="govuk-body">Make sure the people responsible for supporting the prisoner are informed of the screening decision.</p>
     {% endswitch %}
 
-    {% include 'base/components/view-other-csips.njk' %}
+    <p class="govuk-body">
+        <a class="govuk-link govuk-link--no-visited-state" href="/manage-csips?query={{ prisoner.prisonerNumber }}">View CSIP details for {{ prisoner | firstNameSpaceLastName }}</a>
+    </p>
+    <p class="govuk-body">
+        <a class="govuk-link govuk-link--no-visited-state" href="/manage-csips?clear=true">View all CSIPs</a> and <a class="govuk-link govuk-link--no-visited-state" href="/manage-csips?status=REFERRAL_SUBMITTED">pending CSIP referrals</a> for {{ user.activeCaseLoad.description }}
+    </p>
 {% endblock %}
