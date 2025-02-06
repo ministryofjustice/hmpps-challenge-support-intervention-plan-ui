@@ -230,6 +230,7 @@ context('test /csip-records', () => {
         cy.findByText('a summary').should('be.visible')
         cy.findByText('joe bloggs').should('be.visible')
         cy.findByText('5 April 2024').should('be.visible')
+        cy.findByText('Not provided').should('be.visible')
       })
     cy.findByRole('heading', { name: 'Review 2:' })
       .should('be.visible')
@@ -242,6 +243,7 @@ context('test /csip-records', () => {
         cy.findByText('even longer').should('be.visible')
         cy.findByText('test testerson').should('be.visible')
         cy.findByText('15 April 2024').should('be.visible')
+        cy.findByText('15 April 2025').should('be.visible')
       })
   }
 
