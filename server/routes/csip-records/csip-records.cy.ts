@@ -351,15 +351,21 @@ context('test /csip-records', () => {
   }
 
   const checkTabsForPlan = () => {
-    cy.findByRole('link', { name: /^investigation/i }).should('be.visible')
-    cy.findByRole('link', { name: /^reviews/i }).should('be.visible')
-    cy.findByRole('link', { name: /^referral/i }).should('be.visible')
-    cy.findByRole('link', { name: /^plan/i, current: 'page' }).should('be.visible')
+    cy.get('#main-content > div > div > nav > ul > li > a').eq(0).should('have.text', 'Referral')
+    cy.get('#main-content > div > div > nav > ul > li > a').eq(1).should('have.text', 'Investigation')
+    cy.get('#main-content > div > div > nav > ul > li > a')
+      .eq(2)
+      .should('have.text', 'Plan')
+      .should('have.attr', 'aria-current', 'page')
+    cy.get('#main-content > div > div > nav > ul > li > a').eq(3).should('have.text', 'Reviews')
   }
 
   const checkTabsAndReferral = () => {
-    cy.findByRole('link', { name: /^investigation/i }).should('be.visible')
-    cy.findByRole('link', { name: /^investigation/i, current: 'page' }).should('be.visible')
+    cy.get('#main-content > div > div > nav > ul > li > a').eq(0).should('have.text', 'Referral')
+    cy.get('#main-content > div > div > nav > ul > li > a')
+      .eq(1)
+      .should('have.text', 'Investigation')
+      .should('have.attr', 'aria-current', 'page')
 
     cy.findByRole('link', { name: /referral/i })
       .should('be.visible')
