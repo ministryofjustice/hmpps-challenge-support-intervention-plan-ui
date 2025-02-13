@@ -47,6 +47,25 @@ context('test /screen', () => {
     verifyDetailsAreRestoredFromJourney()
   })
 
+  it('CSRF redirects to sign-out when tampered with', () => {
+    cy.signIn()
+    cy.visit(START_URL, { failOnStatusCode: false })
+    cy.visit(PAGE_URL)
+
+    completeInputs()
+
+    getContinueButton().click()
+
+    cy.url().should('to.match', /\/check-answers$/)
+    cy.go('back')
+
+    cy.get('input[name="_csrf"]').first().invoke('val', 'changed value')
+
+    getContinueButton().click()
+
+    cy.url().should('to.match', /\/sign-out/)
+  })
+
   const validatePageContents = () => {
     cy.findByRole('heading', { name: 'Screen a CSIP referral' }).should('be.visible')
 

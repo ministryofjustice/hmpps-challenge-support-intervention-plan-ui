@@ -9,6 +9,52 @@ context('test /csip-records', () => {
     cy.task('stubIntervieweeRoles')
   })
 
+  describe('CSRF redirects to sign-out when tampered with', () => {
+    it('Top button', () => {
+      cy.task('stubCsipRecordGetSuccessAfterScreeningWithoutReason')
+
+      navigateToTestPage()
+
+      cy.findAllByRole('button', { name: /record investigation/i })
+        .last()
+        .click()
+
+      cy.url().should('to.match', /record-investigation/)
+
+      cy.go('back')
+
+      cy.get('input[name="_csrf"]').first().invoke('val', 'changed value')
+
+      cy.findAllByRole('button', { name: /record investigation/i })
+        .first()
+        .click()
+
+      cy.url().should('to.match', /\/sign-out/)
+    })
+
+    it('Bottom button', () => {
+      cy.task('stubCsipRecordGetSuccessAfterScreeningWithoutReason')
+
+      navigateToTestPage()
+
+      cy.findAllByRole('button', { name: /record investigation/i })
+        .last()
+        .click()
+
+      cy.url().should('to.match', /record-investigation/)
+
+      cy.go('back')
+
+      cy.get('input[name="_csrf"]').last().invoke('val', 'changed value')
+
+      cy.findAllByRole('button', { name: /record investigation/i })
+        .last()
+        .click()
+
+      cy.url().should('to.match', /\/sign-out/)
+    })
+  })
+
   it('should render the print button', () => {
     cy.task('stubCsipRecordSuccessCsipOpen')
 
