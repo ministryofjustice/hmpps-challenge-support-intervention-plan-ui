@@ -183,6 +183,14 @@
     {{ mojSubNavigation({
       label: 'Sub navigation',
       items: [{
+        text: 'Referral',
+        href: 'referral',
+        active: tabSelected == 'referral'
+      }, {
+        text: 'Investigation',
+        href: 'investigation',
+        active: tabSelected == 'investigation'
+      }, {
         text: 'Plan',
         href: 'plan',
         active: tabSelected == 'plan'
@@ -190,22 +198,14 @@
         text: 'Reviews',
         href: 'reviews',
         active: tabSelected == 'reviews'
-      },{
-        text: 'Investigation',
-        href: 'investigation',
-        active: tabSelected == 'investigation'
-      }, {
-        text: 'Referral',
-        href: 'referral',
-        active: tabSelected == 'referral'
       }] if plan else [{
-        text: 'Investigation',
-        href: 'investigation',
-        active: tabSelected == 'investigation'
-      }, {
         text: 'Referral',
         href: 'referral',
         active: tabSelected == 'referral'
+      }, {
+        text: 'Investigation',
+        href: 'investigation',
+        active: tabSelected == 'investigation'
       }]
     }) }}
   {% endif %}
