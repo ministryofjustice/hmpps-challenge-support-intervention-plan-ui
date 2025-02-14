@@ -594,7 +594,7 @@ export interface paths {
      *
      *     Requires one of the following roles:
      *     * ROLE_NOMIS_CSIP */
-    delete: operations['deleteCsipRecord_1']
+    delete: operations['deleteRecord']
     options?: never
     head?: never
     patch?: never
@@ -613,7 +613,6 @@ export interface components {
       cellLocation?: string
       supportingPrisonCode?: string
     }
-    /** @description The attendees/contributors to the review. */
     SyncAttendeeRequest: {
       /** @description Name of review attendee/contributor. */
       name?: string
@@ -628,7 +627,6 @@ export interface components {
       /** Format: uuid */
       id?: string
     }
-    /** @description Contributory factors to the incident that motivated the referral. */
     SyncContributoryFactorRequest: {
       /** @description The type of contributory factor to the incident or motivation for CSIP referral. */
       factorTypeCode: string
@@ -643,6 +641,7 @@ export interface components {
       prisonNumber: string
       /** @description User entered identifier for the CSIP record. Defaults to the prison code. */
       logCode?: string
+      /** @description The referral that results in the creation of this CSIP record. */
       referral?: components['schemas']['SyncReferralRequest']
       plan?: components['schemas']['SyncPlanRequest']
       prisonCodeWhenRecorded?: string
@@ -688,7 +687,6 @@ export interface components {
         | 'SIM_REFERRAL'
       )[]
     }
-    /** @description The interviews in relation to the investigation */
     SyncInterviewRequest: {
       /** @description Name of the person being interviewed. */
       interviewee: string
@@ -723,7 +721,6 @@ export interface components {
       /** @description The interviews in relation to the investigation */
       interviews: components['schemas']['SyncInterviewRequest'][]
     }
-    /** @description The needs identified in the CSIP plan. */
     SyncNeedRequest: {
       /** @description Details of the need identified in the CSIP plan. */
       identifiedNeed: string
@@ -768,7 +765,6 @@ export interface components {
       /** @description The reviews of the CSIP plan. */
       reviews: components['schemas']['SyncReviewRequest'][]
     }
-    /** @description The referral that results in the creation of this CSIP record. */
     SyncReferralRequest: {
       /** Format: date */
       referralDate: string
@@ -823,7 +819,6 @@ export interface components {
       investigation?: components['schemas']['SyncInvestigationRequest']
       decisionAndActions?: components['schemas']['SyncDecisionAndActionsRequest']
     }
-    /** @description The reviews of the CSIP plan. */
     SyncReviewRequest: {
       /**
        * Format: date
@@ -915,7 +910,7 @@ export interface components {
       /** @description Additional information about the contributory factor to the incident or motivation for CSIP referral. */
       comment?: string
       /** Format: uuid */
-      id?: string
+      factorUuid?: string
     }
     /** @description The detail for updating a CSIP referral */
     MergeReferralRequest: {
@@ -988,6 +983,7 @@ export interface components {
        * @example 8cdadcf3-b003-4116-9956-c99bd8df6a00
        */
       factorUuid: string
+      /** @description The type of contributory factor to the incident or motivation for CSIP referral. */
       factorType: components['schemas']['ReferenceData']
       /** @description Additional information about the contributory factor to the incident or motivation for CSIP referral. */
       comment?: string
@@ -1006,15 +1002,20 @@ export interface components {
       prisonCodeWhenRecorded?: string
       /** @description User entered identifier for the CSIP record. Defaults to the prison code. */
       logCode?: string
+      /** @description The referral that results in the creation of this CSIP record. */
       referral: components['schemas']['Referral']
+      /** @description The CSIP Plan of this CSIP record. */
       plan?: components['schemas']['Plan']
+      /** @description The current status of the CSIP record. */
       status: components['schemas']['ReferenceData']
     }
     /** @description The Decision and Actions for the CSIP referral */
     DecisionAndActions: {
       /** @description The conclusion of the referral and reasons for the outcome decision. */
       conclusion?: string
+      /** @description The outcome decision for the referral. */
       outcome?: components['schemas']['ReferenceData']
+      /** @description The role of the person making the outcome decision. */
       signedOffByRole?: components['schemas']['ReferenceData']
       /** @description The username of the user who recorded the outcome decision. */
       recordedBy?: string
@@ -1092,6 +1093,7 @@ export interface components {
        * @example 2021-09-27
        */
       interviewDate: string
+      /** @description What role the interviewee played in the incident or referral. */
       intervieweeRole: components['schemas']['ReferenceData']
       /** @description Information provided in interview. */
       interviewText?: string
@@ -1110,6 +1112,10 @@ export interface components {
       personsTrigger?: string
       /** @description Any protective factors to reduce the person's risk factors and prevent triggers for instance of violence */
       protectiveFactors?: string
+      /** @description Username of the user that created the investigation */
+      recordedBy?: string
+      /** @description Display name of the user that created the investigation */
+      recordedByDisplayName?: string
       /** @description The interviews in relation to the Investigation */
       interviews: components['schemas']['Interview'][]
     }
@@ -1151,6 +1157,7 @@ export interface components {
       /**
        * Format: date-time
        * @description The date and time the code was deactivated
+       * @example 2023-11-08T09:53:34
        */
       deactivatedAt?: string
     }
@@ -1174,10 +1181,13 @@ export interface components {
        * @example 14:19:25
        */
       incidentTime?: string
+      /** @description The type of incident that motivated the CSIP referral. */
       incidentType: components['schemas']['ReferenceData']
+      /** @description The location of incident that motivated the CSIP referral. */
       incidentLocation: components['schemas']['ReferenceData']
       /** @description The person reporting the incident or creating the CSIP referral. */
       referredBy: string
+      /** @description The area of work of the person reporting the incident or creating the CSIP referral. */
       refererArea: components['schemas']['ReferenceData']
       /** @description Was this referral proactive or preventative. */
       isProactiveReferral?: boolean
@@ -1185,6 +1195,7 @@ export interface components {
       isStaffAssaulted?: boolean
       /** @description Name or names of assaulted members of staff if any. */
       assaultedStaffName?: string
+      /** @description The type of involvement the person had in the incident */
       incidentInvolvement?: components['schemas']['ReferenceData']
       /** @description The reasons why there is cause for concern. */
       descriptionOfConcern?: string
@@ -1210,8 +1221,11 @@ export interface components {
       referralCompletedByDisplayName?: string
       /** @description Contributory factors to the incident that motivated the referral. */
       contributoryFactors: components['schemas']['ContributoryFactor'][]
+      /** @description The investigation on the incident that motivated the CSIP referral. */
       investigation?: components['schemas']['Investigation']
+      /** @description The Safer Custody Screening Outcome for the CSIP referral. */
       saferCustodyScreeningOutcome?: components['schemas']['SaferCustodyScreeningOutcome']
+      /** @description The Decision and Actions for the CSIP referral. */
       decisionAndActions?: components['schemas']['DecisionAndActions']
     }
     /** @description A regular review of a CSIP Plan */
@@ -1258,6 +1272,7 @@ export interface components {
     }
     /** @description The Safer Custody Screening Outcome to the CSIP referral */
     SaferCustodyScreeningOutcome: {
+      /** @description The type of outcome of the safer custody screening. */
       outcome: components['schemas']['ReferenceData']
       /** @description The username of the user who recorded the safer custody screening outcome. */
       recordedBy: string
@@ -1316,6 +1331,7 @@ export interface components {
     CreateCsipRecordRequest: {
       /** @description User entered identifier for the CSIP record. Defaults to the prison code. */
       logCode?: string
+      /** @description The referral that results in the creation of this CSIP record. */
       referral: components['schemas']['CreateReferralRequest']
     }
     /** @description The request body for creating a CSIP referral */
@@ -1410,6 +1426,8 @@ export interface components {
       personsTrigger?: string
       /** @description Any protective factors to reduce the person's risk factors and prevent triggers for instance of violence */
       protectiveFactors?: string
+      recordedBy?: string
+      recordedByDisplayName?: string
       /** @description The interviews in relation to the investigation */
       interviews: components['schemas']['CreateInterviewRequest'][]
     }
@@ -1502,6 +1520,7 @@ export interface components {
     UpdateCsipRecordRequest: {
       /** @description User entered identifier for the CSIP record. Defaults to the prison code. */
       logCode?: string
+      /** @description The referral that results in the creation of this CSIP record. */
       referral?: components['schemas']['UpdateReferralRequest']
     }
     /** @description The detail for updating a CSIP referral */
@@ -1732,7 +1751,6 @@ export interface components {
       actionedBy?: string
       activeCaseloadId?: string
     }
-    Unit: Record<string, never>
   }
   responses: never
   parameters: never
@@ -2782,18 +2800,14 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description CSIP record deleted */
       204: {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Bad request */
       400: {
@@ -3460,7 +3474,7 @@ export interface operations {
       }
     }
   }
-  deleteCsipRecord_1: {
+  deleteRecord: {
     parameters: {
       query?: never
       header?: never

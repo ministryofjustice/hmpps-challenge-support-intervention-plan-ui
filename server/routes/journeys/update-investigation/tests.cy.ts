@@ -4,6 +4,7 @@ import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/
 import { components } from '../../../@types/csip'
 
 context('test /update-investigation', () => {
+  const uuid = v4()
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
@@ -38,6 +39,16 @@ context('test /update-investigation', () => {
     goToUpdatePage()
     checkAxeAccessibility()
     cy.findByRole('button', { name: /add another interview/i }).should('be.visible')
+
+    injectJourneyDataAndReload(uuid, {
+      csipRecord: {
+        referral: {
+          investigation: {
+            recordedByDisplayName: 'Jimbob Jenkins',
+          },
+        },
+      },
+    })
 
     checkInterviews()
     checkChangeLinks()
@@ -79,7 +90,6 @@ context('test /update-investigation', () => {
     addInformationFields.forEach(([field, heading]) => {
       it(`should disallow editing of ${heading} when nearing 4000 characters`, () => {
         cy.task('stubCsipRecordSuccessAwaitingDecision')
-        const uuid = v4()
 
         cy.signIn()
         cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-investigation/start`)
@@ -137,10 +147,8 @@ context('test /update-investigation', () => {
     cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/investigation$/)
     cy.findAllByRole('button', { name: /[\s\S]*record decision[\s\S]*/i }).should('be.visible')
 
-    cy.findAllByRole('link', { name: /update investigation/i })
-      .should('be.visible')
-      .first()
-      .click()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-investigation/start`)
+
     cy.url().should('to.match', /\/([0-9a-zA-Z]+-){4}[0-9a-zA-Z]+\/update-investigation$/)
     cy.title().should('to.match', /Update a CSIP investigation - DPS/)
     cy.findAllByRole('button', { name: /[\s\S]*record decision[\s\S]*/i }).should('not.exist')
@@ -157,5 +165,10 @@ context('test /update-investigation', () => {
     )
     cy.findByRole('link', { name: /add information about the prisoner’s triggers/i }).should('be.visible')
     cy.findByRole('link', { name: /add information about the prisoner’s protective factors/i }).should('be.visible')
+
+    cy.get('#main-content > div > div > dl > div:nth-child(7) > dt').should('contain.text', 'Recorded by')
+    cy.get('#main-content > div > div > dl > div:nth-child(7) > dd').should('contain.text', 'Jimbob Jenkins')
+    // Two children for label and value but no actions
+    cy.get('#main-content > div > div > dl > div:nth-child(7)').children().should('have.length', 2)
   }
 })
