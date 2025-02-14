@@ -348,6 +348,9 @@ context('test /csip-records', () => {
     cy.findByText('25 December 2024').should('be.visible')
     cy.findByText('Role2').should('be.visible')
     cy.findByText('some text').should('be.visible')
+
+    cy.get('#main-content > div > div > dl > div:nth-child(7) > dt').should('contain.text', 'Recorded by')
+    cy.get('#main-content > div > div > dl > div:nth-child(7) > dd').should('contain.text', 'Not provided')
   }
 
   const checkTabsForPlan = () => {
