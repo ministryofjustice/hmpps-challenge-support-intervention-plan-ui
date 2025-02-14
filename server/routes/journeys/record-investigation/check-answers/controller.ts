@@ -45,6 +45,8 @@ export class InvestigationCheckAnswersController extends BaseJourneyController {
           intervieweeRoleCode: interview.intervieweeRole!.code,
           interviewText: interview.interviewText!,
         })),
+        recordedBy: res.locals.user.username,
+        recordedByDisplayName: res.locals.user.displayName,
       })
       req.journeyData.journeyCompleted = true
       await this.auditService.logModificationApiCall(
