@@ -106,7 +106,7 @@
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
-    "@jgoz/esbuild-plugin-typecheck": "^4.0.2",
+    "@jgoz/esbuild-plugin-typecheck": "^4.0.3",
     "@ministryofjustice/eslint-config-hmpps": "^0.0.1-beta.1",
     "@testing-library/cypress": "^10.0.2",
     "@testing-library/dom": "^10.4.0",
