@@ -67,6 +67,10 @@ context('test /manage-csips', () => {
     cy.visit(`manage-csips?sort=nextReviewDate,desc`)
     cy.get('[aria-sort="descending"]').findByText('Next review date').should('exist')
 
+    cy.get('.moj-pagination__item--next > a > span').eq(0).should('have.text', 'Next Results page')
+    cy.get('.moj-pagination__item--next').eq(0).click()
+    cy.get('.moj-pagination__item--prev > a > span').eq(0).should('have.text', 'Previous Results page')
+
     // on clear, all params reset
     getClearLink().click()
     getStatusSelect().and('have.value', '')
