@@ -1,9 +1,9 @@
-{%- from "moj/components/pagination/macro.njk" import mojPagination -%}
+{%- from "partials/mojPagination/macro.njk" import mojPagination -%}
 
 {% macro simplePagination(params) %}
     {% if params.totalPages > 1 %}
-        {% set previous = undefined if params.currentPage <= 1 else ({ href: params.hrefTemplate | replace('{page}', params.currentPage - 1) }) %}
-        {% set next = undefined if params.currentPage >= params.totalPages else ({ href: params.hrefTemplate | replace('{page}', params.currentPage + 1) }) %}
+        {% set previous = undefined if params.currentPage <= 1 else ({ visuallyHiddenText: 'Previous Results page', href: params.hrefTemplate | replace('{page}', params.currentPage - 1) }) %}
+        {% set next = undefined if params.currentPage >= params.totalPages else ({ visuallyHiddenText: 'Next Results page', href: params.hrefTemplate | replace('{page}', params.currentPage + 1) }) %}
 
         {% set items = [] %}
         {% for page in range(1, params.totalPages + 1) %}
