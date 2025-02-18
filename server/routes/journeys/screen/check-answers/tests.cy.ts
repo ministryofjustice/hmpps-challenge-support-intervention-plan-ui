@@ -13,7 +13,7 @@ context('test /screen/check-answers', () => {
     cy.task('stubComponents')
     cy.task('stubCsipRecordGetSuccess')
     cy.task('stubScreeningOutcomeType')
-    cy.task('stubPostSaferCustodyScreening')
+    cy.task('stubPutSaferCustodyScreening')
   })
 
   it('should be able to change answers and proceed to confirmation', () => {

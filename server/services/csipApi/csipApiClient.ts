@@ -128,11 +128,11 @@ export default class CsipApiClient {
     })
   }
 
-  async createScreeningOutcome(
+  async upsertScreeningOutcome(
     recordUuid: string,
-    payload: components['schemas']['CreateSaferCustodyScreeningOutcomeRequest'],
+    payload: components['schemas']['UpsertSaferCustodyScreeningOutcomeRequest'],
   ) {
-    return this.restClient.post<components['schemas']['SaferCustodyScreeningOutcome']>({
+    return this.restClient.put<components['schemas']['UpsertSaferCustodyScreeningOutcomeRequest']>({
       path: `/csip-records/${recordUuid}/referral/safer-custody-screening`,
       data: payload,
     })

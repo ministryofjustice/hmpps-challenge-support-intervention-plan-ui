@@ -32,7 +32,7 @@ export class ScreenCheckAnswersController extends BaseJourneyController {
         req.journeyData,
         res.locals.auditEvent,
       )
-      await this.csipApiService.createScreeningOutcome(req, {
+      await this.csipApiService.upsertScreeningOutcome(req, {
         outcomeTypeCode: screening.outcomeType!.code,
         date: todayString(),
         reasonForDecision: screening.reasonForDecision!,

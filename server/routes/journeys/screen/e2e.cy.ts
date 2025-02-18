@@ -15,7 +15,7 @@ context('Screen a CSIP Referral Journey', () => {
     cy.task('stubContribFactors')
     cy.task('stubScreeningOutcomeType')
     cy.task('stubCsipRecordGetSuccess')
-    cy.task('stubPostSaferCustodyScreening')
+    cy.task('stubPutSaferCustodyScreening')
     cy.task('stubGetCsipOverview')
   })
 
