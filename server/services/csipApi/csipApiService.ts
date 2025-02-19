@@ -88,8 +88,8 @@ export default class CsipApiService {
     )
   }
 
-  createScreeningOutcome(req: Request, payload: Parameters<CsipApiClient['createScreeningOutcome']>[1]) {
-    return this.csipApiClientBuilder(req.systemClientToken).createScreeningOutcome(
+  upsertScreeningOutcome(req: Request, payload: Parameters<CsipApiClient['upsertScreeningOutcome']>[1]) {
+    return this.csipApiClientBuilder(req.systemClientToken).upsertScreeningOutcome(
       req.journeyData.csipRecord!.recordUuid,
       payload,
     )

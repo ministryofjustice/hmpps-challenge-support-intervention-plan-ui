@@ -746,8 +746,8 @@ const stubCsipRecordGetSuccessCFEdgeCases = () => {
   })
 }
 
-const stubPostSaferCustodyScreening = () => {
-  return createBasicHttpStub('POST', `/csip-api/csip-records/${uuidRegex}/referral/safer-custody-screening`, 200, {
+const stubPutSaferCustodyScreening = () => {
+  return createBasicHttpStub('PUT', `/csip-api/csip-records/${uuidRegex}/referral/safer-custody-screening`, 200, {
     outcome: {
       code: 'string',
       description: 'string',
@@ -1086,7 +1086,7 @@ export default {
   stubDecisionOutcomeType,
   stubScreeningOutcomeType,
   stubCsipRecordGetSuccess,
-  stubPostSaferCustodyScreening,
+  stubPutSaferCustodyScreening,
   stubPostInvestigation,
   stubPatchInvestigationSuccess,
   stubPatchInvestigationFail,
