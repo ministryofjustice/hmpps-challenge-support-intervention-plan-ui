@@ -117,7 +117,7 @@
       },
       {
         classes: 'govuk-link govuk-link--no-visited-state',
-        html: '<a href="/csip-records/' + csipRecord.id + '">View<span class="govuk-visually-hidden"> CSIP record</span></a>'
+        html: '<a href="/csip-records/' + csipRecord.id + '">View<span class="govuk-visually-hidden"><span id="prisoner-name">' + csipRecord.prisoner | lastNameCommaFirstName + '</span> CSIP record</span></a>'
       }
     ]), csipRecordRows) %}
   {% endfor %}
