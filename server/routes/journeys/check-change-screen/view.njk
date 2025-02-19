@@ -1,0 +1,78 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = true %}
+{% set pageTitle = "Are you sure you want to change the outcome for the referral screening? - Change CSIP screening outcome" %}
+
+{% block innerContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Change CSIP referral screening</span>
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Are you sure you want to change the outcome for the referral screening?</h1>
+
+      {{ govukWarningText({
+        text: "Changing the outcome will replace all of the following information in the CSIP referral screening for " + prisoner | firstNameSpaceLastName + ".",
+        iconFallbackText: "Warning"
+    }) }}
+
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-7",
+        rows: [
+            {
+              key: {
+                text: "Screening date"
+              },
+              value: {
+                text: saferCustodyScreening.date | formatDisplayDate
+              }
+            },
+            {
+              key: {
+                text: "Screening outcome"
+              },
+              value: {
+                text: saferCustodyScreening.outcome.description
+              }
+            },
+            {
+              key: {
+                text: "Reasons for decision"
+              },
+              value: {
+                html: saferCustodyScreening.reasonForDecision | escape | nl2br
+              }
+            },
+            {
+              key: {
+                text: "Recorded by"
+              },
+              value: {
+                html: saferCustodyScreening.recordedByDisplayName
+              }
+            }
+        ]
+    }) }}
+
+      <div class="govuk-button-group">
+        <form method="post">
+          <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+          {{ govukButton({
+                text: "Yes, change screening outcome",
+                preventDoubleClick: true,
+                classes: "govuk-button--warning"
+            }) }}
+          {{ govukButton({
+                text: "Cancel",
+                href: csipRecordUrl,
+                classes: "govuk-button--secondary",
+                preventDoubleClick: true
+            }) }}
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

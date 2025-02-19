@@ -1,15 +1,18 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
-{% set pageTitle = "Screen CSIP referral" %}
+{% set pageTitle = "Change CSIP screening outcome" if changeScreen else "Screen CSIP referral" %}
 {% extends "partials/layout.njk" %}
 
 {% block innerContent %}
-  <h1 class="govuk-heading-l">Screen a CSIP referral</h1>
+  {%if changeScreen %}
+    <span class="govuk-caption-l">Change CSIP referral screening</span>
+  {%endif%}
+    <h1 class="govuk-heading-l">Screen a CSIP referral</h1>
 
-  <form method="post">
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-    {{ govukRadios({
+    <form method="post">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+      {{ govukRadios({
         name: "outcomeType",
         fieldset: {
             legend: {
@@ -20,8 +23,8 @@
         items: outcomeTypeItems,
         errorMessage: validationErrors | findError('outcomeType')
     }) }}
-    
-    {{ govukCharacterCount({
+
+      {{ govukCharacterCount({
         label: {
           text: 'Describe the reasons for this decision',
           classes: "govuk-label--m"
@@ -33,10 +36,11 @@
         name: "reasonForDecision",
         value: reasonForDecision,
         errorMessage: validationErrors | findError('reasonForDecision')
-    }) }}    
-    {{ govukButton({
+    }) }}
+      {{ govukButton({
         text: "Continue",
         preventDoubleClick: true
     }) }}
-  </form>
-{% endblock %}
+    </form>
+  {% endblock %}
+  
