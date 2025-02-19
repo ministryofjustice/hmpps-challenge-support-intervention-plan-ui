@@ -143,10 +143,15 @@ context('Make a Referral Journey', () => {
     cy.get('.govuk-error-summary li:nth-of-type(3) a').should('have.text', 'Select the location of the incident')
     cy.get('.govuk-error-summary li:nth-of-type(4) a').should('have.text', 'Select the incident type')
 
+    cy.findByRole('link', { name: /enter a time using the 24-hour clock/i })
+      .should('be.visible')
+      .click()
+
+    cy.focused().should('have.attr', 'name', 'hour')
+
     // Check type error message disappears
     cy.findByRole('combobox', { name: /what was the incident type\?/i }).select(1)
     getContinue().click()
-    cy.findByRole('link', { name: /enter a time using the 24-hour clock/i }).should('be.visible')
     cy.findByRole('link', { name: /enter the date of the incident/i }).should('be.visible')
     cy.findByRole('link', { name: /select the location of the incident/i }).should('be.visible')
     cy.findByRole('link', { name: /select the incident type/i }).should('not.exist')

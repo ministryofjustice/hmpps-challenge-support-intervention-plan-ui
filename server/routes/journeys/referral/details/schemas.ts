@@ -55,7 +55,7 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Enter a time using the 24-hour clock',
-          path: ['incidentTime'],
+          path: ['incidentTime-hour'],
         })
       }
     })
