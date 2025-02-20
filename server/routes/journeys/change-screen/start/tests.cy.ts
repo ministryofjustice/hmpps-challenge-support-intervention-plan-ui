@@ -1,8 +1,9 @@
 import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
-context('test /csip-record/:recordUuid/referral/start', () => {
+context('test /csip-record/:recordUuid/change-screen/start', () => {
   const uuid = uuidV4()
+  const START_URL = `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/change-screen/start`
 
   beforeEach(() => {
     cy.task('reset')
@@ -10,20 +11,29 @@ context('test /csip-record/:recordUuid/referral/start', () => {
     cy.task('stubComponents')
   })
 
-  it('should redirect to /referral', () => {
+  it('should redirect to /change-screen', () => {
     cy.task('stubGetPrisoner')
     cy.task('stubGetPrisonerImage')
-    cy.task('stubCsipRecordGetSuccess')
+    cy.task('stubCsipRecordGetSuccessAfterScreeningWithReason')
     cy.signIn()
-    cy.visit(`${uuid}/prisoners/A1111AA/referral/start`, { failOnStatusCode: false })
-    cy.url().should('to.match', /\/referral\/on-behalf-of$/)
+    cy.visit(START_URL, { failOnStatusCode: false })
+    cy.url().should('to.match', /\/check-change-screen$/)
     checkAxeAccessibility()
   })
 
-  it('should redirect to dps prisoner search page if prisoner is not found', () => {
+  it('should redirect to root if CSIP record is not found', () => {
+    cy.task('stubGetCsipOverview')
+    cy.signIn()
+    cy.visit(START_URL)
+    cy.url().should('to.match', /http:\/\/localhost:3007\/$/)
+  })
+
+  it('should redirect to CSIP record screen if prisoner is not found', () => {
     cy.task('stubCsipRecordGetSuccess')
     cy.signIn()
-    cy.request({ url: `${uuid}/prisoners/A1111AA/referral/start`, failOnStatusCode: false })
-    cy.url().should('to.match', /\//)
+    cy.visit(START_URL, {
+      failOnStatusCode: false,
+    })
+    cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/referral$/)
   })
 })

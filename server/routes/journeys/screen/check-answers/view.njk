@@ -3,11 +3,19 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Check your answers before recording the screening outcome - Screen CSIP referral" %}
+{% set pageTitle = "Check your answers before recording the screening outcome - " + "Change CSIP screening outcome" if changeScreen else "Screen CSIP referral"  %}
 
 {% block innerContent %}
-    <span class="govuk-caption-l">Screen CSIP referral</span>
+    {%if changeScreen %}
+        <span class="govuk-caption-l">Change CSIP referral screening</span>
+    {%else%}
+        <span class="govuk-caption-l">Screen CSIP referral</span>
+    {%endif%}
+    
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check your answers before recording the screening outcome</h1>
+
+
+    {% set changeBaseLink = "../change-screen" if changeScreen else "../screen" %}
 
     {{ govukSummaryList({
         classes: "govuk-!-margin-bottom-7",
@@ -22,7 +30,7 @@
                 actions: {
                 items: [
                     {
-                        href: "../screen#outcomeType",
+                        href: changeBaseLink + "#outcomeType",
                         text: "Change",
                         visuallyHiddenText: "the screening outcome",
                         classes: "govuk-link--no-visited-state"
@@ -40,7 +48,7 @@
                 actions: {
                 items: [
                     {
-                        href: "../screen#reasonForDecision",
+                        href: changeBaseLink + "#reasonForDecision",
                         text: "Change",
                         visuallyHiddenText: "the description of the reasons for the decision",
                         classes: "govuk-link--no-visited-state"
