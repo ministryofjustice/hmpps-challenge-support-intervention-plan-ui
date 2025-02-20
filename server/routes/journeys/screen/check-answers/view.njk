@@ -3,7 +3,7 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Check your answers before recording the screening outcome - " + "Change CSIP screening outcome" if changeScreen else "Screen CSIP referral"  %}
+{% set pageTitle = "Check your answers before recording the screening outcome - " + ("Change CSIP screening outcome" if changeScreen else "Screen CSIP referral")  %}
 
 {% block innerContent %}
     {%if changeScreen %}
