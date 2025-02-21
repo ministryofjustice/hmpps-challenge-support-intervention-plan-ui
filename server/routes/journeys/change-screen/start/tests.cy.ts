@@ -21,6 +21,30 @@ context('test /csip-record/:recordUuid/change-screen/start', () => {
     checkAxeAccessibility()
   })
 
+  it('should disallow access when investigation pending but screening outcome is support outside CSIP', () => {
+    cy.task('stubCsipRecordGetSuccessAfterScreeningSupportOutsideCsip')
+    cy.signIn()
+    cy.visit(START_URL, { failOnStatusCode: false })
+
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
+  })
+
+  it('should disallow access when plan pending but screening outcome is support outside CSIP', () => {
+    cy.task('stubCsipRecordSuccessPlanPending')
+    cy.signIn()
+    cy.visit(START_URL, { failOnStatusCode: false })
+
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
+  })
+
+  it('should disallow access when neither plan pending nor investigation pending', () => {
+    cy.task('stubCsipRecordSuccessAwaitingDecisionNoInterviews')
+    cy.signIn()
+    cy.visit(START_URL, { failOnStatusCode: false })
+
+    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
+  })
+
   it('should redirect to root if CSIP record is not found', () => {
     cy.task('stubGetCsipOverview')
     cy.signIn()

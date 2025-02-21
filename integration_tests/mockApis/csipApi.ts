@@ -1,5 +1,6 @@
 import { stubFor } from './wiremock'
 import { YES_NO_ANSWER } from '../../server/routes/journeys/referral/safer-custody/schemas'
+import { CsipRecord } from '../../server/@types/csip/csipApiTypes'
 
 const uuidRegex = '([a-zA-Z0-9]+-){4}[a-zA-Z0-9]+'
 
@@ -345,6 +346,13 @@ const stubCsipRecordSuccessAwaitingDecision = () => {
     },
     referral: {
       ...csip.referral,
+      saferCustodyScreeningOutcome: {
+        outcome: { code: 'NFA', description: 'No further action' },
+        recordedBy: 'Test User',
+        recordedByDisplayName: 'Test',
+        date: '2024-08-01',
+        reasonForDecision: 'a very well thought out reason',
+      },
       investigation: {
         interviews: [
           {
@@ -370,7 +378,7 @@ const stubCsipRecordSuccessAwaitingDecision = () => {
         protectiveFactors: 'SomeFactors',
       },
     },
-  })
+  } as CsipRecord)
 }
 
 const stubCsipRecordSuccessAwaitingDecisionNoInterviews = () => {
@@ -404,6 +412,13 @@ const stubCsipRecordSuccessPlanPending = () => {
     },
     referral: {
       ...csip.referral,
+      saferCustodyScreeningOutcome: {
+        outcome: { code: 'NFA', description: 'No further action' },
+        recordedBy: 'Test User',
+        recordedByDisplayName: 'Test',
+        date: '2024-08-01',
+        reasonForDecision: 'a very well thought out reason',
+      },
       investigation: {
         interviews: [
           {
@@ -486,6 +501,13 @@ const stubCsipRecordSuccessCsipOpen = (
     },
     referral: {
       ...csip.referral,
+      saferCustodyScreeningOutcome: {
+        outcome: { code: 'AAA', description: 'Progress to investigation' },
+        recordedBy: 'Test User',
+        recordedByDisplayName: 'Test',
+        date: '2024-08-01',
+        reasonForDecision: 'a very well thought out reason',
+      },
       investigation: {
         interviews: [
           {

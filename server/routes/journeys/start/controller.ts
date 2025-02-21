@@ -3,6 +3,7 @@ import PrisonerSearchService from '../../../services/prisonerSearch/prisonerSear
 import { SanitisedError } from '../../../sanitisedError'
 import CsipApiService from '../../../services/csipApi/csipApiService'
 import { summarisePrisoner } from '../../../utils/utils'
+import { CsipRecord } from '../../../@types/csip/csipApiTypes'
 
 export class StartJourneyController {
   constructor(
@@ -31,40 +32,46 @@ export class StartJourneyController {
     }
   }
 
-  redirectWithCsipData = (url: string) => async (req: Request, res: Response) => {
-    const { csipRecordId, journeyId } = req.params
+  redirectWithCsipData =
+    (url: string, guard?: (csip: CsipRecord) => boolean) => async (req: Request, res: Response) => {
+      const { csipRecordId, journeyId } = req.params
 
-    try {
-      delete req.journeyData.csipRecord
-      const csip = await this.csipService.getCsipRecord(req, csipRecordId as string)
-      req.journeyData.csipRecord = csip
-      req.journeyData.saferCustodyScreening = csip.referral.saferCustodyScreeningOutcome
-        ? {
-            outcomeType: csip.referral.saferCustodyScreeningOutcome.outcome,
-            reasonForDecision: csip.referral.saferCustodyScreeningOutcome.reasonForDecision!,
-          }
-        : {}
-      req.journeyData.investigation = {}
-      req.journeyData.decisionAndActions = {}
-      req.journeyData.plan = {}
-      req.journeyData.review = {}
-      req.journeyData.prisoner = summarisePrisoner(
-        await this.prisonerSearchService.getPrisonerDetails(req, csip.prisonNumber as string),
-      )
+      try {
+        delete req.journeyData.csipRecord
+        const csip = await this.csipService.getCsipRecord(req, csipRecordId as string)
+        req.journeyData.csipRecord = csip
+        req.journeyData.saferCustodyScreening = csip.referral.saferCustodyScreeningOutcome
+          ? {
+              outcomeType: csip.referral.saferCustodyScreeningOutcome.outcome,
+              reasonForDecision: csip.referral.saferCustodyScreeningOutcome.reasonForDecision!,
+            }
+          : {}
+        req.journeyData.investigation = {}
+        req.journeyData.decisionAndActions = {}
+        req.journeyData.plan = {}
+        req.journeyData.review = {}
 
-      return res.redirect(`/${journeyId}${url}`)
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        const sanitisedError = error as SanitisedError
-        if (sanitisedError.status === 404) {
-          if (!req.journeyData.csipRecord) {
-            return res.redirect('/')
-          }
+        if (guard && !guard(csip)) {
           return res.redirect(`/csip-records/${csipRecordId}`)
         }
-      }
 
-      throw error
+        req.journeyData.prisoner = summarisePrisoner(
+          await this.prisonerSearchService.getPrisonerDetails(req, csip.prisonNumber as string),
+        )
+
+        return res.redirect(`/${journeyId}${url}`)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          const sanitisedError = error as SanitisedError
+          if (sanitisedError.status === 404) {
+            if (!req.journeyData.csipRecord) {
+              return res.redirect('/')
+            }
+            return res.redirect(`/csip-records/${csipRecordId}`)
+          }
+        }
+
+        throw error
+      }
     }
-  }
 }
