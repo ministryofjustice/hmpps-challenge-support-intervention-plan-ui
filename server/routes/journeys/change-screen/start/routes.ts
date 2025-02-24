@@ -14,13 +14,13 @@ export default function StartJourneyRoutes({ csipApiService, prisonerSearchServi
 
 export const shouldAllowChangeScreen = (csipRecord: CsipRecord) => {
   const csipRecordCode = csipRecord.status.code
-  const currentScreeningOutcome = csipRecord.referral?.saferCustodyScreeningOutcome?.outcome.description
+  const currentScreeningOutcome = csipRecord.referral?.saferCustodyScreeningOutcome?.outcome.code
 
-  if (csipRecordCode === 'INVESTIGATION_PENDING' && currentScreeningOutcome === 'Progress to investigation') {
+  if (csipRecordCode === 'INVESTIGATION_PENDING' && currentScreeningOutcome === 'OPE') {
     return true
   }
 
-  if (csipRecordCode === 'PLAN_PENDING' && currentScreeningOutcome === 'Progress to CSIP') {
+  if (csipRecordCode === 'PLAN_PENDING' && currentScreeningOutcome === 'CUR') {
     return true
   }
 

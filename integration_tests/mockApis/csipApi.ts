@@ -502,7 +502,7 @@ const stubCsipRecordSuccessCsipOpen = (
     referral: {
       ...csip.referral,
       saferCustodyScreeningOutcome: {
-        outcome: { code: 'AAA', description: 'Progress to investigation' },
+        outcome: { code: 'OPE', description: 'Progress to investigation' },
         recordedBy: 'Test User',
         recordedByDisplayName: 'Test',
         date: '2024-08-01',
@@ -719,7 +719,7 @@ const csipRecordWithScreeningOutcome = (
         recordedBy: 'TEST_USER',
         recordedByDisplayName: 'Test User',
         reasonForDecision: reason,
-        outcome: { code: 'E2E', description: 'Progress to investigation' },
+        outcome: { code: 'OPE', description: 'Progress to investigation' },
       },
     },
   }
