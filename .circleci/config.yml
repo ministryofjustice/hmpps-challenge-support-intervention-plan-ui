@@ -137,7 +137,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - MIC-980-deploy
       - hmpps/deploy_env:
           name: deploy_dev
           env: "dev"
@@ -148,7 +148,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - MIC-980-deploy
           requires:
             - helm_lint
             - integration_tests
@@ -171,23 +171,23 @@ workflows:
           requires:
             - request-preprod-approval
           helm_timeout: 5m
-      - request-prod-approval:
-          type: approval
-          requires:
-            - deploy_preprod
-      - hmpps/deploy_env:
-          name: deploy_prod
-          env: "prod"
-          jira_update: true
-          jira_env_type: production
-          pipeline_id: <<pipeline.id>>
-          pipeline_number: <<pipeline.number>>
-          context:
-            - hmpps-common-vars
-            - hmpps-challenge-support-intervention-plan-prod
-          requires:
-            - request-prod-approval
-          helm_timeout: 5m
+      # - request-prod-approval:
+      #     type: approval
+      #     requires:
+      #       - deploy_preprod
+      # - hmpps/deploy_env:
+      #     name: deploy_prod
+      #     env: "prod"
+      #     jira_update: true
+      #     jira_env_type: production
+      #     pipeline_id: <<pipeline.id>>
+      #     pipeline_number: <<pipeline.number>>
+      #     context:
+      #       - hmpps-common-vars
+      #       - hmpps-challenge-support-intervention-plan-prod
+      #     requires:
+      #       - request-prod-approval
+      #     helm_timeout: 5m
 
   security:
     triggers:
