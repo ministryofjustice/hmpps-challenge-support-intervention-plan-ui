@@ -5,7 +5,7 @@ import { getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldU
 
 const UPDATE_ERROR_MSG = 'Enter an update on next steps'
 
-export const schemaFactory = async (req: Request, res: Response) => {
+export const schemaFactory = async (req: Request, res: Response, isChange?: boolean) => {
   const { isUpdate, csipRecord } = req.journeyData
   const maxLengthChars = isUpdate
     ? getMaxCharsAndThresholdForAppend(res.locals.user.displayName, csipRecord?.referral?.decisionAndActions?.nextSteps)
@@ -19,7 +19,7 @@ export const schemaFactory = async (req: Request, res: Response) => {
         maxLengthChars,
         `${isUpdate ? 'Update' : 'Comments'} on next steps must be ${maxLengthChars.toLocaleString()} characters or less`,
       )
-      .refine(val => (val && val.trim().length > 0) || !isUpdate, UPDATE_ERROR_MSG)
+      .refine(val => (val && val.trim().length > 0) || !isUpdate || isChange, UPDATE_ERROR_MSG)
       .transform(val => (val?.trim().length ? val : null)),
   })
 }

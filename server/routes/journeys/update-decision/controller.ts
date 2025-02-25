@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import type PrisonerSearchService from '../../../services/prisonerSearch/prisonerSearchService'
 import { BaseJourneyController } from '../base/controller'
 import CsipApiService from '../../../services/csipApi/csipApiService'
-import { getNonUndefinedProp } from '../../../utils/utils'
+import { shouldAllowChangeDecision } from '../change-decision/routes'
 
 export class UpdateDecisionController extends BaseJourneyController {
   constructor(
@@ -21,11 +21,6 @@ export class UpdateDecisionController extends BaseJourneyController {
     const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
     const decision = record.referral!.decisionAndActions!
 
-    req.journeyData.decisionAndActions = {
-      ...getNonUndefinedProp(decision, 'conclusion'),
-      ...getNonUndefinedProp(decision, 'actionOther'),
-      ...getNonUndefinedProp(decision, 'nextSteps'),
-    }
     req.journeyData.isUpdate = true
 
     const secondaryButton = {
@@ -37,6 +32,7 @@ export class UpdateDecisionController extends BaseJourneyController {
       tabSelected: 'investigation',
       updatingEntity: 'investigation decision',
       isUpdate: true,
+      changeDecisionEnabled: shouldAllowChangeDecision(record),
       referralTabSelected: false,
       status: record.status.code,
       decision,

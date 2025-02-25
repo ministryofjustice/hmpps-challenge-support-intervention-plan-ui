@@ -34,6 +34,7 @@ export type JourneyData = {
   hasValidationErrors?: boolean
   journeyCompleted?: boolean
   isUpdate?: boolean
+  isChange?: boolean
   review?: Review
   stateGuard?: boolean
 }

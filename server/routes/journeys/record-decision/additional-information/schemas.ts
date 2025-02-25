@@ -8,7 +8,7 @@ const UPDATE_ERROR_MSG = 'Enter an update to the additional information'
 const TOO_LONG_ERROR_MSG = (isUpdate: boolean, maxLengthChars: number) =>
   `${isUpdate ? 'Update to the additional' : 'Additional'} information must be ${maxLengthChars.toLocaleString()} characters or less`
 
-export const schemaFactory = async (req: Request, res: Response) => {
+export const schemaFactory = async (req: Request, res: Response, isChange?: boolean) => {
   const maxLengthChars = req.journeyData.isUpdate
     ? getMaxCharsAndThresholdForAppend(
         res.locals.user.displayName,
@@ -21,7 +21,7 @@ export const schemaFactory = async (req: Request, res: Response) => {
       .string({ message: req.journeyData.isUpdate ? UPDATE_ERROR_MSG : ERROR_MSG })
       .max(maxLengthChars, TOO_LONG_ERROR_MSG(Boolean(req.journeyData.isUpdate), maxLengthChars))
       .refine(
-        val => (val && val.trim().length > 0) || !req.journeyData.isUpdate,
+        val => (val && val.trim().length > 0) || !req.journeyData.isUpdate || isChange,
         req.journeyData.isUpdate ? UPDATE_ERROR_MSG : ERROR_MSG,
       )
       .transform(val => (val?.trim().length ? val : null)),

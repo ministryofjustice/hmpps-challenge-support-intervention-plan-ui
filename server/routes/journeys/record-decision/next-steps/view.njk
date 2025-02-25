@@ -4,12 +4,14 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Add " + ('more' if isUpdate else 'any') + " comments on next steps - " + ('Update' if isUpdate else 'Record') + " a CSIP investigation decision" %}
+{% set title = "Add " + ('more' if isUpdate else 'any') + " comments on next steps" %}
+{% set caption = "Change a CSIP investigation decision" if changeDecision else ('Update' if isUpdate else 'Record') + " a CSIP investigation decision" %}
+{% set pageTitle = title + " - " + caption %}
 
 {% block innerContent %}
-    {% include 'base/components/decision-caption.njk' %}
+    <span class="govuk-caption-l">{{ caption }}</span>
     <label for="nextSteps">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Add {{'more' if isUpdate else 'any'}} comments on next steps{{'' if isUpdate else ' (optional)'}}</h1>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{title}}{{'' if isUpdate else ' (optional)'}}</h1>
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>

@@ -4,12 +4,14 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Add additional information - Update a CSIP investigation decision" if isUpdate else "Add additional information - Record a CSIP investigation decision" %}
+{% set title = "Add additional information" %}
+{% set caption = "Change a CSIP investigation decision" if changeDecision else ("Update" if isUpdate else "Record") + " a CSIP investigation decision" %}
+{% set pageTitle = title + " - " + caption %}
 
 {% block innerContent %}
-    {% include 'base/components/decision-caption.njk' %}
+    <span class="govuk-caption-l">{{ caption }}</span>
     <label for="actionOther">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ "Add additional information" if isUpdate else "Add additional information (optional)" }}</h1>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ title + ('' if isUpdate else ' (optional)') }}</h1>
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>

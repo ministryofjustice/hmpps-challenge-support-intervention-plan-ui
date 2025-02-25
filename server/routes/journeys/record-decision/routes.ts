@@ -33,7 +33,6 @@ export const DecisionRoutes = ({ services, path }: { services: Services; path: s
   router.use('/csip-record/:csipRecordId/record-decision/start', StartJourneyRoutes(services))
   router.use(path, journeyStateGuard(guard, services.appInsightsClient))
   router.use(path, Routes(services))
-
   return router
 }
 
