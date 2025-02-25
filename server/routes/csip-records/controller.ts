@@ -5,6 +5,7 @@ import PrisonerSearchService from '../../services/prisonerSearch/prisonerSearchS
 import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../utils/constants'
 import { attendeeSorter, identifiedNeedSorter, interviewSorter } from '../../utils/sorters'
 import { isCsipProcessor } from '../../authentication/authorisedRoles'
+import { shouldAllowChangeScreen } from '../journeys/change-screen/start/routes'
 
 export class CsipRecordController {
   constructor(
@@ -163,6 +164,7 @@ export class CsipRecordController {
       status: record.status.code,
       updatingEntity: record.plan ? null : 'referral',
       shouldShowTabs: !!investigation || !!record.plan || record.status.code === 'PLAN_PENDING',
+      changeScreenEnabled: shouldAllowChangeScreen(record, res),
       plan: record.plan,
       identifiedNeeds: record.plan?.identifiedNeeds.sort(identifiedNeedSorter),
       reviews: record.plan?.reviews

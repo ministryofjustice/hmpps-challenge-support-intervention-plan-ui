@@ -6,36 +6,45 @@
     classes: "govuk-!-margin-bottom-9",
     rows: [
         {
-            key: {
+          key: {
             text: "Screening date"
-        },
-            value: {
+          },
+          value: {
             text: screening.date | formatDisplayDate
-        }
+          }
         },
         {
-            key: {
+          key: {
             text: "Screening outcome"
-        },
-            value: {
+          },
+          value: {
             text: screening.outcome.description
-        }
+          },
+          actions: {
+            items: [
+              {
+                href: "/csip-record/" + recordUuid + "/change-screen/start",
+                text: "Change outcome",
+                classes: "govuk-link--no-visited-state"
+              }
+            ]
+          } if changeScreenEnabled and isCsipProcessor
         },
         {
-            key: {
+          key: {
             text: "Reasons for decision"
-        },
-            value: {
+          },
+          value: {
             html: (screening.reasonForDecision | escape | nl2br) if screening.reasonForDecision else "Not provided"
-        }
+          }
         },
         {
-            key: {
+          key: {
             text: "Recorded by"
-        },
-            value: {
+          },
+          value: {
             text: screening.recordedByDisplayName
-        }
+          }
         }
     ]
 }) }}

@@ -1,5 +1,6 @@
 import { stubFor } from './wiremock'
 import { YES_NO_ANSWER } from '../../server/routes/journeys/referral/safer-custody/schemas'
+import { CsipRecord } from '../../server/@types/csip/csipApiTypes'
 
 const uuidRegex = '([a-zA-Z0-9]+-){4}[a-zA-Z0-9]+'
 
@@ -345,6 +346,13 @@ const stubCsipRecordSuccessAwaitingDecision = () => {
     },
     referral: {
       ...csip.referral,
+      saferCustodyScreeningOutcome: {
+        outcome: { code: 'NFA', description: 'No further action' },
+        recordedBy: 'Test User',
+        recordedByDisplayName: 'Test',
+        date: '2024-08-01',
+        reasonForDecision: 'a very well thought out reason',
+      },
       investigation: {
         interviews: [
           {
@@ -370,7 +378,7 @@ const stubCsipRecordSuccessAwaitingDecision = () => {
         protectiveFactors: 'SomeFactors',
       },
     },
-  })
+  } as CsipRecord)
 }
 
 const stubCsipRecordSuccessAwaitingDecisionNoInterviews = () => {
@@ -395,53 +403,27 @@ const stubCsipRecordSuccessAwaitingDecisionNoInterviews = () => {
   })
 }
 
-const stubCsipRecordSuccessPlanPending = () => {
-  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
-    ...csip,
-    status: {
-      code: 'PLAN_PENDING',
-      description: 'Plan pending',
-    },
+const stubCsipRecordSuccessPlanPendingCUR = () => {
+  const planPendingCURBody = {
+    ...planPendingBody,
     referral: {
-      ...csip.referral,
-      investigation: {
-        interviews: [
-          {
-            interviewee: 'Some Person',
-            interviewDate: '2024-12-25',
-            intervieweeRole: { code: 'B', description: 'Role2' },
-            interviewText: 'some text',
-          },
-        ],
-        staffInvolved: 'staff stafferson',
-        evidenceSecured: 'SomeVidence',
-        occurrenceReason: 'bananas',
-        personsUsualBehaviour: 'a great person',
-        personsTrigger: 'spiders',
-        protectiveFactors: 'SomeFactors',
-      },
-      decisionAndActions: {
-        conclusion: 'dec-conc',
-        outcome: { code: 'ACC', description: 'Another option' },
-        signedOffByRole: {
-          code: 'A',
-          description: 'prison officer',
-        },
-        recordedBy: 'some person',
-        recordedByDisplayName: 'some person longer',
-        date: '2024-08-01',
-        nextSteps: `stuff up
-            and there
-            
-            whilst also being down here`,
-        actions: ['OPEN_CSIP_ALERT'],
-        actionOther: `some action
-            with another one
-            
-            a final action`,
+      ...planPendingBody.referral,
+      saferCustodyScreeningOutcome: {
+        ...planPendingBody.referral.saferCustodyScreeningOutcome,
+        outcome: { code: 'CUR', description: 'Progress to CSIP' },
       },
     },
-  })
+  }
+  return createBasicHttpStub(
+    'GET',
+    '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550',
+    200,
+    planPendingCURBody,
+  )
+}
+
+const stubCsipRecordSuccessPlanPending = () => {
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, planPendingBody)
 }
 
 const stubCsipRecordSuccessCsipOpen = (
@@ -486,6 +468,13 @@ const stubCsipRecordSuccessCsipOpen = (
     },
     referral: {
       ...csip.referral,
+      saferCustodyScreeningOutcome: {
+        outcome: { code: 'OPE', description: 'Progress to investigation' },
+        recordedBy: 'Test User',
+        recordedByDisplayName: 'Test',
+        date: '2024-08-01',
+        reasonForDecision: 'a very well thought out reason',
+      },
       investigation: {
         interviews: [
           {
@@ -697,7 +686,7 @@ const csipRecordWithScreeningOutcome = (
         recordedBy: 'TEST_USER',
         recordedByDisplayName: 'Test User',
         reasonForDecision: reason,
-        outcome: { code: 'E2E', description: 'Progress to investigation' },
+        outcome: { code: 'OPE', description: 'Progress to investigation' },
       },
     },
   }
@@ -1072,6 +1061,60 @@ export const csip = {
   },
 }
 
+const planPendingBody = {
+  ...csip,
+  status: {
+    code: 'PLAN_PENDING',
+    description: 'Plan pending',
+  },
+  referral: {
+    ...csip.referral,
+    saferCustodyScreeningOutcome: {
+      outcome: { code: 'NFA', description: 'No further action' },
+      recordedBy: 'Test User',
+      recordedByDisplayName: 'Test',
+      date: '2024-08-01',
+      reasonForDecision: 'a very well thought out reason',
+    },
+    investigation: {
+      interviews: [
+        {
+          interviewee: 'Some Person',
+          interviewDate: '2024-12-25',
+          intervieweeRole: { code: 'B', description: 'Role2' },
+          interviewText: 'some text',
+        },
+      ],
+      staffInvolved: 'staff stafferson',
+      evidenceSecured: 'SomeVidence',
+      occurrenceReason: 'bananas',
+      personsUsualBehaviour: 'a great person',
+      personsTrigger: 'spiders',
+      protectiveFactors: 'SomeFactors',
+    },
+    decisionAndActions: {
+      conclusion: 'dec-conc',
+      outcome: { code: 'ACC', description: 'Another option' },
+      signedOffByRole: {
+        code: 'A',
+        description: 'prison officer',
+      },
+      recordedBy: 'some person',
+      recordedByDisplayName: 'some person longer',
+      date: '2024-08-01',
+      nextSteps: `stuff up
+          and there
+          
+          whilst also being down here`,
+      actions: ['OPEN_CSIP_ALERT'],
+      actionOther: `some action
+          with another one
+          
+          a final action`,
+    },
+  },
+}
+
 export default {
   stubAreaOfWork,
   stubIncidentLocation,
@@ -1139,4 +1182,5 @@ export default {
   stubCsipRecordGetSuccessReferralPendingMatchingReferrer,
   stubCsipRecordPutSuccess,
   stubCurrentCsipStatusExistingReferral,
+  stubCsipRecordSuccessPlanPendingCUR,
 }

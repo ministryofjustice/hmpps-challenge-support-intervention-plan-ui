@@ -82,6 +82,7 @@ context('test /csip-records', () => {
     checkTabsForPlan()
 
     checkReviews()
+    checkChangeScreenLink(false)
   })
 
   it('should render a post-decision, pre review csip record', () => {
@@ -104,6 +105,7 @@ context('test /csip-records', () => {
     checkTabsForPlan()
 
     checkReviews()
+    checkChangeScreenLink(false)
   })
 
   it('should render a post-investigation, pre decision csip record (read only)', () => {
@@ -120,6 +122,7 @@ context('test /csip-records', () => {
     checkInvestigationDetailsExist()
 
     checkTabsAndReferral()
+    checkChangeScreenLink(false)
   })
 
   it('should render a post-investigation, pre decision csip record', () => {
@@ -134,6 +137,7 @@ context('test /csip-records', () => {
     checkInvestigationDetailsExist()
 
     checkTabsAndReferral()
+    checkChangeScreenLink(false)
   })
 
   it('should render pre-investigation csip record (read only)', () => {
@@ -186,6 +190,7 @@ context('test /csip-records', () => {
     cy.findByRole('heading', { name: /referral details/i }).should('be.visible')
     cy.findByRole('heading', { name: /referral screening/i }).should('be.visible')
     cy.findAllByRole('button', { name: /record investigation/i }).should('not.exist')
+    checkChangeScreenLink(false, false)
   })
 
   it('should render a post-screen csip record (no screening reason)', () => {
@@ -203,6 +208,8 @@ context('test /csip-records', () => {
     cy.contains('dt', 'Screening outcome').next().should('include.text', `Progress to investigation`)
     cy.contains('dt', 'Reasons for decision').next().should('include.text', `Not provided`)
     cy.contains('dt', 'Recorded by').next().should('include.text', `Test User`)
+
+    checkChangeScreenLink(true, false)
   })
 
   it('should render a post-screen csip record (with screening reason)', () => {
@@ -221,6 +228,7 @@ context('test /csip-records', () => {
     cy.contains('dt', 'Reasons for decision').next().should('include.text', `a very well thought out reason`)
     cy.contains('dt', 'Recorded by').next().should('include.text', `Test User`)
     cy.findAllByText(/Recorded by/).should('have.length', 1) // Only screening recorded by should show as we set referralCompletedByDisplayName to undefined
+    checkChangeScreenLink(true, false)
   })
 
   it('should render a post-decision, pre-plan csip record (read only)', () => {
@@ -236,6 +244,7 @@ context('test /csip-records', () => {
 
     checkDecision()
     checkTabsAndReferral()
+    checkChangeScreenLink(false)
   })
 
   it('should render a post-decision, pre-plan csip record', () => {
@@ -249,6 +258,8 @@ context('test /csip-records', () => {
 
     checkDecision()
     checkTabsAndReferral()
+
+    checkChangeScreenLink(false)
 
     cy.findAllByRole('button', { name: /develop initial plan/i })
       .first()
@@ -361,6 +372,21 @@ context('test /csip-records', () => {
       .should('have.text', 'Plan')
       .should('have.attr', 'aria-current', 'page')
     cy.get('#main-content > div > div > nav > ul > li > a').eq(3).should('have.text', 'Reviews')
+  }
+
+  const checkChangeScreenLink = (visible: boolean, hasTabs: boolean = true) => {
+    if (hasTabs) {
+      cy.findByRole('link', { name: /referral/i })
+        .eq(0)
+        .should('be.visible')
+        .click()
+    }
+
+    if (visible) {
+      cy.contains('dt', 'Screening outcome').next().next().should('include.text', `Change outcome`)
+    } else {
+      cy.contains('dt', 'Screening outcome').parent().children().should('have.length', 2)
+    }
   }
 
   const checkTabsAndReferral = () => {

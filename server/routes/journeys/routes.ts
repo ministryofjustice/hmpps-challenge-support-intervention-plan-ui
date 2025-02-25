@@ -16,6 +16,7 @@ import { UpdateReviewRoutes } from './update-review/routes'
 import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 import AuthorisedRoles from '../../authentication/authorisedRoles'
 import setUpJourneyData from '../../middleware/setUpJourneyData'
+import { ChangeScreenRoutes } from './change-screen/routes'
 
 export const JourneyRoutes = (services: Services) => {
   const router = Router({ mergeParams: true })
@@ -39,6 +40,7 @@ export const JourneyRoutes = (services: Services) => {
   router.use('/', UpdatePlanRoutes({ services, path: '/update-plan' }))
   router.use('/', RecordReviewRoutes({ services, path: '/record-review' }))
   router.use('/', UpdateReviewRoutes({ services, path: '/update-review' }))
+  router.use('/', ChangeScreenRoutes({ services, path: '/change-screen' }))
 
   if (process.env.NODE_ENV === 'e2e-test') {
     /* eslint-disable no-param-reassign */
