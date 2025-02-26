@@ -13,7 +13,7 @@ context('test /record-decision/next-steps', () => {
     cy.task('stubGetPrisoner')
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
-    cy.task('stubCsipRecordGetSuccess')
+    cy.task('stubCsipRecordSuccessPlanPending')
   })
 
   it('should try out all cases', () => {
@@ -30,15 +30,15 @@ context('test /record-decision/next-steps', () => {
 
   const navigateToTestPage = () => {
     cy.signIn()
-    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-decision/start`, {
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-decision/start`, {
       failOnStatusCode: false,
     })
-    cy.url().should('to.match', /\/record-decision$/)
-    cy.visit(`${uuid}/record-decision/next-steps`)
+    cy.url().should('to.match', /\/update-decision$/)
+    cy.visit(`${uuid}/change-decision/next-steps`)
   }
 
   const validatePageContents = () => {
-    cy.title().should('equal', 'Add any comments on next steps - Record a CSIP investigation decision - DPS')
+    cy.title().should('equal', 'Add any comments on next steps - Change a CSIP investigation decision - DPS')
     cy.findByRole('heading', { name: /Add any comments on next steps \(optional\)/ }).should('be.visible')
     cy.findByText("updating Tes'name User’s non-associations").should('be.visible')
     getInputTextbox().should('be.visible')
@@ -49,12 +49,12 @@ context('test /record-decision/next-steps', () => {
   }
 
   const validateErrorMessage = () => {
-    getInputTextbox().type('a'.repeat(4001), {
+    getInputTextbox().clear().type('a'.repeat(4001), {
       delay: 0,
     })
     getContinueButton().click()
 
-    cy.title().should('equal', 'Error: Add any comments on next steps - Record a CSIP investigation decision - DPS')
+    cy.title().should('equal', 'Error: Add any comments on next steps - Change a CSIP investigation decision - DPS')
     cy.findByRole('link', { name: /Comments on next steps must be 4,000 characters or less/i })
       .should('be.visible')
       .click()

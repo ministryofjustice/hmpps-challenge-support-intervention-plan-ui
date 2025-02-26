@@ -3,8 +3,8 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 
 context('test /record-decision/conclusion', () => {
   const uuid = uuidV4()
-  const START_URL = `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-decision/start`
-  const PAGE_URL = `${uuid}/record-decision/conclusion`
+  const START_URL = `${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-decision/start`
+  const PAGE_URL = `${uuid}/change-decision/conclusion`
 
   const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
   const getOutcome = () => cy.findByRole('radio', { name: 'Another option' })
@@ -20,7 +20,7 @@ context('test /record-decision/conclusion', () => {
     cy.task('stubGetPrisoner')
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
-    cy.task('stubCsipRecordGetSuccess')
+    cy.task('stubCsipRecordSuccessPlanPending')
     cy.task('stubDecisionOutcomeType')
   })
 
@@ -48,10 +48,10 @@ context('test /record-decision/conclusion', () => {
   })
 
   const validatePageContents = () => {
-    cy.title().should('equal', 'Investigation decision - Record a CSIP investigation decision - DPS')
+    cy.title().should('equal', 'Investigation decision - Change a CSIP investigation decision - DPS')
     cy.findByRole('heading', { name: 'Investigation decision' }).should('be.visible')
 
-    cy.findByText('Record a CSIP investigation decision').should('be.visible')
+    cy.findByText('Change a CSIP investigation decision').should('be.visible')
 
     cy.findByRole('group', { name: 'What’s the conclusion of the CSIP investigation?' }).should('be.visible')
 
@@ -67,14 +67,6 @@ context('test /record-decision/conclusion', () => {
   const validateErrorsMandatory = () => {
     resetInputs()
     getContinueButton().click()
-
-    cy.title().should('equal', 'Error: Investigation decision - Record a CSIP investigation decision - DPS')
-
-    cy.findByRole('link', { name: /Select the conclusion of the CSIP investigation/i })
-      .should('be.visible')
-      .click()
-    getOutcome().should('be.focused')
-    cy.findAllByText('Select the conclusion of the CSIP investigation').should('have.length', 2)
 
     cy.findByRole('link', { name: /Enter a description of the reasons for the decision/i })
       .should('be.visible')

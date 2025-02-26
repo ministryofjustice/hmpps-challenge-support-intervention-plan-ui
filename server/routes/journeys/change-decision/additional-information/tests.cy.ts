@@ -1,7 +1,7 @@
 import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
-context('test /record-decision/additional-information', () => {
+context('test /change-decision/additional-information', () => {
   const uuid = uuidV4()
 
   const getInputTextbox = () => cy.findByRole('textbox', { name: 'Add additional information (optional)' })
@@ -13,7 +13,7 @@ context('test /record-decision/additional-information', () => {
     cy.task('stubGetPrisoner')
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
-    cy.task('stubCsipRecordGetSuccess')
+    cy.task('stubCsipRecordSuccessPlanPending')
   })
 
   it('should try out all cases', () => {
@@ -31,15 +31,15 @@ context('test /record-decision/additional-information', () => {
 
   const navigateToTestPage = () => {
     cy.signIn()
-    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-decision/start`, {
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-decision/start`, {
       failOnStatusCode: false,
     })
-    cy.url().should('to.match', /\/record-decision$/)
-    cy.visit(`${uuid}/record-decision/additional-information`)
+    cy.url().should('to.match', /\/update-decision$/)
+    cy.visit(`${uuid}/change-decision/additional-information`)
   }
 
   const validatePageContents = () => {
-    cy.title().should('equal', 'Add additional information - Record a CSIP investigation decision - DPS')
+    cy.title().should('equal', 'Add additional information - Change a CSIP investigation decision - DPS')
     cy.findByRole('heading', { name: /Add additional information \(optional\)/ }).should('be.visible')
     cy.findByText(
       'Any other information relating to the CSIP investigation decision, such as action already taken.',
@@ -52,12 +52,12 @@ context('test /record-decision/additional-information', () => {
   }
 
   const validateErrorMessage = () => {
-    getInputTextbox().type('a'.repeat(4001), {
+    getInputTextbox().clear().type('a'.repeat(4001), {
       delay: 0,
     })
     getContinueButton().click()
 
-    cy.title().should('equal', 'Error: Add additional information - Record a CSIP investigation decision - DPS')
+    cy.title().should('equal', 'Error: Add additional information - Change a CSIP investigation decision - DPS')
     cy.findByRole('link', { name: /Additional information must be 4,000 characters or less/i })
       .should('be.visible')
       .click()

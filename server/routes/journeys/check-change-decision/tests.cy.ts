@@ -1,9 +1,9 @@
 import { v4 as uuidV4 } from 'uuid'
-import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
 import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
+import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
 
-context('test /edit-log-code', () => {
-  const uuid = uuidV4()
+context('test /record-decision/check-answers', () => {
+  let uuid = uuidV4()
 
   beforeEach(() => {
     cy.task('reset')
@@ -11,64 +11,71 @@ context('test /edit-log-code', () => {
     cy.task('stubGetPrisoner')
     cy.task('stubGetPrisonerImage')
     cy.task('stubComponents')
-    cy.task('stubCsipRecordGetSuccessAfterScreeningWithReason')
+    cy.task('stubCsipRecordSuccessPlanPending')
+    cy.task('stubDecisionSignerRoles')
+    cy.task('stubDecisionOutcomeType')
+    cy.task('stubPutDecision')
+    uuid = uuidV4()
   })
 
-  it('should redirect to home page when journey has expired or is not found', () => {
-    cy.signIn()
-    injectJourneyDataAndReload('12e5854f-f7b1-4c56-bec8-69e390eb8550', { stateGuard: true })
-    cy.visit(`12e5854f-f7b1-4c56-bec8-69e390eb8550/check-change-screen`, { failOnStatusCode: false })
-
-    cy.url().should('to.match', /\/$/)
-  })
-
-  it('should try out all cases', () => {
-    cy.task('stubCsipRecordPatchSuccess')
+  it('should show interstitial page with details of current decision', () => {
     navigateToTestPage()
-    cy.url().should('to.match', /\/check-change-screen$/)
 
     checkAxeAccessibility()
-    validatePageContents()
 
-    cy.findByRole('button', { name: /Cancel/ })
-      .should('be.visible')
-      .click()
-    cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/referral$/)
+    cy.url().should('to.match', /\/check-change-decision$/)
+    cy.title().should(
+      'equal',
+      'Are you sure you want to change the outcome of the CSIP investigation? - Change a CSIP investigation decision - DPS',
+    )
+    cy.findByRole('heading', { name: /Are you sure you want to change the outcome of the CSIP investigation?/ }).should(
+      'be.visible',
+    )
 
-    cy.go('back')
+    cy.findByText(
+      `Changing the outcome will replace all of the following information in the CSIP investigation decision for Tes'name User.`,
+    ).should('be.visible')
 
-    cy.findByRole('button', { name: /Yes, change screening outcome/ })
-      .should('be.visible')
-      .click()
-    cy.url().should('to.match', /\/change-screen$/)
+    cy.contains('dt', 'Signed off by').next().should('include.text', `SignerRole1`)
+
+    cy.contains('dt', 'Outcome').next().should('include.text', `No further action`)
+
+    cy.contains('dt', 'Reasons for decision').next().should('include.text', `<script>alert('xss-conclusion');</script>`)
+
+    cy.contains('dt', 'Comments on next steps')
+      .next()
+      .should('include.text', `<script>alert('xss-nextSteps');</script>`)
+
+    cy.contains('dt', 'Additional information')
+      .next()
+      .should('include.text', `<script>alert('xss-actionOther');</script>`)
+
+    continueToConfirmation()
   })
 
   const navigateToTestPage = () => {
     cy.signIn()
-    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/change-screen/start`, {
-      failOnStatusCode: false,
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/update-decision/start`)
+
+    cy.visit(`${uuid}/check-change-decision`)
+
+    injectJourneyDataAndReload(uuid, {
+      csipRecord: {
+        referral: {
+          decisionAndActions: {
+            signedOffByRole: { code: 'A', description: 'SignerRole1' },
+            outcome: { code: 'NFA', description: 'No further action' },
+            conclusion: `<script>alert('xss-conclusion');</script>`,
+            nextSteps: `<script>alert('xss-nextSteps');</script>`,
+            actionOther: `<script>alert('xss-actionOther');</script>`,
+          },
+        },
+      },
     })
   }
 
-  const validatePageContents = () => {
-    cy.title().should(
-      'equal',
-      'Are you sure you want to change the outcome for the referral screening? - Change CSIP screening outcome - DPS',
-    )
-    cy.findByRole('heading', {
-      name: /Are you sure you want to change the outcome for the referral screening?/,
-    }).should('be.visible')
-
-    cy.findByText(
-      `Changing the outcome will replace all of the following information in the CSIP referral screening for Tes'name User.`,
-    )
-
-    cy.contains('dt', 'Screening date').next().should('include.text', `1 August 2024`)
-    cy.contains('dt', 'Screening outcome').next().should('include.text', `Progress to investigation`)
-    cy.contains('dt', 'Reasons for decision').next().should('include.text', `a very well thought out reason`)
-    cy.contains('dt', 'Recorded by').next().should('include.text', `Test User`)
-
-    cy.findByRole('button', { name: /Yes, change screening outcome/ }).should('be.visible')
-    cy.findByRole('button', { name: /Cancel/ }).should('be.visible')
+  const continueToConfirmation = () => {
+    cy.findByRole('button', { name: /Yes, change outcome and record new decision/i }).click()
+    cy.url().should('to.match', /\/change-decision$/)
   }
 })

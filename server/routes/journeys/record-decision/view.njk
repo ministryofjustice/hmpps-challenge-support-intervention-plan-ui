@@ -5,7 +5,7 @@
 
 {% set title = "Who’s signing off on this decision?" %}
 {% set caption = "Change a CSIP investigation decision" if changeDecision else "Record a CSIP investigation decision" %}
-{% set pageTitle = title + caption %}
+{% set pageTitle = title + " - " + caption %}
 
 {% block innerContent %}
     <span class="govuk-caption-l">{{ caption }}</span>
