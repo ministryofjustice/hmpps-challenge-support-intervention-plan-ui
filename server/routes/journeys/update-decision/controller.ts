@@ -15,9 +15,6 @@ export class UpdateDecisionController extends BaseJourneyController {
   UPDATE = async (req: Request, res: Response) => {
     const record = req.journeyData.csipRecord!
     if (!record.referral.decisionAndActions || record.plan) {
-      console.log(`IS THERE A PLAN? : ${!!record.plan}`)
-      console.log(`IS THERE A REFERRAL? : ${!!record.referral}`)
-      console.log(`IS THERE A DECISION? : ${!!record.referral?.decisionAndActions}`)
       return res.redirect(`/csip-records/${record.recordUuid}`)
     }
 
