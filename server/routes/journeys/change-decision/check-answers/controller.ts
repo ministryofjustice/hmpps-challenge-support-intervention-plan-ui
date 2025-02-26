@@ -3,6 +3,7 @@ import { BaseJourneyController } from '../../base/controller'
 import { todayString } from '../../../../utils/datetimeUtils'
 import CsipApiService from '../../../../services/csipApi/csipApiService'
 import AuditService from '../../../../services/auditService'
+import { FLASH_KEY__CSIP_SUCCESS_MESSAGE } from '../../../../utils/constants'
 
 export class CheckAnswersController extends BaseJourneyController {
   constructor(
@@ -63,7 +64,8 @@ export class CheckAnswersController extends BaseJourneyController {
     }
   }
 
-  POST = async (_req: Request, res: Response) => {
-    res.redirect('confirmation')
+  POST = async (req: Request, res: Response) => {
+    req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, `You’ve changed the CSIP investigation decision.`)
+    res.redirect(`/csip-records/${req.journeyData.csipRecord!.recordUuid}`)
   }
 }

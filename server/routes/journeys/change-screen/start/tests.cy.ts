@@ -21,6 +21,17 @@ context('test /csip-record/:recordUuid/change-screen/start', () => {
     checkAxeAccessibility()
   })
 
+  it('should disallow access when CSIP processor role not present', () => {
+    cy.task('stubSignIn', { roles: [] })
+    cy.task('stubGetPrisoner')
+    cy.task('stubGetPrisonerImage')
+    cy.task('stubCsipRecordGetSuccessAfterScreeningWithReason')
+    cy.signIn()
+    cy.visit(START_URL, { failOnStatusCode: false })
+
+    cy.url().should('to.match', /\/not-authorised/)
+  })
+
   it('should disallow access when investigation pending but screening outcome is support outside CSIP', () => {
     cy.task('stubCsipRecordGetSuccessAfterScreeningSupportOutsideCsip')
     cy.signIn()

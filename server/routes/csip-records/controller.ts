@@ -164,7 +164,7 @@ export class CsipRecordController {
       status: record.status.code,
       updatingEntity: record.plan ? null : 'referral',
       shouldShowTabs: !!investigation || !!record.plan || record.status.code === 'PLAN_PENDING',
-      changeScreenEnabled: shouldAllowChangeScreen(record),
+      changeScreenEnabled: shouldAllowChangeScreen(record, res),
       plan: record.plan,
       identifiedNeeds: record.plan?.identifiedNeeds.sort(identifiedNeedSorter),
       reviews: record.plan?.reviews

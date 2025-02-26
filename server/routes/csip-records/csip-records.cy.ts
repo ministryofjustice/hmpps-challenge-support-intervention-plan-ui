@@ -190,7 +190,7 @@ context('test /csip-records', () => {
     cy.findByRole('heading', { name: /referral details/i }).should('be.visible')
     cy.findByRole('heading', { name: /referral screening/i }).should('be.visible')
     cy.findAllByRole('button', { name: /record investigation/i }).should('not.exist')
-    checkChangeScreenLink(true, false)
+    checkChangeScreenLink(false, false)
   })
 
   it('should render a post-screen csip record (no screening reason)', () => {
