@@ -5,7 +5,8 @@
 {% extends "partials/layout.njk" %}
 
 {% set title = "Add " + ('more' if isUpdate else 'any') + " comments on next steps" %}
-{% set caption = "Change a CSIP investigation decision" if changeDecision else ('Update' if isUpdate else 'Record') + " a CSIP investigation decision" %}
+{% set verb = "Change" if changeDecision else "Record" %}
+{% set caption = verb + " a CSIP investigation decision" %}
 {% set pageTitle = title + " - " + caption %}
 
 {% block innerContent %}

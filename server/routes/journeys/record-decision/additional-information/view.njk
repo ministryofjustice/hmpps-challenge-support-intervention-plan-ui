@@ -5,7 +5,8 @@
 {% extends "partials/layout.njk" %}
 
 {% set title = "Add additional information" %}
-{% set caption = "Change a CSIP investigation decision" if changeDecision else ("Update" if isUpdate else "Record") + " a CSIP investigation decision" %}
+{% set verb = "Change" if changeDecision else ("Update" if isUpdate else "Record") %}
+{% set caption = verb + " a CSIP investigation decision" %}
 {% set pageTitle = title + " - " + caption %}
 
 {% block innerContent %}

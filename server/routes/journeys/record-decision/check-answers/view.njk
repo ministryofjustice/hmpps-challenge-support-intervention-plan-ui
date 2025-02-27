@@ -6,7 +6,8 @@
 {% set fullWidth = true %}
 
 {% set title = "Check your answers before recording the investigation decision" %}
-{% set caption = "Change a CSIP investigation decision" if changeDecision else "Record a CSIP investigation decision" %}
+{% set verb = "Change" if changeDecision else "Record" %}
+{% set caption = verb + " a CSIP investigation decision" %}
 {% set pageTitle = title + " - " + caption %}
 
 {% block innerContent %}
