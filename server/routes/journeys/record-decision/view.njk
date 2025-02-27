@@ -4,10 +4,11 @@
 {% extends "partials/layout.njk" %}
 
 {% set title = "Who’s signing off on this decision?" %}
-{% set pageTitle = title + " - Record a CSIP investigation decision" %}
+{% set caption = "Change a CSIP investigation decision" if changeDecision else "Record a CSIP investigation decision" %}
+{% set pageTitle = title + " - " + caption %}
 
 {% block innerContent %}
-    <span class="govuk-caption-l">Record a CSIP investigation decision</span>
+    <span class="govuk-caption-l">{{ caption }}</span>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {{ govukRadios({

@@ -45,7 +45,7 @@ export class StartJourneyController {
           }
         : {}
       req.journeyData.investigation = {}
-      req.journeyData.decisionAndActions = {}
+      req.journeyData.decisionAndActions = csip.referral.decisionAndActions || {}
       req.journeyData.plan = {}
       req.journeyData.review = {}
 
@@ -83,7 +83,7 @@ export class StartJourneyController {
           }
         : {}
       req.journeyData.investigation = {}
-      req.journeyData.decisionAndActions = {}
+      req.journeyData.decisionAndActions = csip.referral.decisionAndActions || {}
       req.journeyData.plan = {}
       req.journeyData.review = {}
 

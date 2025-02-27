@@ -4,14 +4,18 @@
 {% extends "partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "Check your answers before recording the investigation decision - Record a CSIP investigation decision" %}
+
+{% set title = "Check your answers before recording the investigation decision" %}
+{% set verb = "Change" if changeDecision else "Record" %}
+{% set caption = verb + " a CSIP investigation decision" %}
+{% set pageTitle = title + " - " + caption %}
 
 {% block innerContent %}
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <span class="govuk-caption-l">Record a CSIP investigation decision</span>
-            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check your answers before recording the investigation decision</h1>
+            <span class="govuk-caption-l">{{ caption }}</span>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ title }}</h1>
         </div>
     </div>
 
@@ -28,7 +32,7 @@
                 actions: {
                 items: [
                     {
-                        href: "../record-decision",
+                        href: "../change-decision" if changeDecision else "../record-decision",
                         text: "Change",
                         visuallyHiddenText: "who’s signing off on the decision",
                         classes: "govuk-link--no-visited-state"

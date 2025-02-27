@@ -1,0 +1,86 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% extends "partials/layout.njk" %}
+
+{% set fullWidth = true %}
+{% set pageTitle = "Are you sure you want to change the outcome of the CSIP investigation? - Change a CSIP investigation decision" %}
+
+{% block innerContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Change a CSIP investigation decision</span>
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Are you sure you want to change the outcome of the CSIP investigation?</h1>
+
+      {{ govukWarningText({
+        text: "Changing the outcome will replace all of the following information in the CSIP investigation decision for " + prisoner | firstNameSpaceLastName + ".",
+        iconFallbackText: "Warning"
+    }) }}
+
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-7",
+        rows: [
+            {
+                key: {
+                  text: "Outcome"
+                },
+                value: {
+                  text: decisionAndActions.outcome.description
+                }
+            },
+            {
+                key: {
+                  text: "Reasons for decision"
+                },
+                value: {
+                 html: decisionAndActions.conclusion | escape | nl2br
+                }
+            },
+            {
+                key: {
+                text: "Comments on next steps"
+            },
+                value: {
+                html: (decisionAndActions.nextSteps or 'Not provided') | escape | nl2br
+            }
+            },
+            {
+                key: {
+                text: "Additional information"
+            },
+                value: {
+                html: (decisionAndActions.actionOther or 'Not provided') | escape | nl2br
+            }
+            },
+            {
+                key: {
+                text: "Signed off by"
+            },
+                value: {
+                text: decisionAndActions.signedOffByRole.description
+            }
+            }
+        ]
+    }) }}
+
+      <div class="govuk-button-group">
+        <form method="post">
+          <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+          {{ govukButton({
+                text: "Yes, change outcome and record new decision",
+                preventDoubleClick: true,
+                classes: "govuk-button--warning"
+            }) }}
+          {{ govukButton({
+                text: "Cancel",
+                href: csipRecordUrl,
+                classes: "govuk-button--secondary",
+                preventDoubleClick: true
+            }) }}
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
