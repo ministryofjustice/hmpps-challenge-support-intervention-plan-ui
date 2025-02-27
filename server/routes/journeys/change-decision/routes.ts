@@ -9,6 +9,8 @@ import { CheckAnswersRoutes } from './check-answers/routes'
 import { AdditionalInformationRoutes } from './additional-information/routes'
 import { schemaFactory } from '../record-decision/schemas'
 import { CsipRecord } from '../../../@types/csip/csipApiTypes'
+import journeyStateGuard from '../../../middleware/journeyStateGuard'
+import { guard } from '../record-decision/routes'
 
 function Routes(services: Services) {
   const { router, get, post } = JourneyRouter()
@@ -28,8 +30,9 @@ function Routes(services: Services) {
 export const ChangeDecisionRoutes = ({ services, path }: { services: Services; path: string }) => {
   const { router } = JourneyRouter()
 
-  router.use(path, Routes(services))
   router.use('/check-change-decision', CheckChangeDecisionRoutes())
+  router.use(path, journeyStateGuard(guard, services.appInsightsClient))
+  router.use(path, Routes(services))
 
   return router
 }

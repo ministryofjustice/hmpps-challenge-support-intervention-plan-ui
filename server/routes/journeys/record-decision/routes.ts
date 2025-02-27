@@ -36,7 +36,7 @@ export const DecisionRoutes = ({ services, path }: { services: Services; path: s
   return router
 }
 
-const guard: JourneyStateGuard = {
+export const guard: JourneyStateGuard = {
   conclusion: (req: Request) =>
     isMissingValues(req.journeyData.decisionAndActions!, ['signedOffByRole']) ? '' : undefined,
   'next-steps': (req: Request) =>
