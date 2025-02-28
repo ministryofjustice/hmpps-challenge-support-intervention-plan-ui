@@ -24,6 +24,7 @@ generic-service:
     SENTRY_ENVIRONMENT: PRE-PRODUCTION
     AUDIT_SQS_REGION: "eu-west-2"
     AUDIT_SERVICE_NAME: "hmpps-challenge-support-intervention-plan-ui"
+    FEATURE_CHANGE_FLOWS: "false"
 
 generic-prometheus-alerts:
   alertSeverity: hmpps-alerts-api-non-prod
