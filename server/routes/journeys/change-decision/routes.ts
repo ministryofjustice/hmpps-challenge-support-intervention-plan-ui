@@ -11,6 +11,7 @@ import { schemaFactory } from '../record-decision/schemas'
 import { CsipRecord } from '../../../@types/csip/csipApiTypes'
 import journeyStateGuard from '../../../middleware/journeyStateGuard'
 import { guard } from '../record-decision/routes'
+import config from '../../../config'
 
 function Routes(services: Services) {
   const { router, get, post } = JourneyRouter()
@@ -38,6 +39,10 @@ export const ChangeDecisionRoutes = ({ services, path }: { services: Services; p
 }
 
 export function shouldAllowChangeDecision(csipRecord: CsipRecord) {
+  if (!config.features.changeFlows) {
+    return false
+  }
+
   const csipRecordCode = csipRecord.status.code
   const currentDecisionOutcome = csipRecord.referral?.decisionAndActions?.outcome?.code
 

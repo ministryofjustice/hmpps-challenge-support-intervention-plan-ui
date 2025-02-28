@@ -4,6 +4,7 @@ import { Services } from '../../../../services'
 import { JourneyRouter } from '../../base/routes'
 import { isCsipProcessor } from '../../../../authentication/authorisedRoles'
 import { CsipRecord } from '../../../../@types/csip/csipApiTypes'
+import config from '../../../../config'
 
 export default function StartJourneyRoutes({ csipApiService, prisonerSearchService }: Services) {
   const { router, get } = JourneyRouter()
@@ -21,6 +22,10 @@ export default function StartJourneyRoutes({ csipApiService, prisonerSearchServi
 }
 
 export const shouldAllowChangeScreen = (csipRecord: CsipRecord, res: Response) => {
+  if (!config.features.changeFlows) {
+    return false
+  }
+
   if (!isCsipProcessor(res)) {
     return false
   }

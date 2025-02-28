@@ -138,4 +138,7 @@ export default {
     replaySampleRate: Number(get('SENTRY_REPLAY_SAMPLE_RATE', 0.0)),
     replayOnErrorSampleRate: Number(get('SENTRY_REPLAY_ON_ERROR_SAMPLE_RATE', 0.1)),
   },
+  features: {
+    changeFlows: get('FEATURE_CHANGE_FLOWS', 'false') === 'true',
+  },
 }
