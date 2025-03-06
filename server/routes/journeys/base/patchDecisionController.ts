@@ -38,9 +38,10 @@ export class PatchDecisionController extends BaseJourneyController {
         req.journeyData,
         res.locals.auditEvent,
       )
-      await this.csipApiService.createDecision(req as Request, {
+
+      await this.csipApiService.upsertDecision(req as Request, {
         outcomeTypeCode: decision.outcome!.code,
-        signedOffByRoleCode: decision.signedOffByRole!.code,
+        ...getNonUndefinedProp(decision.signedOffByRole!, 'code', 'signedOffByRoleCode'),
         actions: decision.actions,
         ...getNonUndefinedProp(decision, 'date'),
         ...getNonUndefinedProp(decision, 'recordedBy'),
