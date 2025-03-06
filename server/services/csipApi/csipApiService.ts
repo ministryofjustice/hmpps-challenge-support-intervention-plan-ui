@@ -130,8 +130,8 @@ export default class CsipApiService {
     return this.csipApiClientBuilder(req.systemClientToken).updateInterview(interviewUuid, updateInterviewRequest)
   }
 
-  createDecision(req: Request, payload: Parameters<CsipApiClient['createDecision']>[1]) {
-    return this.csipApiClientBuilder(req.systemClientToken).createDecision(
+  upsertDecision(req: Request, payload: Parameters<CsipApiClient['upsertDecision']>[1]) {
+    return this.csipApiClientBuilder(req.systemClientToken).upsertDecision(
       req.journeyData.csipRecord!.recordUuid,
       payload,
     )

@@ -31,6 +31,18 @@ context('test /update-decision/additional-information', () => {
     proceedToNextScreen()
   })
 
+  it('should handle API submission with no signedOffByRoleCode (through nomis sync)', () => {
+    cy.task('stubCsipRecordSuccessPlanPendingNomis')
+    cy.task('stubPutDecisionSuccessNomis')
+
+    navigateToTestPage()
+
+    getInputTextbox().clear().type('some text')
+    getContinueButton().click()
+
+    cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
+  })
+
   it('should try out lots of text existing already', () => {
     cy.task('stubPutDecisionSuccess')
     navigateToTestPage()

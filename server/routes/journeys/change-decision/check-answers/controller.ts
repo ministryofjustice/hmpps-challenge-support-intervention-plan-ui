@@ -37,7 +37,7 @@ export class CheckAnswersController extends BaseJourneyController {
         req.journeyData,
         res.locals.auditEvent,
       )
-      await this.csipApiService.createDecision(req, {
+      await this.csipApiService.upsertDecision(req, {
         date: todayString(),
         recordedBy: res.locals.user.username,
         recordedByDisplayName: res.locals.user.displayName,

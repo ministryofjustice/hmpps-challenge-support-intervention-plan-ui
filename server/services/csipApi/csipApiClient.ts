@@ -175,7 +175,7 @@ export default class CsipApiClient {
     })
   }
 
-  async createDecision(recordUuid: string, payload: components['schemas']['UpsertDecisionAndActionsRequest']) {
+  async upsertDecision(recordUuid: string, payload: components['schemas']['UpsertDecisionAndActionsRequest']) {
     return this.restClient.put<components['schemas']['DecisionAndActions']>({
       path: `/csip-records/${recordUuid}/referral/decision-and-actions`,
       data: payload,

@@ -83,15 +83,7 @@ export interface paths {
      *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
      */
     put: operations['upsertScreeningOutcome']
-    /**
-     * Deprecated - Please switch to use the upsert endpoint (with PUT request)
-     * @deprecated
-     * @description
-     *
-     *     Requires one of the following roles:
-     *     * ROLE_CHALLENGE_SUPPORT_INTERVENTION_PLAN__CHALLENGE_SUPPORT_INTERVENTION_PLAN_UI
-     */
-    post: operations['createScreeningOutcome']
+    post?: never
     delete?: never
     options?: never
     head?: never
@@ -1319,7 +1311,7 @@ export interface components {
       /** @description The outcome decision for the referral. */
       outcomeTypeCode: string
       /** @description The role of the person making the outcome decision. */
-      signedOffByRoleCode: string
+      signedOffByRoleCode?: string
       /** @description The username of the user who recorded the outcome decision. */
       recordedBy?: string
       /** @description The displayable name of the user who recorded the outcome decision. */
@@ -1404,23 +1396,6 @@ export interface components {
       isReferralComplete?: boolean
       /** @description Contributory factors to the incident that motivated the referral. */
       contributoryFactors: components['schemas']['CreateContributoryFactorRequest'][]
-    }
-    /** @description The request body to create the Safer Custody Screening Outcome to the CSIP referral */
-    CreateSaferCustodyScreeningOutcomeRequest: {
-      /** @description The type of outcome of the safer custody screening. */
-      outcomeTypeCode: string
-      /**
-       * Format: date
-       * @description The date of the safer custody screening outcome.
-       * @example 2021-09-27
-       */
-      date: string
-      /** @description The reasons for the safer custody screening outcome decision. */
-      reasonForDecision: string
-      /** @description The username of the user who recorded the screening outcome. */
-      recordedBy: string
-      /** @description The displayable name of the user who recorded the screening outcome. */
-      recordedByDisplayName: string
     }
     /** @description The request body to create an interview */
     CreateInterviewRequest: {
@@ -2011,78 +1986,6 @@ export interface operations {
       }
       /** @description The CSIP referral associated with this identifier was not found. */
       404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  createScreeningOutcome: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description CSIP record unique identifier */
-        recordUuid: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['CreateSaferCustodyScreeningOutcomeRequest']
-      }
-    }
-    responses: {
-      /** @description Safer Custody Screening Outcome added to CSIP referral */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['SaferCustodyScreeningOutcome']
-        }
-      }
-      /** @description Bad request */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorised, requires a valid Oauth2 token */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires an appropriate role */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description The CSIP referral associated with this identifier was not found. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Conflict. The CSIP referral already has a Safer Custody Screening Outcome created. */
-      409: {
         headers: {
           [name: string]: unknown
         }

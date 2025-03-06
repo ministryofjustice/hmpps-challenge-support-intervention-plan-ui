@@ -426,6 +426,19 @@ const stubCsipRecordSuccessPlanPending = () => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, planPendingBody)
 }
 
+const stubCsipRecordSuccessPlanPendingNomis = () => {
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
+    ...planPendingBody,
+    referral: {
+      ...planPendingBody.referral,
+      decisionAndActions: {
+        ...planPendingBody.referral.decisionAndActions,
+        signedOffByRole: undefined,
+      },
+    },
+  })
+}
+
 const stubCsipRecordSuccessCsipOpen = (
   reviews = [
     {
@@ -770,6 +783,26 @@ const stubPatchInvestigationFail = () => {
 
 const stubPutDecisionSuccess = () => {
   return createBasicHttpStub('PUT', `/csip-api/csip-records/${uuidRegex}/referral/decision-and-actions`, 200)
+}
+
+const stubPutDecisionSuccessNomis = () => {
+  return stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: `/csip-api/csip-records/${uuidRegex}/referral/decision-and-actions`,
+      bodyPatterns: [
+        {
+          doesNotMatch: '.*"signedOffByRoleCode".*',
+        },
+      ],
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+    },
+  })
 }
 
 const stubPutDecisionFail = () => {
@@ -1183,4 +1216,6 @@ export default {
   stubCsipRecordPutSuccess,
   stubCurrentCsipStatusExistingReferral,
   stubCsipRecordSuccessPlanPendingCUR,
+  stubCsipRecordSuccessPlanPendingNomis,
+  stubPutDecisionSuccessNomis,
 }
