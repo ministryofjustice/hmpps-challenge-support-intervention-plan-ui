@@ -31,9 +31,7 @@
       }) }}
       {% set staffMemberAssaultedHtml %}
           {{ govukCharacterCount({
-              label: {
-                  text: "Names of staff assaulted"
-              },
+              label: 'Names of staff assaulted' | withVisuallyHiddenText("If yes, provide their names."),
               maxlength: 240,
               rows: 1,
               threshold: "100",
