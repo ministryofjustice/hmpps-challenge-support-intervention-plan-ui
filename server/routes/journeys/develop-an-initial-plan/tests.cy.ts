@@ -68,6 +68,8 @@ context('test /develop-an-initial-plan', () => {
     cy.findByRole('link', { name: /Enter the Case Manager’s name/i })
       .should('be.visible')
       .click()
+
+    cy.get('.govuk-form-group > .govuk-label').should('contain.text', 'If not, provide their name')
     getCaseManagerTextField().should('be.focused')
 
     getCaseManagerTextField().type('a'.repeat(101), { delay: 0 })
