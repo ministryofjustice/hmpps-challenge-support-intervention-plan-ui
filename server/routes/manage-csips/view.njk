@@ -123,6 +123,9 @@
   {% endfor %}
 
   {% if records.length %}
+    <caption>
+      <span class="govuk-visually-hidden">Column headers with buttons are sortable.</span>
+    </caption>
     {{ govukTable({
       firstCellIsHeader: false,
       classes: 'table-vertical-align-middle govuk-!-margin-top-6',
