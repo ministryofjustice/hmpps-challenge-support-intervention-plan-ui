@@ -63,11 +63,14 @@
   white-space: nowrap;
 }
 
-[aria-sort] button::before {
+/** Override default MoJ sortable table style **/
+[aria-sort] button::before,
+[aria-sort] button::after {
   content: none;
 }
 
-[aria-sort] button span::before {
+/** Apply the same style onto button span instead **/
+[aria-sort="none"] button span::before {
   content: " \25bc";
   position: absolute;
   top: 9px;
@@ -81,11 +84,6 @@
   top: 1px;
   right: -1px;
   font-size: 0.5em;
-}
-
-[aria-sort="ascending"] button span::before,
-[aria-sort="descending"] button span::before {
-  content: none;
 }
 
 [aria-sort="ascending"] button span::after {
@@ -102,21 +100,4 @@
   top: 2px;
   right: -5px;
   font-size: 0.8em;
-}
-
-[aria-sort] button::after {
-  content: none;
-}
-
-[aria-sort="ascending"] button::before,
-[aria-sort="descending"] button::before {
-  content: none;
-}
-
-[aria-sort="ascending"] button::after {
-  content: none;
-}
-
-[aria-sort="descending"] button::after {
-  content: none;
 }
