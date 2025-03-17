@@ -56,6 +56,29 @@ context('test /update-planned-intervention/:uuid', () => {
     )
   })
 
+  it('should not include inset text when no existing intervention details', () => {
+    cy.task('stubPatchIdentifiedNeedSuccess')
+    navigateToTestPage()
+    injectJourneyDataAndReload(uuid, {
+      plan: {
+        identifiedNeeds: [
+          {
+            identifiedNeed: 'first need',
+            responsiblePerson: 'test testerson',
+            createdDate: '2024-03-01',
+            targetDate: '2024-04-02',
+            intervention: '',
+            progression: 'progression done',
+            identifiedNeedUuid: 'a0000000-f7b1-4c56-bec8-69e390eb0003',
+          } as IdentifiedNeed,
+        ],
+      },
+    })
+    cy.url().should('to.match', /\/update-planned-intervention\/[a-zA-Z0-9-]+$/)
+    cy.get('.govuk-inset-text').should('have.length', 0)
+    cy.get('#intervention').should('have.attr', 'aria-describedby', 'intervention-info')
+  })
+
   it('should handle API errors', () => {
     cy.task('stubPatchIdentifiedNeedFail')
     navigateToTestPage()
@@ -79,6 +102,8 @@ context('test /update-planned-intervention/:uuid', () => {
   const validatePageContents = () => {
     cy.title().should('equal', 'Add information to the planned intervention - Update plan - DPS')
     cy.findByRole('heading', { name: 'Add information to the planned intervention' }).should('be.visible')
+    cy.get('.govuk-inset-text').should('be.visible')
+    cy.get('#intervention').should('have.attr', 'aria-describedby', 'intervention-info intervention-hint')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /Cancel/i })
       .should('be.visible')
