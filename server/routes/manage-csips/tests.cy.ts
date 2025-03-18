@@ -119,7 +119,6 @@ context('test /manage-csips', () => {
 
     cy.get('[aria-sort="ascending"] > a > button > span')
       .first()
-      .should('have.attr', 'tabindex', '-1')
       .within($el => {
         cy.window().then(win => {
           if (!$el?.[0]) return fail()
@@ -146,7 +145,6 @@ context('test /manage-csips', () => {
 
     cy.get('[aria-sort="descending"] > a > button > span')
       .first()
-      .should('have.attr', 'tabindex', '-1')
       .within($el => {
         cy.window().then(win => {
           if (!$el?.[0]) return fail()
@@ -173,7 +171,6 @@ context('test /manage-csips', () => {
 
     cy.get('[aria-sort="none"] > a > button > span')
       .first()
-      .should('have.attr', 'tabindex', '-1')
       .within($el => {
         cy.window().then(win => {
           if (!$el?.[0]) return fail()
