@@ -30,7 +30,7 @@ export const convertToSortableColumns = (headings: { text: string; key?: string 
           attributes: {
             'aria-sort': 'ascending',
           },
-          html: `<a href="?sort=${heading.key},desc"><button>${heading.text}<span aria-hidden="true"></span></button></a>`,
+          html: `<a href="?sort=${heading.key},desc"><button tabindex="-1">${heading.text}<span aria-hidden="true"></span></button></a>`,
         }
       }
       if (sortingDirection === 'desc') {
@@ -38,7 +38,7 @@ export const convertToSortableColumns = (headings: { text: string; key?: string 
           attributes: {
             'aria-sort': 'descending',
           },
-          html: `<a href="?sort=${heading.key},asc"><button>${heading.text}<span aria-hidden="true"></span></button></a>`,
+          html: `<a href="?sort=${heading.key},asc"><button tabindex="-1">${heading.text}<span aria-hidden="true"></span></button></a>`,
         }
       }
     }
@@ -46,7 +46,7 @@ export const convertToSortableColumns = (headings: { text: string; key?: string 
       attributes: {
         'aria-sort': 'none',
       },
-      html: `<a href="?sort=${heading.key},asc"><button>${heading.text}<span aria-hidden="true"></span></button></a>`,
+      html: `<a href="?sort=${heading.key},asc"><button tabindex="-1">${heading.text}<span aria-hidden="true"></span></button></a>`,
     }
   })
 }
