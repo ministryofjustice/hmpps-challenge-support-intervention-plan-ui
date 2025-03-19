@@ -93,7 +93,7 @@
 
 {% for need in identifiedNeeds %}
     {% set cardClasses = "page-break-print " if loop.index % 2 !== 0 and loop.index !== 1 else "" %}
-    {# We create our own html here for the card title because we dont want the tag to be rendered as a link, so cant use actions, but summarylist puts the content of `html` beside a h3, so we need to hide the extraneous h3 with the `hide` class (see local.scss) #}
+    {# We create our own html here for the card title because we dont want the tag to be rendered as a link, so cant use actions, but summarylist puts the content of `html` beside a h2, so we need to hide the extraneous h2 with the `hide` class (see local.scss) #}
     {{ govukSummaryList({
         card: {
             classes: (cardClasses + "govuk-!-margin-bottom-7" if loop.index === identifiedNeeds.length else cardClasses) + " dropshadow",

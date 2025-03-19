@@ -2,7 +2,7 @@ import { v4 as uuidV4 } from 'uuid'
 import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
 
-context('test /record-investigation/check-answers', () => {
+context('test /referral/check-answers', () => {
   let uuid = uuidV4()
   const ESCAPE_LITTLE = '<script>alert("Test User")</script>'
   const ESCAPE_AND_FORMAT_EXPECTED =
