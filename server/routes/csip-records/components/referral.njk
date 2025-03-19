@@ -14,7 +14,7 @@
     </div>
 {% endif %}
 
-<h1 class="govuk-heading-m">Referral details</h1>
+<h3 class="govuk-heading-m">Referral details</h3>
 {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
     rows: [
@@ -97,14 +97,15 @@
     {% include './reactive.njk' %}
 {% endif %}
 
-<h1 class="govuk-heading-m page-break-print">Contributory factors</h1>
+<h3 class="govuk-heading-m page-break-print">Contributory factors</h3>
 
 {% for factor in contributoryFactors %}
     {{ govukSummaryList({
         card: {
             title: { 
                 text: factor.factorType.description,
-                classes: "govuk-!-font-size-24"
+                classes: "govuk-!-font-size-24",
+                headingLevel: 4
             },
             classes: "dropshadow"
         },
@@ -153,7 +154,7 @@
     rows: contributoryFactorRows
 }) }}
 
-<h1 class="govuk-heading-m page-break-print">Additional information</h1>
+<h3 class="govuk-heading-m page-break-print">Additional information</h3>
 {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
     rows: [

@@ -9,142 +9,150 @@
 
 {% block innerContent %}
 
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            {% include 'base/components/review-caption.njk' %}
-            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check your answers before recording the review</h1>
-        </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include 'base/components/review-caption.njk' %}
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Check your answers before recording the review</h1>
     </div>
+  </div>
 
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-6">Review information</h2>
-    {{ govukSummaryList({
-        classes: "govuk-!-margin-bottom-7",
-        rows: [
-            {
-                key: {
-                    text: "Review details"
-                },
-                value: {
-                    html: (review.summary or 'Not provided') | escape | nl2br
-                },
-                actions: {
-                    items: [
-                        {
-                            href: "details#summary",
-                            text: "Change",
-                            visuallyHiddenText: "the details of the review",
-                            classes: "govuk-link--no-visited-state"
-                        }
-                    ]
-                }
-            },
-            {
-                key: {
-                    text: "Review outcome"
-                },
-                value: {
-                    text: "Close the CSIP" if review.outcome == 'CLOSE_CSIP' else "Keep the prisoner on the plan"
-                },
-                actions: {
-                    items: [
-                        {
-                            href: "outcome#outcome",
-                            text: "Change",
-                            visuallyHiddenText: "the review outcome",
-                            classes: "govuk-link--no-visited-state"
-                        }
-                    ]
-                }
-            },
-            {
-                key: {
-                    text: "Next review date"
-                },
-                value: {
-                    html: review.nextReviewDate | formatDisplayDate
-                },
-                actions: {
-                    items: [
-                        {
-                            href: "next-review-date#nextReviewDate",
-                            text: "Change",
-                            visuallyHiddenText: "the next review date",
-                            classes: "govuk-link--no-visited-state"
-                        }
-                    ]
-                }
-            } if review.outcome !== 'CLOSE_CSIP' else undefined
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-6">Review information</h2>
+  {{ govukSummaryList({
+  classes: "govuk-!-margin-bottom-7",
+  rows: [
+    {
+      key: {
+        text: "Review details"
+      },
+    value: {
+      html: (review.summary or 'Not provided') | escape | nl2br
+    },
+    actions: {
+      items: [
+        {
+          href: "details#summary",
+          text: "Change",
+          visuallyHiddenText: "the details of the review",
+          classes: "govuk-link--no-visited-state"
+        }
+      ]
+    }
+    },
+    {
+      key: {
+        text: "Review outcome"
+      },
+      value: {
+        text: "Close the CSIP" if review.outcome == 'CLOSE_CSIP' else "Keep the prisoner on the plan"
+      },
+      actions: {
+        items: [
+          {
+            href: "outcome#outcome",
+            text: "Change",
+            visuallyHiddenText: "the review outcome",
+            classes: "govuk-link--no-visited-state"
+          }
         ]
-    }) }}
+      }
+    },
+    {
+      key: {
+        text: "Next review date"
+      },
+      value: {
+        html: review.nextReviewDate | formatDisplayDate
+      },
+      actions: {
+        items: [
+          {
+            href: "next-review-date#nextReviewDate",
+            text: "Change",
+            visuallyHiddenText: "the next review date",
+            classes: "govuk-link--no-visited-state"
+          }
+        ]
+      }
+    } if review.outcome !== 'CLOSE_CSIP' else undefined
+  ]
+}) }}
 
-    <div class="govuk-grid-row govuk-!-margin-bottom-6">
-        <div class="govuk-grid-column-two-thirds">
-            <h2 class="govuk-heading-m">Participants and contributions</h2>
-        </div>
-        <div class="govuk-grid-column-one-third">
-            <a class="govuk-link govuk-summary-list govuk-summary-list__actions govuk-link--no-visited-state" href="participants-summary">Add, change or delete<span class="govuk-visually-hidden"> participants and contributions</span></a>
-        </div>
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-two-thirds">
+      <h2 class="govuk-heading-m">Participants and contributions</h2>
     </div>
+    <div class="govuk-grid-column-one-third">
+      <a class="govuk-link govuk-summary-list govuk-summary-list__actions govuk-link--no-visited-state" href="participants-summary">
+        Add, change or delete
+        <span class="govuk-visually-hidden"> 
+          participants and contributions
+          </span>
+      </a>
+    </div>
+  </div>
 
-    {% for attendee in review.attendees %}
-        {{ govukSummaryList({
-            card: {
-                title: { text: "Participant: " + attendee.name },
-                classes: "govuk-!-margin-bottom-8 dropshadow" if loop.index === review.attendees.length else "dropshadow"
-            },
-            rows: [{
-                key: {
-                    text: 'Name'
-                },
-                value: {
-                    text: attendee.name
-                }
-            },{
-                key: {
-                    text: 'Role'
-                },
-                value: {
-                    text: attendee.role
-                }
-            },{
-                key: {
-                    text: 'Attended in person'
-                },
-                value: {
-                    text: 'Yes' if attendee.isAttended else 'No'
-                }
-            },{
-                key: {
-                    text: 'Contribution'
-                },
-                value: {
-                    html: (attendee.contribution or 'Not provided') | escape | boldAppendStamp | nl2br
-                }
-            }]
+  {% for attendee in review.attendees %}
+    {{ govukSummaryList({
+      card: {
+        title: { 
+          text: "Participant: " + attendee.name, 
+          headingLevel: 3 
+        },
+        classes: "govuk-!-margin-bottom-8 dropshadow" if loop.index === review.attendees.length else "dropshadow"
+      },
+      rows: [{
+        key: {
+          text: 'Name'
+        },
+        value: {
+          text: attendee.name
+      }
+      },{
+        key: {
+         text: 'Role'
+        },
+        value: {
+          text: attendee.role
+        }
+      },{
+        key: {
+         text: 'Attended in person'
+        },
+        value: {
+          text: 'Yes' if attendee.isAttended else 'No'
+        }
+      },{
+        key: {
+          text: 'Contribution'
+        },
+        value: {
+          html: (attendee.contribution or 'Not provided') | escape | boldAppendStamp | nl2br
+        }
+      }]
+    }) }}
+  {% endfor %}
+
+  <form method="post">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+    {% if closingCsip %}
+      {{ govukWarningText({
+        text: "You will not be able to add or change any information after closing the CSIP."
+      }) }}
+    {% endif %}
+    <div class="govuk-button-group">
+      {% if closingCsip %}
+        {{ govukButton({
+          text: "Record review and close CSIP",
+          preventDoubleClick: true,
+          classes: 'govuk-button--warning'
         }) }}
-    {% endfor %}
-
-    <form method="post">
-        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        {% if closingCsip %}
-            {{ govukWarningText({
-                text: "You will not be able to add or change any information after closing the CSIP."
-            }) }}
-        {% endif %}
-        <div class="govuk-button-group">
-            {% if closingCsip %}
-                {{ govukButton({
-                    text: "Record review and close CSIP",
-                    preventDoubleClick: true,
-                    classes: 'govuk-button--warning'
-                }) }}
-            {% else %}
-                {{ govukButton({
-                    text: "Confirm and record review",
-                    preventDoubleClick: true
-                }) }}
-            {% endif %}
-            <a class="govuk-link govuk-link--no-visited-state" href="{{ csipRecordUrl }}">Cancel</a>
-        </div>
-    </form>
+      {% else %}
+        {{ govukButton({
+          text: "Confirm and record review",
+          preventDoubleClick: true
+        }) }}
+      {% endif %}
+      <a class="govuk-link govuk-link--no-visited-state" href="{{ csipRecordUrl }}">Cancel</a>
+    </div>
+  </form>
 {% endblock %}

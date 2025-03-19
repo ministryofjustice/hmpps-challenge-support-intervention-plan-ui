@@ -277,6 +277,7 @@ context('test /csip-records', () => {
   const checkReviews = () => {
     cy.findByRole('link', { name: /reviews/i }).click()
     cy.findByRole('heading', { name: 'Review 1:' })
+      .should('match', 'h2')
       .should('be.visible')
       .parent()
       .parent()
@@ -290,6 +291,7 @@ context('test /csip-records', () => {
         cy.findByText('Not provided').should('be.visible')
       })
     cy.findByRole('heading', { name: 'Review 2:' })
+      .should('match', 'h2')
       .should('be.visible')
       .parent()
       .parent()
@@ -312,7 +314,7 @@ context('test /csip-records', () => {
     cy.get('.govuk-summary-card')
       .eq(0)
       .within(() => {
-        cy.findByRole('heading', { name: 'first need' }).should('be.visible')
+        cy.findByRole('heading', { name: 'first need' }).should('be.visible').should('match', 'h4')
         cy.findByText('Open').should('be.visible')
         cy.findByText('progression done').should('be.visible')
         cy.findByText('get it sorted').should('be.visible')
@@ -323,7 +325,7 @@ context('test /csip-records', () => {
     cy.get('.govuk-summary-card')
       .eq(1)
       .within(() => {
-        cy.findByRole('heading', { name: 'second need' }).should('be.visible')
+        cy.findByRole('heading', { name: 'second need' }).should('be.visible').should('match', 'h4')
         cy.findByText('Open').should('be.visible')
         cy.findByText('almost there').should('be.visible')
         cy.findByText('int1').should('be.visible')
@@ -334,7 +336,7 @@ context('test /csip-records', () => {
     cy.get('.govuk-summary-card')
       .eq(2)
       .within(() => {
-        cy.findByRole('heading', { name: 'closed need' }).should('be.visible')
+        cy.findByRole('heading', { name: 'closed need' }).should('be.visible').should('match', 'h4')
         cy.findByText('Closed').should('be.visible')
         cy.findByText('Not provided').should('be.visible')
         cy.findByText('we need to do things').should('be.visible')
@@ -345,7 +347,9 @@ context('test /csip-records', () => {
   }
 
   const checkInvestigationDetailsExist = () => {
-    cy.findByRole('heading', { name: /investigation$/i }).should('be.visible')
+    cy.findByRole('heading', { name: /investigation$/i })
+      .should('be.visible')
+      .should('match', 'h2')
     cy.findByText('staff stafferson').should('be.visible')
     cy.findByText('SomeVidence').should('be.visible')
     cy.findByText('bananas').should('be.visible')
@@ -353,8 +357,12 @@ context('test /csip-records', () => {
     cy.findByText('spiders').should('be.visible')
     cy.findByText('SomeFactors').should('be.visible')
 
-    cy.findByRole('heading', { name: /interviews/i }).should('be.visible')
-    cy.findByRole('heading', { name: /Interview with Some Person/ }).should('be.visible')
+    cy.findByRole('heading', { name: /interviews/i })
+      .should('be.visible')
+      .should('match', 'h3')
+    cy.findByRole('heading', { name: /Interview with Some Person/ })
+      .should('be.visible')
+      .should('match', 'h4')
     cy.findByText('Some Person').should('be.visible')
     cy.findByText('25 December 2024').should('be.visible')
     cy.findByText('Role2').should('be.visible')
@@ -409,7 +417,9 @@ context('test /csip-records', () => {
   }
 
   const checkDecision = () => {
-    cy.findByRole('heading', { name: /investigation decision/i }).should('be.visible')
+    cy.findByRole('heading', { name: /investigation decision/i })
+      .should('be.visible')
+      .should('match', 'h2')
     cy.findByText('dec-conc').should('be.visible')
     cy.findByText('Another option').should('be.visible')
     cy.findByText('prison officer').should('be.visible')
@@ -420,9 +430,11 @@ context('test /csip-records', () => {
   }
 
   const checkContributoryFactors = () => {
-    cy.findByRole('heading', { name: /contributory factors/i }).should('be.visible')
+    cy.findByRole('heading', { name: /contributory factors/i })
+      .should('be.visible')
+      .should('match', 'h3')
     cy.get('.govuk-summary-card').should('have.length', 3)
-    cy.get('.govuk-summary-card').findAllByText('Text').should('have.length', 2)
+    cy.get('.govuk-summary-card').findAllByText('Text').should('have.length', 2).should('match', 'h4')
     cy.get('.govuk-summary-card').findAllByText('Contributory factor').should('have.length', 1)
     cy.get('.govuk-summary-card').findAllByText('Not provided').should('have.length', 1)
     cy.get('.govuk-summary-card').findAllByText('Comment').should('have.length', 1)

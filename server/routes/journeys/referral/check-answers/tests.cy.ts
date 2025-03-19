@@ -80,6 +80,7 @@ context('test /record-investigation/check-answers', () => {
 
     cy.findByRole('heading', { name: /Check your answers before submitting the referral/ }).should('be.visible')
 
+    checkHeadings()
     checkBehalfOf()
     checkNameOfReferrer()
     checkAreaOfWork()
@@ -111,6 +112,15 @@ context('test /record-investigation/check-answers', () => {
 
     cy.findByRole('radio', { name: /Reactive/i }).click()
     getContinueButton().click()
+  }
+
+  const checkHeadings = () => {
+    cy.findByRole('heading', { name: 'Referral details' }).should('match', 'h2')
+    cy.findByRole('heading', { name: 'Incident details' }).should('match', 'h2')
+    cy.findByRole('heading', { name: 'Incident involvement' }).should('match', 'h2')
+    cy.findByRole('heading', { name: 'Incident description' }).should('match', 'h2')
+    cy.findByRole('heading', { name: 'Additional information' }).should('match', 'h2')
+    cy.findByRole('heading', { name: 'Contributory factors' }).should('match', 'h2')
   }
 
   const checkBehalfOf = () => {
