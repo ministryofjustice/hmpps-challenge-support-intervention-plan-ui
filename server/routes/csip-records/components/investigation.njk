@@ -4,7 +4,7 @@
     {% set headingClasses = "govuk-grid-row govuk-!-margin-bottom-6" + (" page-break-print" if decision else "") %}
     <div class="{{ headingClasses }}">
         <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Investigation</h1>
+            <h2 class="govuk-heading-l govuk-!-margin-bottom-7">Investigation</h2>
         </div>
         {% if secondaryButton and secondaryButton.label === 'Update investigation' and isCsipProcessor %}
             <div class="govuk-summary-list govuk-summary-list__actions">
@@ -108,14 +108,18 @@
       ]
   }) }}
 
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-7 page-break-print">Interviews</h2>
-
+  {% if isUpdate %}
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-7 page-break-print">Interviews</h2>
+    {% else %}
+    <h3 class="govuk-heading-m govuk-!-margin-bottom-7 page-break-print">Interviews</h3>
+  {% endif %}
+  
   {% for interview in investigation.interviews %}
       {% set cardClasses = "page-break-print dropshadow " if loop.index % 2 !== 0 and loop.index !== 1 else "dropshadow " %}
       {{ govukSummaryList({
           card: {
               classes: cardClasses + "govuk-!-margin-bottom-7 govuk-!-font-size-24" if loop.index === investigation.interviews.length else cardClasses,
-              title: { text: "Interview with " + interview.interviewee }
+              title: { text: "Interview with " + interview.interviewee, headingLevel: 3 if isUpdate else 4 }
           },
           rows: [{
             key: {

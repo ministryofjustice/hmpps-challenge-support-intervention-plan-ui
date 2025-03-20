@@ -44,9 +44,13 @@ context('test /record-review/check-answers', () => {
     cy.title().should('equal', 'Check your answers before recording the review - Record a CSIP review - DPS')
     checkAxeAccessibility()
 
-    cy.findByRole('heading', { name: /Check your answers before recording the review/ }).should('be.visible')
-
-    cy.findByRole('heading', { name: /Review information/ }).should('be.visible')
+    cy.findByRole('heading', { name: /Check your answers before recording the review/ })
+      .should('be.visible')
+      .should('match', 'h1')
+    cy.findByRole('heading', { name: 'Participant: bar footerton' }).should('be.visible').should('match', 'h3')
+    cy.findByRole('heading', { name: /Review information/ })
+      .should('be.visible')
+      .should('match', 'h2')
     cy.contains('dt', 'Review details').next().should('include.text', 'a summary')
     cy.contains('dt', 'Review outcome').next().should('include.text', 'Keep the prisoner on the plan')
     cy.contains('dt', 'Next review date').next().should('include.text', '6 May 2024')
@@ -86,10 +90,13 @@ context('test /record-review/check-answers', () => {
     cy.contains('dt', 'Attended in person').next().should('include.text', 'No')
     cy.contains('dt', 'Contribution').next().should('include.text', 'acontrib')
 
+    cy.findByRole('heading', { name: 'Participants and contributions' }).should('be.visible').should('match', 'h2')
+
     cy.findByRole('link', { name: /Add, change or delete participants and contributions/i })
       .should('be.visible')
       .click()
     cy.url().should('to.match', /participants-summary$/)
+    cy.findByRole('heading', { name: 'Participant: bar footerton' }).should('be.visible').should('match', 'h2')
     cy.findByRole('link', { name: /change the participant’s name/i })
       .should('be.visible')
       .click()

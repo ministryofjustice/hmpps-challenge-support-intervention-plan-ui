@@ -5,22 +5,22 @@
 {% set pageTitle = "CSIP review recorded" %}
 
 {% block innerContent %}
-    {{ govukPanel({
+  {{ govukPanel({
         titleText: "CSIP review recorded for " + (prisoner | firstNameSpaceLastName),
         text: "Status: " + (csipRecord | csipStatusDisplayText)
     }) }}
 
-    {% switch csipRecord.status.code %}
+  {% switch csipRecord.status.code %}
     {% case 'CSIP_OPEN' %}
-        <h1 class="govuk-heading-m">What to do next</h1>
-        <ol class="govuk-body govuk-list govuk-list--number">
-            <li><a class="govuk-link govuk-link--no-visited-state" href="/csip-record/{{ csipRecord.recordUuid }}/update-plan/identified-needs/start">Update the identified needs in {{prisoner | firstNameSpaceLastName | possessiveComma}} plan</a>, if you have not done so already. Record any new information on actions and progress.</li>
-            <li>Tell the people responsible for supporting the prisoner that the plan has been reviewed.</li>
-        </ol>
+      <h2 class="govuk-heading-m">What to do next</h2>
+      <ol class="govuk-body govuk-list govuk-list--number">
+        <li><a class="govuk-link govuk-link--no-visited-state" href="/csip-record/{{ csipRecord.recordUuid }}/update-plan/identified-needs/start">Update the identified needs in {{prisoner | firstNameSpaceLastName | possessiveComma}} plan</a>, if you have not done so already. Record any new information on actions and progress.</li>
+        <li>Tell the people responsible for supporting the prisoner that the plan has been reviewed.</li>
+      </ol>
     {% case 'CSIP_CLOSED' %}
-        <h1 class="govuk-heading-m">What to do next</h1>
+        <h2 class="govuk-heading-m">What to do next</h2>
         <p class="govuk-body">Tell the people responsible for supporting {{ prisoner | firstNameSpaceLastName }} that the plan has been closed.</p>
-    {% endswitch %}
+  {% endswitch %}
 
-    {% include 'base/components/view-other-csips.njk' %}
+{% include 'base/components/view-other-csips.njk' %}
 {% endblock %}

@@ -49,6 +49,11 @@ context('test / homepage', () => {
       .should('be.visible')
       .and('have.attr', 'href')
       .and('match', /manage-csips\?status=CSIP_OPEN&sort=nextReviewDate,asc$/)
+
+    cy.get('.hmpps-summary-card__header > .govuk-grid-row > .govuk-grid-column-two-thirds > h4').should(
+      'have.length',
+      '6',
+    )
   })
 
   const navigateToTestPage = () => {

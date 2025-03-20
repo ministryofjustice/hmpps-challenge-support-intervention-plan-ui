@@ -42,7 +42,7 @@ context('test /referral/confirmation', () => {
 
     cy.findByText('CSIP referral complete').should('be.visible')
 
-    cy.findByText('What happens next').should('be.visible')
+    cy.findByText('What happens next').should('match', 'h2')
     cy.findByText('The referral has been submitted to the Safer Custody team.').should('be.visible')
     cy.findByText('They might contact you:').should('be.visible')
     cy.findByText('if they need more information to make a decision on next steps').should('be.visible')
