@@ -16,6 +16,8 @@ const logAccessibilityViolations = (violations: Result[]) => {
 export const checkAxeAccessibility = () => {
   cy.injectAxe()
   cy.configureAxe({
+    standards: ['wcag22'],
+    ruleCategories: ['wcag-aaa', 'wcag-aa', 'wcag-a'],
     rules: [
       // Temporary rule whilst this issue is resolved https://github.com/w3c/aria/issues/1404
       { id: 'aria-allowed-attr', reviewOnFail: true },

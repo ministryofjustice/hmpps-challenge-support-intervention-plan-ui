@@ -138,3 +138,7 @@ export function summaryListActionChange(value: string, isUpdate: boolean, data: 
     </a>
   </dd>`
 }
+
+export function withVisuallyHiddenText(visibleText: string, hiddenText: string) {
+  return { html: `${visibleText} <span class="govuk-visually-hidden">${hiddenText}</span>` }
+}

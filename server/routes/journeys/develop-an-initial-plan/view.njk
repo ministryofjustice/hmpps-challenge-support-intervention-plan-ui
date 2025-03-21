@@ -13,9 +13,7 @@
 
     {% set caseManagerHtml %}
         {{ govukCharacterCount({
-            label: {
-                text: "Name of Case Manager"
-            },
+            label: "Name of Case Manager" | withVisuallyHiddenText("If not, provide their name."),
             maxlength: 100,
             rows: 1,
             threshold: "100",

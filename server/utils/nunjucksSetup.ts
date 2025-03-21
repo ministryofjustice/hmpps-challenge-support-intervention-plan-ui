@@ -24,6 +24,7 @@ import {
   summaryListActionAddInformation,
   summaryListActionChange,
   yesNoNotKnown,
+  withVisuallyHiddenText,
 } from './viewUtils'
 
 export default function nunjucksSetup(app: express.Express): void {
@@ -99,4 +100,5 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('summaryListActionAddInformation', summaryListActionAddInformation)
   njkEnv.addFilter('summaryListActionChange', summaryListActionChange)
   njkEnv.addFilter('yesNoNotKnown', yesNoNotKnown)
+  njkEnv.addFilter('withVisuallyHiddenText', withVisuallyHiddenText)
 }

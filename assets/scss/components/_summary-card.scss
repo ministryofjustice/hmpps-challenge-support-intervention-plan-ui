@@ -9,6 +9,7 @@
     @include govuk-responsive-padding(3, 'right');
     @include govuk-responsive-margin(3, 'bottom');
 
+    h4,
     h3,
     h2 {
       line-height: 50px;

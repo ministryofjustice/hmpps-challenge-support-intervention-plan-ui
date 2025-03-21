@@ -139,6 +139,8 @@ context('Make a Referral Journey', () => {
     cy.findByText(/How was Tes'name User involved in the incident\?/).should('be.visible')
     cy.findByText(/were any staff assaulted during the incident\?/i).should('be.visible')
 
+    cy.get('.govuk-form-group > .govuk-label').should('contain.text', 'If yes, provide their names')
+
     cy.findByRole('button', { name: /continue/i }).click()
     cy.findByRole('link', { name: /select how the prisoner was involved in the incident/i }).should('be.visible')
     cy.findByRole('link', { name: /select if any staff were assaulted during the incident or not/i }).should(

@@ -1,3 +1,4 @@
+import { expect } from 'chai'
 import { checkAxeAccessibility } from '../../../integration_tests/support/accessibilityViolations'
 
 context('test /manage-csips', () => {
@@ -17,6 +18,8 @@ context('test /manage-csips', () => {
     navigateToTestPage()
     cy.url().should('to.match', /\/manage-csips$/)
     checkAxeAccessibility()
+
+    checkSortingAccessibility()
 
     cy.findAllByRole('heading', { name: /View and manage CSIPs/i }).should('be.visible')
 
@@ -98,5 +101,84 @@ context('test /manage-csips', () => {
   const navigateToTestPage = () => {
     cy.signIn()
     cy.visit(`manage-csips?query=A1234CD`)
+  }
+
+  const checkSortingAccessibility = () => {
+    cy.get('[aria-sort="ascending"] > a > button')
+      .first()
+      .should('have.attr', 'tabindex', '-1')
+      .within($el => {
+        cy.window().then(win => {
+          if (!$el?.[0]) return fail()
+          const beforeStyle = win.getComputedStyle($el[0], '::before')
+          const afterStyle = win.getComputedStyle($el[0], '::after')
+          expect(beforeStyle).to.have.property('content', 'none')
+          return expect(afterStyle).to.have.property('content', 'none')
+        })
+      })
+
+    cy.get('[aria-sort="ascending"] > a > button > span')
+      .first()
+      .within($el => {
+        cy.window().then(win => {
+          if (!$el?.[0]) return fail()
+          const beforeStyle = win.getComputedStyle($el[0], '::before')
+          const afterStyle = win.getComputedStyle($el[0], '::after')
+          expect(beforeStyle).to.have.property('content', 'none')
+          expect(afterStyle).to.have.property('content', '" ▲"')
+          return $el[0].click()
+        })
+      })
+
+    cy.get('[aria-sort="descending"] > a > button')
+      .first()
+      .should('have.attr', 'tabindex', '-1')
+      .within($el => {
+        cy.window().then(win => {
+          if (!$el?.[0]) return fail()
+          const beforeStyle = win.getComputedStyle($el[0], '::before')
+          const afterStyle = win.getComputedStyle($el[0], '::after')
+          expect(beforeStyle).to.have.property('content', 'none')
+          return expect(afterStyle).to.have.property('content', 'none')
+        })
+      })
+
+    cy.get('[aria-sort="descending"] > a > button > span')
+      .first()
+      .within($el => {
+        cy.window().then(win => {
+          if (!$el?.[0]) return fail()
+          const beforeStyle = win.getComputedStyle($el[0], '::before')
+          const afterStyle = win.getComputedStyle($el[0], '::after')
+          expect(beforeStyle).to.have.property('content', 'none')
+          expect(afterStyle).to.have.property('content', '" ▼"')
+          return $el[0].click()
+        })
+      })
+
+    cy.get('[aria-sort="none"] > a > button')
+      .first()
+      .should('have.attr', 'tabindex', '-1')
+      .within($el => {
+        cy.window().then(win => {
+          if (!$el?.[0]) return fail()
+          const beforeStyle = win.getComputedStyle($el[0], '::before')
+          const afterStyle = win.getComputedStyle($el[0], '::after')
+          expect(beforeStyle).to.have.property('content', 'none')
+          return expect(afterStyle).to.have.property('content', 'none')
+        })
+      })
+
+    cy.get('[aria-sort="none"] > a > button > span')
+      .first()
+      .within($el => {
+        cy.window().then(win => {
+          if (!$el?.[0]) return fail()
+          const beforeStyle = win.getComputedStyle($el[0], '::before')
+          const afterStyle = win.getComputedStyle($el[0], '::after')
+          expect(beforeStyle).to.have.property('content', '" ▼"')
+          return expect(afterStyle).to.have.property('content', '" ▲"')
+        })
+      })
   }
 })
