@@ -57,3 +57,17 @@ export const formatInputTime = (value?: string | null) => {
 export const todayString = () => new Date().toISOString().substring(0, 10)
 
 export const todayStringGBFormat = () => DATE_FORMAT_GB.format(new Date())
+
+// compute priority for date in d/m/yyyy format
+export const datePriority = (date: string): 'NORMAL' | 'URGENT' | 'OVERDUE' => {
+  const dateString = new Date(Date.parse(date.split(/[-/]/).reverse().join('-'))).toISOString().substring(0, 10)
+  if (dateString < todayString()) {
+    return 'OVERDUE'
+  }
+  const nextWeek = new Date()
+  nextWeek.setDate(nextWeek.getDate() + 7)
+  if (dateString <= nextWeek.toISOString().substring(0, 10)) {
+    return 'URGENT'
+  }
+  return 'NORMAL'
+}

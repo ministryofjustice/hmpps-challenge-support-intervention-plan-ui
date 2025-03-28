@@ -6,7 +6,7 @@ import fs from 'fs'
 import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
 import config from '../config'
 import { buildErrorSummaryList, customErrorOrderBuilder, findError } from '../middleware/validationMiddleware'
-import { formatDateLongMonthConcise, formatDateConcise, todayStringGBFormat } from './datetimeUtils'
+import { formatDateLongMonthConcise, formatDateConcise, todayStringGBFormat, datePriority } from './datetimeUtils'
 import { YES_NO_ANSWER } from '../routes/journeys/referral/safer-custody/schemas'
 import { csipStatusDisplayText, csipStatusTagClass, identifiedNeedsActionLabel } from './csipDisplayTextUtils'
 import {
@@ -16,7 +16,6 @@ import {
   personProfileName,
 } from './miniProfileUtils'
 import logger from '../../logger'
-import { convertToSortableColumns, datePriority } from '../routes/manage-csips/components/filters'
 import {
   setSelected,
   boldAppendStamp,
@@ -25,6 +24,7 @@ import {
   summaryListActionChange,
   yesNoNotKnown,
   withVisuallyHiddenText,
+  convertToSortableColumns,
 } from './viewUtils'
 
 export default function nunjucksSetup(app: express.Express): void {

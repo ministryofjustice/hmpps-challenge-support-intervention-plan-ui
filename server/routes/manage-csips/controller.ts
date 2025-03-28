@@ -17,21 +17,18 @@ export class SearchCsipController extends BaseJourneyController {
       })
     }
 
+    console.log(req.originalUrl)
+
     const { page, clear, sort, query, status } = req.query
 
     if (clear) {
       req.session.searchCsipParams = {}
-      return res.redirect('manage-csips')
     }
 
     req.session.searchCsipParams ??= {}
 
     if (page || sort || query || status) {
-      if (page) {
-        req.session.searchCsipParams.page = Number.isNaN(Number(page)) ? 1 : Number(page)
-      } else {
-        req.session.searchCsipParams.page = 1
-      }
+      req.session.searchCsipParams.page = Number.isNaN(Number(page)) ? 1 : Number(page)
 
       if (query || status) {
         if (query) {
@@ -45,7 +42,6 @@ export class SearchCsipController extends BaseJourneyController {
             'CSIP_CLOSED',
             'CSIP_OPEN',
             'AWAITING_DECISION',
-            'ACCT_SUPPORT',
             'PLAN_PENDING',
             'INVESTIGATION_PENDING',
             'NO_FURTHER_ACTION',
@@ -65,7 +61,16 @@ export class SearchCsipController extends BaseJourneyController {
       if (sort) {
         const [sortingKey, sortingDirection] = (sort as string).split(',')
         if (
-          ['name', 'location', 'referralDate', 'caseManager', 'nextReviewDate', 'status'].includes(sortingKey ?? '') &&
+          [
+            'name',
+            'location',
+            'referralDate',
+            'logCode',
+            'caseManager',
+            'nextReviewDate',
+            'incidentOrConcern',
+            'status',
+          ].includes(sortingKey ?? '') &&
           ['asc', 'desc'].includes(sortingDirection ?? '')
         ) {
           req.session.searchCsipParams.sort = sort as string
@@ -90,6 +95,7 @@ export class SearchCsipController extends BaseJourneyController {
 
     return res.render('manage-csips/view', {
       showBreadcrumbs: true,
+      pageName: req.originalUrl.replace('/manage-', ''),
       records,
       ...req.session.searchCsipParams,
     })
