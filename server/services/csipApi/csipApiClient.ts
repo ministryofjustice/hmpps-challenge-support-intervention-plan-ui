@@ -60,7 +60,7 @@ export default class CsipApiClient {
   }: {
     prisonCode: string
     query?: string
-    status?: CsipRecordStatus
+    status?: CsipRecordStatus[] | null
     sort: string
     page: number
     size: number

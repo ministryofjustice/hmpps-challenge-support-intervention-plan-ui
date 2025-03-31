@@ -6,6 +6,16 @@ import { BaseJourneyController } from '../journeys/base/controller'
 
 const PAGE_SIZE = 25
 
+const VALID_REFERRAL_STATUSES: CsipRecordStatus[] = [
+  'AWAITING_DECISION',
+  'PLAN_PENDING',
+  'INVESTIGATION_PENDING',
+  'REFERRAL_SUBMITTED',
+  'REFERRAL_PENDING',
+]
+const VALID_PLAN_STATUSES: CsipRecordStatus[] = ['CSIP_OPEN', 'CSIP_CLOSED']
+const VALID_OTHER_STATUSES: CsipRecordStatus[] = ['NO_FURTHER_ACTION', 'SUPPORT_OUTSIDE_CSIP']
+
 export class SearchCsipController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
     if (res.locals.validationErrors) {
@@ -13,11 +23,10 @@ export class SearchCsipController extends BaseJourneyController {
       return res.render('manage-csips/view', {
         showBreadcrumbs: true,
         records: [],
+        pageName: req.originalUrl.split('?')[0]!.replace('/manage-', ''),
         ...req.session.searchCsipParams,
       })
     }
-
-    console.log(req.originalUrl)
 
     const { page, clear, sort, query, status } = req.query
 
@@ -36,21 +45,7 @@ export class SearchCsipController extends BaseJourneyController {
         } else {
           delete req.session.searchCsipParams.query
         }
-        if (
-          status &&
-          [
-            'CSIP_CLOSED',
-            'CSIP_OPEN',
-            'AWAITING_DECISION',
-            'PLAN_PENDING',
-            'INVESTIGATION_PENDING',
-            'NO_FURTHER_ACTION',
-            'SUPPORT_OUTSIDE_CSIP',
-            'REFERRAL_SUBMITTED',
-            'REFERRAL_PENDING',
-            'UNKNOWN',
-          ].includes(status as string)
-        ) {
+        if (status) {
           req.session.searchCsipParams.status = status as CsipRecordStatus
         } else {
           delete req.session.searchCsipParams.status
@@ -68,7 +63,7 @@ export class SearchCsipController extends BaseJourneyController {
             'logCode',
             'caseManager',
             'nextReviewDate',
-            'incidentOrConcern',
+            'incidentType',
             'status',
           ].includes(sortingKey ?? '') &&
           ['asc', 'desc'].includes(sortingDirection ?? '')
@@ -77,17 +72,16 @@ export class SearchCsipController extends BaseJourneyController {
         }
       }
 
-      return res.redirect('manage-csips')
+      return res.redirect(req.originalUrl.split('?')[0]!)
     }
 
     const currentPage = req.session.searchCsipParams.page || 1
 
-    const { content: records, metadata } = await this.csipApiService.searchAndSortCsipRecords({
-      req,
+    const { content: records, metadata } = await this.csipApiService.searchAndSortCsipRecords(req, {
       prisonCode: res.locals.user.activeCaseLoad!.caseLoadId,
       sort: req.session.searchCsipParams.sort || 'name,asc',
       ...getNonUndefinedProp(req.session.searchCsipParams, 'query'),
-      ...getNonUndefinedProp(req.session.searchCsipParams, 'status'),
+      status: getStatusFilter(req),
       page: currentPage,
       size: PAGE_SIZE,
     })
@@ -95,7 +89,7 @@ export class SearchCsipController extends BaseJourneyController {
 
     return res.render('manage-csips/view', {
       showBreadcrumbs: true,
-      pageName: req.originalUrl.replace('/manage-', ''),
+      pageName: req.originalUrl.split('?')[0]!.replace('/manage-', ''),
       records,
       ...req.session.searchCsipParams,
     })
@@ -107,6 +101,32 @@ export class SearchCsipController extends BaseJourneyController {
     req.session.searchCsipParams.status = req.body.status || null
     req.session.searchCsipParams.page = 1
     delete req.session.searchCsipParams.sort
-    res.redirect('manage-csips')
+    res.redirect(req.originalUrl.split('?')[0]!)
   }
+}
+
+function getStatusFilter(req: Request): CsipRecordStatus[] | null {
+  const status = req.body.status || req.session.searchCsipParams?.status
+
+  if (req.originalUrl.includes('manage-csips')) {
+    return statusGuard(status, [...VALID_OTHER_STATUSES, ...VALID_PLAN_STATUSES, ...VALID_REFERRAL_STATUSES])
+  }
+
+  if (req.originalUrl.includes('manage-plans')) {
+    return statusGuard(status, VALID_PLAN_STATUSES)
+  }
+
+  if (req.originalUrl.includes('manage-referrals')) {
+    return statusGuard(status, VALID_REFERRAL_STATUSES)
+  }
+
+  return null
+}
+
+function statusGuard(status: CsipRecordStatus, validStatuses: CsipRecordStatus[]) {
+  if (validStatuses.includes(status)) {
+    return [status]
+  }
+
+  return validStatuses
 }

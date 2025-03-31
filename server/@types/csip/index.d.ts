@@ -1685,12 +1685,37 @@ export interface components {
       /** @description How the plan to address the identified need is progressing. */
       progression?: string
     }
+    FindCsipRequest: {
+      prisonCode: string[]
+      query?: string
+      status: (
+        | 'CSIP_CLOSED'
+        | 'CSIP_OPEN'
+        | 'AWAITING_DECISION'
+        | 'ACCT_SUPPORT'
+        | 'PLAN_PENDING'
+        | 'INVESTIGATION_PENDING'
+        | 'NO_FURTHER_ACTION'
+        | 'SUPPORT_OUTSIDE_CSIP'
+        | 'REFERRAL_SUBMITTED'
+        | 'REFERRAL_PENDING'
+        | 'UNKNOWN'
+      )[]
+      includeRestrictedPatients: boolean
+      /** Format: int32 */
+      page: number
+      /** Format: int32 */
+      size: number
+      sort: string
+    }
     CsipSearchResult: {
       /** Format: uuid */
       id: string
+      logCode?: string
       prisoner: components['schemas']['Prisoner']
       /** Format: date */
       referralDate: string
+      incidentType: string
       /** Format: date */
       nextReviewDate?: string
       caseManager?: string
@@ -3258,26 +3283,8 @@ export interface operations {
   }
   findCsipRecords: {
     parameters: {
-      query?: {
-        prisonCode?: string
-        query?: string
-        status?:
-          | 'CSIP_CLOSED'
-          | 'CSIP_OPEN'
-          | 'AWAITING_DECISION'
-          | 'ACCT_SUPPORT'
-          | 'PLAN_PENDING'
-          | 'INVESTIGATION_PENDING'
-          | 'NO_FURTHER_ACTION'
-          | 'SUPPORT_OUTSIDE_CSIP'
-          | 'REFERRAL_SUBMITTED'
-          | 'REFERRAL_PENDING'
-          | 'UNKNOWN'
-        prisonCodes?: string[]
-        includeRestrictedPatients?: boolean
-        page?: number
-        size?: number
-        sort?: string
+      query: {
+        request: components['schemas']['FindCsipRequest']
       }
       header?: never
       path?: never
