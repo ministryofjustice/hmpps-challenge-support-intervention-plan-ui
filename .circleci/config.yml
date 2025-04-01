@@ -80,6 +80,8 @@ jobs:
       redis_tag: "6.2"
     parallelism: 4
     resource_class: large
+    env: 
+      TZ: 'Europe/London'
     steps:
       - checkout
       - attach_workspace:
