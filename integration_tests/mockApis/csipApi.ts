@@ -923,8 +923,8 @@ const stubPostNewAttendeeFail = () => {
 const createMockSearchCsipRecord = (params: Partial<CsipSearchResults['content']['0']>) => {
   return {
     id: params.id ?? '12345678-1234-1234-1234-123456789012',
-    referralDate: params.referralDate ?? new Date(),
-    nextReviewDate: params.nextReviewDate ?? new Date(),
+    referralDate: params.referralDate ?? '2025-03-01',
+    nextReviewDate: params.nextReviewDate ?? '2025-03-01',
     caseManager: params.caseManager ?? 'John Smith',
     status: params.status ?? { code: 'CSIP_CLOSED', description: 'CSIP closed' },
     prisoner: params.prisoner ?? { prisonNumber: 'A1234CD', firstName: 'John', lastName: 'Smith', location: '1-2-3' },
