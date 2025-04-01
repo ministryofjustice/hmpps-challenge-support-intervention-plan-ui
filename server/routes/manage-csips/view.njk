@@ -4,7 +4,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "partials/reviewDate/macro.njk" import reviewDate %}
+{% from "./components/reviewDate.njk" import reviewDate %}
 
 {% set fullWidth = true %}
 {% set pageTitle = "CSIP caseload" if pageName == 'csips' else ("Open and closed CSIPs" if pageName == 'plans' else "CSIP referrals in progress") %}
