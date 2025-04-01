@@ -1,12 +1,23 @@
 import { stubFor } from './wiremock'
 import { YES_NO_ANSWER } from '../../server/routes/journeys/referral/safer-custody/schemas'
-import { CsipRecord } from '../../server/@types/csip/csipApiTypes'
+import { CsipRecord, CsipSearchResults } from '../../server/@types/csip/csipApiTypes'
 
 const uuidRegex = '([a-zA-Z0-9]+-){4}[a-zA-Z0-9]+'
 
 const createBasicHttpStub = (method: string, urlPattern: string, status: number, jsonBody: object = {}) => {
+  return createHttpStub(method, urlPattern, undefined, undefined, status, jsonBody)
+}
+
+const createHttpStub = (
+  method: string,
+  urlPathPattern: string,
+  queryParameters: object | undefined,
+  bodyPatterns: Array<object> | undefined,
+  status: number,
+  jsonBody?: object,
+) => {
   return stubFor({
-    request: { method, urlPattern },
+    request: { method, urlPathPattern, queryParameters, bodyPatterns },
     response: {
       status,
       headers: {
@@ -909,48 +920,196 @@ const stubPostNewAttendeeFail = () => {
   })
 }
 
+const createMockSearchCsipRecord = (params: Partial<CsipSearchResults['content']['0']>) => {
+  return {
+    id: params.id ?? '12345678-1234-1234-1234-123456789012',
+    referralDate: params.referralDate ?? new Date(),
+    nextReviewDate: params.nextReviewDate ?? new Date(),
+    caseManager: params.caseManager ?? 'John Smith',
+    status: params.status ?? { code: 'CSIP_CLOSED', description: 'CSIP closed' },
+    prisoner: params.prisoner ?? { prisonNumber: 'A1234CD', firstName: 'John', lastName: 'Smith', location: '1-2-3' },
+    logCode: params.logCode ?? 'LEI123',
+    incidentType: params.incidentType ?? '',
+    ...params,
+  }
+}
+
 const stubSearchCsipRecords = () => {
   const reviewDate = new Date()
   reviewDate.setDate(reviewDate.getDate() + 1)
-  return createBasicHttpStub('GET', '/csip-api/search/csip-records.*', 200, {
-    content: [
-      {
-        id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        prisoner: {
-          prisonNumber: 'string',
-          firstName: 'string',
-          lastName: 'string',
-          location: 'string',
-        },
-        referralDate: '2024-10-25',
-        nextReviewDate: '2001-10-25',
-        caseManager: 'Overdue Manager',
-        status: {
-          code: 'CSIP_CLOSED',
-          description: 'CSIP closed',
-        },
+  return createHttpStub(
+    'GET',
+    '/csip-api/search/csip-records',
+    {
+      page: { matches: '.*' },
+      size: { equalTo: '25' },
+      prisonCode: { equalTo: 'LEI' },
+      query: { matches: '.*' },
+      status: {
+        equalTo:
+          'NO_FURTHER_ACTION,SUPPORT_OUTSIDE_CSIP,CSIP_OPEN,CSIP_CLOSED,AWAITING_DECISION,PLAN_PENDING,INVESTIGATION_PENDING,REFERRAL_SUBMITTED,REFERRAL_PENDING',
       },
-      {
-        id: '3fa85f64-5717-4562-b3fc-2c963f66afa7',
-        prisoner: {
-          prisonNumber: 'string',
-          firstName: 'string',
-          lastName: 'string',
-          location: 'string',
-        },
-        referralDate: '2024-10-25',
-        nextReviewDate: reviewDate.toISOString().substring(0, 10),
-        caseManager: 'Soon Due Manager',
-        status: {
-          code: 'CSIP_OPEN',
-          description: 'CSIP open',
-        },
-      },
-    ],
-    metadata: {
-      totalElements: 100,
+      sort: { matches: '.*' },
     },
-  })
+    undefined,
+    200,
+    {
+      content: [
+        createMockSearchCsipRecord({ caseManager: 'Overdue Manager' }),
+        createMockSearchCsipRecord({
+          caseManager: 'Soon Due Manager',
+          nextReviewDate: reviewDate.toISOString().substring(0, 10),
+          status: { code: 'CSIP_OPEN', description: 'CSIP open' },
+        }),
+        createMockSearchCsipRecord({ status: { code: 'AWAITING_DECISION', description: 'Awaiting decision' } }),
+        createMockSearchCsipRecord({ status: { code: 'PLAN_PENDING', description: 'Plan pending' } }),
+        createMockSearchCsipRecord({ status: { code: 'INVESTIGATION_PENDING', description: 'Investigation pending' } }),
+        createMockSearchCsipRecord({ status: { code: 'REFERRAL_SUBMITTED', description: 'Referral submitted' } }),
+        createMockSearchCsipRecord({ status: { code: 'REFERRAL_PENDING', description: 'Referral pending' } }),
+        createMockSearchCsipRecord({ status: { code: 'NO_FURTHER_ACTION', description: 'No further action' } }),
+        createMockSearchCsipRecord({
+          status: { code: 'SUPPORT_OUTSIDE_CSIP', description: 'Support outside of CSIP' },
+        }),
+      ],
+      metadata: {
+        totalElements: 100,
+      },
+    },
+  )
+}
+
+const stubSearchCsipRecordsClosed = () => {
+  const reviewDate = new Date()
+  reviewDate.setDate(reviewDate.getDate() + 1)
+  return createHttpStub(
+    'GET',
+    '/csip-api/search/csip-records',
+    {
+      page: { matches: '.*' },
+      size: { equalTo: '25' },
+      prisonCode: { equalTo: 'LEI' },
+      query: { matches: '.*' },
+      status: { equalTo: 'CSIP_CLOSED' },
+      sort: { matches: '.*' },
+    },
+    undefined,
+    200,
+    {
+      content: [createMockSearchCsipRecord({ caseManager: 'Overdue Manager' })],
+      metadata: {
+        totalElements: 100,
+      },
+    },
+  )
+}
+
+const stubSearchCsipRecordsOpen = () => {
+  const reviewDate = new Date()
+  reviewDate.setDate(reviewDate.getDate() + 1)
+  return createHttpStub(
+    'GET',
+    '/csip-api/search/csip-records',
+    {
+      page: { matches: '.*' },
+      size: { equalTo: '25' },
+      prisonCode: { equalTo: 'LEI' },
+      query: { matches: '.*' },
+      status: { equalTo: 'CSIP_OPEN' },
+      sort: { matches: '.*' },
+    },
+    undefined,
+    200,
+    {
+      content: [
+        createMockSearchCsipRecord({
+          caseManager: 'Soon Due Manager',
+          nextReviewDate: reviewDate.toISOString().substring(0, 10),
+          status: { code: 'CSIP_OPEN', description: 'CSIP open' },
+        }),
+      ],
+      metadata: {
+        totalElements: 100,
+      },
+    },
+  )
+}
+
+const stubSearchCsipRecordsPlans = () => {
+  const reviewDate = new Date()
+  reviewDate.setDate(reviewDate.getDate() + 1)
+  return createHttpStub(
+    'GET',
+    '/csip-api/search/csip-records',
+    {
+      page: { matches: '.*' },
+      size: { equalTo: '25' },
+      prisonCode: { equalTo: 'LEI' },
+      query: { matches: '.*' },
+      status: { equalTo: 'CSIP_OPEN,CSIP_CLOSED' },
+      sort: { matches: '.*' },
+    },
+    undefined,
+    200,
+    {
+      content: [
+        createMockSearchCsipRecord({ caseManager: 'Overdue Manager' }),
+        createMockSearchCsipRecord({
+          caseManager: 'Soon Due Manager',
+          nextReviewDate: reviewDate.toISOString().substring(0, 10),
+          status: { code: 'CSIP_OPEN', description: 'CSIP open' },
+        }),
+      ],
+      metadata: {
+        totalElements: 100,
+      },
+    },
+  )
+}
+
+const stubSearchCsipRecordsReferrals = () => {
+  const reviewDate = new Date()
+  reviewDate.setDate(reviewDate.getDate() + 1)
+  return createHttpStub(
+    'GET',
+    '/csip-api/search/csip-records',
+    {
+      page: { matches: '.*' },
+      size: { equalTo: '25' },
+      prisonCode: { equalTo: 'LEI' },
+      query: { matches: '.*' },
+      status: { equalTo: 'AWAITING_DECISION,PLAN_PENDING,INVESTIGATION_PENDING,REFERRAL_SUBMITTED,REFERRAL_PENDING' },
+      sort: { matches: '.*' },
+    },
+    undefined,
+    200,
+    {
+      content: [
+        createMockSearchCsipRecord({
+          incidentType: 'Abuse',
+          status: { code: 'AWAITING_DECISION', description: 'Awaiting decision' },
+        }),
+        createMockSearchCsipRecord({
+          incidentType: 'Abuse',
+          status: { code: 'PLAN_PENDING', description: 'Plan pending' },
+        }),
+        createMockSearchCsipRecord({
+          incidentType: 'Abuse',
+          status: { code: 'INVESTIGATION_PENDING', description: 'Investigation pending' },
+        }),
+        createMockSearchCsipRecord({
+          incidentType: 'Abuse',
+          status: { code: 'REFERRAL_SUBMITTED', description: 'Referral submitted' },
+        }),
+        createMockSearchCsipRecord({
+          incidentType: 'Abuse',
+          status: { code: 'REFERRAL_PENDING', description: 'Referral pending' },
+        }),
+      ],
+      metadata: {
+        totalElements: 100,
+      },
+    },
+  )
 }
 
 const stubSearchCsipRecordsFail = () => {
@@ -1218,4 +1377,8 @@ export default {
   stubCsipRecordSuccessPlanPendingCUR,
   stubCsipRecordSuccessPlanPendingNomis,
   stubPutDecisionSuccessNomis,
+  stubSearchCsipRecordsClosed,
+  stubSearchCsipRecordsPlans,
+  stubSearchCsipRecordsReferrals,
+  stubSearchCsipRecordsOpen,
 }

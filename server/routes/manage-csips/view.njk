@@ -4,15 +4,38 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "./components/reviewDate.njk" import reviewDate %}
+{% from "partials/reviewDate/macro.njk" import reviewDate %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "View and manage CSIPs" %}
+{% set pageTitle = "CSIP caseload" if pageName == 'csips' else ("Open and closed CSIPs" if pageName == 'plans' else "CSIP referrals in progress") %}
 {% extends "partials/layout.njk" %}
 
 {% block innerContent %}
-  <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">View and manage CSIPs </h1>
+  <div class="govuk-grid-row">
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-6 govuk-!-display-inline">{{ pageTitle }}</h1>
 
+    <div class="light-box float-right govuk-!-padding-2 govuk-!-padding-right-9">
+      <h2 class="govuk-heading-m">Change view</h2>
+      {% if pageName != 'csips' %}
+        <p class="govuk-body">
+          <a href="/manage-csips" class="govuk-link govuk-link--no-visited-state">All of the CSIP caseload</a>
+      {% endif %}
+
+      {% if pageName != 'plans' %}
+        <p class="govuk-body">
+          <a href="/manage-plans" class="govuk-link govuk-link--no-visited-state">Plans only</a>
+        </p>
+      {% endif %}
+
+      {% if pageName != 'referrals' %}
+        <p class="govuk-body">
+          <a href="/manage-referrals" class="govuk-link govuk-link--no-visited-state">Referrals in progress only</a>
+        </p>
+      {% endif %}
+    </div>
+  </div>
+
+<hr class="govuk-section-break govuk-section-break--m">
   <form method="post" class="govuk-grid-row govuk-!-margin-bottom-7 govuk-!-padding-6 search-form">
     <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
     <h2 class="govuk-heading-m">Filter by</h2>
@@ -27,54 +50,39 @@
         }
       }) }}
 
+      {% set filters = [{ value: "", text: "All" }] %}
+
+      {% if pageName != 'referrals' %}
+        {% set filters = (filters.push(
+          { value: 'CSIP_CLOSED', text: 'CSIP closed' },
+          { value: 'CSIP_OPEN', text: 'CSIP open' }
+        ), filters) %}
+      {% endif %}
+
+      {% if pageName != 'plans' %}
+        {% set filters = (filters.push(
+          { value: 'AWAITING_DECISION', text: 'Awaiting decision' },
+          { value: 'INVESTIGATION_PENDING', text: 'Investigation pending' },
+          { value: 'PLAN_PENDING', text: 'Plan pending' },
+          { value: 'REFERRAL_PENDING', text: 'Referral pending' },
+          { value: 'REFERRAL_SUBMITTED', text: 'Referral submitted' }
+        ), filters) %}
+      {% endif %}
+
+      {% if pageName == 'csips' %}
+        {% set filters = (filters.push(
+          { value: 'NO_FURTHER_ACTION', text: 'No further action' },
+          { value: 'SUPPORT_OUTSIDE_CSIP', text: 'Support outside of CSIP' }
+        ), filters) %}
+      {% endif %}
+
       {{ govukSelect({
         id: "status",
         name: "status",
         label: {
           text: "CSIP status"
         },
-        items: [
-          {
-            value: "",
-            text: "All"
-          },
-          {
-            value: 'AWAITING_DECISION',
-            text: 'Awaiting decision'
-          },
-          {
-            value: 'CSIP_CLOSED',
-            text: 'CSIP closed'
-          },
-          {
-            value: 'CSIP_OPEN',
-            text: 'CSIP open'
-          },
-          {
-            value: 'INVESTIGATION_PENDING',
-            text: 'Investigation pending'
-          },
-          {
-            value: 'NO_FURTHER_ACTION',
-            text: 'No further action'
-          },
-          {
-            value: 'PLAN_PENDING',
-            text: 'Plan pending'
-          },
-          {
-            value: 'REFERRAL_PENDING',
-            text: 'Referral pending'
-          },
-          {
-            value: 'REFERRAL_SUBMITTED',
-            text: 'Referral submitted'
-          },
-          {
-            value: 'SUPPORT_OUTSIDE_CSIP',
-            text: 'Support outside of CSIP'
-          }
-        ] | setSelected(status or '')
+        items: filters | sort(false, false, 'text') | setSelected(status or '')
       }) }}
 
       {{ govukButton({
@@ -103,61 +111,47 @@
         text: csipRecord.referralDate | formatSimpleDisplayDate
       },
       {
-        html: reviewDate({
-          date: csipRecord.nextReviewDate | formatSimpleDisplayDate,
-          emptyLabel: '-'
-        })
+        classes: 'col-width-200',
+        html: csipRecord.logCode or '-'
       },
       {
         classes: 'col-width-200',
         html: (csipRecord.caseManager | softHyphenate(20)) or '-'
-      },
+      } if pageName != 'referrals',
+      {
+        html: reviewDate({  date: csipRecord.nextReviewDate | formatSimpleDisplayDate, emptyLabel: '-' })
+      } if pageName != 'referrals',
+      {
+        text: csipRecord.incidentType or '-'
+      } if pageName == 'referrals',
       {
         html: statusTag({ record: csipRecord })
       },
       {
-        classes: 'govuk-link govuk-link--no-visited-state',
-        html: '<a href="/csip-records/' + csipRecord.id + '">View<span class="govuk-visually-hidden"><span id="prisoner-name">' + csipRecord.prisoner | lastNameCommaFirstName + '</span> CSIP record</span></a>'
+        html: '<a class="govuk-link govuk-link--no-visited-state" href="/csip-records/' + csipRecord.id + '">View<span class="govuk-visually-hidden"><span id="prisoner-name">' + csipRecord.prisoner | lastNameCommaFirstName + '</span> CSIP record</span></a>'
       }
-    ]), csipRecordRows) %}
+    ] | select()), csipRecordRows) %}
   {% endfor %}
 
   {% if records.length %}
     <caption>
       <span class="govuk-visually-hidden">Column headers with buttons are sortable.</span>
     </caption>
+
     {{ govukTable({
       firstCellIsHeader: false,
       classes: 'table-vertical-align-middle govuk-!-margin-top-6',
       head: [
-        {
-          text: 'Name and prison number',
-          key: 'name'
-        },
-        {
-          text: "Residential location",
-          key: 'location'
-        },
-        {
-          text: "Referral date",
-          key: 'referralDate'
-        },
-        {
-          text: "Next review date",
-          key: 'nextReviewDate'
-        },
-        {
-          text: "Case Manager",
-          key: 'caseManager'
-        },
-        {
-          text: "CSIP status",
-          key: 'status'
-        },
-        {
-          text: ""
-        }
-      ] | convertToSortableColumns(sort or 'name,asc'),
+      { text: 'Name and prison number', key: 'name' },
+      { text: "Location", key: 'location' },
+      { text: "Referral date", key: 'referralDate' },
+      { text: "CSIP log code", key: 'logCode' },
+      { text: "Case Manager", key: 'caseManager' } if pageName != 'referrals',
+      { text: "Next review date", key: 'nextReviewDate' } if pageName != 'referrals',
+      { text: "Incident type or main concern", key: 'incidentType' } if pageName == 'referrals',
+      { text: 'CSIP status', key: 'status' },
+      { text: '' }
+    ] | select() | convertToSortableColumns(sort or ('nextReviewDate,asc' if pageName == 'plans' else 'name,asc')),
       rows: csipRecordRows
     }) }}
   {% else %}

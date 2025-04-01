@@ -18,28 +18,18 @@ export const datePriority = (date: string): DatePriority => {
 
 // add aria-sort attributes to govukTable head row, so that moj-sortable-table css will be applied
 export const convertToSortableColumns = (headings: { text: string; key?: string }[], sort: string) => {
-  const [sortingKey, sortingDirection] = sort.split(',')
+  const [sortKey, direction] = sort.split(',')
 
   return headings.map(heading => {
     if (!heading.key) {
       return heading
     }
-    if (heading.key === sortingKey) {
-      if (sortingDirection === 'asc') {
-        return {
-          attributes: {
-            'aria-sort': 'ascending',
-          },
-          html: `<a href="?sort=${heading.key},desc"><button tabindex="-1">${heading.text}<span aria-hidden="true"></span></button></a>`,
-        }
-      }
-      if (sortingDirection === 'desc') {
-        return {
-          attributes: {
-            'aria-sort': 'descending',
-          },
-          html: `<a href="?sort=${heading.key},asc"><button tabindex="-1">${heading.text}<span aria-hidden="true"></span></button></a>`,
-        }
+    if (heading.key === sortKey) {
+      return {
+        attributes: {
+          'aria-sort': direction === 'asc' ? 'ascending' : 'descending',
+        },
+        html: `<a href="?sort=${heading.key},${direction === 'asc' ? 'desc' : 'asc'}"><button tabindex="-1">${heading.text}<span aria-hidden="true"></span></button></a>`,
       }
     }
     return {

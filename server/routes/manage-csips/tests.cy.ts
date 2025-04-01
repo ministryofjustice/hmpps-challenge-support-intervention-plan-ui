@@ -11,28 +11,49 @@ context('test /manage-csips', () => {
     cy.task('reset')
     cy.task('stubSignIn')
     cy.task('stubComponents')
+
+    // All stubs should be available to all tests to ensure API query params are correctly constructed
+    cy.task('stubSearchCsipRecords')
+    cy.task('stubSearchCsipRecordsClosed')
+    cy.task('stubSearchCsipRecordsOpen')
+    cy.task('stubSearchCsipRecordsPlans')
+    cy.task('stubSearchCsipRecordsReferrals')
   })
 
   it('tests all use cases', () => {
-    cy.task('stubSearchCsipRecords')
     navigateToTestPage()
     cy.url().should('to.match', /\/manage-csips$/)
     checkAxeAccessibility()
 
     checkSortingAccessibility()
 
-    cy.findAllByRole('heading', { name: /View and manage CSIPs/i }).should('be.visible')
+    cy.findAllByRole('heading', { name: /CSIP Caseload/i }).should('be.visible')
+
+    cy.get('.light-box > p > a').should('have.length', 2)
+    cy.get('.light-box > p > a').eq(0).should('have.text', 'Plans only')
+    cy.get('.light-box > p > a').eq(1).should('have.text', 'Referrals in progress only')
 
     getFilterButton().should('be.visible')
     getClearLink().should('be.visible')
     getQueryInput().should('be.visible').and('have.value', 'A1234CD')
     getStatusSelect().should('be.visible').and('have.value', '')
 
+    // All statuses are represented in the table
+    cy.get('.govuk-table__body > tr > td > strong').eq(0).should('have.text', 'CSIP closed')
+    cy.get('.govuk-table__body > tr > td > strong').eq(1).should('have.text', 'CSIP open')
+    cy.get('.govuk-table__body > tr > td > strong').eq(2).should('have.text', 'Awaiting decision')
+    cy.get('.govuk-table__body > tr > td > strong').eq(3).should('have.text', 'Plan pending')
+    cy.get('.govuk-table__body > tr > td > strong').eq(4).should('have.text', 'Investigation pending')
+    cy.get('.govuk-table__body > tr > td > strong').eq(5).should('have.text', 'Referral submitted')
+    cy.get('.govuk-table__body > tr > td > strong').eq(6).should('have.text', 'Referral pending')
+    cy.get('.govuk-table__body > tr > td > strong').eq(7).should('have.text', 'No further action')
+    cy.get('.govuk-table__body > tr > td > strong').eq(8).should('have.text', 'Support outside of CSIP')
+
     // status labels and overdue review dates are styled
-    cy.findAllByText('CSIP open').last().should('have.class', 'govuk-tag--turquoise')
-    cy.findAllByText('CSIP closed').last().should('have.class', 'govuk-tag--grey')
-    cy.findByText('Overdue Manager').prev().get('span').should('have.class', 'govuk-tag--red')
-    cy.findByText('Soon Due Manager').prev().get('span').should('have.class', 'govuk-tag--yellow')
+    cy.get('.govuk-table__body > tr > td > strong').eq(1).should('have.class', 'govuk-tag--turquoise')
+    cy.get('.govuk-table__body > tr > td > strong').eq(0).should('have.class', 'govuk-tag--grey')
+    cy.get('.govuk-table__body > tr > td > span').eq(2).should('have.class', 'govuk-tag--red')
+    cy.get('.govuk-table__body > tr > td > span').eq(1).should('have.class', 'govuk-tag--yellow')
 
     // on page change, filter and sort persist
     cy.findAllByRole('link', { name: /Page 4 of 4/ })
@@ -76,7 +97,9 @@ context('test /manage-csips', () => {
     cy.get('.moj-pagination__item--prev > a').eq(0).should('have.text', 'Previous Results page')
     cy.get('.moj-pagination__item--prev > a > span').eq(0).should('have.text', ' Results page')
 
-    cy.findAllByRole('link', { name: 'View String, String CSIP record' }).should('be.visible')
+    cy.findAllByRole('link', { name: 'View Smith, John CSIP record' }).should('be.visible')
+
+    cy.get('.govuk-table__body > tr').children().eq(3).should('have.text', 'LEI123')
 
     // on clear, all params reset
     getClearLink().click()
@@ -86,13 +109,66 @@ context('test /manage-csips', () => {
     cy.get('[aria-sort="descending"]').should('not.exist')
   })
 
+  it('should show relevant content for Manage Plans', () => {
+    navigateToTestPage()
+    cy.visit(`manage-plans`)
+
+    cy.findAllByRole('heading', { name: /Open and closed CSIPs/i }).should('be.visible')
+
+    cy.findAllByRole('heading', { name: /Change view/i }).should('be.visible')
+
+    cy.get('.light-box > p > a').should('have.length', 2)
+    cy.get('.light-box > p > a').eq(0).should('have.text', 'All of the CSIP caseload')
+    cy.get('.light-box > p > a').eq(1).should('have.text', 'Referrals in progress only')
+
+    getStatusSelect().should('be.visible').children().should('have.length', 3)
+    getStatusSelect().children().eq(0).should('have.text', 'All')
+    getStatusSelect().children().eq(1).should('have.text', 'CSIP closed')
+    getStatusSelect().children().eq(2).should('have.text', 'CSIP open')
+
+    cy.get('.govuk-table__body > tr').should('have.length', 2)
+
+    // "ALL" statuses means only CSIP closed and CSIP open are shown
+    cy.get('.govuk-table__body > tr > td > strong').eq(0).should('have.text', 'CSIP closed')
+    cy.get('.govuk-table__body > tr > td > strong').eq(1).should('have.text', 'CSIP open')
+  })
+
+  it('should show relevant content for Manage Referrals', () => {
+    navigateToTestPage()
+    cy.visit(`manage-referrals`)
+
+    cy.findAllByRole('heading', { name: /CSIP referrals in progress/i }).should('be.visible')
+
+    cy.get('.light-box > p > a').should('have.length', 2)
+    cy.get('.light-box > p > a').eq(0).should('have.text', 'All of the CSIP caseload')
+    cy.get('.light-box > p > a').eq(1).should('have.text', 'Plans only')
+
+    getStatusSelect().should('be.visible').children().should('have.length', 6)
+    getStatusSelect().children().eq(0).should('have.text', 'All')
+    getStatusSelect().children().eq(1).should('have.text', 'Awaiting decision')
+    getStatusSelect().children().eq(2).should('have.text', 'Investigation pending')
+    getStatusSelect().children().eq(3).should('have.text', 'Plan pending')
+    getStatusSelect().children().eq(4).should('have.text', 'Referral pending')
+    getStatusSelect().children().eq(5).should('have.text', 'Referral submitted')
+
+    cy.get('.govuk-table__body > tr').should('have.length', 5)
+    cy.get('.govuk-table__body > tr').children().eq(4).should('have.text', 'Abuse')
+
+    // "ALL" statuses means only in progress referral types are shown
+    cy.get('.govuk-table__body > tr > td > strong').eq(0).should('have.text', 'Awaiting decision')
+    cy.get('.govuk-table__body > tr > td > strong').eq(1).should('have.text', 'Plan pending')
+    cy.get('.govuk-table__body > tr > td > strong').eq(2).should('have.text', 'Investigation pending')
+    cy.get('.govuk-table__body > tr > td > strong').eq(3).should('have.text', 'Referral submitted')
+    cy.get('.govuk-table__body > tr > td > strong').eq(4).should('have.text', 'Referral pending')
+  })
+
   it('shows error message and empty result on API failure', () => {
     cy.task('stubSearchCsipRecordsFail')
     navigateToTestPage()
     cy.url().should('to.match', /\/manage-csips/)
     checkAxeAccessibility()
 
-    cy.findAllByRole('heading', { name: /View and manage CSIPs/i }).should('be.visible')
+    cy.findAllByRole('heading', { name: /CSIP caseload/i }).should('be.visible')
 
     cy.findByText('Simulated Error for E2E testing').should('be.visible')
     cy.findByText('No results for this search criteria.').should('be.visible')
