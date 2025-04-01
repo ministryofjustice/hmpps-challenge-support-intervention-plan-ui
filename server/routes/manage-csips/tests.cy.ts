@@ -50,10 +50,10 @@ context('test /manage-csips', () => {
     cy.get('.govuk-table__body > tr > td > strong').eq(8).should('have.text', 'Support outside of CSIP')
 
     // status labels and overdue review dates are styled
-    cy.findAllByText('CSIP open').last().should('have.class', 'govuk-tag--turquoise')
-    cy.findAllByText('CSIP closed').last().should('have.class', 'govuk-tag--grey')
-    cy.findByText('Overdue Manager').prev().get('span').should('have.class', 'govuk-tag--red')
-    cy.findByText('Soon Due Manager').prev().get('span').should('have.class', 'govuk-tag--yellow')
+    cy.get('.govuk-table__body > tr > td > strong').eq(1).should('have.class', 'govuk-tag--turquoise')
+    cy.get('.govuk-table__body > tr > td > strong').eq(0).should('have.class', 'govuk-tag--grey')
+    cy.get('.govuk-table__body > tr > td > span').eq(0).should('have.class', 'govuk-tag--red')
+    cy.get('.govuk-table__body > tr > td > span').eq(1).should('have.class', 'govuk-tag--yellow')
 
     // on page change, filter and sort persist
     cy.findAllByRole('link', { name: /Page 4 of 4/ })
