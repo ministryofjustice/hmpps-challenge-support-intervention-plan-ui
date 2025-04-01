@@ -923,7 +923,7 @@ const stubSearchCsipRecords = () => {
           location: 'string',
         },
         referralDate: '2024-10-25',
-        nextReviewDate: '2001-10-25',
+        nextReviewDate: new Date(),
         caseManager: 'Overdue Manager',
         status: {
           code: 'CSIP_CLOSED',
