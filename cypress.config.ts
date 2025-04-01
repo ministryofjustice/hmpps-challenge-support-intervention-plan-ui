@@ -49,4 +49,5 @@ export default defineConfig({
     },
   },
   redirectionLimit: 50,
+  viewportHeight: 1200
 })

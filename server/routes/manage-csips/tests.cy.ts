@@ -52,7 +52,7 @@ context('test /manage-csips', () => {
     // status labels and overdue review dates are styled
     cy.get('.govuk-table__body > tr > td > strong').eq(1).should('have.class', 'govuk-tag--turquoise')
     cy.get('.govuk-table__body > tr > td > strong').eq(0).should('have.class', 'govuk-tag--grey')
-    cy.get('.govuk-table__body > tr > td > span').eq(0).should('have.class', 'govuk-tag--red')
+    cy.get('.govuk-table__body > tr > td > span').eq(2).should('have.class', 'govuk-tag--red')
     cy.get('.govuk-table__body > tr > td > span').eq(1).should('have.class', 'govuk-tag--yellow')
 
     // on page change, filter and sort persist
