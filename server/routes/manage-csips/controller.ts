@@ -18,15 +18,6 @@ const VALID_OTHER_STATUSES: CsipRecordStatus[] = ['NO_FURTHER_ACTION', 'SUPPORT_
 
 export class SearchCsipController extends BaseJourneyController {
   GET = async (req: Request, res: Response) => {
-    if (res.locals.validationErrors) {
-      // if the API call failed (and resulted in a validation error message), render empty result instead of repeating the API call again
-      return res.render('manage-csips/view', {
-        showBreadcrumbs: true,
-        records: [],
-        pageName: req.originalUrl.split('?')[0]!.replace('/manage-', ''),
-      })
-    }
-
     const validStatuses = await this.csipApiService.getReferenceData(req, 'status')
 
     if (req.query['clear']) {

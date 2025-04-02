@@ -162,18 +162,6 @@ context('test /manage-csips', () => {
     cy.get('.govuk-table__body > tr > td > strong').eq(4).should('have.text', 'Referral pending')
   })
 
-  xit('shows error message and empty result on API failure', () => {
-    cy.task('stubSearchCsipRecordsFail')
-    navigateToTestPage()
-    cy.url().should('to.match', /\/manage-csips/)
-    checkAxeAccessibility()
-
-    cy.findAllByRole('heading', { name: /CSIP caseload/i }).should('be.visible')
-
-    cy.findByText('Simulated Error for E2E testing').should('be.visible')
-    cy.findByText('No results for this search criteria.').should('be.visible')
-  })
-
   const navigateToTestPage = () => {
     cy.signIn()
     cy.visit(`manage-csips?query=A1234CD`)
