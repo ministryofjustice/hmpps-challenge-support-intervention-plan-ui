@@ -49,6 +49,15 @@ context('test /manage-csips', () => {
     cy.get('.govuk-table__body > tr > td > strong').eq(7).should('have.text', 'No further action')
     cy.get('.govuk-table__body > tr > td > strong').eq(8).should('have.text', 'Support outside of CSIP')
 
+    // Table headers
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(0).should('have.text', 'Name and prison number')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(1).should('have.text', 'Location')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(2).should('have.text', 'Referral date')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(3).should('have.text', 'CSIP log code')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(4).should('have.text', 'Case Manager')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(5).should('have.text', 'Next review date')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(6).should('have.text', 'CSIP status')
+
     // status labels and overdue review dates are styled
     cy.get('.govuk-table__body > tr > td > strong').eq(1).should('have.class', 'govuk-tag--turquoise')
     cy.get('.govuk-table__body > tr > td > strong').eq(0).should('have.class', 'govuk-tag--grey')
@@ -126,6 +135,15 @@ context('test /manage-csips', () => {
     getStatusSelect().children().eq(1).should('have.text', 'CSIP closed')
     getStatusSelect().children().eq(2).should('have.text', 'CSIP open')
 
+    // Table headers
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(0).should('have.text', 'Name and prison number')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(1).should('have.text', 'Location')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(2).should('have.text', 'Referral date')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(3).should('have.text', 'CSIP log code')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(4).should('have.text', 'Case Manager')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(5).should('have.text', 'Next review date')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(6).should('have.text', 'CSIP status')
+
     cy.get('.govuk-table__body > tr').should('have.length', 2)
 
     // "ALL" statuses means only CSIP closed and CSIP open are shown
@@ -160,6 +178,14 @@ context('test /manage-csips', () => {
     cy.get('.govuk-table__body > tr > td > strong').eq(2).should('have.text', 'Investigation pending')
     cy.get('.govuk-table__body > tr > td > strong').eq(3).should('have.text', 'Referral submitted')
     cy.get('.govuk-table__body > tr > td > strong').eq(4).should('have.text', 'Referral pending')
+
+    // Table headers
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(0).should('have.text', 'Name and prison number')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(1).should('have.text', 'Location')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(2).should('have.text', 'Referral date')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(3).should('have.text', 'CSIP log code')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(4).should('have.text', 'Incident type or main concern')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(5).should('have.text', 'CSIP status')
   })
 
   const navigateToTestPage = () => {
