@@ -1,6 +1,6 @@
 import { stubFor } from './wiremock'
 import { YES_NO_ANSWER } from '../../server/routes/journeys/referral/safer-custody/schemas'
-import { CsipRecord, CsipSearchResults } from '../../server/@types/csip/csipApiTypes'
+import { CsipRecord, CsipSearchResults, ReferenceData } from '../../server/@types/csip/csipApiTypes'
 
 const uuidRegex = '([a-zA-Z0-9]+-){4}[a-zA-Z0-9]+'
 
@@ -59,6 +59,34 @@ const stubIncidentLocation = () => {
       createdAt: new Date().toISOString(),
       createdBy: 'foobar',
     },
+  ])
+}
+
+const createRefDataItem = (params: Partial<ReferenceData>) => {
+  const sentenceCase = (text?: string) => {
+    const lowerText = (text || '').replaceAll('_', ' ').toLowerCase()
+    return lowerText.charAt(0).toUpperCase() + lowerText.slice(1)
+  }
+
+  return {
+    code: params.code ?? 'CODE',
+    description: params.description ?? sentenceCase(params.code),
+    listSequence: params.listSequence ?? 1,
+    deactivatedAt: params.deactivatedAt ?? null,
+  } as ReferenceData
+}
+
+const stubStatus = () => {
+  return createBasicHttpStub('GET', '/csip-api/reference-data/status', 200, [
+    createRefDataItem({ code: 'CSIP_CLOSED', description: 'CSIP closed' }),
+    createRefDataItem({ code: 'CSIP_OPEN', description: 'CSIP open' }),
+    createRefDataItem({ code: 'AWAITING_DECISION' }),
+    createRefDataItem({ code: 'PLAN_PENDING' }),
+    createRefDataItem({ code: 'INVESTIGATION_PENDING' }),
+    createRefDataItem({ code: 'REFERRAL_SUBMITTED' }),
+    createRefDataItem({ code: 'REFERRAL_PENDING' }),
+    createRefDataItem({ code: 'NO_FURTHER_ACTION' }),
+    createRefDataItem({ code: 'SUPPORT_OUTSIDE_CSIP', description: 'Support outside of CSIP' }),
   ])
 }
 
@@ -363,6 +391,7 @@ const stubCsipRecordSuccessAwaitingDecision = () => {
         recordedByDisplayName: 'Test',
         date: '2024-08-01',
         reasonForDecision: 'a very well thought out reason',
+        history: [],
       },
       investigation: {
         interviews: [
@@ -1381,4 +1410,5 @@ export default {
   stubSearchCsipRecordsPlans,
   stubSearchCsipRecordsReferrals,
   stubSearchCsipRecordsOpen,
+  stubStatus,
 }

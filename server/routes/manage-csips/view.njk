@@ -6,32 +6,41 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "./components/reviewDate.njk" import reviewDate %}
 
+{% set CSIPS = 'csips' %}
+{% set PLANS = 'plans' %}
+{% set REFERRALS = 'referrals' %}
+
 {% set fullWidth = true %}
-{% set pageTitle = "CSIP caseload" if pageName == 'csips' else ("Open and closed CSIPs" if pageName == 'plans' else "CSIP referrals in progress") %}
+{% set pageTitle = "CSIP caseload" if pageName == CSIPS else ("Open and closed CSIPs" if pageName == PLANS else "CSIP referrals in progress") %}
 {% extends "partials/layout.njk" %}
 
 {% block innerContent %}
   <div class="govuk-grid-row">
-    <h1 class="govuk-heading-xl govuk-!-margin-bottom-6 govuk-!-display-inline">{{ pageTitle }}</h1>
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+    </div>
+      <div class="light-box govuk-grid-column-one-third govuk-!-padding-top-2">
+        <h2 class="govuk-heading-s">Change view</h2>
+        <ul class="govuk-list">
+          {% if pageName != CSIPS %}
+            <li>
+              <a href="/manage-csips" class="govuk-link govuk-link--no-visited-state">All of the CSIP caseload</a>
+            </li>
+          {% endif %}
 
-    <div class="light-box float-right govuk-!-padding-2 govuk-!-padding-right-9">
-      <h2 class="govuk-heading-m">Change view</h2>
-      {% if pageName != 'csips' %}
-        <p class="govuk-body">
-          <a href="/manage-csips" class="govuk-link govuk-link--no-visited-state">All of the CSIP caseload</a>
-      {% endif %}
+          {% if pageName != PLANS %}
+            <li>
+              <a href="/manage-plans" class="govuk-link govuk-link--no-visited-state">Plans only</a>
+            </li>
+          {% endif %}
 
-      {% if pageName != 'plans' %}
-        <p class="govuk-body">
-          <a href="/manage-plans" class="govuk-link govuk-link--no-visited-state">Plans only</a>
-        </p>
-      {% endif %}
-
-      {% if pageName != 'referrals' %}
-        <p class="govuk-body">
-          <a href="/manage-referrals" class="govuk-link govuk-link--no-visited-state">Referrals in progress only</a>
-        </p>
-      {% endif %}
+          {% if pageName != REFERRALS %}
+            <li>
+              <a href="/manage-referrals" class="govuk-link govuk-link--no-visited-state">Referrals in progress only</a>
+            </li>
+          {% endif %}
+        </ul>
+      
     </div>
   </div>
 
@@ -50,39 +59,14 @@
         }
       }) }}
 
-      {% set filters = [{ value: "", text: "All" }] %}
-
-      {% if pageName != 'referrals' %}
-        {% set filters = (filters.push(
-          { value: 'CSIP_CLOSED', text: 'CSIP closed' },
-          { value: 'CSIP_OPEN', text: 'CSIP open' }
-        ), filters) %}
-      {% endif %}
-
-      {% if pageName != 'plans' %}
-        {% set filters = (filters.push(
-          { value: 'AWAITING_DECISION', text: 'Awaiting decision' },
-          { value: 'INVESTIGATION_PENDING', text: 'Investigation pending' },
-          { value: 'PLAN_PENDING', text: 'Plan pending' },
-          { value: 'REFERRAL_PENDING', text: 'Referral pending' },
-          { value: 'REFERRAL_SUBMITTED', text: 'Referral submitted' }
-        ), filters) %}
-      {% endif %}
-
-      {% if pageName == 'csips' %}
-        {% set filters = (filters.push(
-          { value: 'NO_FURTHER_ACTION', text: 'No further action' },
-          { value: 'SUPPORT_OUTSIDE_CSIP', text: 'Support outside of CSIP' }
-        ), filters) %}
-      {% endif %}
-
       {{ govukSelect({
         id: "status",
         name: "status",
+        classes: "min-width-one-quarter",
         label: {
           text: "CSIP status"
         },
-        items: filters | sort(false, false, 'text') | setSelected(status or '')
+        items: statuses | sort(false, false, 'text') | setSelected(status or '')
       }) }}
 
       {{ govukButton({
@@ -117,13 +101,13 @@
       {
         classes: 'col-width-200',
         html: (csipRecord.caseManager | softHyphenate(20)) or '-'
-      } if pageName != 'referrals',
+      } if pageName != REFERRALS,
       {
         html: reviewDate({  date: csipRecord.nextReviewDate | formatSimpleDisplayDate, emptyLabel: '-' })
-      } if pageName != 'referrals',
+      } if pageName != REFERRALS,
       {
         text: csipRecord.incidentType or '-'
-      } if pageName == 'referrals',
+      } if pageName == REFERRALS,
       {
         html: statusTag({ record: csipRecord })
       },
@@ -146,12 +130,12 @@
       { text: "Location", key: 'location' },
       { text: "Referral date", key: 'referralDate' },
       { text: "CSIP log code", key: 'logCode' },
-      { text: "Case Manager", key: 'caseManager' } if pageName != 'referrals',
-      { text: "Next review date", key: 'nextReviewDate' } if pageName != 'referrals',
-      { text: "Incident type or main concern", key: 'incidentType' } if pageName == 'referrals',
+      { text: "Case Manager", key: 'caseManager' } if pageName != REFERRALS,
+      { text: "Next review date", key: 'nextReviewDate' } if pageName != REFERRALS,
+      { text: "Incident type or main concern", key: 'incidentType' } if pageName == REFERRALS,
       { text: 'CSIP status', key: 'status' },
       { text: '' }
-    ] | select() | convertToSortableColumns(sort or ('nextReviewDate,asc' if pageName == 'plans' else 'name,asc')),
+    ] | select() | convertToSortableColumns(sort or ('nextReviewDate,asc' if pageName == PLANS else 'name,asc'), hrefTemplate),
       rows: csipRecordRows
     }) }}
   {% else %}

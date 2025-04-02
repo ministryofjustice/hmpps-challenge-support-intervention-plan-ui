@@ -1,7 +1,7 @@
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import { Breadcrumbs } from '../../middleware/breadcrumbs'
 import { fieldErrors } from '../../middleware/validationMiddleware'
-import { CsipRecord, CsipRecordStatus, ReferenceData, YesNoAnswer } from '../csip/csipApiTypes'
+import { CsipRecord, ReferenceData, YesNoAnswer } from '../csip/csipApiTypes'
 import Prisoner from '../../services/prisonerSearch/prisoner'
 import { CaseLoad } from '../../interfaces/caseLoad'
 
@@ -10,16 +10,8 @@ export declare module 'express-session' {
   interface SessionData {
     returnTo: string
     nowInMinutes: number
-    searchCsipParams: SearchCsipParams
   }
 }
-
-type SearchCsipParams = Partial<{
-  query: string | null
-  status: CsipRecordStatus | null
-  sort: string
-  page: number
-}>
 
 export type JourneyData = {
   isCheckAnswers?: boolean

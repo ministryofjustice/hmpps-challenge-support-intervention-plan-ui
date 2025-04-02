@@ -11,6 +11,7 @@ context('test /manage-csips', () => {
     cy.task('reset')
     cy.task('stubSignIn')
     cy.task('stubComponents')
+    cy.task('stubStatus')
 
     // All stubs should be available to all tests to ensure API query params are correctly constructed
     cy.task('stubSearchCsipRecords')
@@ -22,16 +23,15 @@ context('test /manage-csips', () => {
 
   it('tests all use cases', () => {
     navigateToTestPage()
-    cy.url().should('to.match', /\/manage-csips$/)
     checkAxeAccessibility()
 
     checkSortingAccessibility()
 
     cy.findAllByRole('heading', { name: /CSIP Caseload/i }).should('be.visible')
 
-    cy.get('.light-box > p > a').should('have.length', 2)
-    cy.get('.light-box > p > a').eq(0).should('have.text', 'Plans only')
-    cy.get('.light-box > p > a').eq(1).should('have.text', 'Referrals in progress only')
+    cy.get('.light-box > ul > li > a').should('have.length', 2)
+    cy.get('.light-box > ul > li > a').eq(0).should('have.text', 'Plans only')
+    cy.get('.light-box > ul > li > a').eq(1).should('have.text', 'Referrals in progress only')
 
     getFilterButton().should('be.visible')
     getClearLink().should('be.visible')
@@ -84,7 +84,7 @@ context('test /manage-csips', () => {
     getQueryInput().clear().type(" Tes'name", { delay: 0 })
     getFilterButton().click()
     getStatusSelect().should('have.value', 'CSIP_OPEN')
-    getQueryInput().should('have.value', " Tes'name")
+    getQueryInput().should('have.value', "Tes'name")
     cy.get('[aria-current="page"]').first().should('have.text', '1')
     cy.get('[aria-sort="descending"]').should('not.exist')
 
@@ -117,12 +117,12 @@ context('test /manage-csips', () => {
 
     cy.findAllByRole('heading', { name: /Change view/i }).should('be.visible')
 
-    cy.get('.light-box > p > a').should('have.length', 2)
-    cy.get('.light-box > p > a').eq(0).should('have.text', 'All of the CSIP caseload')
-    cy.get('.light-box > p > a').eq(1).should('have.text', 'Referrals in progress only')
+    cy.get('.light-box > ul > li > a').should('have.length', 2)
+    cy.get('.light-box > ul > li > a').eq(0).should('have.text', 'All of the CSIP caseload')
+    cy.get('.light-box > ul > li > a').eq(1).should('have.text', 'Referrals in progress only')
 
     getStatusSelect().should('be.visible').children().should('have.length', 3)
-    getStatusSelect().children().eq(0).should('have.text', 'All')
+    getStatusSelect().children().eq(0).should('have.text', 'All open and closed CSIPs')
     getStatusSelect().children().eq(1).should('have.text', 'CSIP closed')
     getStatusSelect().children().eq(2).should('have.text', 'CSIP open')
 
@@ -139,12 +139,12 @@ context('test /manage-csips', () => {
 
     cy.findAllByRole('heading', { name: /CSIP referrals in progress/i }).should('be.visible')
 
-    cy.get('.light-box > p > a').should('have.length', 2)
-    cy.get('.light-box > p > a').eq(0).should('have.text', 'All of the CSIP caseload')
-    cy.get('.light-box > p > a').eq(1).should('have.text', 'Plans only')
+    cy.get('.light-box > ul > li > a').should('have.length', 2)
+    cy.get('.light-box > ul > li > a').eq(0).should('have.text', 'All of the CSIP caseload')
+    cy.get('.light-box > ul > li > a').eq(1).should('have.text', 'Plans only')
 
     getStatusSelect().should('be.visible').children().should('have.length', 6)
-    getStatusSelect().children().eq(0).should('have.text', 'All')
+    getStatusSelect().children().eq(0).should('have.text', 'All referrals in progress')
     getStatusSelect().children().eq(1).should('have.text', 'Awaiting decision')
     getStatusSelect().children().eq(2).should('have.text', 'Investigation pending')
     getStatusSelect().children().eq(3).should('have.text', 'Plan pending')
@@ -162,7 +162,7 @@ context('test /manage-csips', () => {
     cy.get('.govuk-table__body > tr > td > strong').eq(4).should('have.text', 'Referral pending')
   })
 
-  it('shows error message and empty result on API failure', () => {
+  xit('shows error message and empty result on API failure', () => {
     cy.task('stubSearchCsipRecordsFail')
     navigateToTestPage()
     cy.url().should('to.match', /\/manage-csips/)

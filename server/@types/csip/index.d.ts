@@ -775,7 +775,6 @@ export interface components {
        */
       incidentDate: string
       /**
-       * Format: partial-time
        * @description The time the incident that motivated the CSIP referral occurred
        * @example 14:19:25
        */
@@ -921,7 +920,6 @@ export interface components {
        */
       incidentDate: string
       /**
-       * Format: partial-time
        * @description The time the incident that motivated the CSIP referral occurred
        * @example 14:19:25
        */
@@ -1041,6 +1039,7 @@ export interface components {
       )[]
       /** @description Any other actions that are recommended to be considered. */
       actionOther?: string
+      history: components['schemas']['DecisionAndActions'][]
     }
     /** @description A need identified in the CSIP Plan */
     IdentifiedNeed: {
@@ -1176,7 +1175,6 @@ export interface components {
        */
       incidentDate: string
       /**
-       * Format: partial-time
        * @description The time the incident that motivated the CSIP referral occurred
        * @example 14:19:25
        */
@@ -1286,6 +1284,7 @@ export interface components {
       date: string
       /** @description The reasons for the safer custody screening outcome decision. */
       reasonForDecision?: string
+      history: components['schemas']['SaferCustodyScreeningOutcome'][]
     }
     /** @description The request body to create or update the Safer Custody Screening Outcome on the CSIP referral */
     UpsertSaferCustodyScreeningOutcomeRequest: {
@@ -1360,7 +1359,6 @@ export interface components {
        */
       incidentDate: string
       /**
-       * Format: partial-time
        * @description The time the incident that motivated the CSIP referral occurred
        * @example 14:19:25
        */
@@ -1532,7 +1530,6 @@ export interface components {
        */
       incidentDate: string
       /**
-       * Format: partial-time
        * @description The time the incident that motivated the CSIP referral occurred
        * @example 14:19:25
        */
@@ -3349,6 +3346,7 @@ export interface operations {
           | 'incident-type'
           | 'interviewee-role'
           | 'screening-outcome-type'
+          | 'status'
       }
       cookie?: never
     }
