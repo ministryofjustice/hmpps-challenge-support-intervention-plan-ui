@@ -1,4 +1,6 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "./decisionSummaryList.njk" import decisionSummaryList %}
 
 
 {% if not isUpdate %}
@@ -14,86 +16,26 @@
   </div>
 {% endif %}
 
-{{ govukSummaryList({
-    classes: "govuk-!-margin-bottom-9",
-    rows: [
-      {
-        key: {
-          text: 'Decision date'
-        },
-        value: {
-          text: decision.date | formatDisplayDate
-        }
-      },
-      {
-        key: {
-          text: 'Decision outcome'
-        },
-        value: {
-          html: (decision.outcome.description if decision.outcome else 'Not provided') | escape | boldAppendStamp | nl2br | summaryListActionChange(changeDecisionEnabled, { 
-            href: "check-change-decision",
-            text: "Change outcome",
-            classes: "govuk-link--no-visited-state"
-          })
-        }
-      },
-      {
-        key: {
-          text: 'Signed off by'
-        },
-        value: {
-          text: (decision.signedOffByRole.description if decision.signedOffByRole else 'Not provided')
-        }
-      },
-      {
-        key: {
-          text: 'Reason for decision'
-        },
-        value: {
-          html: (decision.conclusion or 'Not provided') | escape | boldAppendStamp | nl2br | summaryListActionAddInformation(isUpdate, username, decision.conclusion, { 
-            href: "update-decision/conclusion#conclusion",
-            text: "Add information",
-            visuallyHiddenText: "to the description of the reasons for the decision",
-            classes: "govuk-link--no-visited-state"
-          })
-        }
-      },
-      {
-        key: {
-          text: 'Comments on next steps'
-        },
-        value: {
-          html: (decision.nextSteps or 'Not provided') | escape | boldAppendStamp | nl2br | summaryListActionAddInformation(isUpdate, username, decision.nextSteps, { 
-            href: "update-decision/next-steps#nextSteps",
-            text: "Add information",
-            visuallyHiddenText: "to the comments on next steps",
-            classes: "govuk-link--no-visited-state"
-          })
-        }
-      },
-      {
-        key: {
-          text: 'Additional information'
-        },
-        value: {
-          html: (decision.actionOther or 'Not provided') | escape | boldAppendStamp | nl2br | summaryListActionAddInformation(isUpdate, username, decision.actionOther, { 
-            href: "update-decision/additional-information#actionOther",
-            text: "Add information",
-            visuallyHiddenText: "to the additional information relating to the decision",
-            classes: "govuk-link--no-visited-state"
-          })
-        }
-      },
-      {
-        key: {
-          text: 'Recorded by'
-        },
-        value: {
-          text: decision.recordedByDisplayName
-        }
-      }
-    ]
-}) }}
+{{ decisionSummaryList(decision, recordUuid, changeDecisionEnabled, isUpdate, isCsipProcessor, username) }}
+
+{% if decision.history.length %}
+
+  {% set detailsHtml %}
+    {% for item in decision.history %}
+      {% if decision.history.length > 1 %}
+        <h2>Previous decision {{ loop.index }}</h2>
+      {% else %}
+        <h2>Previous decision</h2>
+      {% endif %}
+      {{ decisionSummaryList(item, recordUuid, false, false, false, '') }}
+    {% endfor %}
+  {% endset %}
+
+  {{ govukDetails({
+      summaryText: "Show previous decisions",
+      html: detailsHtml
+  }) }}
+{% endif %}
 
 {% if not isUpdate %}
   <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl hide-print">

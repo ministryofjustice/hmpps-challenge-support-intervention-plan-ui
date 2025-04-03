@@ -1,0 +1,33 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% macro screeningSummaryList(screening, recordUuid, changeScreenEnabled, isCsipProcessor) %}
+  {{ govukSummaryList({
+      rows: [
+        {
+          key: { text: "Screening date" },
+          value: { text: screening.date | formatDisplayDate }
+        },
+        {
+          key: { text: "Screening outcome" },
+          value: { text: screening.outcome.description },
+          actions: {
+            items: [
+              {
+                href: "/csip-record/" + recordUuid + "/change-screen/start",
+                text: "Change outcome",
+                classes: "govuk-link--no-visited-state"
+              }
+            ]
+          } if changeScreenEnabled and isCsipProcessor
+        },
+        {
+          key: { text: "Reasons for decision" },
+          value: { html: (screening.reasonForDecision | escape | nl2br) if screening.reasonForDecision else "Not provided" }
+        },
+        {
+          key: { text: "Recorded by" },
+          value: { text: screening.recordedByDisplayName }
+        }
+      ]
+  }) }}
+{% endmacro %}

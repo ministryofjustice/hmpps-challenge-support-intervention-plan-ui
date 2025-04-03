@@ -1,52 +1,28 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "./screeningSummaryList.njk" import screeningSummaryList %}
 
 <h2 class="govuk-heading-l govuk-!-margin-bottom-7">Referral screening</h2>
 
-{{ govukSummaryList({
-    classes: "govuk-!-margin-bottom-9",
-    rows: [
-        {
-          key: {
-            text: "Screening date"
-          },
-          value: {
-            text: screening.date | formatDisplayDate
-          }
-        },
-        {
-          key: {
-            text: "Screening outcome"
-          },
-          value: {
-            text: screening.outcome.description
-          },
-          actions: {
-            items: [
-              {
-                href: "/csip-record/" + recordUuid + "/change-screen/start",
-                text: "Change outcome",
-                classes: "govuk-link--no-visited-state"
-              }
-            ]
-          } if changeScreenEnabled and isCsipProcessor
-        },
-        {
-          key: {
-            text: "Reasons for decision"
-          },
-          value: {
-            html: (screening.reasonForDecision | escape | nl2br) if screening.reasonForDecision else "Not provided"
-          }
-        },
-        {
-          key: {
-            text: "Recorded by"
-          },
-          value: {
-            text: screening.recordedByDisplayName
-          }
-        }
-    ]
-}) }}
+{{ screeningSummaryList(screening, recordUuid, changeScreenEnabled, isCsipProcessor) }}
+
+{% if screening.history.length %}
+
+  {% set detailsHtml %}
+    {% for item in screening.history %}
+      {% if screening.history.length > 1 %}
+        <h2>Previous screening {{ loop.index }}</h2>
+      {% else %}
+        <h2>Previous screening</h2>
+      {% endif %}
+      {{ screeningSummaryList(item, recordUuid, false, isCsipProcessor) }}
+    {% endfor %}
+  {% endset %}
+
+  {{ govukDetails({
+      summaryText: "Show previous screenings",
+      html: detailsHtml
+  }) }}
+{% endif %}
 
 <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-9 hide-print">
