@@ -16,7 +16,6 @@ import {
   personProfileName,
 } from './miniProfileUtils'
 import logger from '../../logger'
-import { convertToSortableColumns, datePriority } from '../routes/manage-csips/components/filters'
 import {
   setSelected,
   boldAppendStamp,
@@ -26,6 +25,7 @@ import {
   yesNoNotKnown,
   withVisuallyHiddenText,
 } from './viewUtils'
+import { convertToSortableColumns, datePriority } from '../routes/manage-csips/components/filters'
 
 export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')

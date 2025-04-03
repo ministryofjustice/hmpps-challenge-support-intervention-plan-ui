@@ -3,7 +3,6 @@ import { RestClientBuilder } from '../../data'
 import {
   CsipOverview,
   CsipRecord,
-  CsipRecordStatus,
   CsipSearchResults,
   CurrentCsipSummary,
   ReferenceData,
@@ -23,17 +22,11 @@ export default class CsipApiService {
     return this.csipApiClientBuilder(req.systemClientToken).getCsipRecord(id)
   }
 
-  searchAndSortCsipRecords(params: {
-    req: Request
-    prisonCode: string
-    query?: string
-    status?: CsipRecordStatus
-    sort: string
-    page: number
-    size: number
-  }): Promise<CsipSearchResults> {
-    const { req, ...queries } = params
-    return this.csipApiClientBuilder(req.systemClientToken).searchAndSortCsipRecords(queries)
+  searchAndSortCsipRecords(
+    req: Request,
+    payload: Parameters<CsipApiClient['searchAndSortCsipRecords']>[0],
+  ): Promise<CsipSearchResults> {
+    return this.csipApiClientBuilder(req.systemClientToken).searchAndSortCsipRecords(payload)
   }
 
   getCsipOverview(req: Request, prisonCode: string): Promise<CsipOverview> {

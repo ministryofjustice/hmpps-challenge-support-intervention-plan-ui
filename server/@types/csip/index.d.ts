@@ -775,7 +775,6 @@ export interface components {
        */
       incidentDate: string
       /**
-       * Format: partial-time
        * @description The time the incident that motivated the CSIP referral occurred
        * @example 14:19:25
        */
@@ -921,7 +920,6 @@ export interface components {
        */
       incidentDate: string
       /**
-       * Format: partial-time
        * @description The time the incident that motivated the CSIP referral occurred
        * @example 14:19:25
        */
@@ -1041,6 +1039,7 @@ export interface components {
       )[]
       /** @description Any other actions that are recommended to be considered. */
       actionOther?: string
+      history: components['schemas']['DecisionAndActions'][]
     }
     /** @description A need identified in the CSIP Plan */
     IdentifiedNeed: {
@@ -1176,7 +1175,6 @@ export interface components {
        */
       incidentDate: string
       /**
-       * Format: partial-time
        * @description The time the incident that motivated the CSIP referral occurred
        * @example 14:19:25
        */
@@ -1286,6 +1284,7 @@ export interface components {
       date: string
       /** @description The reasons for the safer custody screening outcome decision. */
       reasonForDecision?: string
+      history: components['schemas']['SaferCustodyScreeningOutcome'][]
     }
     /** @description The request body to create or update the Safer Custody Screening Outcome on the CSIP referral */
     UpsertSaferCustodyScreeningOutcomeRequest: {
@@ -1360,7 +1359,6 @@ export interface components {
        */
       incidentDate: string
       /**
-       * Format: partial-time
        * @description The time the incident that motivated the CSIP referral occurred
        * @example 14:19:25
        */
@@ -1532,7 +1530,6 @@ export interface components {
        */
       incidentDate: string
       /**
-       * Format: partial-time
        * @description The time the incident that motivated the CSIP referral occurred
        * @example 14:19:25
        */
@@ -1685,12 +1682,37 @@ export interface components {
       /** @description How the plan to address the identified need is progressing. */
       progression?: string
     }
+    FindCsipRequest: {
+      prisonCode: string[]
+      query?: string
+      status: (
+        | 'CSIP_CLOSED'
+        | 'CSIP_OPEN'
+        | 'AWAITING_DECISION'
+        | 'ACCT_SUPPORT'
+        | 'PLAN_PENDING'
+        | 'INVESTIGATION_PENDING'
+        | 'NO_FURTHER_ACTION'
+        | 'SUPPORT_OUTSIDE_CSIP'
+        | 'REFERRAL_SUBMITTED'
+        | 'REFERRAL_PENDING'
+        | 'UNKNOWN'
+      )[]
+      includeRestrictedPatients: boolean
+      /** Format: int32 */
+      page: number
+      /** Format: int32 */
+      size: number
+      sort: string
+    }
     CsipSearchResult: {
       /** Format: uuid */
       id: string
+      logCode?: string
       prisoner: components['schemas']['Prisoner']
       /** Format: date */
       referralDate: string
+      incidentType: string
       /** Format: date */
       nextReviewDate?: string
       caseManager?: string
@@ -3258,26 +3280,8 @@ export interface operations {
   }
   findCsipRecords: {
     parameters: {
-      query?: {
-        prisonCode?: string
-        query?: string
-        status?:
-          | 'CSIP_CLOSED'
-          | 'CSIP_OPEN'
-          | 'AWAITING_DECISION'
-          | 'ACCT_SUPPORT'
-          | 'PLAN_PENDING'
-          | 'INVESTIGATION_PENDING'
-          | 'NO_FURTHER_ACTION'
-          | 'SUPPORT_OUTSIDE_CSIP'
-          | 'REFERRAL_SUBMITTED'
-          | 'REFERRAL_PENDING'
-          | 'UNKNOWN'
-        prisonCodes?: string[]
-        includeRestrictedPatients?: boolean
-        page?: number
-        size?: number
-        sort?: string
+      query: {
+        request: components['schemas']['FindCsipRequest']
       }
       header?: never
       path?: never
@@ -3342,6 +3346,7 @@ export interface operations {
           | 'incident-type'
           | 'interviewee-role'
           | 'screening-outcome-type'
+          | 'status'
       }
       cookie?: never
     }

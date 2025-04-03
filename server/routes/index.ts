@@ -24,6 +24,8 @@ export default function routes(services: Services): Router {
 
   router.use('/csip-records/:recordUuid', CsipRecordRoutes(services))
   router.use('/manage-csips', SearchCsipRoutes(services))
+  router.use('/manage-plans', SearchCsipRoutes(services))
+  router.use('/manage-referrals', SearchCsipRoutes(services))
   router.get('/how-to-make-a-referral', (_req, res) =>
     res.render('how-to-make-a-referral/view', { showBreadcrumbs: true }),
   )
