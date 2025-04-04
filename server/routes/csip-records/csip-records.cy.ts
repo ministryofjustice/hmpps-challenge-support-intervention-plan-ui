@@ -190,6 +190,8 @@ context('test /csip-records', () => {
     cy.findByRole('heading', { name: /referral details/i }).should('be.visible')
     cy.findByRole('heading', { name: /referral screening/i }).should('be.visible')
     cy.findAllByRole('button', { name: /record investigation/i }).should('not.exist')
+
+    cy.get('.govuk-details__summary-text').should('have.length', 0)
     checkChangeScreenLink(false, false)
   })
 
@@ -261,11 +263,100 @@ context('test /csip-records', () => {
 
     checkChangeScreenLink(false)
 
+    cy.get('.govuk-details__summary-text').should('have.length', 0)
+
     cy.findAllByRole('button', { name: /develop initial plan/i })
       .first()
       .click()
     checkAxeAccessibility()
     cy.url().should('include', 'develop-an-initial-plan')
+  })
+
+  it('should show referral screening history', () => {
+    cy.task('stubSignIn', { roles: [] })
+    cy.task('stubCsipRecordGetSuccessAfterScreeningWithHistory')
+
+    navigateToTestPage()
+
+    cy.findByRole('link', { name: /investigation/i }).should('not.exist')
+    cy.findByRole('link', { name: /referral/i }).should('not.exist')
+    cy.findByRole('heading', { name: /referral details/i }).should('be.visible')
+    cy.findByRole('heading', { name: /referral screening/i }).should('be.visible')
+    cy.findAllByRole('button', { name: /record investigation/i }).should('not.exist')
+
+    cy.get('.govuk-details__summary-text')
+      .should('have.length', 1)
+      .should('contain.text', 'Show previous screenings')
+      .click()
+
+    cy.findByRole('heading', { name: 'Previous screening 1' })
+    cy.contains('details > div > dl > div > dt', 'Screening date').next().should('include.text', `1 August 2024`)
+    cy.contains('details > div > dl > div > dt', 'Screening outcome').next().should('include.text', `No further action`)
+    cy.contains('details > div > dl > div > dt', 'Reasons for decision')
+      .next()
+      .should('include.text', `a very well thought out reason`)
+    cy.contains('details > div > dl > div > dt', 'Recorded by').next().should('include.text', `Test User`)
+
+    cy.findByRole('heading', { name: 'Previous screening 2' })
+    cy.contains('details > div > dl:nth-of-type(2) > div > dt', 'Screening date')
+      .next()
+      .should('include.text', `2 August 2024`)
+    cy.contains('details > div > dl:nth-of-type(2) > div > dt', 'Screening outcome')
+      .next()
+      .should('include.text', `Progress to CSIP`)
+    cy.contains('details > div > dl:nth-of-type(2) > div > dt', 'Reasons for decision')
+      .next()
+      .should('include.text', `a very well thought out reason`)
+    cy.contains('details > div > dl:nth-of-type(2) > div > dt', 'Recorded by')
+      .next()
+      .should('include.text', `Test User`)
+  })
+
+  it('should show investigation decision history', () => {
+    cy.task('stubCsipRecordSuccessPlanPendingWithDecisionHistory')
+
+    navigateToTestPage()
+
+    cy.get('.govuk-details__summary-text')
+      .should('have.length', 1)
+      .should('contain.text', 'Show previous decisions')
+      .click()
+
+    cy.findByRole('heading', { name: 'Previous decision 1' })
+
+    cy.contains('details > div > dl > div > dt', 'Decision date').next().should('include.text', `1 August 2024`)
+    cy.contains('details > div > dl > div > dt', 'Decision outcome').next().should('include.text', `No further action`)
+    cy.contains('details > div > dl > div > dt', 'Signed off by').next().should('include.text', `prison officer`)
+    cy.contains('details > div > dl > div > dt', 'Reason for decision')
+      .next()
+      .should('include.text', `another decision`)
+    cy.contains('details > div > dl > div > dt', 'Comments on next steps').next().should('include.text', `nextSteps`)
+    cy.contains('details > div > dl > div > dt', 'Additional information').next().should('include.text', `actionsOther`)
+    cy.contains('details > div > dl > div > dt', 'Recorded by').next().should('include.text', `same person longer`)
+
+    cy.findByRole('heading', { name: 'Previous decision 2' })
+
+    cy.contains('details > div > dl:nth-of-type(2) > div > dt', 'Decision date')
+      .next()
+      .should('include.text', `2 August 2024`)
+    cy.contains('details > div > dl:nth-of-type(2) > div > dt', 'Decision outcome')
+      .next()
+      .should('include.text', `Progress to CSIP`)
+    cy.contains('details > div > dl:nth-of-type(2) > div > dt', 'Signed off by')
+      .next()
+      .should('include.text', `Custodial Manager`)
+    cy.contains('details > div > dl:nth-of-type(2) > div > dt', 'Reason for decision')
+      .next()
+      .should('include.text', `another historical decision`)
+    cy.contains('details > div > dl:nth-of-type(2) > div > dt', 'Comments on next steps')
+      .next()
+      .should('include.text', `nextSteps again`)
+    cy.contains('details > div > dl:nth-of-type(2) > div > dt', 'Additional information')
+      .next()
+      .should('include.text', `actionsOther again`)
+    cy.contains('details > div > dl:nth-of-type(2) > div > dt', 'Recorded by')
+      .next()
+      .should('include.text', `a different person longer`)
   })
 
   const navigateToTestPage = () => {

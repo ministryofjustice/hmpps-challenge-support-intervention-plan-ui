@@ -466,6 +466,48 @@ const stubCsipRecordSuccessPlanPending = () => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, planPendingBody)
 }
 
+const stubCsipRecordSuccessPlanPendingWithDecisionHistory = () => {
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
+    ...planPendingBody,
+    referral: {
+      ...planPendingBody.referral,
+      decisionAndActions: {
+        ...planPendingBody.referral.decisionAndActions,
+        history: [
+          {
+            conclusion: 'another decision',
+            outcome: { code: 'NFA', description: 'No further action' },
+            signedOffByRole: {
+              code: 'A',
+              description: 'prison officer',
+            },
+            recordedBy: 'same person',
+            recordedByDisplayName: 'same person longer',
+            date: '2024-08-01',
+            nextSteps: `nextSteps`,
+            actions: ['OPEN_CSIP_ALERT'],
+            actionOther: `actionsOther`,
+          },
+          {
+            conclusion: 'another historical decision',
+            outcome: { code: 'CUR', description: 'Progress to CSIP' },
+            signedOffByRole: {
+              code: 'CUS',
+              description: 'Custodial Manager',
+            },
+            recordedBy: 'a different person',
+            recordedByDisplayName: 'a different person longer',
+            date: '2024-08-02',
+            nextSteps: `nextSteps again`,
+            actions: ['OPEN_CSIP_ALERT'],
+            actionOther: `actionsOther again`,
+          },
+        ],
+      },
+    },
+  })
+}
+
 const stubCsipRecordSuccessPlanPendingNomis = () => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
     ...planPendingBody,
@@ -683,6 +725,33 @@ const stubCsipRecordGetSuccessAfterScreeningWithoutReason = () => {
     200,
     csipRecordWithScreeningOutcome(''),
   )
+}
+
+const stubCsipRecordGetSuccessAfterScreeningWithHistory = () => {
+  const csip = csipRecordWithScreeningOutcome('')
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
+    ...csip,
+    referral: {
+      ...csip.referral,
+      saferCustodyScreeningOutcome: {
+        ...csip.referral.saferCustodyScreeningOutcome,
+        history: [
+          {
+            ...csip.referral.saferCustodyScreeningOutcome,
+            date: '2024-08-01',
+            reasonForDecision: 'a very well thought out reason',
+            outcome: { code: 'NFA', description: 'No further action' },
+          },
+          {
+            ...csip.referral.saferCustodyScreeningOutcome,
+            date: '2024-08-02',
+            reasonForDecision: 'a very well thought out reason',
+            outcome: { code: 'CUR', description: 'Progress to CSIP' },
+          },
+        ],
+      },
+    },
+  })
 }
 
 const stubCsipRecordGetSuccessAfterScreeningNFA = () => {
@@ -1411,4 +1480,6 @@ export default {
   stubSearchCsipRecordsReferrals,
   stubSearchCsipRecordsOpen,
   stubStatus,
+  stubCsipRecordGetSuccessAfterScreeningWithHistory,
+  stubCsipRecordSuccessPlanPendingWithDecisionHistory,
 }
