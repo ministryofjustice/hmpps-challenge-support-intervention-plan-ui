@@ -9,7 +9,7 @@ context('test /csip-records', () => {
     cy.task('stubIntervieweeRoles')
   })
 
-  xdescribe('CSRF redirects to sign-out when tampered with', () => {
+  describe('CSRF redirects to sign-out when tampered with', () => {
     it('Top button', () => {
       cy.task('stubCsipRecordGetSuccessAfterScreeningWithoutReason')
 
@@ -55,7 +55,7 @@ context('test /csip-records', () => {
     })
   })
 
-  xit('should render the print button', () => {
+  it('should render the print button', () => {
     cy.task('stubCsipRecordSuccessCsipOpen')
 
     navigateToTestPage()
@@ -64,7 +64,7 @@ context('test /csip-records', () => {
     cy.findByRole('button', { name: /print/i }).should('be.visible')
   })
 
-  xit('should render a post-decision, pre review csip record (read only role)', () => {
+  it('should render a post-decision, pre review csip record (read only role)', () => {
     cy.task('stubSignIn', { roles: [] })
     cy.task('stubCsipRecordSuccessCsipOpen')
 
@@ -85,7 +85,7 @@ context('test /csip-records', () => {
     checkChangeScreenLink(false)
   })
 
-  xit('should render a post-decision, pre review csip record', () => {
+  it('should render a post-decision, pre review csip record', () => {
     cy.task('stubCsipRecordSuccessCsipOpen')
 
     navigateToTestPage()
@@ -108,7 +108,7 @@ context('test /csip-records', () => {
     checkChangeScreenLink(false)
   })
 
-  xit('should render a post-investigation, pre decision csip record (read only)', () => {
+  it('should render a post-investigation, pre decision csip record (read only)', () => {
     cy.task('stubSignIn', { roles: [] })
     cy.task('stubCsipRecordSuccessAwaitingDecision')
 
@@ -125,7 +125,7 @@ context('test /csip-records', () => {
     checkChangeScreenLink(false)
   })
 
-  xit('should render a post-investigation, pre decision csip record', () => {
+  it('should render a post-investigation, pre decision csip record', () => {
     cy.task('stubCsipRecordSuccessAwaitingDecision')
 
     navigateToTestPage()
@@ -140,7 +140,7 @@ context('test /csip-records', () => {
     checkChangeScreenLink(false)
   })
 
-  xit('should render pre-investigation csip record (read only)', () => {
+  it('should render pre-investigation csip record (read only)', () => {
     cy.task('stubSignIn', { roles: [] })
     cy.task('stubCsipRecordGetSuccess')
 
@@ -160,7 +160,7 @@ context('test /csip-records', () => {
     checkContributoryFactors()
   })
 
-  xit('should render pre-investigation csip record', () => {
+  it('should render pre-investigation csip record', () => {
     cy.task('stubCsipRecordGetSuccess')
 
     navigateToTestPage()
@@ -179,7 +179,7 @@ context('test /csip-records', () => {
     checkContributoryFactors()
   })
 
-  xit('should render a post-screen csip record (read only)', () => {
+  it('should render a post-screen csip record (read only)', () => {
     cy.task('stubSignIn', { roles: [] })
     cy.task('stubCsipRecordGetSuccessAfterScreeningWithoutReason')
 
@@ -195,7 +195,7 @@ context('test /csip-records', () => {
     checkChangeScreenLink(false, false)
   })
 
-  xit('should render a post-screen csip record (no screening reason)', () => {
+  it('should render a post-screen csip record (no screening reason)', () => {
     cy.task('stubCsipRecordGetSuccessAfterScreeningWithoutReason')
 
     navigateToTestPage()
@@ -214,7 +214,7 @@ context('test /csip-records', () => {
     checkChangeScreenLink(true, false)
   })
 
-  xit('should render a post-screen csip record (with screening reason)', () => {
+  it('should render a post-screen csip record (with screening reason)', () => {
     cy.task('stubCsipRecordGetSuccessAfterScreeningWithReason')
 
     navigateToTestPage()
@@ -233,7 +233,7 @@ context('test /csip-records', () => {
     checkChangeScreenLink(true, false)
   })
 
-  xit('should render a post-decision, pre-plan csip record (read only)', () => {
+  it('should render a post-decision, pre-plan csip record (read only)', () => {
     cy.task('stubSignIn', { roles: [] })
     cy.task('stubCsipRecordSuccessPlanPending')
 
@@ -249,7 +249,7 @@ context('test /csip-records', () => {
     checkChangeScreenLink(false)
   })
 
-  xit('should render a post-decision, pre-plan csip record', () => {
+  it('should render a post-decision, pre-plan csip record', () => {
     cy.task('stubCsipRecordSuccessPlanPending')
 
     navigateToTestPage()
