@@ -60,7 +60,7 @@ context('test /edit-log-code', () => {
     }).should('be.visible')
 
     cy.findByText(
-      `Changing the outcome will replace all of the following information in the CSIP referral screening for Tes'name User.`,
+      `Changing the outcome will replace all of the following information in the CSIP referral screening for Tes'name User. This should not be used just because a prisoner has transferred.`,
     )
 
     cy.contains('dt', 'Screening date').next().should('include.text', `1 August 2024`)
