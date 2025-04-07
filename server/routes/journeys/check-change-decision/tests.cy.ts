@@ -33,7 +33,7 @@ context('test /record-decision/check-answers', () => {
     )
 
     cy.findByText(
-      `Changing the outcome will replace all of the following information in the CSIP investigation decision for Tes'name User.`,
+      `Changing the outcome will replace all of the following information in the CSIP investigation decision for Tes'name User. This should not be used just because a prisoner has transferred.`,
     ).should('be.visible')
 
     cy.contains('dt', 'Signed off by').next().should('include.text', `SignerRole1`)
