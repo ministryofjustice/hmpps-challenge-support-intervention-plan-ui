@@ -1,6 +1,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% extends "partials/layout.njk" %}
+{% extends "../partials/layout.njk" %}
 
 {% set fullWidth = true %}
 {% set title =  "Are you sure you want to cancel and delete this " + jouneyType + "?" %}
@@ -17,10 +17,10 @@
       <p>If you {{ action }} in future, you’ll need to enter the information again.</p>
 
       <div class="govuk-button-group">
-        <form method="post">
           <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
           {{ govukButton({
-                text: "Yes, cancel this screening",
+                text: "Yes, cancel this " + jouneyType,
+                href: csipRecordUrl,
                 preventDoubleClick: true,
                 classes: "govuk-button--warning"
             }) }}
@@ -30,7 +30,6 @@
                 classes: "govuk-button--secondary",
                 preventDoubleClick: true
             }) }}
-        </form>
       </div>
     </div>
   </div>
