@@ -9,7 +9,7 @@ generic-service:
   serviceAccountName: hmpps-csip-ui
 
   image:
-    repository: quay.io/hmpps/hmpps-challenge-support-intervention-plan-ui
+    repository: ghcr.io/ministryofjustice/hmpps-challenge-support-intervention-plan-ui
     tag: app_version # override at deployment time
     port: 3000
 
