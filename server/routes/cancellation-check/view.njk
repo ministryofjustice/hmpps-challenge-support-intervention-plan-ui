@@ -1,9 +1,9 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% extends "../partials/layout.njk" %}
+{% extends "../../views/partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set title =  "Are you sure you want to cancel and delete this " + jouneyType + "?" %}
+{% set title =  "Are you sure you want to cancel and delete this " + journeyType + "?" %}
 {% set pageTitle = title + " - " + journeyCaption %}
 
 {% block innerContent %}
@@ -19,7 +19,7 @@
       <div class="govuk-button-group">
           <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
           {{ govukButton({
-                text: "Yes, cancel this " + jouneyType,
+                text: "Yes, cancel this " + journeyType,
                 href: csipRecordUrl,
                 preventDoubleClick: true,
                 classes: "govuk-button--warning"
