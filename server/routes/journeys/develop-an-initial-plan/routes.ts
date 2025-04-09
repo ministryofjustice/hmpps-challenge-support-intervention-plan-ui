@@ -14,6 +14,7 @@ import { InterventionDetailsRoutes } from './intervention-details/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
 import { PlanCheckAnswersRoutes } from './check-answers/routes'
 import journeyStateGuard, { JourneyStateGuard, isMissingValues } from '../../../middleware/journeyStateGuard'
+import { CancelController } from '../../cancellation-check/controller'
 
 function Routes({ csipApiService, auditService }: Services) {
   const { router, get, post } = JourneyRouter()
@@ -30,6 +31,7 @@ function Routes({ csipApiService, auditService }: Services) {
   router.use('/intervention-details/:index', InterventionDetailsRoutes())
   router.use('/confirmation', ConfirmationRoutes())
   router.use('/check-answers', PlanCheckAnswersRoutes(csipApiService, auditService))
+  router.use('/cancellation-check', new CancelController('plan', 'Develop an initial plan', 'submit').GET)
 
   return router
 }

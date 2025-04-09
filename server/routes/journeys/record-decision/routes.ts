@@ -11,6 +11,7 @@ import { DecisionAdditionalInformationRoutes } from './additional-information/ro
 import { DecisionCheckAnswersRoutes } from './check-answers/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
 import journeyStateGuard, { JourneyStateGuard, isMissingValues } from '../../../middleware/journeyStateGuard'
+import { CancelController } from '../../cancellation-check/controller'
 
 function Routes({ csipApiService, auditService }: Services) {
   const { router, get, post } = JourneyRouter()
@@ -23,6 +24,10 @@ function Routes({ csipApiService, auditService }: Services) {
   router.use('/additional-information', DecisionAdditionalInformationRoutes())
   router.use('/check-answers', DecisionCheckAnswersRoutes(csipApiService, auditService))
   router.use('/confirmation', ConfirmationRoutes())
+  router.use(
+    '/cancellation-check',
+    new CancelController('investigation decision', 'Record a CSIP investigation decision', 'record').GET,
+  )
 
   return router
 }

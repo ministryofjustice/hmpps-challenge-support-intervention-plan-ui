@@ -19,10 +19,7 @@ function Routes({ csipApiService, auditService }: Services) {
 
   router.use('/check-answers', ScreenCheckAnswersRoutes(csipApiService, auditService))
   router.use('/confirmation', ConfirmationRoutes())
-  router.use(
-    '/cancellation-check',
-    new CancelController('screening', 'Screen a CSIP referral', 'record this screening').GET,
-  )
+  router.use('/cancellation-check', new CancelController('screening', 'Screen a CSIP referral', 'record').GET)
 
   return router
 }
