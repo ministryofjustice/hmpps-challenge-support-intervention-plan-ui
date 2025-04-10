@@ -3,7 +3,7 @@
 {% extends "../../views/partials/layout.njk" %}
 
 {% set fullWidth = true %}
-{% set title =  "Are you sure you want to cancel and delete this " + journeyType + "?" %}
+{% set title = "Are you sure you want to cancel and delete this " + journeyType + "?" %}
 {% set pageTitle = title + " - " + journeyCaption %}
 
 {% block innerContent %}
@@ -17,19 +17,18 @@
       <p>If you {{ action }} this {{ journeyType }} in future, you’ll need to enter the information again.</p>
 
       <div class="govuk-button-group">
-          <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-          {{ govukButton({
-                text: "Yes, cancel this " + journeyType,
-                href: cancelUrl,
-                preventDoubleClick: true,
-                classes: "govuk-button--warning"
-            }) }}
-          {{ govukButton({
-                text: "No, return to check answers",
-                href: 'check-answers',
-                classes: "govuk-button--secondary",
-                preventDoubleClick: true
-            }) }}
+        {{ govukButton({
+              text: "Yes, cancel this " + journeyType,
+              href: cancelUrl,
+              preventDoubleClick: true,
+              classes: "govuk-button--warning"
+        }) }}
+        {{ govukButton({
+              text: "No, return to check answers",
+              href: 'check-answers',
+              classes: "govuk-button--secondary",
+              preventDoubleClick: true
+        }) }}
       </div>
     </div>
   </div>
