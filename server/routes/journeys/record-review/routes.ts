@@ -30,7 +30,7 @@ function Routes({ csipApiService, auditService }: Services) {
   router.use('/check-answers', ReviewCheckAnswersRoutes(csipApiService, auditService))
   router.use('/close-csip', CloseCsipRoutes())
   router.use('/confirmation', ConfirmationRoutes())
-  router.use('/cancellation-check', new CancelController('record', 'Record a CSIP review', 'record').GET)
+  router.use('/cancellation-check', new CancelController('review', 'Record a CSIP review', 'record').GET)
 
   return router
 }

@@ -143,6 +143,51 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     cy.findByRole('button', { name: /Record review and close CSIP/ }).click()
   })
 
+  it('should show cancellation check page', () => {
+    const uuid = uuidV4()
+    cy.signIn()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-review/start`)
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
+
+    cy.url().should('to.match', /\/record-review$/)
+
+    cy.findByRole('link', { name: 'Check and save report' }).should('not.exist')
+    cy.findAllByText('Incomplete').should('have.length', 3)
+    cy.findByText('Cannot save yet').should('be.visible')
+
+    clickAndCompleteDetails()
+
+    clickAndCompleteParticipants()
+
+    clickAndCompleteOutcomeKeepOnPlan()
+
+    completeNextReviewDate()
+
+    cy.findByRole('link', { name: /Check and save report/ }).click()
+    cy.url().should('to.match', /\/check-answers$/)
+
+    cy.findByRole('link', { name: /Cancel/i }).click()
+
+    cy.url().should('to.match', /cancellation-check$/)
+
+    cy.findByText('Record a CSIP review').should('be.visible')
+    cy.findByText('If you choose not to record this review, you will lose the information you have entered.').should(
+      'be.visible',
+    )
+    cy.findByText('If you record this review in future, you’ll need to enter the information again.').should(
+      'be.visible',
+    )
+
+    cy.findByRole('button', { name: /Yes, cancel this review/i })
+    cy.findByRole('button', { name: /No, return to check answers/i }).click()
+
+    cy.url().should('to.match', /record-review\/check-answers$/)
+    cy.go('back')
+
+    cy.findByRole('button', { name: /Yes, cancel this review/i }).click()
+    cy.url().should('to.match', /plan$/)
+  })
+
   const completeNextReviewDate = () => {
     cy.url().should('to.match', /\/next-review-date$/)
     cy.findByRole('textbox', { name: "When will you next review the plan with Tes'name User?" }).type(

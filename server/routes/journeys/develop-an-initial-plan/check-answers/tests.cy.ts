@@ -25,6 +25,10 @@ context('test /record-investigation/check-answers', () => {
 
     validateChangeLinks()
 
+    cy.findByRole('link', { name: /Cancel/i }).click()
+    cy.url().should('to.match', /cancellation-check$/)
+    cy.go('back')
+
     continueToConfirmation()
   })
 

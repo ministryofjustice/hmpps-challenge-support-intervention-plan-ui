@@ -106,6 +106,55 @@ context('test /csip-record/:recordUuid/develop-an-initial-plan/start', () => {
     finishJourney()
   })
 
+  it('should show cancellation check page', () => {
+    const uuid = uuidV4()
+    cy.signIn()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/develop-an-initial-plan/start`)
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
+
+    cy.url().should('to.match', /\/develop-an-initial-plan$/)
+
+    cy.findByRole('radio', { name: 'Yes' }).click()
+    cy.findByRole('textbox', { name: /What’s the main reason why Tes'name User needs a plan\?/ })
+      .clear()
+      .type('Reason they need a plan', { delay: 0 })
+
+    getContinueButton().click()
+
+    cy.url().should('to.match', /\/develop-an-initial-plan\/identified-needs$/)
+    cy.findByText('No identified needs recorded.')
+    cy.findByRole('button', { name: 'Add identified need' }).click()
+
+    addNewIntervention(uuid)
+
+    getContinueButton().click()
+
+    cy.findByRole('textbox', { name: "When will you next review the plan with Tes'name User?" })
+      .clear()
+      .type(`19/01/2038`)
+
+    getContinueButton().click()
+
+    cy.findByRole('link', { name: /Cancel/i }).click()
+
+    cy.url().should('to.match', /cancellation-check$/)
+
+    cy.findByText('Develop an initial plan').should('be.visible')
+    cy.findByText('If you choose not to submit this plan, you will lose the information you have entered.').should(
+      'be.visible',
+    )
+    cy.findByText('If you submit this plan in future, you’ll need to enter the information again.').should('be.visible')
+
+    cy.findByRole('button', { name: /Yes, cancel this plan/i })
+    cy.findByRole('button', { name: /No, return to check answers/i }).click()
+
+    cy.url().should('to.match', /develop-an-initial-plan\/check-answers$/)
+    cy.go('back')
+
+    cy.findByRole('button', { name: /Yes, cancel this plan/i }).click()
+    cy.url().should('to.match', /referral$/)
+  })
+
   const addNewIntervention = (uuid: string) => {
     cy.url().should('to.match', /\/develop-an-initial-plan\/summarise-identified-need\/1$/)
     cy.findByRole('textbox', { name: 'Summarise the identified need' }).type('Summary', { delay: 0 })

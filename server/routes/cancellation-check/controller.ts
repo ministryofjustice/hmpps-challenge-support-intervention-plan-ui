@@ -10,7 +10,7 @@ export class CancelController {
   GET = async (req: Request, res: Response) => {
     res.render('cancellation-check/view', {
       showBreadcrumbs: true,
-      csipRecordUrl: `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
+      cancelUrl: req.journeyData.csipRecord ? `/csip-records/${req.journeyData.csipRecord!.recordUuid}` : '/',
       journeyType: this.journeyType,
       journeyCaption: this.journeyCaption,
       action: this.action,

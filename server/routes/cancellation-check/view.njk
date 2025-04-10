@@ -20,7 +20,7 @@
           <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
           {{ govukButton({
                 text: "Yes, cancel this " + journeyType,
-                href: csipRecordUrl,
+                href: cancelUrl,
                 preventDoubleClick: true,
                 classes: "govuk-button--warning"
             }) }}

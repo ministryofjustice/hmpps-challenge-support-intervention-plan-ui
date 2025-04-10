@@ -151,6 +151,59 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     cy.findByRole('heading', { name: /CSIP caseload for Leeds \(HMP\)/ }).should('be.visible')
   })
 
+  it('should show cancellation check page', () => {
+    cy.signIn()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-investigation/start`)
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
+
+    completeInterviewDetails()
+
+    getContinueButton().click()
+
+    completeTextboxSection(sections.STAFF, /staff-involved$/, 'Which staff have been involved in the investigation?')
+
+    completeTextboxSection(sections.WHY_BEHAVIOUR, /why-behaviour-occurred$/, 'Why did the behaviour occur?')
+
+    completeTextboxSection(sections.EVIDENCE, /evidence-secured$/, 'What evidence has been secured?')
+
+    completeTextboxSection(
+      sections.USUAL_BEHAVIOUR,
+      /usual-behaviour-presentation$/,
+      "What is Tes'name User’s usual behaviour presentation?",
+    )
+
+    completeTextboxSection(sections.TRIGGERS, /triggers$/, "What are Tes'name User’s triggers?")
+
+    completeTextboxSection(
+      sections.PROTECTIVE_FACTORS,
+      /protective-factors$/,
+      "What are the protective factors for Tes'name User?",
+    )
+
+    stateGuardShouldBounceBackTo(/record-investigation\/check-answers$/)
+
+    cy.findByRole('link', { name: /Cancel/i }).click()
+
+    cy.url().should('to.match', /cancellation-check$/)
+
+    cy.findByText('Record a CSIP investigation').should('be.visible')
+    cy.findByText(
+      'If you choose not to record this investigation, you will lose the information you have entered.',
+    ).should('be.visible')
+    cy.findByText('If you record this investigation in future, you’ll need to enter the information again.').should(
+      'be.visible',
+    )
+
+    cy.findByRole('button', { name: /Yes, cancel this investigation/i })
+    cy.findByRole('button', { name: /No, return to check answers/i }).click()
+
+    cy.url().should('to.match', /record-investigation\/check-answers$/)
+    cy.go('back')
+
+    cy.findByRole('button', { name: /Yes, cancel this investigation/i }).click()
+    cy.url().should('to.match', /referral$/)
+  })
+
   const govukTaskListStatusShouldBe = (link: string, status: string) => {
     cy.findByRole('link', { name: link }).parent().next().should('contain.text', status)
   }
