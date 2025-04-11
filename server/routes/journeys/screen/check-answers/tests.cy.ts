@@ -46,6 +46,10 @@ context('test /screen/check-answers', () => {
     cy.findByRole('button', { name: /Continue/i }).click()
     cy.contains('dt', 'Reasons for decision').next().should('include.text', `new text`)
 
+    cy.findByRole('link', { name: /Cancel/i }).click()
+    cy.url().should('to.match', /cancellation-check$/)
+    cy.go('back')
+
     continueToConfirmation()
   })
 

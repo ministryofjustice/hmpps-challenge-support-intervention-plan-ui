@@ -102,6 +102,10 @@ context('test /referral/check-answers', () => {
     checkSaferCustody()
     checkAdditionalInformation()
 
+    cy.findByRole('link', { name: /Cancel/i }).click()
+    cy.url().should('to.match', /cancellation-check$/)
+    cy.go('back')
+
     continueToConfirmation()
   })
 

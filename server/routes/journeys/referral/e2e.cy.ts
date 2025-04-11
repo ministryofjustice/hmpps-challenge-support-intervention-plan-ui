@@ -106,6 +106,38 @@ context('Make a Referral Journey', () => {
 
     cy.url().should('include', 'check-answers')
   })
+
+  it('should show cancellation check page', () => {
+    signinAndStart()
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
+
+    fillInformationReactiveNotOnBehalf()
+
+    cy.findByRole('button', { name: /continue/i }).click()
+
+    cy.url().should('include', '/check-answers')
+
+    cy.findByRole('link', { name: /Cancel/i }).click()
+
+    cy.url().should('to.match', /cancellation-check$/)
+
+    cy.findByText('Make a CSIP referral').should('be.visible')
+    cy.findByText('If you choose not to submit this referral, you will lose the information you have entered.').should(
+      'be.visible',
+    )
+    cy.findByText('If you submit this referral in future, you’ll need to enter the information again.').should(
+      'be.visible',
+    )
+
+    cy.findByRole('button', { name: /Yes, cancel this referral/i })
+    cy.findByRole('button', { name: /No, return to check answers/i }).click()
+
+    cy.url().should('to.match', /referral\/check-answers$/)
+    cy.go('back')
+
+    cy.findByRole('button', { name: /Yes, cancel this referral/i }).click()
+    cy.url().should('to.match', /\/$/)
+  })
 })
 
 const signinAndStart = () => {

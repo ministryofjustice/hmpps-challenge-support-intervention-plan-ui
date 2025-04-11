@@ -50,6 +50,40 @@ context('Record a decision journey', () => {
     reviewConfirmation()
   })
 
+  it('should show cancellation check page', () => {
+    signinAndStart()
+    injectJourneyDataAndReload(uuid, { stateGuard: true })
+
+    fillInSignOff()
+
+    fillInConclusion()
+
+    fillInNextSteps()
+
+    fillInAdditionalInformation()
+
+    cy.findByRole('link', { name: /Cancel/i }).click()
+
+    cy.url().should('to.match', /cancellation-check$/)
+
+    cy.findByText('Record a CSIP investigation decision').should('be.visible')
+    cy.findByText(
+      'If you choose not to record this investigation decision, you will lose the information you have entered.',
+    ).should('be.visible')
+    cy.findByText(
+      'If you record this investigation decision in future, you’ll need to enter the information again.',
+    ).should('be.visible')
+
+    cy.findByRole('button', { name: /Yes, cancel this investigation decision/i })
+    cy.findByRole('button', { name: /No, return to check answers/i }).click()
+
+    cy.url().should('to.match', /record-decision\/check-answers$/)
+    cy.go('back')
+
+    cy.findByRole('button', { name: /Yes, cancel this investigation decision/i }).click()
+    cy.url().should('to.match', /investigation$/)
+  })
+
   const fillInSignOff = () => {
     checkAxeAccessibility()
     cy.findByRole('radio', { name: /SignerRole2/i }).click()

@@ -19,6 +19,7 @@ import { Services } from '../../../services'
 import { JourneyRouter } from '../base/routes'
 import ContinueJourneyRoutes from './continue/routes'
 import journeyStateGuard, { isMissingValues } from '../../../middleware/journeyStateGuard'
+import { CancelController } from '../../cancellation-check/controller'
 
 function Routes({ csipApiService, auditService }: Services) {
   const { router } = JourneyRouter()
@@ -38,6 +39,7 @@ function Routes({ csipApiService, auditService }: Services) {
   router.use('/involvement', InvolvementRoutes(csipApiService))
   router.use('/check-answers', ReferralCheckAnswersRoutes(csipApiService, auditService))
   router.use('/confirmation', ConfirmationRoutes())
+  router.use('/cancellation-check', new CancelController('referral', 'Make a CSIP referral', 'submit').GET)
 
   return router
 }

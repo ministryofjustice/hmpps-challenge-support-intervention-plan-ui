@@ -110,6 +110,10 @@ context('test /record-review/check-answers', () => {
 
     cy.findByRole('button', { name: /Continue/i }).click()
 
+    cy.findByRole('link', { name: /Cancel/i }).click()
+    cy.url().should('to.match', /cancellation-check$/)
+    cy.go('back')
+
     continueToConfirmation()
   })
 

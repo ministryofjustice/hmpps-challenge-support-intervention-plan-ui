@@ -8,6 +8,7 @@ import { ScreenController } from './controller'
 import { schemaFactory } from './schemas'
 import { validate } from '../../../middleware/validationMiddleware'
 import journeyStateGuard, { isMissingValues } from '../../../middleware/journeyStateGuard'
+import { CancelController } from '../../cancellation-check/controller'
 
 function Routes({ csipApiService, auditService }: Services) {
   const { router, get, post } = JourneyRouter()
@@ -18,6 +19,7 @@ function Routes({ csipApiService, auditService }: Services) {
 
   router.use('/check-answers', ScreenCheckAnswersRoutes(csipApiService, auditService))
   router.use('/confirmation', ConfirmationRoutes())
+  router.use('/cancellation-check', new CancelController('screening', 'Screen a CSIP referral', 'record').GET)
 
   return router
 }

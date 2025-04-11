@@ -15,6 +15,7 @@ import { DeleteInterviewRoutes } from './delete-interview/routes'
 import { InvestigationCheckAnswersRoutes } from './check-answers/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
 import journeyStateGuard, { JourneyStateGuard, isMissingValues } from '../../../middleware/journeyStateGuard'
+import { CancelController } from '../../cancellation-check/controller'
 
 function Routes({ csipApiService, auditService }: Services) {
   const { router, get } = JourneyRouter()
@@ -32,6 +33,7 @@ function Routes({ csipApiService, auditService }: Services) {
   router.use('/delete-interview/:index', DeleteInterviewRoutes())
   router.use('/check-answers', InvestigationCheckAnswersRoutes(csipApiService, auditService))
   router.use('/confirmation', ConfirmationRoutes())
+  router.use('/cancellation-check', new CancelController('investigation', 'Record a CSIP investigation', 'record').GET)
 
   return router
 }

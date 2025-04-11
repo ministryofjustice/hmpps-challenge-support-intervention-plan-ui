@@ -131,4 +131,36 @@ context('Screen a CSIP Referral Journey', () => {
     getNfaRadio().should('be.checked')
     getDescribeTextbox().should('include.text', 'no action needed')
   })
+
+  it('should show cancellation check page', () => {
+    cy.signIn()
+    cy.visit(START_URL)
+
+    cy.visit(`02e5854f-f7b1-4c56-bec8-69e390eb8550/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/screen/start`)
+
+    getNfaRadio().click()
+    getDescribeTextbox().type('no action needed', { delay: 0 })
+    getContinueButton().click()
+
+    cy.findByRole('link', { name: /Cancel/i }).click()
+
+    cy.url().should('to.match', /cancellation-check$/)
+
+    cy.findByText('Screen a CSIP referral').should('be.visible')
+    cy.findByText('If you choose not to record this screening, you will lose the information you have entered.').should(
+      'be.visible',
+    )
+    cy.findByText('If you record this screening in future, you’ll need to enter the information again.').should(
+      'be.visible',
+    )
+
+    cy.findByRole('button', { name: /Yes, cancel this screening/i })
+    cy.findByRole('button', { name: /No, return to check answers/i }).click()
+
+    cy.url().should('to.match', /screen\/check-answers$/)
+    cy.go('back')
+
+    cy.findByRole('button', { name: /Yes, cancel this screening/i }).click()
+    cy.url().should('to.match', /referral$/)
+  })
 })
