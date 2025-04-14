@@ -106,6 +106,21 @@ context('test /develop-an-initial-plan/summarise-identified-need', () => {
       .click()
     getInputTextbox().should('be.focused')
     cy.findAllByText('You have 1 character too many').filter(':visible').should('have.length.of.at.least', 1)
+
+    getInputTextbox().clear().type('a'.repeat(750), {
+      delay: 0,
+      force: true,
+    })
+    cy.contains(/you have 250 characters remaining/i).should('be.visible')
+    getInputTextbox().type('a', { delay: 0 })
+    cy.contains(/you have 249 characters remaining/i).should('be.visible')
+    getInputTextbox().type('a'.repeat(249), {
+      delay: 0,
+      force: true,
+    })
+    cy.contains(/you have 0 characters remaining/i).should('be.visible')
+
+    cy.pageCheckCharacterThresholdMessage(getInputTextbox(), 1000)
   }
 
   const proceedToNextScreen = () => {

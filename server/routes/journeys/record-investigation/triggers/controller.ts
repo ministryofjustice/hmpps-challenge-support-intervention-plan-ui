@@ -8,7 +8,6 @@ export class TriggersController {
       personsTrigger,
       backUrl: '../record-investigation',
       maxLengthChars: 4000,
-      threshold: '75',
     })
   }
 

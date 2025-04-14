@@ -114,6 +114,8 @@ context('test /referral/reasons', () => {
       .click()
     getKnownReasons(type).should('be.focused')
     getKnownReasons(type).should('have.value', 'a'.repeat(4001))
+
+    cy.pageCheckCharacterThresholdMessage(getKnownReasons(type), 4000)
   }
 
   const completeInputs = (type: string) => {

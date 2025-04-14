@@ -158,6 +158,8 @@ context('test /update-actions-progress/:uuid', () => {
       .should('be.visible')
       .click()
     getInputTextbox().should('be.focused')
+
+    cy.pageCheckCharacterThresholdMessage(getInputTextbox(), 4000)
   }
 
   const proceedToNextScreen = () => {

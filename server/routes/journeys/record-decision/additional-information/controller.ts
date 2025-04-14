@@ -8,7 +8,6 @@ export class DecisionAdditionalInformationController {
       actionOther,
       backUrl: 'next-steps',
       maxLengthChars: 4000,
-      threshold: '75',
     })
   }
 

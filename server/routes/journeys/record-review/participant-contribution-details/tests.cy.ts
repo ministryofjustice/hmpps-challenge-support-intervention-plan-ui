@@ -126,6 +126,10 @@ context('test /record-review/participant-contribution-details', () => {
     cy.findAllByText('Contribution must be 4,000 characters or less').should('have.length', 2)
     cy.findAllByText('You have 1 character too many').should('have.length', 6)
     getContribution().should('have.value', 'a'.repeat(4001))
+
+    cy.pageCheckCharacterThresholdMessage(getName(), 100)
+    cy.pageCheckCharacterThresholdMessage(getRole(), 50)
+    cy.pageCheckCharacterThresholdMessage(getContribution(), 4000)
   }
 
   const completeInputs = () => {

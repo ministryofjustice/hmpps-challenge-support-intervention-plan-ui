@@ -168,6 +168,9 @@ context('test /develop-an-initial-plan/intervention-details', () => {
       .click()
     getResponsiblePerson().should('be.focused')
     getResponsiblePerson().should('have.value', 'a'.repeat(101))
+
+    cy.pageCheckCharacterThresholdMessage(getIntervention(), 4000)
+    cy.pageCheckCharacterThresholdMessage(getResponsiblePerson(), 100)
   }
 
   const validateErrorMessagesDate = () => {

@@ -153,6 +153,8 @@ context('Make a Referral Journey', () => {
       .contains(/select if any staff were assaulted during the incident or not/i)
       .should('be.visible')
     checkAxeAccessibility()
+
+    cy.pageCheckCharacterThresholdMessage(cy.findByRole('textbox', { name: /names of staff assaulted/i }), 240)
   }
 
   const setupDataSignInAndGo = () => {

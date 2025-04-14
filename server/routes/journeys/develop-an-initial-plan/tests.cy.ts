@@ -87,6 +87,9 @@ context('test /develop-an-initial-plan', () => {
       .click()
     getReasonsTextField().should('be.focused')
     cy.findAllByText('You have 2 characters too many').filter(':visible').should('have.length.of.at.least', 1)
+
+    cy.pageCheckCharacterThresholdMessage(getCaseManagerTextField(), 100)
+    cy.pageCheckCharacterThresholdMessage(getReasonsTextField(), 240)
   }
 
   const proceedToNextScreen = () => {

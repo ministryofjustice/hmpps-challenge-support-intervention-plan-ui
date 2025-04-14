@@ -21,7 +21,7 @@
         {{ govukCharacterCount({
             maxlength: maxLengthChars,
             rows: 5,
-            threshold: threshold,
+            threshold: threshold or "75",
             id: "occurrenceReason",
             name: "occurrenceReason",
             value: occurrenceReason,

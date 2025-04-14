@@ -110,6 +110,8 @@ context('test /edit-log-code', () => {
       .should('be.visible')
       .click()
     getLogCodeInput().should('be.focused')
+
+    cy.pageCheckCharacterThresholdMessage(getLogCodeInput(), 10)
   }
 
   const completeInputs = () => {
