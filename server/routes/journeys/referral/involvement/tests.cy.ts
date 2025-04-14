@@ -54,6 +54,8 @@ context('Make a Referral Journey', () => {
     cy.findByRole('radio', { name: /yes/i }).should('be.checked')
     cy.findByRole('textbox', { name: /names of staff assaulted/i }).should('have.value', 'staff stafferson')
 
+    cy.pageCheckCharacterThresholdMessage(cy.findByRole('textbox', { name: /names of staff assaulted/i }), 240)
+
     cy.findByRole('radio', { name: /factor1/i }).click()
     cy.findByRole('textbox', { name: /names of staff assaulted/i }).clear()
     cy.findByRole('button', { name: /continue/i }).click()
@@ -153,8 +155,6 @@ context('Make a Referral Journey', () => {
       .contains(/select if any staff were assaulted during the incident or not/i)
       .should('be.visible')
     checkAxeAccessibility()
-
-    cy.pageCheckCharacterThresholdMessage(cy.findByRole('textbox', { name: /names of staff assaulted/i }), 240)
   }
 
   const setupDataSignInAndGo = () => {

@@ -140,7 +140,7 @@ context('test /update-planned-intervention/:uuid', () => {
       .click()
     getInputTextbox().should('be.focused')
 
-    cy.pageCheckCharacterThresholdMessage(getInputTextbox(), 4000)
+    cy.pageCheckCharacterThresholdMessage(getInputTextbox(), 3934)
   }
 
   const proceedToNextScreen = () => {

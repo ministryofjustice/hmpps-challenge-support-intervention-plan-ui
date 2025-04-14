@@ -62,6 +62,11 @@ context('Make a Referral Journey', () => {
   }
 
   const checkValidation = (proactive: boolean) => {
+    cy.pageCheckCharacterThresholdMessage(
+      cy.findByRole('textbox', { name: proactive ? proactiveTitle : reactiveTitle }),
+      4000,
+    )
+
     cy.findByRole('heading', { name: proactive ? proactiveTitle : reactiveTitle }).should('be.visible')
     cy.findByRole('button', { name: /continue/i }).click()
     cy.get('.govuk-error-summary a').should('have.length', 1)
@@ -98,11 +103,6 @@ context('Make a Referral Journey', () => {
     })
     cy.contains(/you have 0 characters remaining/i).should('be.visible')
     checkAxeAccessibility()
-
-    cy.pageCheckCharacterThresholdMessage(
-      cy.findByRole('textbox', { name: proactive ? proactiveTitle : reactiveTitle }),
-      4000,
-    )
   }
 
   const setupDataSignInAndGo = (proactive: boolean, uuid: string) => {
