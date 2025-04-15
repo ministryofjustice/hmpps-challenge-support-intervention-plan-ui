@@ -15,9 +15,6 @@ export default defineConfig({
   screenshotsFolder: 'integration_tests/screenshots',
   videosFolder: 'integration_tests/videos',
   reporter: 'cypress-multi-reporters',
-  reporterOptions: {
-    configFile: 'reporter-config.json',
-  },
   taskTimeout: 60000,
   e2e: {
     setupNodeEvents(on, config) {
@@ -38,7 +35,6 @@ export default defineConfig({
     excludeSpecPattern: ['dist', '**/!(*.cy).ts'],
     specPattern: '**/*.cy.{js,jsx,ts,tsx}',
     supportFile: 'integration_tests/support/index.ts',
-    experimentalRunAllSpecs: true,
     env: {
       codeCoverage: {
         url: 'http://localhost:3007/__coverage__',
