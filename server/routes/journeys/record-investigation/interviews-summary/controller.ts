@@ -5,6 +5,8 @@ export class InterviewsSummaryController {
     res.render('record-investigation/interviews-summary/view', {
       interviews: req.journeyData.investigation!.interviews || [],
       newInterviewIndex: (req.journeyData.investigation!.interviews || []).length + 1,
+      backUrl: `../record-investigation`,
+      backUrlText: 'Back to task list',
     })
   }
 

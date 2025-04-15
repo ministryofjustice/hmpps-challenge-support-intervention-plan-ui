@@ -6,6 +6,8 @@ export class RecordReviewController extends BaseJourneyController {
     res.render('record-review/view', {
       logCode: req.journeyData.csipRecord!.logCode,
       review: req.journeyData.review,
+      backUrl: `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
+      backUrlText: 'Back to CSIP record',
     })
   }
 }

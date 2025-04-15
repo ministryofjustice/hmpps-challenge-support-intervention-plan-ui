@@ -18,6 +18,7 @@ export class ScreenCheckAnswersController extends BaseJourneyController {
     res.render('screen/check-answers/view', {
       saferCustodyScreening: req.journeyData.saferCustodyScreening,
       csipRecordUrl: `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
+      showBreadcrumbs: true,
     })
   }
 

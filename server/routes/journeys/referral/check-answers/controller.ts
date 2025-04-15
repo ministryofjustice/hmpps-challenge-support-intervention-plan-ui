@@ -16,7 +16,7 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
     delete req.journeyData.referral!.onBehalfOfSubJourney
 
     const { referral } = req.journeyData
-    res.render('referral/check-answers/view', { referral })
+    res.render('referral/check-answers/view', { referral, showBreadcrumbs: true })
   }
 
   checkSubmitToAPI = async (req: Request, res: Response, next: NextFunction) => {

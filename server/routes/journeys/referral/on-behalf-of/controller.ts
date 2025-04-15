@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
 import { CsipRecordStatus } from '../../../../@types/csip/csipApiTypes'
 import CsipApiService from '../../../../services/csipApi/csipApiService'
+import config from '../../../../config'
 
 export class ReferralOnBehalfOfController {
   constructor(readonly csipApiService: CsipApiService) {}
@@ -33,7 +34,10 @@ export class ReferralOnBehalfOfController {
       isOnBehalfOfReferral: req.journeyData.referral!.onBehalfOfSubJourney
         ? req.journeyData.referral?.onBehalfOfSubJourney?.isOnBehalfOfReferral
         : req.journeyData.referral!.isOnBehalfOfReferral,
-      backUrl: req.journeyData.isCheckAnswers ? 'check-answers' : undefined,
+      backUrl: req.journeyData.isCheckAnswers
+        ? 'check-answers'
+        : `${config.serviceUrls.prisonerProfile}/prisoner/${req.journeyData.prisoner!.prisonerNumber}`,
+      backUrlText: req.journeyData.isCheckAnswers ? 'Back' : 'Back to prisoner profile',
     })
   }
 

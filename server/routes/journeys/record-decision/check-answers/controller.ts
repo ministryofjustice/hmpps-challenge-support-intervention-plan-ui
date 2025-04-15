@@ -19,6 +19,7 @@ export class DecisionCheckAnswersController extends BaseJourneyController {
     res.render('record-decision/check-answers/view', {
       decisionAndActions,
       csipRecordUrl: `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
+      showBreadcrumbs: true,
     })
   }
 

@@ -5,6 +5,8 @@ export class ParticipantsSummaryController {
     res.render('record-review/participants-summary/view', {
       attendees: req.journeyData.review!.attendees || [],
       newAttendeeIndex: (req.journeyData.review!.attendees || []).length + 1,
+      backUrl: `../record-review`,
+      backUrlText: 'Back to task list',
     })
   }
 
