@@ -17,7 +17,7 @@
     {{ govukCharacterCount({
       maxlength: maxLengthChars,
       rows: 5,
-      threshold: threshold,
+      threshold: threshold or "75",
       id: "intervention",
       name: "intervention",
       value: intervention,

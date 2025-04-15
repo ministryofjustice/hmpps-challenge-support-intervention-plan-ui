@@ -78,6 +78,8 @@ context('test /update-plan/update-identified-need', () => {
       .click()
     getTextbox().should('be.focused')
     cy.findAllByText('Enter a summary of the identified need').should('have.length', 2)
+
+    cy.pageCheckCharacterThresholdMessage(getTextbox(), 1000)
   }
 
   const validateErrorMessagesTextInputTooLong = () => {

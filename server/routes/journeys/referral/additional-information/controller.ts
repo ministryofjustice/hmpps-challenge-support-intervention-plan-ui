@@ -9,7 +9,6 @@ export class ReferralAdditionalInformationController {
       otherInformation,
       backUrl: 'safer-custody',
       maxLengthChars: 4000,
-      threshold: '75',
     })
   }
 

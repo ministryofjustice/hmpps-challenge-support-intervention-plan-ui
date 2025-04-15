@@ -8,7 +8,6 @@ export class StaffInvolvedController {
       staffInvolved,
       backUrl: '../record-investigation',
       maxLengthChars: 4000,
-      threshold: '75',
     })
   }
 

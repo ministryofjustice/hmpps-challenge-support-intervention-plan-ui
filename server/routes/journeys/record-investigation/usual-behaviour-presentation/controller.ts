@@ -9,7 +9,6 @@ export class UsualBehaviourPresentationController {
       personsUsualBehaviour,
       backUrl: '../record-investigation',
       maxLengthChars: 4000,
-      threshold: '75',
     })
   }
 

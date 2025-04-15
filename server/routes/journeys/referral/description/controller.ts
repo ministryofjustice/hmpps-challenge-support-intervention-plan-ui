@@ -9,7 +9,6 @@ export class ReferralDescriptionController {
         res.locals.formResponses?.['descriptionOfConcern'] ?? req.journeyData.referral!.descriptionOfConcern,
       backUrl: 'involvement',
       maxLengthChars: 4000,
-      threshold: '75',
     })
   }
 

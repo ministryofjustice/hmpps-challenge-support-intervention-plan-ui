@@ -65,6 +65,8 @@ context('test /record-decision/additional-information', () => {
     getInputTextbox().should('be.focused')
 
     cy.findAllByText('You have 1 character too many').filter(':visible').should('have.length.of.at.least', 1)
+
+    cy.pageCheckCharacterThresholdMessage(getInputTextbox(), 4000)
   }
 
   const proceedToNextScreen = () => {

@@ -90,6 +90,8 @@ context('test /update-plan/update-intervention-details', () => {
       .click()
     getTargetDate().should('be.focused')
     cy.findAllByText('Enter the target date').should('have.length', 2)
+
+    cy.pageCheckCharacterThresholdMessage(getResponsiblePerson(), 100)
   }
 
   const validateErrorMessagesTextInputTooLong = () => {

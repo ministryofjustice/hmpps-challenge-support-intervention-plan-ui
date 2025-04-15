@@ -46,6 +46,7 @@ context('test /referral/reasons', () => {
 
     validateErrorMessagesTextInputTooLong('behaviour')
 
+    cy.pageCheckCharacterThresholdMessage(getKnownReasons('behaviour'), 4000)
     completeInputs('behaviour')
 
     getContinueButton().click()
@@ -70,6 +71,7 @@ context('test /referral/reasons', () => {
 
     validateErrorMessagesTextInputTooLong('incident')
 
+    cy.pageCheckCharacterThresholdMessage(getKnownReasons('incident'), 4000)
     completeInputs('incident')
 
     getContinueButton().click()

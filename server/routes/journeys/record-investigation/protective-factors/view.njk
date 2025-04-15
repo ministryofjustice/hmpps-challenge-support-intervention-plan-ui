@@ -36,7 +36,7 @@
         {{ govukCharacterCount({
             maxlength: maxLengthChars,
             rows: 5,
-            threshold: threshold,
+            threshold: threshold or "75",
             id: "protectiveFactors",
             name: "protectiveFactors",
             value: protectiveFactors,

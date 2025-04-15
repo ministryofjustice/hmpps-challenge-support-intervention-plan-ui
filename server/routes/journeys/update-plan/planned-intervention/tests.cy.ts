@@ -139,6 +139,8 @@ context('test /update-planned-intervention/:uuid', () => {
       .should('be.visible')
       .click()
     getInputTextbox().should('be.focused')
+
+    cy.pageCheckCharacterThresholdMessage(getInputTextbox(), 3934)
   }
 
   const proceedToNextScreen = () => {

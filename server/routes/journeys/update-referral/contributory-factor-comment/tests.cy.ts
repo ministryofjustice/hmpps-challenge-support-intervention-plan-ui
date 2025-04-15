@@ -119,6 +119,8 @@ context('test /update-referral/contributory-factor-comment', () => {
     cy.contains(/you have [0-9]{0,1},?[0-9]{1,3} characters remaining/i).should('not.be.visible')
     cy.findByRole('textbox', { name: title }).type('2')
     cy.contains(/you have 1,000 characters remaining/i).should('be.visible')
+
+    cy.pageCheckCharacterThresholdMessage(cy.findByRole('textbox', { name: title }), 3937)
   }
 
   const goToChangingCFCommentPage = (index: number = 0) => {

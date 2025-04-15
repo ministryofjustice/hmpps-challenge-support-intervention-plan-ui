@@ -40,7 +40,7 @@
         {{ govukCharacterCount({
             maxlength: maxLengthChars,
             rows: 5,
-            threshold: threshold,
+            threshold: threshold or "75",
             id: "personsUsualBehaviour",
             name: "personsUsualBehaviour",
             value: personsUsualBehaviour,

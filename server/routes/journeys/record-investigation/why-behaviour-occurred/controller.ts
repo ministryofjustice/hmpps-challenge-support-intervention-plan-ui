@@ -9,7 +9,6 @@ export class OccurrenceReasonController {
       occurrenceReason,
       backUrl: '../record-investigation',
       maxLengthChars: 4000,
-      threshold: '75',
     })
   }
 

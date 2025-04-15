@@ -58,11 +58,6 @@ context('test /update-plan/summarise-identified-need', () => {
       .and('match', /..\/identified-needs$/)
 
     getSummary().should('be.visible')
-
-    getSummary().clear().type('a'.repeat(999), { delay: 0 })
-    cy.contains(/you have [0-9,]+ characters? remaining/i).should('not.be.visible')
-    getSummary().clear().type('a'.repeat(1000), { delay: 0 })
-    cy.contains(/you have 0 characters remaining/i).should('be.visible')
   }
 
   const validateErrorsMandatory = () => {
@@ -87,6 +82,8 @@ context('test /update-plan/summarise-identified-need', () => {
       .click()
     getSummary().should('be.focused')
     getSummary().should('have.value', 'a'.repeat(1001))
+
+    cy.pageCheckCharacterThresholdMessage(getSummary(), 1000)
   }
 
   const completeInputs = () => {

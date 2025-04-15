@@ -66,6 +66,8 @@ context('Make a Referral Journey', () => {
       force: true,
     })
     cy.contains(/you have 0 characters remaining/i).should('be.visible')
+
+    cy.pageCheckCharacterThresholdMessage(cy.findByRole('textbox'), 4000)
   }
 
   const setupDataSignInAndGo = () => {

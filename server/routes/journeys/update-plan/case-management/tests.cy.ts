@@ -110,6 +110,9 @@ context('test /update-plan/case-management', () => {
       .click()
     getReasonForPlan().should('be.focused')
     getReasonForPlan().should('have.value', 'a'.repeat(501))
+
+    cy.pageCheckCharacterThresholdMessage(getCaseManager(), 100)
+    cy.pageCheckCharacterThresholdMessage(getReasonForPlan(), 500)
   }
 
   const completeInputs = () => {

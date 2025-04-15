@@ -47,7 +47,7 @@
         {{ govukCharacterCount({
             maxlength: maxLengthChars,
             rows: 5,
-            threshold: threshold,
+            threshold: threshold or "75",
             id: "descriptionOfConcern",
             name: "descriptionOfConcern",
             value: descriptionOfConcern,

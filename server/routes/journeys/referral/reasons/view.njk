@@ -28,9 +28,9 @@
             hint: {
                 text: 'Include any reasons the prisoner has given about why the behaviour has occurred. You can also include reasons reported by other people.' if isProactiveReferral else 'Include any reasons the prisoner has given about why the incident occurred. You can also include reasons reported by other people.'
             },
-            maxlength: maxLengthChars,
+            maxlength: maxLengthChars or 4000,
             rows: 5,
-            threshold: threshold,
+            threshold: threshold or "75",
             id: "knownReasons",
             name: "knownReasons",
             value: knownReasons,
