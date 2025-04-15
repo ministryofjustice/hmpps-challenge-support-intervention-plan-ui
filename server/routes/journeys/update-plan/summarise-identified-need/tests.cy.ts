@@ -82,6 +82,8 @@ context('test /update-plan/summarise-identified-need', () => {
       .click()
     getSummary().should('be.focused')
     getSummary().should('have.value', 'a'.repeat(1001))
+
+    cy.pageCheckCharacterThresholdMessage(getSummary(), 1000)
   }
 
   const completeInputs = () => {
