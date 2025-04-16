@@ -13,7 +13,13 @@ export class DevelopPlanController {
     const caseManager = res.locals.formResponses?.['caseManager'] ?? req.journeyData.plan!.caseManager
     const reasonForPlan = res.locals.formResponses?.['reasonForPlan'] ?? req.journeyData.plan!.reasonForPlan
 
-    res.render('develop-an-initial-plan/view', { isCaseManager, caseManager, reasonForPlan })
+    res.render('develop-an-initial-plan/view', {
+      isCaseManager,
+      caseManager,
+      reasonForPlan,
+      backUrl: `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
+      backUrlText: 'Back to CSIP record',
+    })
   }
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {

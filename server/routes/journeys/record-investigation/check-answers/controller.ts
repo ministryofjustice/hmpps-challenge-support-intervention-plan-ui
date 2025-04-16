@@ -18,6 +18,7 @@ export class InvestigationCheckAnswersController extends BaseJourneyController {
     res.render('record-investigation/check-answers/view', {
       investigation,
       csipRecordUrl: `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
+      showBreadcrumbs: true,
     })
   }
 

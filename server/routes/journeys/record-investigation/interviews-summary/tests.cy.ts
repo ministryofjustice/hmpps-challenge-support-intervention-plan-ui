@@ -19,6 +19,12 @@ context('test /record-investigation/interviews-summary', () => {
     navigateToTestPage()
     cy.url().should('to.match', /\/interviews-summary$/)
     cy.title().should('equal', 'Interviews summary - Record a CSIP investigation - DPS')
+
+    cy.get('.govuk-back-link')
+      .eq(0)
+      .should('have.attr', 'href', '../record-investigation')
+      .should('have.text', 'Back to task list')
+
     checkAxeAccessibility()
 
     cy.findByRole('heading', { name: /Interviews summary/ }).should('be.visible')

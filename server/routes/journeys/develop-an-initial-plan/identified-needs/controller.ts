@@ -12,6 +12,9 @@ export class IdentifiedNeedsController {
       newNeedIndex: (sortedNeeds || []).length + 1,
       identifiedNeeds,
       reasonForPlan,
+      backUrl: identifiedNeeds?.length
+        ? `../develop-an-initial-plan/record-actions-progress/${(sortedNeeds || []).length}`
+        : `../develop-an-initial-plan`,
     })
   }
 

@@ -33,6 +33,11 @@ context('test /record-review', () => {
   }
 
   const validatePageContents = () => {
+    cy.get('.govuk-back-link')
+      .eq(0)
+      .should('have.attr', 'href', '/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550')
+      .should('have.text', 'Back to CSIP record')
+
     cy.title().should('equal', 'Record information about the review - Record a CSIP review - DPS')
 
     cy.findByRole('heading', { name: 'Record information about the review' }).should('be.visible')

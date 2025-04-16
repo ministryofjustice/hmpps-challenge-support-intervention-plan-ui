@@ -41,6 +41,8 @@ context('test /record-review/check-answers', () => {
     cy.visit(`${uuid}/record-review/check-answers`)
 
     cy.url().should('to.match', /\/check-answers$/)
+    cy.get('.govuk-breadcrumbs__link').eq(0).should('have.attr', 'href', 'http://localhost:9091/dpshomepage')
+    cy.get('.govuk-breadcrumbs__link').eq(1).should('have.attr', 'href', '/')
     cy.title().should('equal', 'Check your answers before recording the review - Record a CSIP review - DPS')
     checkAxeAccessibility()
 

@@ -5,6 +5,7 @@ export class RecordInvestigationController {
     res.render('record-investigation/view', {
       logCode: req.journeyData.csipRecord!.logCode,
       investigation: req.journeyData.investigation,
+      backUrl: `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
     })
   }
 }

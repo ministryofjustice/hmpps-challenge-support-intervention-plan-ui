@@ -14,6 +14,10 @@ export class ScreenController extends BaseJourneyController {
       outcomeTypeItems,
       reasonForDecision:
         res.locals.formResponses?.['reasonForDecision'] ?? req.journeyData.saferCustodyScreening?.reasonForDecision,
+      backUrl: req.journeyData.isCheckAnswers
+        ? 'check-answers'
+        : `/csip-records/${req.journeyData.csipRecord?.recordUuid}`,
+      backUrlText: req.journeyData.isCheckAnswers ? 'Back' : 'Back to CSIP record',
     })
   }
 

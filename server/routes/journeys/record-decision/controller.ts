@@ -10,7 +10,11 @@ export class RecordDecisionController extends BaseJourneyController {
       res.locals.formResponses?.['signedOffByRole'] ?? req.journeyData.decisionAndActions!.signedOffByRole,
     )
 
-    res.render('record-decision/view', { signedOffByRoleOptions })
+    res.render('record-decision/view', {
+      signedOffByRoleOptions,
+      backUrl: `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
+      backUrlText: 'Back to CSIP record',
+    })
   }
 
   POST = async (req: Request<unknown, unknown, SchemaType>, res: Response) => {

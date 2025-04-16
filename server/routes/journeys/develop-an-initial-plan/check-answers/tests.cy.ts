@@ -95,6 +95,9 @@ context('test /record-investigation/check-answers', () => {
       'be.visible',
     )
 
+    cy.get('.govuk-breadcrumbs__link').eq(0).should('have.attr', 'href', 'http://localhost:9091/dpshomepage')
+    cy.get('.govuk-breadcrumbs__link').eq(1).should('have.attr', 'href', '/')
+
     cy.contains('dt', 'Case Manager').next().should('include.text', 'manager foobar')
     cy.findByRole('link', { name: /change the case manager/i }).should('be.visible')
     cy.contains('dt', 'Reason for the plan').next().should('include.text', 'plan reason')

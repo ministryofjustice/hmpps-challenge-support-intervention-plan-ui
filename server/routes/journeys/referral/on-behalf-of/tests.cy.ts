@@ -1,6 +1,9 @@
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 
 context('Make a Referral Journey', () => {
+  const uuid = '12e5854f-f7b1-4c56-bec8-69e390eb8550'
+
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
@@ -35,6 +38,11 @@ context('Make a Referral Journey', () => {
   it('test involvement, including all edge cases', () => {
     setupDataSignInAndGo()
 
+    cy.get('.govuk-back-link')
+      .eq(0)
+      .should('have.attr', 'href', 'http://localhost:3001/prisoner/A1111AA')
+      .should('have.text', 'Back to prisoner profile')
+
     cy.findByRole('heading', { name: /make a csip referral/i }).should('be.visible')
     cy.findByText(/are you making this referral on someone else’s behalf\?/i).should('be.visible')
 
@@ -63,11 +71,17 @@ context('Make a Referral Journey', () => {
 
     cy.findByRole('link', { name: /^back/i }).click()
     cy.findByRole('radio', { name: /no/i }).should('be.checked')
+
+    injectJourneyDataAndReload(uuid, {
+      isCheckAnswers: true,
+    })
+
+    cy.get('.govuk-back-link').eq(0).should('have.attr', 'href', 'check-answers').should('have.text', 'Back')
   })
 
   const setupDataSignInAndGo = () => {
     cy.signIn()
-    cy.visit('/prisoners/A1111AA/referral/start')
+    cy.visit(`${uuid}/prisoners/A1111AA/referral/start`)
     cy.url().should('include', 'on-behalf-of')
   }
 })

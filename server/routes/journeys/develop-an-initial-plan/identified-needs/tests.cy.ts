@@ -20,7 +20,7 @@ context('test /develop-an-initial-plan/identified-needs', () => {
 
     cy.url().should('to.match', /\/identified-needs$/)
 
-    validatePageContents(false)
+    validatePageContentsNoIdentifiedNeeds()
   })
 
   it('should test identified-needs with needs', () => {
@@ -48,7 +48,7 @@ context('test /develop-an-initial-plan/identified-needs', () => {
 
     cy.url().should('to.match', /\/identified-needs$/)
 
-    validatePageContents(true)
+    validatePageContentsWithIdentifiedNeeds()
   })
 
   const navigateToTestPage = (identifiedNeeds: Plan['identifiedNeeds'] = []) => {
@@ -68,40 +68,53 @@ context('test /develop-an-initial-plan/identified-needs', () => {
     cy.visit(`${uuid}/develop-an-initial-plan/identified-needs`)
   }
 
-  const validatePageContents = (withIdentifiedNeeds: boolean) => {
-    cy.findByRole('link', { name: /^back/i }).should('not.exist')
+  const validatePageContentsWithIdentifiedNeeds = () => {
+    validatePageContents()
+
+    cy.get('.govuk-back-link')
+      .eq(0)
+      .should('have.attr', 'href', '../develop-an-initial-plan/record-actions-progress/2')
+      .should('have.text', 'Back')
+    cy.get('.govuk-summary-card')
+      .first()
+      .should('include.text', 'a need goes here')
+      .next()
+      .should('include.text', 'needB')
+    cy.findByText(/no identified needs recorded/i).should('not.exist')
+    cy.findByRole('button', { name: /add identified need/i }).should('not.exist')
+    cy.findByRole('button', { name: /add another identified need/i }).should('be.visible')
+    cy.findByRole('button', { name: /continue/i }).should('be.visible')
+    cy.findByRole('heading', { name: /a need goes here/i }).should('be.visible')
+    cy.findByText('1 August 2024').should('be.visible')
+    cy.findAllByText(/identified need summary/i)
+      .first()
+      .siblings()
+      .findByText(/a need goes here/i)
+      .should('be.visible')
+    cy.findByText(/some intervention/i).should('be.visible')
+    cy.findByText(/test stafferson/i).should('be.visible')
+    cy.findByText(/progression goes here/).should('be.visible')
+  }
+
+  const validatePageContentsNoIdentifiedNeeds = () => {
+    validatePageContents()
+
+    cy.get('.govuk-back-link')
+      .eq(0)
+      .should('have.attr', 'href', '../develop-an-initial-plan')
+      .should('have.text', 'Back')
+    cy.findByText(/no identified needs recorded/i).should('be.visible')
+    cy.findByRole('button', { name: /add identified need/i }).should('be.visible')
+    cy.findByRole('button', { name: /add another identified need/i }).should('not.exist')
+    cy.findByRole('button', { name: /continue/i }).should('not.exist')
+  }
+
+  const validatePageContents = () => {
     cy.findByRole('heading', { name: /Identified needs for Tes'name User/ }).should('be.visible')
 
     cy.get('details').invoke('attr', 'open').should('not.exist')
     cy.get('summary').click()
     cy.get('details').invoke('attr', 'open').should('exist')
-
-    if (!withIdentifiedNeeds) {
-      cy.findByText(/no identified needs recorded/i).should('be.visible')
-      cy.findByRole('button', { name: /add identified need/i }).should('be.visible')
-      cy.findByRole('button', { name: /add another identified need/i }).should('not.exist')
-      cy.findByRole('button', { name: /continue/i }).should('not.exist')
-    } else {
-      cy.get('.govuk-summary-card')
-        .first()
-        .should('include.text', 'a need goes here')
-        .next()
-        .should('include.text', 'needB')
-      cy.findByText(/no identified needs recorded/i).should('not.exist')
-      cy.findByRole('button', { name: /add identified need/i }).should('not.exist')
-      cy.findByRole('button', { name: /add another identified need/i }).should('be.visible')
-      cy.findByRole('button', { name: /continue/i }).should('be.visible')
-      cy.findByRole('heading', { name: /a need goes here/i }).should('be.visible')
-      cy.findByText('1 August 2024').should('be.visible')
-      cy.findAllByText(/identified need summary/i)
-        .first()
-        .siblings()
-        .findByText(/a need goes here/i)
-        .should('be.visible')
-      cy.findByText(/some intervention/i).should('be.visible')
-      cy.findByText(/test stafferson/i).should('be.visible')
-      cy.findByText(/progression goes here/).should('be.visible')
-    }
 
     cy.findByText('The plan should:').should('be.visible')
     cy.findByText(

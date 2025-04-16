@@ -84,6 +84,8 @@ context('test /update-plan/check-answers', () => {
   }
 
   const validatePageContents = () => {
+    cy.get('.govuk-breadcrumbs__link').eq(0).should('have.attr', 'href', 'http://localhost:9091/dpshomepage')
+    cy.get('.govuk-breadcrumbs__link').eq(1).should('have.attr', 'href', '/')
     cy.title().should('equal', 'Check your answers before adding this new identified need - Update plan - DPS')
     cy.url().should('to.match', /\/check-answers$/)
     cy.findByRole('heading', { name: /Check your answers before adding this new identified need/ }).should('be.visible')

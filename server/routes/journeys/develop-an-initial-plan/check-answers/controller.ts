@@ -24,6 +24,7 @@ export class PlanCheckAnswersController extends BaseJourneyController {
         identifiedNeeds: sortedNeeds,
       },
       csipRecordUrl: `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
+      showBreadcrumbs: true,
     })
   }
 

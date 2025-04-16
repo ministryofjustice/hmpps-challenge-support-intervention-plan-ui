@@ -19,6 +19,11 @@ context('test /record-review/participants-summary', () => {
     cy.url().should('to.match', /\/participants-summary$/)
     checkAxeAccessibility()
 
+    cy.get('.govuk-back-link')
+      .eq(0)
+      .should('have.attr', 'href', '../record-review')
+      .should('have.text', 'Back to task list')
+
     cy.findByRole('heading', { name: /Log participants and contributions/ }).should('be.visible')
     cy.findByText(/No participants recorded./).should('be.visible')
 

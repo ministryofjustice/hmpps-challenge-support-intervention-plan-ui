@@ -9,6 +9,7 @@ export class EditLogCodeController extends PatchCsipRecordController {
     res.render('edit-log-code/view', {
       logCode: res.locals.formResponses?.['logCode'] ?? req.journeyData.csipRecord!.logCode,
       recordUuid: req.journeyData.csipRecord!.recordUuid,
+      showBreadcrumbs: true,
     })
   }
 

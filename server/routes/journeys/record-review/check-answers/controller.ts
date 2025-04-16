@@ -21,6 +21,7 @@ export class ReviewCheckAnswersController extends BaseJourneyController {
       review: req.journeyData.review,
       closingCsip: req.journeyData.review!.outcome === 'CLOSE_CSIP',
       csipRecordUrl: `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
+      showBreadcrumbs: true,
     })
   }
 

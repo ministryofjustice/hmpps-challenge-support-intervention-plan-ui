@@ -18,6 +18,7 @@ import AuthorisedRoles from '../../authentication/authorisedRoles'
 import setUpJourneyData from '../../middleware/setUpJourneyData'
 import { ChangeScreenRoutes } from './change-screen/routes'
 import { ChangeDecisionRoutes } from './change-decision/routes'
+import { mergeObjects } from '../../testutils/utils'
 
 export const JourneyRoutes = (services: Services) => {
   const router = Router({ mergeParams: true })
@@ -45,22 +46,6 @@ export const JourneyRoutes = (services: Services) => {
   router.use('/', ChangeDecisionRoutes({ services, path: '/change-decision' }))
 
   if (process.env.NODE_ENV === 'e2e-test') {
-    /* eslint-disable no-param-reassign */
-    const mergeObjects = <T extends Record<string, unknown>>(destination: T, source: Partial<T>) => {
-      Object.entries(source).forEach(([key, value]) => {
-        if (typeof value === 'object' && !Array.isArray(value)) {
-          if (!destination[key]) {
-            // @ts-expect-error set up object for future recursive writes
-            destination[key] = {}
-          }
-          mergeObjects(destination[key] as Record<string, unknown>, value)
-        } else {
-          // @ts-expect-error unexpected types
-          destination[key] = value
-        }
-      })
-    }
-
     router.get('/inject-journey-data', (req, res) => {
       const { data } = req.query
       const json = JSON.parse(atob(data as string))

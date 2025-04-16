@@ -20,6 +20,7 @@ export class NewIdentifiedNeedCheckAnswersController extends BaseJourneyControll
     res.render('update-plan/check-answers/view', {
       need: req.journeyData.plan!.identifiedNeedSubJourney,
       csipRecordUrl: `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
+      showBreadcrumbs: true,
     })
   }
 
