@@ -40,6 +40,10 @@ context('test /develop-an-initial-plan', () => {
   }
 
   const validatePageContents = () => {
+    cy.get('.govuk-back-link')
+      .eq(0)
+      .should('have.attr', 'href', '/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550')
+      .should('have.text', 'Back to CSIP record')
     cy.findByRole('group', { name: /Are you the Case Manager for Tes'name User’s plan\?/ }).should('be.visible')
     getIsCaseManagerRadio().should('exist')
     getIsNotCaseManagerRadio().should('exist')

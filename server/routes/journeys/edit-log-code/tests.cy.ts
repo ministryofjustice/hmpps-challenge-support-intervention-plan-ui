@@ -85,6 +85,8 @@ context('test /edit-log-code', () => {
   }
 
   const validatePageContents = () => {
+    cy.get('.govuk-breadcrumbs__link').eq(0).should('have.attr', 'href', 'http://localhost:9091/dpshomepage')
+    cy.get('.govuk-breadcrumbs__link').eq(1).should('have.attr', 'href', '/')
     cy.findByText('Update the CSIP log code for your internal records (optional)').should('be.visible')
     getLogCodeInput().should('have.value', 'LEI123')
     cy.findByRole('link', { name: /Cancel/i })

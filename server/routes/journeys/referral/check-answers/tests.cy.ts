@@ -78,6 +78,8 @@ context('test /referral/check-answers', () => {
     cy.title().should('equal', 'Check your answers before submitting the referral - Make a CSIP referral - DPS')
     cy.task('stubCsipRecordPostSuccess')
 
+    cy.get('.govuk-breadcrumbs__link').eq(0).should('have.attr', 'href', 'http://localhost:9091/dpshomepage')
+    cy.get('.govuk-breadcrumbs__link').eq(1).should('have.attr', 'href', '/')
     cy.findByRole('heading', { name: /Check your answers before submitting the referral/ }).should('be.visible')
 
     checkHeadings()

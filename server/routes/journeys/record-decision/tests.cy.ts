@@ -35,6 +35,11 @@ context('test /record-decision', () => {
   }
 
   const validatePageContents = () => {
+    cy.get('.govuk-back-link')
+      .eq(0)
+      .should('have.attr', 'href', '/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550')
+      .should('have.text', 'Back to CSIP record')
+
     cy.title().should('equal', 'Who’s signing off on this decision? - Record a CSIP investigation decision - DPS')
     cy.findByRole('heading', { name: /Who’s signing off on this decision?/ }).should('be.visible')
     cy.findByRole('radio', { name: /SignerRole1/ }).should('exist')

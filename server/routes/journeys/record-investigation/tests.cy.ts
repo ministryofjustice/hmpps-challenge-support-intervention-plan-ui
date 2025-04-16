@@ -33,6 +33,11 @@ context('test /record-investigation', () => {
   }
 
   const validatePageContents = () => {
+    cy.get('.govuk-back-link')
+      .eq(0)
+      .should('have.attr', 'href', '/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550')
+      .should('have.text', 'Back')
+
     cy.findByRole('heading', { name: 'Record a CSIP investigation' }).should('be.visible')
     cy.findByText(/LEI123/).should('be.visible')
 

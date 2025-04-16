@@ -27,6 +27,8 @@ context('test /record-investigation/check-answers', () => {
       'equal',
       'Check your answers before recording the investigation - Record a CSIP investigation - DPS',
     )
+    cy.get('.govuk-breadcrumbs__link').eq(0).should('have.attr', 'href', 'http://localhost:9091/dpshomepage')
+    cy.get('.govuk-breadcrumbs__link').eq(1).should('have.attr', 'href', '/')
     cy.findByRole('heading', { name: /Check your answers before recording the investigation/ }).should('be.visible')
 
     cy.findByRole('heading', { name: /Interview with Some Person/ }).should('be.visible')

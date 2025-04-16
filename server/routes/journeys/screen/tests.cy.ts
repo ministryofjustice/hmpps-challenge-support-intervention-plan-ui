@@ -1,5 +1,6 @@
 import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /screen', () => {
   const uuid = uuidV4()
@@ -45,6 +46,12 @@ context('test /screen', () => {
     cy.go('back')
 
     verifyDetailsAreRestoredFromJourney()
+
+    injectJourneyDataAndReload(uuid, {
+      isCheckAnswers: true,
+    })
+
+    cy.get('.govuk-back-link').eq(0).should('have.attr', 'href', 'screen/check-answers').should('have.text', 'Back')
   })
 
   it('CSRF redirects to sign-out when tampered with', () => {
@@ -67,6 +74,11 @@ context('test /screen', () => {
   })
 
   const validatePageContents = () => {
+    cy.get('.govuk-back-link')
+      .eq(0)
+      .should('have.attr', 'href', '/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550')
+      .should('have.text', 'Back to CSIP record')
+
     cy.findByRole('heading', { name: 'Screen a CSIP referral' }).should('be.visible')
 
     cy.findByText('Screen a CSIP referral').should('be.visible')
