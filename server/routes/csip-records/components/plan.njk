@@ -67,7 +67,7 @@
           text: 'Next review date'
         },
         value: {
-          html: (plan.nextCaseReviewDate | formatDisplayDate) or 'Not provided'
+          html: (plan.nextCaseReviewDate | formatDisplayDate) or '-'
         },
         actions: {
           items: [
@@ -108,7 +108,7 @@
             classes: (cardClasses + "govuk-!-margin-bottom-7" if loop.index === identifiedNeeds.length else cardClasses) + " dropshadow",
             title: {
               html: "<h" + headingLevel + " class='govuk-summary-card__title govuk-!-font-size-24'>" + need.identifiedNeed + "</h4><div class='govuk-summary-card__actions'>" + ("<strong class='govuk-tag govuk-tag--grey'>Closed</strong>" if need.closedDate else "<strong class='govuk-tag'>Open</strong>") + "</div>",
-              classes: "hide" 
+              classes: "hide"
             }
         },
         rows: [
