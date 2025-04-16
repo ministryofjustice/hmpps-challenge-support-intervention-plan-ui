@@ -1,4 +1,5 @@
 import { checkAxeAccessibility } from '../../../integration_tests/support/accessibilityViolations'
+import { components } from '../../@types/csip'
 
 context('test /csip-records', () => {
   beforeEach(() => {
@@ -66,7 +67,9 @@ context('test /csip-records', () => {
 
   it('should render a post-decision, pre review csip record (read only role)', () => {
     cy.task('stubSignIn', { roles: [] })
-    cy.task('stubCsipRecordSuccessCsipOpen')
+    cy.task('stubCsipRecordSuccessCsipOpenWith', { plan: { nextCaseReviewDate: '' } } as Partial<
+      components['schemas']['CsipRecord']
+    >)
 
     navigateToTestPage()
 
@@ -77,8 +80,8 @@ context('test /csip-records', () => {
     cy.findByRole('link', { name: /add, change, close or reopen/i }).should('not.exist')
 
     checkAxeAccessibility()
-    checkPlanDetailsExist()
-
+    // Next review date
+    cy.get('.govuk-summary-list__value').eq(2).should('contain.text', '-')
     checkTabsForPlan()
 
     checkReviews()

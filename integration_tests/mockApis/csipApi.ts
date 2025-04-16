@@ -1,6 +1,8 @@
 import { stubFor } from './wiremock'
 import { YES_NO_ANSWER } from '../../server/routes/journeys/referral/safer-custody/schemas'
 import { CsipRecord, CsipSearchResults, ReferenceData } from '../../server/@types/csip/csipApiTypes'
+import { components } from '../../server/@types/csip'
+import { mergeObjects } from '../../server/testutils/utils'
 
 const uuidRegex = '([a-zA-Z0-9]+-){4}[a-zA-Z0-9]+'
 
@@ -378,13 +380,13 @@ const stubScreeningOutcomeType = () => {
 
 const stubCsipRecordSuccessAwaitingDecision = () => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
-    ...csip,
+    ...basicCsip,
     status: {
       code: 'AWAITING_DECISION',
       description: 'Awaiting decision',
     },
     referral: {
-      ...csip.referral,
+      ...basicCsip.referral,
       saferCustodyScreeningOutcome: {
         outcome: { code: 'NFA', description: 'No further action' },
         recordedBy: 'Test User',
@@ -423,13 +425,13 @@ const stubCsipRecordSuccessAwaitingDecision = () => {
 
 const stubCsipRecordSuccessAwaitingDecisionNoInterviews = () => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
-    ...csip,
+    ...basicCsip,
     status: {
       code: 'AWAITING_DECISION',
       description: 'Awaiting decision',
     },
     referral: {
-      ...csip.referral,
+      ...basicCsip.referral,
       investigation: {
         interviews: [],
         staffInvolved: 'staff stafferson',
@@ -521,142 +523,21 @@ const stubCsipRecordSuccessPlanPendingNomis = () => {
   })
 }
 
-const stubCsipRecordSuccessCsipOpen = (
-  reviews = [
-    {
-      reviewDate: '2024-04-05',
-      actions: ['REMAIN_ON_CSIP'],
-      summary: 'a summary',
-      recordedByDisplayName: 'joe bloggs',
-      attendees: [
-        {
-          attendeeUuid: 'attendee-uuid-2',
-          name: 'Attendee Alt',
-          role: 'another role text',
-          isAttended: false,
-        },
-      ],
-    },
-    {
-      reviewDate: '2024-04-15',
-      actions: ['REMAIN_ON_CSIP'],
-      summary: 'even longer',
-      recordedByDisplayName: 'test testerson',
-      nextReviewDate: '2025-04-15',
-      attendees: [
-        {
-          attendeeUuid: 'attendee-uuid-1',
-          name: 'Attendee Name',
-          role: 'role text',
-          isAttended: true,
-          contribution: 'contribution text',
-        },
-      ],
-    },
-  ],
-) => {
-  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
-    ...csip,
-    status: {
-      code: 'CSIP_OPEN',
-      description: 'CSIP open',
-    },
-    referral: {
-      ...csip.referral,
-      saferCustodyScreeningOutcome: {
-        outcome: { code: 'OPE', description: 'Progress to investigation' },
-        recordedBy: 'Test User',
-        recordedByDisplayName: 'Test',
-        date: '2024-08-01',
-        reasonForDecision: 'a very well thought out reason',
-      },
-      investigation: {
-        interviews: [
-          {
-            interviewee: 'Some Person',
-            interviewDate: '2024-12-25',
-            intervieweeRole: { code: 'B', description: 'Role2' },
-            interviewText: 'some text',
-          },
-        ],
-        staffInvolved: 'staff stafferson',
-        evidenceSecured: 'SomeVidence',
-        occurrenceReason: 'bananas',
-        personsUsualBehaviour: 'a great person',
-        personsTrigger: 'spiders',
-        protectiveFactors: 'SomeFactors',
-      },
-      decisionAndActions: {
-        conclusion: 'dec-conc',
-        outcome: { code: 'ACC', description: 'Another option' },
-        signedOffByRole: {
-          code: 'A',
-          description: 'prison officer',
-        },
-        recordedBy: 'some person',
-        recordedByDisplayName: 'some person longer',
-        date: '2024-08-01',
-        nextSteps: `stuff up
-            and there
-            
-            whilst also being down here`,
-        actions: ['OPEN_CSIP_ALERT'],
-        actionOther: `some action
-            with another one
-            
-            a final action`,
-      },
-    },
-    plan: {
-      reviews,
-      caseManager: 'some person',
-      reasonForPlan: 'plan reason',
-      nextCaseReviewDate: '2024-05-25',
-      identifiedNeeds: [
-        {
-          identifiedNeedUuid: 'a0000000-f7b1-4c56-bec8-69e390eb0001',
-          identifiedNeed: 'closed need',
-          responsiblePerson: 'joe bloggs',
-          createdDate: '2024-04-01',
-          targetDate: '2024-06-02',
-          closedDate: '2024-05-01',
-          intervention: 'we need to do things',
-          progression: null,
-        },
-        {
-          identifiedNeedUuid: 'a0000000-f7b1-4c56-bec8-69e390eb0002',
-          identifiedNeed: 'second need',
-          responsiblePerson: 'foo barerson',
-          createdDate: '2024-04-01',
-          targetDate: '2024-06-01',
-          closedDate: null,
-          intervention: 'int1',
-          progression: 'almost there',
-        },
-        {
-          identifiedNeedUuid: 'a0000000-f7b1-4c56-bec8-69e390eb0003',
-          identifiedNeed: 'first need',
-          responsiblePerson: 'test testerson',
-          createdDate: '2024-03-01',
-          targetDate: '2024-04-02',
-          closedDate: null,
-          intervention: 'get it sorted',
-          progression: 'progression done',
-        },
-      ],
-    },
-  })
+const stubCsipRecordSuccessCsipOpenWith = (replacer: components['schemas']['CsipRecord']) => {
+  const augmentedCsip = structuredClone(csipOpen)
+  mergeObjects(augmentedCsip, replacer)
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, augmentedCsip)
 }
 
 const stubCsipRecordGetSuccess = () => {
-  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, csip)
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, basicCsip)
 }
 
 const stubCsipRecordGetSuccessReferralPending = () => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
-    ...csip,
+    ...basicCsip,
     referral: {
-      ...csip.referral,
+      ...basicCsip.referral,
       isReferralComplete: false,
       incidentDate: '2024-01-01',
       isOnBehalfOfReferral: undefined,
@@ -670,9 +551,9 @@ const stubCsipRecordGetSuccessReferralPending = () => {
 
 const stubCsipRecordGetSuccessReferralPendingMatchingReferrer = () => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
-    ...csip,
+    ...basicCsip,
     referral: {
-      ...csip.referral,
+      ...basicCsip.referral,
       isReferralComplete: false,
       incidentDate: '2024-01-01',
       isOnBehalfOfReferral: undefined,
@@ -798,10 +679,10 @@ const csipRecordWithScreeningOutcome = (
   },
 ) => {
   return {
-    ...csip,
+    ...basicCsip,
     status,
     referral: {
-      ...csip.referral,
+      ...basicCsip.referral,
       referralCompletedByDisplayName: undefined,
       saferCustodyScreeningOutcome: {
         date: '2024-08-01',
@@ -816,9 +697,9 @@ const csipRecordWithScreeningOutcome = (
 
 const stubCsipRecordGetSuccessCFEdgeCases = () => {
   return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
-    ...csip,
+    ...basicCsip,
     referral: {
-      ...csip.referral,
+      ...basicCsip.referral,
       contributoryFactors: [
         {
           factorType: { code: 'B', description: 'TextB' },
@@ -1262,7 +1143,7 @@ export const stubCurrentCsipStatusNoCsip = () => {
   })
 }
 
-export const csip = {
+export const basicCsip = {
   recordUuid: '02e5854f-f7b1-4c56-bec8-69e390eb8550',
   prisonNumber: 'A1111AA',
   prisonCodeWhenRecorded: 'LEI',
@@ -1351,16 +1232,17 @@ export const csip = {
   },
 }
 
-const planPendingBody = {
-  ...csip,
+const csipOpen: components['schemas']['CsipRecord'] = {
+  ...basicCsip,
   status: {
-    code: 'PLAN_PENDING',
-    description: 'Plan pending',
+    code: 'CSIP_OPEN',
+    description: 'CSIP open',
   },
   referral: {
-    ...csip.referral,
+    ...basicCsip.referral,
     saferCustodyScreeningOutcome: {
-      outcome: { code: 'NFA', description: 'No further action' },
+      history: [],
+      outcome: { code: 'OPE', description: 'Progress to investigation' },
       recordedBy: 'Test User',
       recordedByDisplayName: 'Test',
       date: '2024-08-01',
@@ -1369,6 +1251,7 @@ const planPendingBody = {
     investigation: {
       interviews: [
         {
+          interviewUuid: '580a16c3-72f2-4243-a0e6-847911e3ae2b',
           interviewee: 'Some Person',
           interviewDate: '2024-12-25',
           intervieweeRole: { code: 'B', description: 'Role2' },
@@ -1383,6 +1266,7 @@ const planPendingBody = {
       protectiveFactors: 'SomeFactors',
     },
     decisionAndActions: {
+      history: [],
       conclusion: 'dec-conc',
       outcome: { code: 'ACC', description: 'Another option' },
       signedOffByRole: {
@@ -1403,6 +1287,136 @@ const planPendingBody = {
           a final action`,
     },
   },
+  plan: {
+    reviews: [
+      {
+        reviewDate: '2024-04-05',
+        actions: ['REMAIN_ON_CSIP'],
+        summary: 'a summary',
+        recordedByDisplayName: 'joe bloggs',
+        attendees: [
+          {
+            attendeeUuid: 'attendee-uuid-2',
+            name: 'Attendee Alt',
+            role: 'another role text',
+            isAttended: false,
+          },
+        ],
+      } as NonNullable<components['schemas']['CsipRecord']['plan']>['reviews'][0],
+      {
+        reviewDate: '2024-04-15',
+        actions: ['REMAIN_ON_CSIP'],
+        summary: 'even longer',
+        recordedByDisplayName: 'test testerson',
+        nextReviewDate: '2025-04-15',
+        attendees: [
+          {
+            attendeeUuid: 'attendee-uuid-1',
+            name: 'Attendee Name',
+            role: 'role text',
+            isAttended: true,
+            contribution: 'contribution text',
+          },
+        ],
+      } as NonNullable<components['schemas']['CsipRecord']['plan']>['reviews'][0],
+    ],
+    caseManager: 'some person',
+    reasonForPlan: 'plan reason',
+    nextCaseReviewDate: '2024-05-25',
+    identifiedNeeds: [
+      {
+        identifiedNeedUuid: 'a0000000-f7b1-4c56-bec8-69e390eb0001',
+        identifiedNeed: 'closed need',
+        responsiblePerson: 'joe bloggs',
+        createdDate: '2024-04-01',
+        targetDate: '2024-06-02',
+        closedDate: '2024-05-01',
+        intervention: 'we need to do things',
+      },
+      {
+        identifiedNeedUuid: 'a0000000-f7b1-4c56-bec8-69e390eb0002',
+        identifiedNeed: 'second need',
+        responsiblePerson: 'foo barerson',
+        createdDate: '2024-04-01',
+        targetDate: '2024-06-01',
+        intervention: 'int1',
+        progression: 'almost there',
+      },
+      {
+        identifiedNeedUuid: 'a0000000-f7b1-4c56-bec8-69e390eb0003',
+        identifiedNeed: 'first need',
+        responsiblePerson: 'test testerson',
+        createdDate: '2024-03-01',
+        targetDate: '2024-04-02',
+        intervention: 'get it sorted',
+        progression: 'progression done',
+      },
+    ],
+  },
+}
+
+const planPendingBody: components['schemas']['CsipRecord'] = {
+  ...basicCsip,
+  status: {
+    code: 'PLAN_PENDING',
+    description: 'Plan pending',
+  },
+  referral: {
+    ...basicCsip.referral,
+    saferCustodyScreeningOutcome: {
+      history: [],
+      outcome: { code: 'NFA', description: 'No further action' },
+      recordedBy: 'Test User',
+      recordedByDisplayName: 'Test',
+      date: '2024-08-01',
+      reasonForDecision: 'a very well thought out reason',
+    },
+    investigation: {
+      interviews: [
+        {
+          interviewUuid: '580a16c3-72f2-4243-a0e6-847911e3ae2b',
+          interviewee: 'Some Person',
+          interviewDate: '2024-12-25',
+          intervieweeRole: { code: 'B', description: 'Role2' },
+          interviewText: 'some text',
+        },
+      ],
+      staffInvolved: 'staff stafferson',
+      evidenceSecured: 'SomeVidence',
+      occurrenceReason: 'bananas',
+      personsUsualBehaviour: 'a great person',
+      personsTrigger: 'spiders',
+      protectiveFactors: 'SomeFactors',
+    },
+    decisionAndActions: {
+      history: [],
+      conclusion: 'dec-conc',
+      outcome: { code: 'ACC', description: 'Another option' },
+      signedOffByRole: {
+        code: 'A',
+        description: 'prison officer',
+      },
+      recordedBy: 'some person',
+      recordedByDisplayName: 'some person longer',
+      date: '2024-08-01',
+      nextSteps: `stuff up
+          and there
+          
+          whilst also being down here`,
+      actions: ['OPEN_CSIP_ALERT'],
+      actionOther: `some action
+          with another one
+          
+          a final action`,
+    },
+  },
+}
+
+const stubCsipRecordSuccessCsipOpen = (reviews = csipOpen.plan!.reviews) => {
+  return createBasicHttpStub('GET', '/csip-api/csip-records/02e5854f-f7b1-4c56-bec8-69e390eb8550', 200, {
+    ...csipOpen,
+    plan: { ...csipOpen.plan, reviews },
+  })
 }
 
 export default {
@@ -1482,4 +1496,5 @@ export default {
   stubStatus,
   stubCsipRecordGetSuccessAfterScreeningWithHistory,
   stubCsipRecordSuccessPlanPendingWithDecisionHistory,
+  stubCsipRecordSuccessCsipOpenWith,
 }
