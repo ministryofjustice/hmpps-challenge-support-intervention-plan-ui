@@ -105,3 +105,15 @@
 .light-box {
   border: 1px solid govuk-colour('light-grey');
 }
+
+.govuk-summary-card__title {
+  word-break: break-word;
+}
+
+.break-word {
+  word-break: break-word;
+}
+
+.govuk-summary-card__title-wrapper * strong {
+  max-height: fit-content;
+}

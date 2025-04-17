@@ -1,5 +1,6 @@
 import { v4 as uuidV4 } from 'uuid'
 import { checkAxeAccessibility } from '../../../../../integration_tests/support/accessibilityViolations'
+import { injectJourneyDataAndReload } from '../../../../../integration_tests/utils/e2eTestUtils'
 
 context('test /update-plan/update-intervention-details', () => {
   const uuid = uuidV4()
@@ -40,6 +41,32 @@ context('test /update-plan/update-intervention-details', () => {
 
     cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
     cy.findByText('You’ve updated the identified needs information.').should('be.visible')
+  })
+
+  it('should wrap very long identified need text', () => {
+    navigateToTestPage()
+
+    injectJourneyDataAndReload(uuid, {
+      plan: {
+        identifiedNeeds: [
+          {
+            identifiedNeedUuid: 'a0000000-f7b1-4c56-bec8-69e390eb0003',
+            identifiedNeed: 'longtextwithnospaces'.repeat(100),
+            responsiblePerson: 'Person Name',
+            intervention: 'Intervention',
+            createdDate: '2024-08-01',
+            targetDate: '2024-08-01',
+            closedDate: null,
+            progression: null,
+          },
+        ],
+      },
+    })
+
+    cy.visit(`${uuid}/update-plan/update-intervention-details/a0000000-f7b1-4c56-bec8-69e390eb0003`)
+    checkAxeAccessibility()
+
+    cy.get('.break-word').should('have.length', 1).invoke('width').should('be.lte', 750)
   })
 
   it('should handle API errors', () => {

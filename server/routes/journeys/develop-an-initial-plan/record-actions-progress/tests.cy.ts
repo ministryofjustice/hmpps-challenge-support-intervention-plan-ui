@@ -29,6 +29,31 @@ context('test /develop-an-initial-plan/record-actions-progress', () => {
     verifySubmittedValueIsPersisted()
   })
 
+  it('should wrap very long identified need text', () => {
+    navigateToTestPage()
+
+    injectJourneyDataAndReload(uuid, {
+      plan: {
+        identifiedNeeds: [
+          {
+            identifiedNeed: 'longtextwithnospaces'.repeat(100),
+            responsiblePerson: 'Person Name',
+            intervention: 'Intervention',
+            createdDate: '2024-08-01',
+            targetDate: '2024-08-01',
+            closedDate: null,
+            progression: null,
+          },
+        ],
+      },
+    })
+
+    cy.visit(`${uuid}/develop-an-initial-plan/record-actions-progress/1`)
+    checkAxeAccessibility()
+
+    cy.get('.break-word').should('have.length', 1).invoke('width').should('be.lte', 750)
+  })
+
   it('should try out cases for editing saved Identified Need', () => {
     navigateToTestPage()
     checkAxeAccessibility()
