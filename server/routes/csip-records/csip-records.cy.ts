@@ -67,9 +67,9 @@ context('test /csip-records', () => {
 
   it('should render a post-decision, pre review csip record (read only role)', () => {
     cy.task('stubSignIn', { roles: [] })
-    cy.task('stubCsipRecordSuccessCsipOpenWith', { plan: { nextCaseReviewDate: '' } } as Partial<
-      components['schemas']['CsipRecord']
-    >)
+    cy.task('stubCsipRecordSuccessCsipOpenWith', {
+      plan: { nextCaseReviewDate: '', identifiedNeeds: [{ identifiedNeed: 'longunbrokentext'.repeat(100) }] },
+    } as Partial<components['schemas']['CsipRecord']>)
 
     navigateToTestPage()
 
@@ -82,6 +82,15 @@ context('test /csip-records', () => {
     checkAxeAccessibility()
     // Next review date
     cy.get('.govuk-summary-list__value').eq(2).should('contain.text', '-')
+
+    // Ensure identified need text is wrapped and doesn't break page boundaries (750px in cypress tests)
+    cy.get('.govuk-summary-card__title')
+      .should('include.text', 'longunbrokentext')
+      .invoke('width')
+      .should('be.lte', 750)
+    // Ensure tag doesn't get stretched with long identified need text
+    cy.get('.govuk-tag').invoke('height').should('be.lte', 40)
+
     checkTabsForPlan()
 
     checkReviews()

@@ -41,7 +41,7 @@ context('test /record-investigation/check-answers', () => {
       .should('be.visible')
       .click()
 
-    cy.findByRole('link', { name: /delete the identified need a need goes here/i })
+    cy.findByRole('link', { name: /delete the identified need longunbrokentext/i })
       .should('be.visible')
       .click()
 
@@ -108,8 +108,8 @@ context('test /record-investigation/check-answers', () => {
     cy.findByRole('heading', { name: /identified needs/i }).should('be.visible')
     cy.findByRole('link', { name: /add, change or delete identified needs/i }).should('be.visible')
 
-    cy.findByRole('heading', { name: /a need goes here/i }).should('be.visible')
-    cy.contains('dt', 'Identified need summary').next().should('include.text', 'a need goes here')
+    cy.findByRole('heading', { name: /longunbrokentext.+/i }).should('be.visible')
+    cy.contains('dt', 'Identified need summary').next().should('include.text', 'longunbrokentext')
     cy.contains('dt', 'Planned intervention').next().should('include.text', 'some intervention')
     cy.contains('dt', 'Person responsible').next().should('include.text', 'test stafferson')
     cy.contains('dt', 'Target date').next().should('include.text', '20 August 2024')
@@ -118,7 +118,7 @@ context('test /record-investigation/check-answers', () => {
     cy.findAllByText('Actions and progress').last().next().should('include.text', 'Not provided')
     cy.get('.govuk-summary-card')
       .first()
-      .should('include.text', 'a need goes here')
+      .should('include.text', 'longunbrokentext')
       .next()
       .should('include.text', 'another need goes here')
   }
@@ -150,7 +150,7 @@ context('test /record-investigation/check-answers', () => {
           {
             closedDate: '2024-08-20',
             createdDate: '2024-08-20',
-            identifiedNeed: 'a need goes here',
+            identifiedNeed: 'longunbrokentext'.repeat(100),
             intervention: 'some intervention',
             progression: 'progression goes here',
             responsiblePerson: 'test stafferson',

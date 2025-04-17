@@ -105,6 +105,32 @@ context('test /develop-an-initial-plan/intervention-details', () => {
     verifyDetailsAreRestoredFromJourney()
   })
 
+  it('should wrap very long identified need text', () => {
+    cy.signIn()
+    cy.visit(START_URL, { failOnStatusCode: false })
+
+    injectJourneyDataAndReload(uuid, {
+      plan: {
+        identifiedNeeds: [
+          {
+            identifiedNeed: 'longtextwithnospaces'.repeat(100),
+            responsiblePerson: 'Person Name',
+            intervention: 'Intervention',
+            createdDate: '2024-08-01',
+            targetDate: '2024-08-01',
+            closedDate: null,
+            progression: null,
+          },
+        ],
+      },
+    })
+
+    cy.visit(PAGE_URL)
+    checkAxeAccessibility()
+
+    cy.get('.break-word').should('have.length', 1).invoke('width').should('be.lte', 750)
+  })
+
   const validatePageContents = () => {
     cy.findByRole('heading', { name: 'Intervention details' }).should('be.visible')
 
