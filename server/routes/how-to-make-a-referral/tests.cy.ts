@@ -10,6 +10,9 @@ context('test /how-to-make-a-referral', () => {
   it('tests page', () => {
     navigateToTestPage()
     cy.url().should('to.match', /\/how-to-make-a-referral$/)
+    cy.findByRole('link', { name: /main DPS prisoner search/i })
+      .should('be.visible')
+      .should('have.attr', 'href', 'http://localhost:9091/dpshomepage/prisoner-search')
     checkAxeAccessibility()
   })
 
