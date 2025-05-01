@@ -73,7 +73,7 @@
     "@cypress/code-coverage": "^3.14.0",
     "@microsoft/applicationinsights-clickanalytics-js": "^3.3.6",
     "@microsoft/applicationinsights-web": "^3.3.6",
-    "@ministryofjustice/frontend": "^4.0.2",
+    "@ministryofjustice/frontend": "^4.0.1",
     "@ministryofjustice/hmpps-connect-dps-components": "^2.1.0",
     "@opentelemetry/api": "~1.8.0",
     "@sentry/cli": "^2.43.0",
