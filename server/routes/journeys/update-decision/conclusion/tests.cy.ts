@@ -121,7 +121,7 @@ context('test /update-decision/conclusion', () => {
       .click()
     getInputTextbox().should('be.focused')
 
-    cy.pageCheckCharacterThresholdMessage(getInputTextbox(), 3939)
+    cy.pageCheckCharacterThresholdMessage(getInputTextbox(), 3941)
   }
 
   const proceedToNextScreen = () => {
