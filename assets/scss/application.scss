@@ -17,3 +17,4 @@ $govuk-page-width: $moj-page-width;
 @import './components/print-view';
 @import './local';
 @import '../../server/views/partials/miniProfile/all';
+@import '../../server/views/partials/sortableTable';
