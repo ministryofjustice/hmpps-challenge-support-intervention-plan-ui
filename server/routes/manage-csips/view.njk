@@ -1,6 +1,6 @@
 {% from "partials/simplePagination/macro.njk" import simplePagination %}
 {% from "partials/statusTag/macro.njk" import statusTag %}
-{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "partials/sortableTable/macro.njk" import sortableTable %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
@@ -11,7 +11,10 @@
 {% set REFERRALS = 'referrals' %}
 
 {% set fullWidth = true %}
-{% set pageTitle = "CSIP caseload" if pageName == CSIPS else ("Open and closed CSIPs" if pageName == PLANS else "CSIP referrals in progress") %}
+{% set pageTitle = "CSIP caseload" if pageName == CSIPS else 
+  ("Open and closed CSIPs" if pageName == PLANS else 
+    "CSIP referrals in progress"
+  ) %}
 {% extends "partials/layout.njk" %}
 
 {% block innerContent %}
@@ -19,32 +22,32 @@
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
     </div>
-      <div class="light-box govuk-grid-column-one-third govuk-!-padding-top-2">
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Change view</h2>
-        <ul class="govuk-list">
-          {% if pageName != CSIPS %}
-            <li>
-              <a href="/manage-csips" class="govuk-link govuk-link--no-visited-state">All of the CSIP caseload</a>
-            </li>
-          {% endif %}
+    <div class="light-box govuk-grid-column-one-third govuk-!-padding-top-2">
+      <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Change view</h2>
+      <ul class="govuk-list">
+        {% if pageName != CSIPS %}
+          <li>
+            <a href="/manage-csips" class="govuk-link govuk-link--no-visited-state">All of the CSIP caseload</a>
+          </li>
+        {% endif %}
 
-          {% if pageName != PLANS %}
-            <li>
-              <a href="/manage-plans" class="govuk-link govuk-link--no-visited-state">Plans only</a>
-            </li>
-          {% endif %}
+        {% if pageName != PLANS %}
+          <li>
+            <a href="/manage-plans" class="govuk-link govuk-link--no-visited-state">Plans only</a>
+          </li>
+        {% endif %}
 
-          {% if pageName != REFERRALS %}
-            <li>
-              <a href="/manage-referrals" class="govuk-link govuk-link--no-visited-state">Referrals in progress only</a>
-            </li>
-          {% endif %}
-        </ul>
-      
+        {% if pageName != REFERRALS %}
+          <li>
+            <a href="/manage-referrals" class="govuk-link govuk-link--no-visited-state">Referrals in progress only</a>
+          </li>
+        {% endif %}
+      </ul>
+
     </div>
   </div>
 
-<hr class="govuk-section-break govuk-section-break--m">
+  <hr class="govuk-section-break govuk-section-break--m">
   <form method="post" class="govuk-grid-row govuk-!-margin-bottom-7 govuk-!-padding-6 search-form">
     <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
     <h2 class="govuk-heading-m">Filter by</h2>
@@ -76,10 +79,6 @@
       <a class="govuk-link govuk-link--no-visited-state govuk-body no-label-form-clear-link" href="?clear=true">Clear</a>
     </div>
   </form>
-
-  {% if records.length %}
-    {{ simplePagination(paginationParams)  }}
-  {% endif %}
 
   {% set csipRecordRows = [] %}
   {% for csipRecord in records %}
@@ -117,15 +116,10 @@
     ] | select()), csipRecordRows) %}
   {% endfor %}
 
-  {% if records.length %}
-    <caption>
-      <span class="govuk-visually-hidden">Column headers with buttons are sortable.</span>
-    </caption>
-
-    {{ govukTable({
-      firstCellIsHeader: false,
-      classes: 'table-vertical-align-middle govuk-!-margin-top-6',
-      head: [
+  {{ sortableTable(paginationParams, {
+    firstCellIsHeader: false,
+    classes: 'table-vertical-align-middle govuk-!-margin-top-6',
+    head: [
       { text: 'Name and prison number', key: 'name' },
       { text: "Location", key: 'location' },
       { text: "Referral date", key: 'referralDate' },
@@ -136,14 +130,7 @@
       { text: 'CSIP status', key: 'status' },
       { text: '' }
     ] | select() | convertToSortableColumns(sort or ('nextReviewDate,asc' if pageName == PLANS else 'name,asc'), hrefTemplate),
-      rows: csipRecordRows
-    }) }}
-  {% else %}
-    <p class="govuk-!-margin-bottom-6">No results for this search criteria.</p>
-  {% endif %}
-
-  {% if records.length %}
-    {{ simplePagination(paginationParams)  }}
-  {% endif %}
+    rows: csipRecordRows
+  }) }}
 
 {% endblock %}
