@@ -53,7 +53,7 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpStaticResources())
   nunjucksSetup(app)
   app.use(setUpAuthentication())
-  app.get('*', auditPageViewMiddleware(services.auditService))
+  app.get('*any', auditPageViewMiddleware(services.auditService))
 
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
@@ -65,7 +65,7 @@ export default function createApp(services: Services): express.Application {
   })
   app.get('/prisoner-image/:prisonerNumber', new PrisonerImageRoutes(services.prisonApiService).GET)
   app.get(
-    '*',
+    '*any',
     dpsComponents.getPageComponents({
       logger,
       includeSharedData: true,

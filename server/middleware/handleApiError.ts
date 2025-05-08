@@ -14,7 +14,7 @@ export const handleApiError = (error: HTTPError, req: Request, res: Response, ne
         }),
       )
       req.flash(FLASH_KEY__FORM_RESPONSES, JSON.stringify(req.body))
-      res.redirect('back')
+      res.redirect(req.get('Referrer') || '/')
     } else {
       next(error)
     }

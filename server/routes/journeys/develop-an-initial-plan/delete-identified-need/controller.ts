@@ -17,7 +17,7 @@ export class DeleteIdentifiedNeedController {
   POST = async (req: Request, res: Response) => {
     const { index } = req.params
     if (isInvalidNeedIndex(index, req)) {
-      res.redirect('back')
+      res.redirect(req.get('Referrer') || '/')
       return
     }
     const identifiedNeeds = req.journeyData.plan!.identifiedNeeds!.slice()

@@ -32,7 +32,7 @@ export class RecordActionsProgressController {
   POST = async (req: Request<Record<string, string>, unknown, SchemaType>, res: Response) => {
     const { success, isNew, index } = parseIdentifiedNeedIndex(req)
     if (!success) {
-      return res.redirect('back')
+      return res.redirect(req.get('Referrer') || '/')
     }
 
     if (isNew) {
