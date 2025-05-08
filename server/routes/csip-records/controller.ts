@@ -214,7 +214,7 @@ export class CsipRecordController {
         res.redirect(`/csip-record/${recordUuid}/referral/start`)
         break
       default:
-        res.redirect('back')
+        res.redirect(req.get('Referrer') || '/')
     }
   }
 }

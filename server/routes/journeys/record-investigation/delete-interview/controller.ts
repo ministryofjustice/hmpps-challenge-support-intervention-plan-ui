@@ -18,7 +18,7 @@ export class DeleteInterviewController {
     const { index } = req.params
 
     if (this.isInvalidInterviewIndex(index, req)) {
-      return res.redirect('back')
+      return res.redirect(req.get('Referrer') || '/')
     }
 
     const interviews = req.journeyData.investigation!.interviews!.slice()

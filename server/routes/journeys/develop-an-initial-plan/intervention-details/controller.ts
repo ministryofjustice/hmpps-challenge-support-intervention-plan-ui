@@ -44,7 +44,7 @@ export class InterventionDetailsController {
     const { success, isNew, index } = parseIdentifiedNeedIndex(req)
 
     if (!success) {
-      return res.redirect('back')
+      return res.redirect(req.get('Referrer') || '/')
     }
 
     if (isNew) {
