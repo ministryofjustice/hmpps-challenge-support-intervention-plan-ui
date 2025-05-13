@@ -32,9 +32,9 @@ export class PatchDecisionController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'UPDATE',
+        'PUT',
         'DECISION_AND_ACTIONS',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral/decision-and-actions`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -54,9 +54,9 @@ export class PatchDecisionController extends BaseJourneyController {
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_DECISION_UPDATED)
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'UPDATE',
+        'PUT',
         'DECISION_AND_ACTIONS',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral/decision-and-actions`,
         req.journeyData,
         res.locals.auditEvent,
       )

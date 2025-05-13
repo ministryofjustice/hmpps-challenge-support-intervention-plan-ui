@@ -164,7 +164,6 @@ export declare global {
       digitalPrisonServicesUrl: string
       breadcrumbs: Breadcrumbs
       auditEvent: {
-        pageNameSuffix: string
         who: string
         correlationId: string
         subjectId?: string

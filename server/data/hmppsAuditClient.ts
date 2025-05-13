@@ -1,8 +1,10 @@
 import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs'
 import logger from '../../logger'
 
+export type AuditAction = 'PAGE_VIEW_ACCESS_ATTEMPT' | 'PAGE_VIEW' | 'API_CALL_ATTEMPT' | 'API_CALL_SUCCESS'
+
 export interface AuditEvent {
-  what: string
+  action: AuditAction
   who: string
   subjectId?: string
   subjectType?: string
@@ -11,7 +13,7 @@ export interface AuditEvent {
 }
 
 export interface SqsMessage {
-  what: string
+  action: AuditAction
   who: string
   when: string
   service: string

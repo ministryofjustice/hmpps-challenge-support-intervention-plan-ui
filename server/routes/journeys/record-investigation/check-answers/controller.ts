@@ -27,9 +27,9 @@ export class InvestigationCheckAnswersController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'CREATE',
+        'POST',
         'INVESTIGATION',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral/investigation`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -52,9 +52,9 @@ export class InvestigationCheckAnswersController extends BaseJourneyController {
       req.journeyData.journeyCompleted = true
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'CREATE',
+        'POST',
         'INVESTIGATION',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral/investigation`,
         req.journeyData,
         res.locals.auditEvent,
       )

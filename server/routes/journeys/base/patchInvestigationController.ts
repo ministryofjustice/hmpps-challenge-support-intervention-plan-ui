@@ -41,9 +41,9 @@ export class PatchInvestigationController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'UPDATE',
+        'PATCH',
         'INVESTIGATION',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral/investigation`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -59,9 +59,9 @@ export class PatchInvestigationController extends BaseJourneyController {
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, successMessage)
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'UPDATE',
+        'PATCH',
         'INVESTIGATION',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral/investigation`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -85,9 +85,9 @@ export class PatchInvestigationController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'CREATE',
+        'POST',
         'INTERVIEW',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral/investigation/interviews`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -95,9 +95,9 @@ export class PatchInvestigationController extends BaseJourneyController {
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_INTERVIEW_ADDED)
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'CREATE',
+        'POST',
         'INTERVIEW',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral/investigation/interviews`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -123,9 +123,9 @@ export class PatchInvestigationController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'UPDATE',
+        'PATCH',
         'INTERVIEW',
-        req.originalUrl,
+        `/csip-records/referral/investigation/interviews/${interviewUuid}`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -133,9 +133,9 @@ export class PatchInvestigationController extends BaseJourneyController {
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_INTERVIEW_DETAILS_UPDATED)
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'UPDATE',
+        'PATCH',
         'INTERVIEW',
-        req.originalUrl,
+        `/csip-records/referral/investigation/interviews/${interviewUuid}`,
         req.journeyData,
         res.locals.auditEvent,
       )

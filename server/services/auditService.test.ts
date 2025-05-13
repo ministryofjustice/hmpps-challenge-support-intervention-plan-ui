@@ -1,5 +1,6 @@
 import AuditService from './auditService'
 import HmppsAuditClient from '../data/hmppsAuditClient'
+import { PrisonerSummary } from '../@types/express'
 
 jest.mock('../data/hmppsAuditClient')
 
@@ -20,7 +21,7 @@ describe('Audit service', () => {
   describe('logAuditEvent', () => {
     it('sends audit message using audit client', async () => {
       await auditService.logAuditEvent({
-        what: 'AUDIT_EVENT',
+        action: 'PAGE_VIEW',
         who: 'user1',
         subjectId: 'subject123',
         subjectType: 'exampleType',
@@ -29,7 +30,7 @@ describe('Audit service', () => {
       })
 
       expect(hmppsAuditClient.sendMessage).toHaveBeenCalledWith({
-        what: 'AUDIT_EVENT',
+        action: 'PAGE_VIEW',
         who: 'user1',
         subjectId: 'subject123',
         subjectType: 'exampleType',
@@ -42,21 +43,21 @@ describe('Audit service', () => {
   describe('logPageView', () => {
     it('sends page view event audit message using audit client', async () => {
       await auditService.logPageView(
-        '/csip-records/0192d2fb-6920-749f-86fb-f0c6c2deaec8',
-        {},
+        {
+          prisoner: { prisonerNumber: '0192d2fb-6920-749f-86fb-f0c6c2deaec8' } as PrisonerSummary,
+        },
         { extraDetails: 'example' },
         {
-          pageNameSuffix: 'EXAMPLE_PAGE',
           who: 'user1',
           correlationId: 'request123',
         },
       )
 
       expect(hmppsAuditClient.sendMessage).toHaveBeenCalledWith({
-        what: 'PAGE_VIEW_EXAMPLE_PAGE',
+        action: 'PAGE_VIEW',
         who: 'user1',
         subjectId: '0192d2fb-6920-749f-86fb-f0c6c2deaec8',
-        subjectType: '0192d2fb-6920-749f-86fb-f0c6c2deaec8',
+        subjectType: 'PRISONER_ID',
         correlationId: 'request123',
         details: { extraDetails: 'example' },
       })

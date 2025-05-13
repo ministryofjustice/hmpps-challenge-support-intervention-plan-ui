@@ -67,9 +67,9 @@ export class PatchReviewController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'UPDATE',
+        'PATCH',
         'REVIEW',
-        req.originalUrl,
+        `/csip-records/plan/reviews/${req.journeyData.review!.reviewUuid!}`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -77,9 +77,9 @@ export class PatchReviewController extends BaseJourneyController {
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, message)
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'UPDATE',
+        'PATCH',
         'REVIEW',
-        req.originalUrl,
+        `/csip-records/plan/reviews/${req.journeyData.review!.reviewUuid!}`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -103,9 +103,9 @@ export class PatchReviewController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'CREATE',
+        'POST',
         'ATTENDEE',
-        req.originalUrl,
+        `/csip-records/plan/reviews/${req.journeyData.review!.reviewUuid!}/attendees`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -113,9 +113,9 @@ export class PatchReviewController extends BaseJourneyController {
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_ADDED_ATTENDEE)
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'CREATE',
+        'POST',
         'ATTENDEE',
-        req.originalUrl,
+        `/csip-records/plan/reviews/${req.journeyData.review!.reviewUuid!}/attendees`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -141,9 +141,9 @@ export class PatchReviewController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'UPDATE',
+        'PATCH',
         'ATTENDEE',
-        req.originalUrl,
+        `/csip-records/plan/reviews/attendees/${attendeeUuid}`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -156,9 +156,9 @@ export class PatchReviewController extends BaseJourneyController {
       )
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'UPDATE',
+        'PATCH',
         'ATTENDEE',
-        req.originalUrl,
+        `/csip-records/plan/reviews/attendees/${attendeeUuid}`,
         req.journeyData,
         res.locals.auditEvent,
       )

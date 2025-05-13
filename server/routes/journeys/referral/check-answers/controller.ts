@@ -49,27 +49,27 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
       if (referral.continuingReferral) {
         await this.auditService.logModificationApiCall(
           'ATTEMPT',
-          'UPDATE',
+          'PUT',
           'REFERRAL',
-          req.originalUrl,
+          `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral`,
           req.journeyData,
           res.locals.auditEvent,
         )
         await this.csipApiService.mergeReferral(req, referralBody)
         await this.auditService.logModificationApiCall(
           'SUCCESS',
-          'UPDATE',
+          'PUT',
           'REFERRAL',
-          req.originalUrl,
+          `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral`,
           req.journeyData,
           res.locals.auditEvent,
         )
       } else {
         await this.auditService.logModificationApiCall(
           'ATTEMPT',
-          'CREATE',
+          'POST',
           'REFERRAL',
-          req.originalUrl,
+          `/prisoners/${req.journeyData.prisoner!.prisonerNumber}/csip-records`,
           req.journeyData,
           res.locals.auditEvent,
         )
@@ -79,9 +79,9 @@ export class ReferralCheckAnswersController extends BaseJourneyController {
         })
         await this.auditService.logModificationApiCall(
           'SUCCESS',
-          'CREATE',
+          'POST',
           'REFERRAL',
-          req.originalUrl,
+          `/prisoners/${req.journeyData.prisoner!.prisonerNumber}/csip-records`,
           req.journeyData,
           res.locals.auditEvent,
         )
