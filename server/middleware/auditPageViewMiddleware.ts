@@ -8,7 +8,6 @@ export const auditPageViewMiddleware = (auditService: AuditService): RequestHand
       correlationId: req.id,
       details: {
         pageUrl: req.originalUrl,
-        activeCaseLoadId: res.locals.user.activeCaseLoadId,
       },
     }
 
