@@ -60,6 +60,10 @@ jobs:
           npx github-actions-ctrf failed-folded artifacts/npm_integration_test_artifacts_3/ctrf/ctrf-report.json
           npx github-actions-ctrf tests artifacts/npm_integration_test_artifacts_4/ctrf/ctrf-report.json
           npx github-actions-ctrf failed-folded artifacts/npm_integration_test_artifacts_4/ctrf/ctrf-report.json
+          npx github-actions-ctrf tests artifacts/npm_integration_test_artifacts_5/ctrf/ctrf-report.json
+          npx github-actions-ctrf failed-folded artifacts/npm_integration_test_artifacts_5/ctrf/ctrf-report.json
+          npx github-actions-ctrf tests artifacts/npm_integration_test_artifacts_6/ctrf/ctrf-report.json
+          npx github-actions-ctrf failed-folded artifacts/npm_integration_test_artifacts_6/ctrf/ctrf-report.json
       - name: Upload coverage results to Codecov
         uses: codecov/codecov-action@v5
         env:

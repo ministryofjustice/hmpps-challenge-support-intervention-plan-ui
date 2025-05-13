@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        container: [ 1, 2, 3, 4 ]
+        shard: [ 1, 2, 3, 4, 5, 6 ]
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ inputs.node_version_file }}
@@ -51,6 +51,7 @@ jobs:
           glob: '**/*.cy.ts'
           split-index: ${{ strategy.job-index }}
           split-total: ${{ strategy.job-total }}
+          line-count: true
       - name: Prepare and run integration tests
         id: integration-tests
         shell: bash
