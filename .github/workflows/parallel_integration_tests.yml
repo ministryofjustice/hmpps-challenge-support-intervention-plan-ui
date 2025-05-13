@@ -58,7 +58,7 @@ jobs:
           nohup java -jar wiremock.jar --port 9091 &
           nohup npm run start-feature &
           sleep 5 &
-          TEST_RUN_ARGS="--spec $(echo ${{ steps.split-tests.outputs.test-suite }} | sed -E 's/ /,/g')" npm run int-test
+          INT_TEST_RUN_ARGS="--spec $(echo ${{ steps.split-tests.outputs.test-suite }} | sed -E 's/ /,/g')" npm run int-test
         # continue-on-error: true
         # replacing the above with if: always()
       - name: upload results
