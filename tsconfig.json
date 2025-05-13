@@ -34,6 +34,7 @@
     "cypress.config.ts",
     "coverage",
     "codecov_reports",
+    "ctrf",
     "esbuild",
     "server/@types/csip/index.d.ts",
     "test_results",

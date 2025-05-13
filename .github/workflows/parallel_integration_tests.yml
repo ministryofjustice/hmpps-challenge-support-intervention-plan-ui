@@ -51,7 +51,6 @@ jobs:
           glob: '**/*.cy.ts'
           split-index: ${{ strategy.job-index }}
           split-total: ${{ strategy.job-total }}
-          line-count: true
       - name: Prepare and run integration tests
         id: integration-tests
         shell: bash
