@@ -48,7 +48,7 @@ jobs:
         uses: chaosaffe/split-tests@v1
         id: split-tests
         with:
-          glob: **/*.cy.ts
+          glob: '**/*.cy.ts'
           split-index: ${{ strategy.job-index }}
           split-total: ${{ strategy.job-total }}
       - name: Prepare and run integration tests
