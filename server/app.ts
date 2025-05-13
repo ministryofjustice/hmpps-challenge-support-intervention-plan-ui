@@ -32,6 +32,7 @@ import sentryMiddleware from './middleware/sentryMiddleware'
 import { handleApiError } from './middleware/handleApiError'
 import { auditPageViewMiddleware } from './middleware/auditPageViewMiddleware'
 import checkServiceEnabledForActiveCaseLoad from './middleware/checkServiceEnabledForActiveCaseLoad'
+import { populateAuditEventDetailsForPostRequests } from './middleware/populateAuditEventDetailsForPostRequests'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -54,6 +55,7 @@ export default function createApp(services: Services): express.Application {
   nunjucksSetup(app)
   app.use(setUpAuthentication())
   app.get('*any', auditPageViewMiddleware(services.auditService))
+  app.post('*any', populateAuditEventDetailsForPostRequests())
 
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
