@@ -21,13 +21,13 @@ export default class AuditService {
     const event: AuditEvent = {
       ...auditEvent,
       what: `API_CALL_${auditType}`,
-      ...this.getSubject(journeyData?.prisoner?.prisonerNumber),
       details: {
         ...auditEvent.details,
         apiUrl: `${httpMethod} ${requestUrl}`,
       },
     }
-    await this.hmppsAuditClient.sendMessage(event)
+
+    await this.hmppsAuditClient.sendMessage(this.populateSubjectIntoEvent(event, journeyData?.prisoner?.prisonerNumber))
   }
 
   async logPageView(
@@ -36,25 +36,27 @@ export default class AuditService {
     auditEvent: Response['locals']['auditEvent'],
     isAttempt: boolean = false,
   ) {
-    const prisonNumber = journeyData?.prisoner?.prisonerNumber
-    const searchTerm = query?.['query']
-
     const event: AuditEvent = {
       ...auditEvent,
       ...(query ? { details: query } : {}),
-      ...this.getSubject(prisonNumber, searchTerm as string),
       what: isAttempt ? 'PAGE_VIEW_ACCESS_ATTEMPT' : 'PAGE_VIEW',
     }
-    await this.hmppsAuditClient.sendMessage(event)
+    const prisonNumber = journeyData?.prisoner?.prisonerNumber
+    const searchTerm = query?.['query']
+
+    await this.hmppsAuditClient.sendMessage(this.populateSubjectIntoEvent(event, prisonNumber, searchTerm as string))
   }
 
-  private getSubject(prisonNumber?: string, searchTerm?: string) {
+  private populateSubjectIntoEvent(event: AuditEvent, prisonNumber?: string, searchTerm?: string) {
+    if (event.subjectType === 'PRISONER_ID' && event.subjectId) {
+      return event
+    }
     if (prisonNumber) {
-      return { subjectId: prisonNumber, subjectType: 'PRISONER_ID' }
+      return { ...event, subjectId: prisonNumber, subjectType: 'PRISONER_ID' }
     }
     if (searchTerm) {
-      return { subjectId: searchTerm as string, subjectType: 'SEARCH_TERM' }
+      return { ...event, subjectId: searchTerm as string, subjectType: 'SEARCH_TERM' }
     }
-    return { subjectType: 'NOT_APPLICABLE' }
+    return { ...event, subjectType: 'NOT_APPLICABLE' }
   }
 }
