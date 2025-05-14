@@ -4,7 +4,7 @@ import logger from '../../logger'
 export type AuditAction = 'PAGE_VIEW_ACCESS_ATTEMPT' | 'PAGE_VIEW' | 'API_CALL_ATTEMPT' | 'API_CALL_SUCCESS'
 
 export interface AuditEvent {
-  action: AuditAction
+  what: AuditAction
   who: string
   subjectId?: string
   subjectType?: string
@@ -13,7 +13,7 @@ export interface AuditEvent {
 }
 
 export interface SqsMessage {
-  action: AuditAction
+  what: AuditAction
   who: string
   when: string
   service: string
