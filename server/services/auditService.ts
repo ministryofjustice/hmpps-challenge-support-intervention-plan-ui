@@ -18,15 +18,22 @@ export default class AuditService {
     journeyData: Partial<JourneyData>,
     auditEvent: Response['locals']['auditEvent'],
   ) {
-    const event: AuditEvent = {
+    let event: AuditEvent = {
       ...auditEvent,
       what: `API_CALL_${auditType}`,
-      ...this.getSubject(journeyData?.prisoner?.prisonerNumber),
       details: {
         ...auditEvent.details,
         apiUrl: `${httpMethod} ${requestUrl}`,
       },
     }
+
+    if (event.subjectType !== 'PRISONER_ID' || !event.subjectId) {
+      event = {
+        ...event,
+        ...this.getSubject(journeyData?.prisoner?.prisonerNumber),
+      }
+    }
+
     await this.hmppsAuditClient.sendMessage(event)
   }
 
@@ -36,14 +43,20 @@ export default class AuditService {
     auditEvent: Response['locals']['auditEvent'],
     isAttempt: boolean = false,
   ) {
-    const prisonNumber = journeyData?.prisoner?.prisonerNumber
-    const searchTerm = query?.['query']
-
-    const event: AuditEvent = {
+    let event: AuditEvent = {
       ...auditEvent,
       ...(query ? { details: query } : {}),
-      ...this.getSubject(prisonNumber, searchTerm as string),
       what: isAttempt ? 'PAGE_VIEW_ACCESS_ATTEMPT' : 'PAGE_VIEW',
+    }
+
+    if (event.subjectType !== 'PRISONER_ID' || !event.subjectId) {
+      const prisonNumber = journeyData?.prisoner?.prisonerNumber
+      const searchTerm = query?.['query']
+
+      event = {
+        ...event,
+        ...this.getSubject(prisonNumber, searchTerm as string),
+      }
     }
     await this.hmppsAuditClient.sendMessage(event)
   }

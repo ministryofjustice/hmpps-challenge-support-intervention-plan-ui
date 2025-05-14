@@ -13,12 +13,15 @@ export class CsipRecordController {
     private readonly prisonerSearchService: PrisonerSearchService,
   ) {}
 
-  private getRecordInfo = async (req: Request) => {
+  private getRecordInfo = async (req: Request, res: Response) => {
     const { recordUuid } = req.params
     const record = await this.csipApiService.getCsipRecord(req, recordUuid!)
     const prisoner = await this.prisonerSearchService.getPrisonerDetails(req, record.prisonNumber)
     const { referral } = record
     const { investigation } = referral
+
+    res.locals.auditEvent.subjectType = 'PRISONER_ID'
+    res.locals.auditEvent.subjectId = prisoner.prisonerNumber
 
     const interviews = record.referral!.investigation?.interviews
     if (interviews) {
@@ -73,7 +76,7 @@ export class CsipRecordController {
       recordUuid,
       tabSelected,
       contributoryFactors,
-    } = await this.getRecordInfo(req)
+    } = await this.getRecordInfo(req, res)
 
     let actionButton
     let secondaryButton
