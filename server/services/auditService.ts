@@ -18,7 +18,7 @@ export default class AuditService {
     journeyData: Partial<JourneyData>,
     auditEvent: Response['locals']['auditEvent'],
   ) {
-    let event: AuditEvent = {
+    const event: AuditEvent = {
       ...auditEvent,
       what: `API_CALL_${auditType}`,
       details: {
@@ -27,14 +27,7 @@ export default class AuditService {
       },
     }
 
-    if (event.subjectType !== 'PRISONER_ID' || !event.subjectId) {
-      event = {
-        ...event,
-        ...this.getSubject(journeyData?.prisoner?.prisonerNumber),
-      }
-    }
-
-    await this.hmppsAuditClient.sendMessage(event)
+    await this.hmppsAuditClient.sendMessage(this.populateSubjectIntoEvent(event, journeyData?.prisoner?.prisonerNumber))
   }
 
   async logPageView(
@@ -43,31 +36,27 @@ export default class AuditService {
     auditEvent: Response['locals']['auditEvent'],
     isAttempt: boolean = false,
   ) {
-    let event: AuditEvent = {
+    const event: AuditEvent = {
       ...auditEvent,
       ...(query ? { details: query } : {}),
       what: isAttempt ? 'PAGE_VIEW_ACCESS_ATTEMPT' : 'PAGE_VIEW',
     }
+    const prisonNumber = journeyData?.prisoner?.prisonerNumber
+    const searchTerm = query?.['query']
 
-    if (event.subjectType !== 'PRISONER_ID' || !event.subjectId) {
-      const prisonNumber = journeyData?.prisoner?.prisonerNumber
-      const searchTerm = query?.['query']
-
-      event = {
-        ...event,
-        ...this.getSubject(prisonNumber, searchTerm as string),
-      }
-    }
-    await this.hmppsAuditClient.sendMessage(event)
+    await this.hmppsAuditClient.sendMessage(this.populateSubjectIntoEvent(event, prisonNumber, searchTerm as string))
   }
 
-  private getSubject(prisonNumber?: string, searchTerm?: string) {
+  private populateSubjectIntoEvent(event: AuditEvent, prisonNumber?: string, searchTerm?: string) {
+    if (event.subjectType === 'PRISONER_ID' && event.subjectId) {
+      return event
+    }
     if (prisonNumber) {
-      return { subjectId: prisonNumber, subjectType: 'PRISONER_ID' }
+      return { ...event, subjectId: prisonNumber, subjectType: 'PRISONER_ID' }
     }
     if (searchTerm) {
-      return { subjectId: searchTerm as string, subjectType: 'SEARCH_TERM' }
+      return { ...event, subjectId: searchTerm as string, subjectType: 'SEARCH_TERM' }
     }
-    return { subjectType: 'NOT_APPLICABLE' }
+    return { ...event, subjectType: 'NOT_APPLICABLE' }
   }
 }
