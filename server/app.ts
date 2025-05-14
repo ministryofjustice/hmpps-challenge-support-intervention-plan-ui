@@ -32,6 +32,7 @@ import sentryMiddleware from './middleware/sentryMiddleware'
 import { handleApiError } from './middleware/handleApiError'
 import { auditPageViewMiddleware } from './middleware/auditPageViewMiddleware'
 import checkServiceEnabledForActiveCaseLoad from './middleware/checkServiceEnabledForActiveCaseLoad'
+import { populateAuditEventDetails } from './middleware/populateAuditEventDetails'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -78,6 +79,7 @@ export default function createApp(services: Services): express.Application {
   )
   app.use(breadcrumbs())
   app.use(dpsComponents.retrieveCaseLoadData({ logger }))
+  app.use('*any', populateAuditEventDetails())
   app.use(checkServiceEnabledForActiveCaseLoad(services.csipApiService))
   app.use(populateValidationErrors())
   app.use(routes(services))

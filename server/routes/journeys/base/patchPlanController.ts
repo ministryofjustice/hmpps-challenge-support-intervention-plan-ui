@@ -42,9 +42,9 @@ export class PatchPlanController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'UPDATE',
+        'PATCH',
         'PLAN',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/plan`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -57,9 +57,9 @@ export class PatchPlanController extends BaseJourneyController {
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_PLAN_UPDATED)
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'UPDATE',
+        'PATCH',
         'PLAN',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/plan`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -89,9 +89,9 @@ export class PatchPlanController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'UPDATE',
+        'PATCH',
         'IDENTIFIED_NEED',
-        req.originalUrl,
+        `/csip-records/plan/identified-needs/${identifiedNeedUuid}`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -102,9 +102,9 @@ export class PatchPlanController extends BaseJourneyController {
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_IDENTIFIED_NEED_UPDATED)
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'UPDATE',
+        'PATCH',
         'IDENTIFIED_NEED',
-        req.originalUrl,
+        `/csip-records/plan/identified-needs/${identifiedNeedUuid}`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -132,9 +132,9 @@ export class PatchPlanController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'UPDATE',
+        'PATCH',
         'IDENTIFIED_NEED',
-        req.originalUrl,
+        `/csip-records/plan/identified-needs/${identifiedNeedUuid}`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -145,9 +145,9 @@ export class PatchPlanController extends BaseJourneyController {
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_IDENTIFIED_NEED_CLOSED)
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'UPDATE',
+        'PATCH',
         'IDENTIFIED_NEED',
-        req.originalUrl,
+        `/csip-records/plan/identified-needs/${identifiedNeedUuid}`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -177,9 +177,9 @@ export class PatchPlanController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'UPDATE',
+        'PATCH',
         'IDENTIFIED_NEED',
-        req.originalUrl,
+        `/csip-records/plan/identified-needs/${identifiedNeedUuid}`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -187,9 +187,9 @@ export class PatchPlanController extends BaseJourneyController {
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_IDENTIFIED_NEED_REOPENED)
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'UPDATE',
+        'PATCH',
         'IDENTIFIED_NEED',
-        req.originalUrl,
+        `/csip-records/plan/identified-needs/${identifiedNeedUuid}`,
         req.journeyData,
         res.locals.auditEvent,
       )

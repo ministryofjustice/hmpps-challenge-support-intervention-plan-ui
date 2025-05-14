@@ -28,9 +28,9 @@ export class NewContributoryFactorCommentController extends BaseJourneyControlle
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'CREATE',
+        'POST',
         'CONTRIBUTORY_FACTOR',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral/contributory-factors`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -41,9 +41,9 @@ export class NewContributoryFactorCommentController extends BaseJourneyControlle
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_CONTRIBUTORY_FACTOR_UPDATED)
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'CREATE',
+        'POST',
         'CONTRIBUTORY_FACTOR',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral/contributory-factors`,
         req.journeyData,
         res.locals.auditEvent,
       )

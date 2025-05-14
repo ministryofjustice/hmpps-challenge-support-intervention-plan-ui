@@ -26,9 +26,9 @@ export class UpdateReferralContributoryFactorController extends PatchReferralCon
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'UPDATE',
+        'PATCH',
         'CONTRIBUTORY_FACTOR',
-        req.originalUrl,
+        `/csip-records/referral/contributory-factors/${selectedCf.factorUuid!}`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -39,9 +39,9 @@ export class UpdateReferralContributoryFactorController extends PatchReferralCon
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, MESSAGE_CONTRIBUTORY_FACTOR_UPDATED)
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'UPDATE',
+        'PATCH',
         'CONTRIBUTORY_FACTOR',
-        req.originalUrl,
+        `/csip-records/referral/contributory-factors/${selectedCf.factorUuid!}`,
         req.journeyData,
         res.locals.auditEvent,
       )

@@ -33,9 +33,9 @@ export class PlanCheckAnswersController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'CREATE',
+        'POST',
         'PLAN',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/plan`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -51,9 +51,9 @@ export class PlanCheckAnswersController extends BaseJourneyController {
       req.journeyData.journeyCompleted = true
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'CREATE',
+        'POST',
         'PLAN',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/plan`,
         req.journeyData,
         res.locals.auditEvent,
       )

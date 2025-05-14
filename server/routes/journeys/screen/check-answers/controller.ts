@@ -27,9 +27,9 @@ export class ScreenCheckAnswersController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'CREATE',
+        'PUT',
         'SAFER_CUSTODY_SCREENING_OUTCOME',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral/safer-custody-screening`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -44,9 +44,9 @@ export class ScreenCheckAnswersController extends BaseJourneyController {
       req.journeyData.journeyCompleted = true
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'CREATE',
+        'PUT',
         'SAFER_CUSTODY_SCREENING_OUTCOME',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral/safer-custody-screening`,
         req.journeyData,
         res.locals.auditEvent,
       )

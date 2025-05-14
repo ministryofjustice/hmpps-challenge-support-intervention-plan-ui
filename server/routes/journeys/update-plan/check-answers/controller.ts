@@ -29,9 +29,9 @@ export class NewIdentifiedNeedCheckAnswersController extends BaseJourneyControll
       const need = req.journeyData.plan!.identifiedNeedSubJourney!
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'UPDATE',
+        'POST',
         'PLAN',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/plan/identified-needs`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -47,9 +47,9 @@ export class NewIdentifiedNeedCheckAnswersController extends BaseJourneyControll
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, `You’ve added another identified need to this plan.`)
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'UPDATE',
+        'POST',
         'PLAN',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/plan/identified-needs`,
         req.journeyData,
         res.locals.auditEvent,
       )

@@ -6,10 +6,10 @@ export default function populatePrisonerSummary(): RequestHandler {
       res.locals['prisoner'] = req.journeyData.prisoner
       if (res.locals.auditEvent) {
         res.locals.auditEvent.subjectId = req.journeyData.prisoner.prisonerNumber
-        res.locals.auditEvent.subjectType = req.journeyData.prisoner.prisonerNumber
+        res.locals.auditEvent.subjectType = 'PRISONER_ID'
         res.locals.auditEvent.details = {
           ...res.locals.auditEvent.details,
-          prisonerNumber: req.journeyData.prisoner.prisonerNumber,
+          activeCaseLoadId: res.locals.user.activeCaseLoadId,
         }
       }
     }

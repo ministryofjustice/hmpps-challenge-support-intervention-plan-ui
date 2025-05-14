@@ -34,9 +34,9 @@ export class PatchCsipRecordController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'UPDATE',
+        'PATCH',
         'RECORD',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -64,9 +64,9 @@ export class PatchCsipRecordController extends BaseJourneyController {
       req.flash(FLASH_KEY__CSIP_SUCCESS_MESSAGE, successMessage)
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'UPDATE',
+        'PATCH',
         'RECORD',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}`,
         req.journeyData,
         res.locals.auditEvent,
       )

@@ -31,9 +31,9 @@ export class ReviewCheckAnswersController extends BaseJourneyController {
       const action = review.outcome! as components['schemas']['CreateReviewRequest']['actions'][number]
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'CREATE',
+        'POST',
         'REVIEW',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/plan/reviews`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -56,9 +56,9 @@ export class ReviewCheckAnswersController extends BaseJourneyController {
       req.journeyData.journeyCompleted = true
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'CREATE',
+        'POST',
         'REVIEW',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/plan/reviews`,
         req.journeyData,
         res.locals.auditEvent,
       )

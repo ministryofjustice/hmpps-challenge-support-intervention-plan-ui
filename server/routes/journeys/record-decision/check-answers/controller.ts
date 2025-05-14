@@ -28,9 +28,9 @@ export class DecisionCheckAnswersController extends BaseJourneyController {
     try {
       await this.auditService.logModificationApiCall(
         'ATTEMPT',
-        'CREATE',
+        'PUT',
         'DECISION_AND_ACTIONS',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral/decision-and-actions`,
         req.journeyData,
         res.locals.auditEvent,
       )
@@ -49,9 +49,9 @@ export class DecisionCheckAnswersController extends BaseJourneyController {
       req.journeyData.journeyCompleted = true
       await this.auditService.logModificationApiCall(
         'SUCCESS',
-        'CREATE',
+        'PUT',
         'DECISION_AND_ACTIONS',
-        req.originalUrl,
+        `/csip-records/${req.journeyData.csipRecord!.recordUuid}/referral/decision-and-actions`,
         req.journeyData,
         res.locals.auditEvent,
       )

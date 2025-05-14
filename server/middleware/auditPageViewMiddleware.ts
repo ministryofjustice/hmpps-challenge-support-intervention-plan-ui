@@ -1,39 +1,18 @@
 import { RequestHandler } from 'express'
-import { validate } from 'uuid'
 import AuditService from '../services/auditService'
 
 export const auditPageViewMiddleware = (auditService: AuditService): RequestHandler => {
   return async (req, res, next) => {
-    const hasJourneyId = validate(req.originalUrl.split('/')[1])
-    const hasCsipId = req.originalUrl.includes('csip-record') && validate(req.originalUrl.split('/')[2])
-    let pageNameSuffix = req.originalUrl.replace(/\?.*/, '')
-    const splitUrl = pageNameSuffix.toUpperCase().split('/')
-    if (hasJourneyId) {
-      pageNameSuffix = `${splitUrl.slice(2).join('/')}`
-    }
-    if (hasCsipId) {
-      pageNameSuffix = `${splitUrl[1]}_${splitUrl.slice(3)}`
-    }
-    if (pageNameSuffix[0] === '/') {
-      pageNameSuffix = pageNameSuffix.slice(1)
-    }
-    if (pageNameSuffix.length === 0) {
-      pageNameSuffix = 'HOMEPAGE'
-    }
     res.locals.auditEvent = {
-      pageNameSuffix: pageNameSuffix.replace('/', '_').replace('-', '_'),
       who: res.locals.user.username,
       correlationId: req.id,
+      details: {
+        pageUrl: req.originalUrl,
+      },
     }
 
     res.prependOnceListener('close', async () => {
-      await auditService.logPageView(
-        req.originalUrl,
-        req.journeyData,
-        req.query,
-        res.locals.auditEvent,
-        `ACCESS_ATTEMPT_`,
-      )
+      await auditService.logPageView(req.journeyData, req.query, res.locals.auditEvent, true)
     })
 
     type resRenderCb = (view: string, options?: object, callback?: (err: Error, html: string) => void) => void
@@ -44,7 +23,7 @@ export const auditPageViewMiddleware = (auditService: AuditService): RequestHand
           res.status(500).send(err)
           return
         }
-        await auditService.logPageView(req.originalUrl, req.journeyData, req.query, res.locals.auditEvent)
+        await auditService.logPageView(req.journeyData, req.query, res.locals.auditEvent)
         res.send(html)
       })
     }

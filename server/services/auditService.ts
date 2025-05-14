@@ -3,18 +3,6 @@ import HmppsAuditClient, { AuditEvent } from '../data/hmppsAuditClient'
 import { JourneyData } from '../@types/express'
 import { components } from '../@types/csip'
 
-export enum Page {
-  EXAMPLE_PAGE = 'EXAMPLE_PAGE',
-}
-
-export interface PageViewEventDetails {
-  who: string
-  subjectId?: string
-  subjectType?: string
-  correlationId?: string
-  details?: object
-}
-
 export default class AuditService {
   constructor(private readonly hmppsAuditClient: HmppsAuditClient) {}
 
@@ -24,44 +12,49 @@ export default class AuditService {
 
   async logModificationApiCall(
     auditType: 'ATTEMPT' | 'SUCCESS',
-    modificationType: 'CREATE' | 'UPDATE',
-    entity: components['schemas']['ResponseMapping']['component'],
+    httpMethod: 'POST' | 'PATCH' | 'PUT' | 'DELETE',
+    _entity: components['schemas']['ResponseMapping']['component'],
     requestUrl: string,
     journeyData: Partial<JourneyData>,
     auditEvent: Response['locals']['auditEvent'],
   ) {
-    const csipFromUrl = requestUrl.includes('csip-record') ? requestUrl.split('/').filter(Boolean)[1] : undefined
-    const csipIdInRequest = csipFromUrl || journeyData?.csipRecord?.recordUuid
-
-    const pageName = requestUrl.replace(/\?.*/, '').split('/').slice(2).join('/').replace('/', '_').replace('-', '_')
     const event: AuditEvent = {
       ...auditEvent,
-      what: `${auditType}_${modificationType}_${entity}_${pageName}`,
-      ...(csipIdInRequest ? { subjectId: csipIdInRequest } : {}),
-      ...(csipIdInRequest ? { subjectType: csipIdInRequest } : {}),
+      action: `API_CALL_${auditType}`,
+      ...this.getSubject(journeyData?.prisoner?.prisonerNumber),
+      details: {
+        ...auditEvent.details,
+        apiUrl: `${httpMethod} ${requestUrl}`,
+      },
     }
     await this.hmppsAuditClient.sendMessage(event)
   }
 
   async logPageView(
-    requestUrl: string,
     journeyData: Partial<JourneyData>,
     query: Request['query'],
     auditEvent: Response['locals']['auditEvent'],
-    pagePrefix: string = '',
+    isAttempt: boolean = false,
   ) {
-    const { pageNameSuffix, ...auditEventProperties } = auditEvent
-
-    const csipFromUrl = requestUrl.includes('csip-record') ? requestUrl.split('/').filter(Boolean)[1] : undefined
-    const csipIdInRequest = csipFromUrl || journeyData?.csipRecord?.recordUuid
+    const prisonNumber = journeyData?.prisoner?.prisonerNumber
+    const searchTerm = query?.['query']
 
     const event: AuditEvent = {
-      ...auditEventProperties,
+      ...auditEvent,
       ...(query ? { details: query } : {}),
-      ...(csipIdInRequest ? { subjectId: csipIdInRequest } : {}),
-      ...(csipIdInRequest ? { subjectType: csipIdInRequest } : {}),
-      what: `PAGE_VIEW_${pagePrefix + pageNameSuffix}`,
+      ...this.getSubject(prisonNumber, searchTerm as string),
+      action: isAttempt ? 'PAGE_VIEW_ACCESS_ATTEMPT' : 'PAGE_VIEW',
     }
     await this.hmppsAuditClient.sendMessage(event)
+  }
+
+  private getSubject(prisonNumber?: string, searchTerm?: string) {
+    if (prisonNumber) {
+      return { subjectId: prisonNumber, subjectType: 'PRISONER_ID' }
+    }
+    if (searchTerm) {
+      return { subjectId: searchTerm as string, subjectType: 'SEARCH_TERM' }
+    }
+    return { subjectType: 'NOT_APPLICABLE' }
   }
 }
