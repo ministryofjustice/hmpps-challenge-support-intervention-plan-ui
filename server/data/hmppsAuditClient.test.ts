@@ -28,7 +28,7 @@ describe('hmppsAuditClient', () => {
       })
 
       const actualResponse = await hmppsAuditClient.sendMessage({
-        action: 'PAGE_VIEW',
+        what: 'PAGE_VIEW',
         who: 'user1',
         subjectId: 'subject123',
         subjectType: 'exampleType',
@@ -37,7 +37,7 @@ describe('hmppsAuditClient', () => {
       })
 
       const expectedSqsMessageBody: SqsMessage = {
-        action: 'PAGE_VIEW',
+        what: 'PAGE_VIEW',
         who: 'user1',
         when: expect.any(String),
         service: 'hmpps-service',
@@ -70,7 +70,7 @@ describe('hmppsAuditClient', () => {
       hmppsAuditClient = new HmppsAuditClient({ ...auditClientConfig, enabled: false })
 
       await hmppsAuditClient.sendMessage({
-        action: 'PAGE_VIEW',
+        what: 'PAGE_VIEW',
         who: 'user1',
       })
 
@@ -83,7 +83,7 @@ describe('hmppsAuditClient', () => {
 
       const trySendMessage = async () => {
         await hmppsAuditClient.sendMessage({
-          action: 'PAGE_VIEW',
+          what: 'PAGE_VIEW',
           who: 'user1',
         })
       }

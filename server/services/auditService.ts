@@ -20,7 +20,7 @@ export default class AuditService {
   ) {
     const event: AuditEvent = {
       ...auditEvent,
-      action: `API_CALL_${auditType}`,
+      what: `API_CALL_${auditType}`,
       ...this.getSubject(journeyData?.prisoner?.prisonerNumber),
       details: {
         ...auditEvent.details,
@@ -43,7 +43,7 @@ export default class AuditService {
       ...auditEvent,
       ...(query ? { details: query } : {}),
       ...this.getSubject(prisonNumber, searchTerm as string),
-      action: isAttempt ? 'PAGE_VIEW_ACCESS_ATTEMPT' : 'PAGE_VIEW',
+      what: isAttempt ? 'PAGE_VIEW_ACCESS_ATTEMPT' : 'PAGE_VIEW',
     }
     await this.hmppsAuditClient.sendMessage(event)
   }
