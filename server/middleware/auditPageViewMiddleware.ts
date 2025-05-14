@@ -3,7 +3,7 @@ import AuditService from '../services/auditService'
 
 export const auditPageViewMiddleware = (auditService: AuditService): RequestHandler => {
   return async (req, res, next) => {
-    if (req.originalUrl.match(/prisoner-image\/[A-Z][0-9]{4}[A-Z]{2}$/)) {
+    if (req.originalUrl.match(/prisoner-image\/[A-Z][0-9]{4}[A-Z]{2}/)) {
       next()
       return
     }
