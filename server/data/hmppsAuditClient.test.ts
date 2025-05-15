@@ -67,7 +67,7 @@ describe('hmppsAuditClient', () => {
 
     it("shouldn't send sqs message to audit queue if client disabled", async () => {
       sqsMock.on(SendMessageCommand).resolves({ MessageId: '123' })
-      hmppsAuditClient = new HmppsAuditClient({ ...auditClientConfig, enabled: false })
+      hmppsAuditClient = new HmppsAuditClient({ ...auditClientConfig, serviceName: '' })
 
       await hmppsAuditClient.sendMessage({
         what: 'PAGE_VIEW',

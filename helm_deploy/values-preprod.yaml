@@ -20,7 +20,6 @@ generic-service:
     DPS_HOME_PAGE_URL: "https://digital-preprod.prison.service.justice.gov.uk"
     PRISONER_PROFILE_URL: "https://prisoner-preprod.digital.prison.service.justice.gov.uk"
     ENVIRONMENT_NAME: PRE-PRODUCTION # Phase banner tag label
-    AUDIT_ENABLED: "false"
     SENTRY_ENVIRONMENT: PRE-PRODUCTION
     AUDIT_SQS_REGION: "eu-west-2"
     AUDIT_SERVICE_NAME: "hmpps-challenge-support-intervention-plan-ui"

@@ -27,7 +27,6 @@ export interface AuditClientConfig {
   queueUrl: string
   region: string
   serviceName: string
-  enabled: boolean
 }
 
 export default class HmppsAuditClient {
@@ -40,7 +39,7 @@ export default class HmppsAuditClient {
   private enabled: boolean
 
   constructor(config: AuditClientConfig) {
-    this.enabled = config.enabled
+    this.enabled = !!config.serviceName
     this.queueUrl = config.queueUrl
     this.serviceName = config.serviceName
     this.sqsClient = new SQSClient({ region: config.region })
@@ -52,7 +51,7 @@ export default class HmppsAuditClient {
     const sqsMessage: SqsMessage = {
       ...event,
       details: JSON.stringify(event.details),
-      service: this.serviceName,
+      service: this.serviceName!,
       when: new Date().toISOString(),
     }
 
