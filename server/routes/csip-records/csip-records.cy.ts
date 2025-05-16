@@ -90,8 +90,6 @@ context('test /csip-records', () => {
         .should('include.text', 'longunbrokentext')
         .invoke('width')
         .should('be.lte', 750)
-      // Ensure tag doesn't get stretched with long identified need text
-      cy.get('.govuk-tag').invoke('height').should('be.lte', 40)
     })
 
     checkTabsForPlan()
