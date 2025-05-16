@@ -4,6 +4,10 @@
 
 @media print {
 
+  .print-hidden-block {
+    display: block!important;
+  }
+
   .govuk-details__summary {
     color: #10403c;
   }
