@@ -31,13 +31,24 @@
       }
     }
 
+    const displayForPrint = (...ids) => {
+      const [first, ...rest] = ids
+      togglePrintBlock(first, true, false)
+      for (const block in rest) {
+        togglePrintBlock(block, true, true)
+      }
+    }
+
+    const hideFromPrint = (...ids) => {
+      for (const block in id) {
+        togglePrintBlock(block, false)
+      }
+    }
+
     const printAllButton = document.getElementById('print-all-button')
     if (printAllButton) {
       printAllButton.onclick = () => {
-        togglePrintBlock('csip-referral', true, false)
-        togglePrintBlock('csip-investigation', true, true)
-        togglePrintBlock('csip-plan', true, true)
-        togglePrintBlock('csip-reviews', true, true)
+        displayForPrint('csip-referral', 'csip-investigation', 'csip-plan', 'csip-reviews')
         print()
       }
     }
@@ -45,10 +56,8 @@
     const printReferralButton = document.getElementById('print-referral-button')
     if (printReferralButton) {
       printReferralButton.onclick = () => {
-        togglePrintBlock('csip-referral', true, false)
-        togglePrintBlock('csip-investigation', false)
-        togglePrintBlock('csip-plan', false)
-        togglePrintBlock('csip-reviews', false)
+        displayForPrint('csip-referral')
+        hideFromPrint('csip-investigation', 'csip-plan', 'csip-reviews')
         print()
       }
     }
@@ -56,10 +65,8 @@
     const printInvestigationButton = document.getElementById('print-investigation-button')
     if (printInvestigationButton) {
       printInvestigationButton.onclick = () => {
-        togglePrintBlock('csip-referral', false)
-        togglePrintBlock('csip-investigation', true, false)
-        togglePrintBlock('csip-plan', false)
-        togglePrintBlock('csip-reviews', false)
+        displayForPrint('csip-investigation')
+        hideFromPrint('csip-referral', 'csip-plan', 'csip-reviews')
         print()
       }
     }
@@ -67,10 +74,8 @@
     const printPlanButton = document.getElementById('print-plan-button')
     if (printPlanButton) {
       printPlanButton.onclick = () => {
-        togglePrintBlock('csip-referral', false)
-        togglePrintBlock('csip-investigation', false)
-        togglePrintBlock('csip-plan', true, false)
-        togglePrintBlock('csip-reviews', false)
+        displayForPrint('csip-plan')
+        hideFromPrint('csip-referral', 'csip-investigation', 'csip-reviews')
         print()
       }
     }
@@ -78,10 +83,8 @@
     const printReviewsButton = document.getElementById('print-reviews-button')
     if (printReviewsButton) {
       printReviewsButton.onclick = () => {
-        togglePrintBlock('csip-referral', false)
-        togglePrintBlock('csip-investigation', false)
-        togglePrintBlock('csip-plan', false)
-        togglePrintBlock('csip-reviews', true, false)
+        displayForPrint('csip-reviews')
+        hideFromPrint('csip-referral', 'csip-investigation', 'csip-plan')
         print()
       }
     }
