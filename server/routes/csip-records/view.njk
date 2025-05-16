@@ -13,7 +13,6 @@
     const printOptionsButton = document.getElementById('print-options-button');
     if (printOptionsButton) {
       printOptionsButton.classList.remove('govuk-!-display-none')
-      printOptionsButton.removeAttribute('aria-hidden');
     }
 
     const togglePrintBlock = (id, enabled, addPageBreak = false) => {
@@ -91,7 +90,6 @@
     const printButton = document.getElementById('print-button');
     if (printButton) {
       printButton.classList.remove('govuk-!-display-none');
-      printButton.removeAttribute('aria-hidden');
       printButton.onclick = function () { print(); }
     }
 
@@ -154,8 +152,7 @@
       classes: 'govuk-body govuk-!-margin-bottom-0',
       attributes: {
         id: "action-button",
-        form: 'actionForm',
-        "aria-hidden": true
+        form: 'actionForm'
       }
     }) }}
   {% endset %}
@@ -166,8 +163,7 @@
     {{ mojButtonMenu({
       classes: "govuk-!-margin-left-4 govuk-!-margin-bottom-0 govuk-!-display-none",
       attributes: {
-        id: "print-options-button",
-        "aria-hidden": true
+        id: "print-options-button"
       },
       button: {
         text: "Print options",
@@ -197,13 +193,32 @@
           attributes: {
             id: 'print-plan-button'
           }
-        } if plan,
+        },
         {
           text: "Print reviews",
           attributes: {
             id: 'print-reviews-button'
           }
-        } if plan
+        }
+      ] if plan else [
+          {
+            text: "Print all",
+            attributes: {
+              id: 'print-all-button'
+            }
+          },
+          {
+            text: "Print referral",
+            attributes: {
+              id: 'print-referral-button'
+            }
+          },
+          {
+            text: "Print investigation",
+              attributes: {
+              id: 'print-investigation-button'
+            }
+          }
       ]
     }) }}
   {% else %}
@@ -212,8 +227,7 @@
       type: "button",
       preventDoubleClick: true,
       attributes: {
-        id: "print-button",
-        "aria-hidden": true
+        id: "print-button"
       },
       classes: 'govuk-button--secondary govuk-!-margin-bottom-0 govuk-!-margin-left-4 govuk-!-display-none'
     }) }}

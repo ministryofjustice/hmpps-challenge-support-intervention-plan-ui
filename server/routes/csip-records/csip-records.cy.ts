@@ -62,7 +62,7 @@ context('test /csip-records', () => {
     navigateToTestPage()
 
     cy.url().should('to.match', /\/csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/plan$/)
-    cy.findByRole('button', { name: /print/i }).should('be.visible')
+    cy.findByRole('button', { name: /print options/i }).should('be.visible')
   })
 
   it('should render a post-decision, pre review csip record (read only role)', () => {
@@ -80,16 +80,19 @@ context('test /csip-records', () => {
     cy.findByRole('link', { name: /add, change, close or reopen/i }).should('not.exist')
 
     checkAxeAccessibility()
-    // Next review date
-    cy.get('.govuk-summary-list__value').eq(2).should('contain.text', '-')
 
-    // Ensure identified need text is wrapped and doesn't break page boundaries (750px in cypress tests)
-    cy.get('.govuk-summary-card__title')
-      .should('include.text', 'longunbrokentext')
-      .invoke('width')
-      .should('be.lte', 750)
-    // Ensure tag doesn't get stretched with long identified need text
-    cy.get('.govuk-tag').invoke('height').should('be.lte', 40)
+    cy.get('[id$=csip-plan]').within(() => {
+      // Next review date
+      cy.get('.govuk-summary-list__value').eq(2).should('contain.text', '-')
+
+      // Ensure identified need text is wrapped and doesn't break page boundaries (750px in cypress tests)
+      cy.get('.govuk-summary-card__title')
+        .should('include.text', 'longunbrokentext')
+        .invoke('width')
+        .should('be.lte', 750)
+      // Ensure tag doesn't get stretched with long identified need text
+      cy.get('.govuk-tag').invoke('height').should('be.lte', 40)
+    })
 
     checkTabsForPlan()
 
@@ -413,66 +416,72 @@ context('test /csip-records', () => {
     cy.findByText('some person').should('be.visible')
     cy.findByText('plan reason').should('be.visible')
     cy.findByText('25 May 2024').should('be.visible')
-    cy.get('.govuk-summary-card').should('have.length', 3)
-    cy.get('.govuk-summary-card')
-      .eq(0)
-      .within(() => {
-        cy.findByRole('heading', { name: 'first need' }).should('be.visible').should('match', 'h4')
-        cy.findByText('Open').should('be.visible')
-        cy.findByText('progression done').should('be.visible')
-        cy.findByText('get it sorted').should('be.visible')
-        cy.findByText('test testerson').should('be.visible')
-        cy.findByText('1 March 2024').should('be.visible')
-        cy.findByText('2 April 2024').should('be.visible')
-      })
-    cy.get('.govuk-summary-card')
-      .eq(1)
-      .within(() => {
-        cy.findByRole('heading', { name: 'second need' }).should('be.visible').should('match', 'h4')
-        cy.findByText('Open').should('be.visible')
-        cy.findByText('almost there').should('be.visible')
-        cy.findByText('int1').should('be.visible')
-        cy.findByText('foo barerson').should('be.visible')
-        cy.findByText('1 June 2024').should('be.visible')
-        cy.findByText('1 April 2024').should('be.visible')
-      })
-    cy.get('.govuk-summary-card')
-      .eq(2)
-      .within(() => {
-        cy.findByRole('heading', { name: 'closed need' }).should('be.visible').should('match', 'h4')
-        cy.findByText('Closed').should('be.visible')
-        cy.findByText('Not provided').should('be.visible')
-        cy.findByText('we need to do things').should('be.visible')
-        cy.findByText('joe bloggs').should('be.visible')
-        cy.findByText('1 April 2024').should('be.visible')
-        cy.findByText('2 June 2024').should('be.visible')
-      })
+
+    cy.get('[id$=csip-plan]').within(() => {
+      cy.get('.govuk-summary-card').should('have.length', 3)
+      cy.get('.govuk-summary-card')
+        .eq(0)
+        .within(() => {
+          cy.findByRole('heading', { name: 'first need' }).should('be.visible').should('match', 'h4')
+          cy.findByText('Open').should('be.visible')
+          cy.findByText('progression done').should('be.visible')
+          cy.findByText('get it sorted').should('be.visible')
+          cy.findByText('test testerson').should('be.visible')
+          cy.findByText('1 March 2024').should('be.visible')
+          cy.findByText('2 April 2024').should('be.visible')
+        })
+      cy.get('.govuk-summary-card')
+        .eq(1)
+        .within(() => {
+          cy.findByRole('heading', { name: 'second need' }).should('be.visible').should('match', 'h4')
+          cy.findByText('Open').should('be.visible')
+          cy.findByText('almost there').should('be.visible')
+          cy.findByText('int1').should('be.visible')
+          cy.findByText('foo barerson').should('be.visible')
+          cy.findByText('1 June 2024').should('be.visible')
+          cy.findByText('1 April 2024').should('be.visible')
+        })
+      cy.get('.govuk-summary-card')
+        .eq(2)
+        .within(() => {
+          cy.findByRole('heading', { name: 'closed need' }).should('be.visible').should('match', 'h4')
+          cy.findByText('Closed').should('be.visible')
+          cy.findByText('Not provided').should('be.visible')
+          cy.findByText('we need to do things').should('be.visible')
+          cy.findByText('joe bloggs').should('be.visible')
+          cy.findByText('1 April 2024').should('be.visible')
+          cy.findByText('2 June 2024').should('be.visible')
+        })
+    })
   }
 
   const checkInvestigationDetailsExist = () => {
     cy.findByRole('heading', { name: /investigation$/i })
       .should('be.visible')
       .should('match', 'h2')
-    cy.findByText('staff stafferson').should('be.visible')
-    cy.findByText('SomeVidence').should('be.visible')
-    cy.findByText('bananas').should('be.visible')
-    cy.findByText('a great person').should('be.visible')
-    cy.findByText('spiders').should('be.visible')
-    cy.findByText('SomeFactors').should('be.visible')
 
-    cy.findByRole('heading', { name: /interviews/i })
-      .should('be.visible')
-      .should('match', 'h3')
-    cy.findByRole('heading', { name: /Interview with Some Person/ })
-      .should('be.visible')
-      .should('match', 'h4')
-    cy.findByText('Some Person').should('be.visible')
-    cy.findByText('25 December 2024').should('be.visible')
-    cy.findByText('Role2').should('be.visible')
-    cy.findByText('some text').should('be.visible')
+    cy.get('[id$=csip-investigation]').within(() => {
+      cy.findByText('staff stafferson').should('be.visible')
+      cy.findByText('SomeVidence').should('be.visible')
+      cy.findByText('bananas').should('be.visible')
+      cy.findByText('a great person').should('be.visible')
+      cy.findByText('spiders').should('be.visible')
+      cy.findByText('SomeFactors').should('be.visible')
 
-    cy.get('#main-content > div > div > dl > div:nth-child(7) > dt').should('contain.text', 'Recorded by')
-    cy.get('#main-content > div > div > dl > div:nth-child(7) > dd').should('contain.text', 'Not provided')
+      cy.findByRole('heading', { name: /interviews/i })
+        .should('be.visible')
+        .should('match', 'h3')
+      cy.findByRole('heading', { name: /Interview with Some Person/ })
+        .should('be.visible')
+        .should('match', 'h4')
+      cy.findByText('Some Person').should('be.visible')
+      cy.findByText('25 December 2024').should('be.visible')
+      cy.findByText('Role2').should('be.visible')
+      cy.findByText('some text').should('be.visible')
+
+      cy.get('dl > div:nth-child(7) > dt').should('contain.text', 'Recorded by')
+      cy.get('dl > div:nth-child(7) > dd').should('contain.text', 'Not provided')
+    })
   }
 
   const checkTabsForPlan = () => {
@@ -523,13 +532,16 @@ context('test /csip-records', () => {
     cy.findByRole('heading', { name: /investigation decision/i })
       .should('be.visible')
       .should('match', 'h2')
-    cy.findByText('dec-conc').should('be.visible')
-    cy.findByText('Another option').should('be.visible')
-    cy.findByText('prison officer').should('be.visible')
-    cy.findByText('some person longer').should('be.visible')
-    cy.findByText('1 August 2024').should('be.visible')
-    cy.findByText(/stuff up[\s\S]*and there[\s\S]*whilst also being down here/i).should('be.visible')
-    cy.findByText(/some action[\s\S]*with another one[\s\S]*a final action/i).should('be.visible')
+
+    cy.get('[id$=csip-investigation]').within(() => {
+      cy.findByText('dec-conc').should('be.visible')
+      cy.findByText('Another option').should('be.visible')
+      cy.findByText('prison officer').should('be.visible')
+      cy.findByText('some person longer').should('be.visible')
+      cy.findByText('1 August 2024').should('be.visible')
+      cy.findByText(/stuff up[\s\S]*and there[\s\S]*whilst also being down here/i).should('be.visible')
+      cy.findByText(/some action[\s\S]*with another one[\s\S]*a final action/i).should('be.visible')
+    })
   }
 
   const checkContributoryFactors = () => {
