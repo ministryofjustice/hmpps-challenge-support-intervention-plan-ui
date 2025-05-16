@@ -34,14 +34,14 @@
     const displayForPrint = (...ids) => {
       const [first, ...rest] = ids
       togglePrintBlock(first, true, false)
-      for (const block in rest) {
-        togglePrintBlock(block, true, true)
+      for (const idx in rest) {
+        togglePrintBlock(rest[idx], true, true)
       }
     }
 
     const hideFromPrint = (...ids) => {
-      for (const block in ids) {
-        togglePrintBlock(block, false)
+      for (const idx in ids) {
+        togglePrintBlock(ids[idx], false)
       }
     }
 
