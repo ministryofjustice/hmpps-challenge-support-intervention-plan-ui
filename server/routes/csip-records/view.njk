@@ -1,74 +1,133 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "moj/components/page-header-actions/macro.njk" import mojPageHeaderActions %}
 {%- from "moj/components/sub-navigation/macro.njk" import mojSubNavigation -%}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "partials/statusTag/macro.njk" import statusTag %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{%- from "moj/components/button-menu/macro.njk" import mojButtonMenu -%}
 
 {% set fullWidth = true %}
 
 {% block additionalScripts %}
   <script type="text/javascript" nonce="{{ cspNonce }}">
-      const printButton = document.getElementById('print-button');
-      if (printButton === null) {
-        if (!window.__customPrintObserver) {
-          const observer = new MutationObserver(mutationList => {
-            mutationList.forEach(mutation => {
-              if (mutation.type === 'childList') {
-                mutation.addedNodes.forEach(node => {
-                  if (node.id === 'print-button' && node.classList.contains('govuk-!-display-none')) {
-                    node.classList.remove('govuk-!-display-none');
-                    node.ariaHidden = false;
-                    node.onclick = function () { print(); }
-                  }
-                });
-              }
-            })
-          });
+    const printOptionsButton = document.getElementById('print-options-button');
+    if (printOptionsButton) {
+      printOptionsButton.classList.remove('govuk-!-display-none')
+    }
 
-          observer.observe(document.documentElement, { attributes: false, childList: true, subtree: true })
-
-          window.__customPrintObserver = observer
+    const togglePrintBlock = (id, enabled, addPageBreak = false) => {
+      const block = document.getElementById(id)
+      if (block) {
+        if (enabled) {
+          block.classList.add('print-hidden-block')
+          if (addPageBreak) {
+            block.classList.add('page-break-print')
+          } else {
+            block.classList.remove('page-break-print')
+          }
+        } else {
+          block.classList.remove('print-hidden-block')
+          block.classList.add('govuk-!-display-none-print')
         }
-      } else {
-        printButton.classList.remove('govuk-!-display-none');
-        printButton.removeAttribute('aria-hidden');
-        printButton.onclick = function () { print(); }
       }
+    }
 
-      // open closed details elements for printing
-      window.addEventListener('beforeprint',() =>
-      {
-          const allDetails = document.body.querySelectorAll('details');
-          for(let i=0; i<allDetails.length; i++)
-          {
-              if(allDetails[i].open)
-              {
-                  allDetails[i].dataset.open = '1';
-              }
-              else
-              {
-                  allDetails[i].setAttribute('open', '');
-              }
-          }
-      });
+    const displayForPrint = (...ids) => {
+      const [first, ...rest] = ids
+      togglePrintBlock(first, true, false)
+      for (const idx in rest) {
+        togglePrintBlock(rest[idx], true, true)
+      }
+    }
 
-      // after printing close details elements not opened before
-      window.addEventListener('afterprint',() =>
+    const hideFromPrint = (...ids) => {
+      for (const idx in ids) {
+        togglePrintBlock(ids[idx], false)
+      }
+    }
+
+    const printAllButton = document.getElementById('print-all-button')
+    if (printAllButton) {
+      printAllButton.onclick = () => {
+        displayForPrint('csip-referral', 'csip-investigation', 'csip-plan', 'csip-reviews')
+        print()
+      }
+    }
+
+    const printReferralButton = document.getElementById('print-referral-button')
+    if (printReferralButton) {
+      printReferralButton.onclick = () => {
+        displayForPrint('csip-referral')
+        hideFromPrint('csip-investigation', 'csip-plan', 'csip-reviews')
+        print()
+      }
+    }
+
+    const printInvestigationButton = document.getElementById('print-investigation-button')
+    if (printInvestigationButton) {
+      printInvestigationButton.onclick = () => {
+        displayForPrint('csip-investigation')
+        hideFromPrint('csip-referral', 'csip-plan', 'csip-reviews')
+        print()
+      }
+    }
+
+    const printPlanButton = document.getElementById('print-plan-button')
+    if (printPlanButton) {
+      printPlanButton.onclick = () => {
+        displayForPrint('csip-plan')
+        hideFromPrint('csip-referral', 'csip-investigation', 'csip-reviews')
+        print()
+      }
+    }
+
+    const printReviewsButton = document.getElementById('print-reviews-button')
+    if (printReviewsButton) {
+      printReviewsButton.onclick = () => {
+        displayForPrint('csip-reviews')
+        hideFromPrint('csip-referral', 'csip-investigation', 'csip-plan')
+        print()
+      }
+    }
+
+    const printButton = document.getElementById('print-button');
+    if (printButton) {
+      printButton.classList.remove('govuk-!-display-none');
+      printButton.onclick = function () { print(); }
+    }
+
+    // open closed details elements for printing
+    window.addEventListener('beforeprint',() =>
+    {
+      const allDetails = document.body.querySelectorAll('details');
+      for(let i=0; i<allDetails.length; i++)
       {
-          const allDetails = document.body.querySelectorAll('details');
-          for(let i=0; i<allDetails.length; i++)
-          {
-              if(allDetails[i].dataset.open)
-              {
-                  allDetails[i].dataset.open = '';
-              }
-              else
-              {
-                  allDetails[i].removeAttribute('open');
-              }
-          }
-      });
+        if(allDetails[i].open)
+        {
+          allDetails[i].dataset.open = '1';
+        }
+        else
+        {
+          allDetails[i].setAttribute('open', '');
+        }
+      }
+    });
+
+    // after printing close details elements not opened before
+    window.addEventListener('afterprint',() =>
+    {
+      const allDetails = document.body.querySelectorAll('details');
+      for(let i=0; i<allDetails.length; i++)
+      {
+        if(allDetails[i].dataset.open)
+        {
+          allDetails[i].dataset.open = '';
+        }
+        else
+        {
+          allDetails[i].removeAttribute('open');
+        }
+      }
+    });
   </script>
 {% endblock %}
 
@@ -85,30 +144,96 @@
 
 {% if actionButton and isCsipProcessor %}
   {% set actionButtonHtml %}
-    <form method="post" action="/csip-records/{{ recordUuid }}">
+    <form id="actionForm" method="post" action="/csip-records/{{ recordUuid }}" class="govuk-!-display-none">
       <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
       <input type="hidden" name="action" value="{{ actionButton.action }}"/>
-      {{ govukButton({
-        text: actionButton.label,
-        preventDoubleClick: true,
-        classes: 'govuk-body govuk-!-margin-bottom-0'
-      }) }}
     </form>
+    {{ govukButton({
+      text: actionButton.label,
+      preventDoubleClick: true,
+      classes: 'govuk-body govuk-!-margin-bottom-0',
+      attributes: {
+        id: "action-button",
+        form: 'actionForm'
+      }
+    }) }}
   {% endset %}
 {% endif %}
 
 {% set printButtonHtml %}
-  {{ govukButton({
-    text: "Print",
-    type: "button",
-    preventDoubleClick: true,
-    attributes: {
-      id: "print-button",
-      "aria-hidden": true,
-      onclick: "javascript:print();"
-    },
-    classes: 'govuk-button--secondary govuk-!-margin-bottom-0 govuk-!-margin-left-4 govuk-!-display-none'
-  }) }}
+  {% if shouldShowTabs %}
+    {{ mojButtonMenu({
+      classes: "govuk-!-margin-left-4 govuk-!-margin-bottom-0 govuk-!-display-none",
+      attributes: {
+        id: "print-options-button"
+      },
+      button: {
+        text: "Print options",
+        classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+      },
+      items: [
+        {
+          text: "Print all",
+          attributes: {
+            id: 'print-all-button'
+          }
+        },
+        {
+          text: "Print referral",
+          attributes: {
+            id: 'print-referral-button'
+          }
+        },
+        {
+          text: "Print investigation",
+          attributes: {
+            id: 'print-investigation-button'
+          }
+        },
+        {
+          text: "Print plan",
+          attributes: {
+            id: 'print-plan-button'
+          }
+        },
+        {
+          text: "Print reviews",
+          attributes: {
+            id: 'print-reviews-button'
+          }
+        }
+      ] if plan else [
+          {
+            text: "Print all",
+            attributes: {
+              id: 'print-all-button'
+            }
+          },
+          {
+            text: "Print referral",
+            attributes: {
+              id: 'print-referral-button'
+            }
+          },
+          {
+            text: "Print investigation",
+              attributes: {
+              id: 'print-investigation-button'
+            }
+          }
+      ]
+    }) }}
+  {% else %}
+    {{ govukButton({
+      text: "Print",
+      type: "button",
+      preventDoubleClick: true,
+      attributes: {
+        id: "print-button"
+      },
+      classes: 'govuk-button--secondary govuk-!-margin-bottom-0 govuk-!-margin-left-4 govuk-!-display-none'
+    }) }}
+  {% endif %}
 {% endset %}
 
 {% switch (updatingEntity or 'null') %}
@@ -132,26 +257,22 @@
   {% if isUpdate %}
     <h1 class="govuk-heading-l">Update {{ basePageHeader }}</h1>
   {% else %}
-    {{ mojPageHeaderActions({
-      classes: 'govuk-!-margin-bottom-3',
-      heading: {
-        text: basePageHeader,
-        classes: 'govuk-heading-xl'
-      },
-      items: [
-        {
-          html: actionButtonHtml,
-          classes: 'govuk-!-display-none'
-        },
-        {
-          html: printButtonHtml,
-          classes: 'govuk-!-display-none'
-        }
-      ] if actionButton else [{
-          html: printButtonHtml,
-          classes: 'govuk-!-display-none'
-        }]
-    }) }}
+    <div class="moj-page-header-actions govuk-!-margin-bottom-3">
+      <div class="moj-page-header-actions__title">
+        <h1 class="govuk-heading-xl">
+          {{- basePageHeader -}}
+        </h1>
+      </div>
+      <div class="moj-page-header-actions__actions">
+        <div class="moj-button-group moj-button-group--inline">
+          {% if actionButton %}
+            {{ actionButtonHtml | safe }}
+          {% endif %}
+          {{ printButtonHtml | safe }}
+        </div>
+      </div>
+    </div>
+
     <hr class="govuk-section-break govuk-section-break--visible">
   {% endif %}
 {% endblock %}
@@ -210,23 +331,54 @@
     }) }}
   {% endif %}
 
-  {% if tabSelected == 'referral' %}
-    {% if screening %}
-      {% include './components/screening.njk' %}
+  {% if isUpdate %}
+    {% if tabSelected == 'referral' %}
+      {% include './components/referral.njk' %}
+    {% elif tabSelected == 'investigation' %}
+      {% if decision %}
+        {% include './components/decision.njk' %}
+      {% else %}
+        {% include './components/investigation.njk' %}
+      {% endif %}
+    {% elif tabSelected == 'plan' %}
+      {% include './components/plan.njk' %}
+    {% elif tabSelected == 'reviews' %}
+      {% include './components/reviews.njk' %}
     {% endif %}
-    {% include './components/referral.njk' %}
-  {% elif tabSelected == 'investigation' %}
-    {% if decision %}
-      {% include './components/decision.njk' %}
+  {% else %}
+    {% if tabSelected == 'referral' %}
+      {% set showReferral = true %}
+    {% elif tabSelected == 'investigation' %}
+      {% set showInvestigation = true %}
+    {% elif tabSelected == 'plan' %}
+      {% set showPlan = true %}
+    {% elif tabSelected == 'reviews' %}
+      {% set showReviews = true %}
     {% endif %}
-    {% if not decision or not isUpdate %}
+    <div id="csip-referral" class="{{ 'govuk-!-display-none' if not showReferral }}">
+      {% if screening %}
+        {% include './components/screening.njk' %}
+      {% endif %}
+      {% include './components/referral.njk' %}
+    </div>
+    <div id="csip-investigation" class="{{ 'govuk-!-display-none' if not showInvestigation }}">
+      {% if decision %}
+        {% include './components/decision.njk' %}
+      {% endif %}
       {% include './components/investigation.njk' %}
-    {% endif %}
-  {% elif tabSelected == 'plan' %}
-    {% include './components/plan.njk' %}
-  {% elif tabSelected == 'reviews' %}
-    {% include './components/reviews.njk' %}
+    </div>
+    <div id="csip-plan" class="{{ 'govuk-!-display-none' if not showPlan }}">
+      {% if plan %}
+        {% include './components/plan.njk' %}
+      {% endif %}
+    </div>
+    <div id="csip-reviews" class="{{ 'govuk-!-display-none' if not showReviews }}">
+      {% if reviews %}
+        {% include './components/reviews.njk' %}
+      {% endif %}
+    </div>
   {% endif %}
+
 
   <form method="post" action="/csip-records/{{ recordUuid }}">
   <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
