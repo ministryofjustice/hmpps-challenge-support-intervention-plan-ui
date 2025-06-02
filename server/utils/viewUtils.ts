@@ -139,6 +139,6 @@ export function summaryListActionChange(value: string, isUpdate: boolean, data: 
   </dd>`
 }
 
-export function withVisuallyHiddenText(visibleText: string, hiddenText: string) {
-  return { html: `${visibleText} <span class="govuk-visually-hidden">${hiddenText}</span>` }
+export function withVisuallyHiddenText(visibleText: string, hiddenText: string, props: Record<string, unknown> = {}) {
+  return { ...props, html: `${visibleText} <span class="govuk-visually-hidden">${hiddenText}</span>` }
 }

@@ -31,7 +31,7 @@
       }) }}
       {% set staffMemberAssaultedHtml %}
           {{ govukCharacterCount({
-              label: 'Names of staff assaulted' | withVisuallyHiddenText("If yes, provide their names."),
+              label: { text: 'Names of staff assaulted' },
               maxlength: 240,
               rows: 1,
               threshold: "75",
@@ -45,10 +45,7 @@
       {{ govukRadios({
           name: "isStaffAssaulted",
           fieldset: {
-              legend: {
-                  text: staffAssaultedLabel,
-                  classes: "govuk-fieldset__legend--m"
-              }
+              legend: staffAssaultedLabel | withVisuallyHiddenText("If yes, provide their names.", { classes: "govuk-fieldset__legend--m" })
           },
           items: [
             {

@@ -13,7 +13,7 @@
 
     {% set caseManagerHtml %}
         {{ govukCharacterCount({
-            label: "Name of Case Manager" | withVisuallyHiddenText("If not, provide their name."),
+            label: { text: "Name of Case Manager" },
             maxlength: 100,
             rows: 1,
             threshold: "75",
@@ -25,15 +25,16 @@
         }) }}
     {% endset %}
 
+    {% set caseManagerTitle %}
+        Are you the Case Manager for {{ prisoner | firstNameSpaceLastName | possessiveComma }} plan?
+    {% endset %}
+
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {{ govukRadios({
             name: "isCaseManager",
             fieldset: {
-                legend: {
-                    text: 'Are you the Case Manager for ' + (prisoner | firstNameSpaceLastName | possessiveComma) + ' plan?',
-                    classes: "govuk-fieldset__legend--m"
-                }
+                legend: caseManagerTitle | withVisuallyHiddenText("If not, provide their name.", { classes: "govuk-fieldset__legend--m" })
             },
             items: [
                 {

@@ -140,7 +140,7 @@ context('test /update-planned-intervention/:uuid', () => {
       .click()
     getInputTextbox().should('be.focused')
 
-    cy.pageCheckCharacterThresholdMessage(getInputTextbox(), 3936)
+    cy.pageCheckCharacterThresholdMessage(getInputTextbox(), 3987 - generateSaveTimestamp('John Smith').length)
   }
 
   const proceedToNextScreen = () => {
