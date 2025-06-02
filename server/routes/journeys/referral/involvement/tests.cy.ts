@@ -141,10 +141,7 @@ context('Make a Referral Journey', () => {
     cy.findByText(/How was Tes'name User involved in the incident\?/).should('be.visible')
     cy.findByText(/were any staff assaulted during the incident\?/i).should('be.visible')
 
-    cy.get('.govuk-form-group > .govuk-fieldset > .govuk-fieldset__legend > .govuk-visually-hidden').should(
-      'contain.text',
-      'If yes, provide their names',
-    )
+    cy.get('.govuk-fieldset__legend > .govuk-visually-hidden').should('contain.text', 'If yes, provide their names')
 
     cy.findByRole('button', { name: /continue/i }).click()
     cy.findByRole('link', { name: /select how the prisoner was involved in the incident/i }).should('be.visible')
