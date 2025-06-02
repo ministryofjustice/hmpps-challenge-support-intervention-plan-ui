@@ -73,7 +73,11 @@ context('test /develop-an-initial-plan', () => {
       .should('be.visible')
       .click()
 
-    cy.get('.govuk-form-group > .govuk-label').should('contain.text', 'If not, provide their name')
+    cy.get('.govuk-form-group > .govuk-fieldset > .govuk-fieldset__legend > .govuk-visually-hidden').should(
+      'contain.text',
+      'If not, provide their name',
+    )
+
     getCaseManagerTextField().should('be.focused')
 
     getCaseManagerTextField().type('a'.repeat(101), { delay: 0 })
