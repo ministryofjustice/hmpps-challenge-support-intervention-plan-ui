@@ -1,4 +1,5 @@
 import { JourneyData } from '../../server/@types/express'
+import { getSentAuditEvents } from '../mockApis/wiremock'
 
 Cypress.Commands.add('signIn', (options = { failOnStatusCode: true }) => {
   cy.request('/how-to-make-a-referral')
@@ -9,6 +10,10 @@ Cypress.Commands.add('signIn', (options = { failOnStatusCode: true }) => {
 
 Cypress.Commands.add('verifyJourneyData', (uuid: string, validator: (journeyData: JourneyData) => void) => {
   cy.request(`/${uuid}/get-journey-data`).then(res => validator(res.body))
+})
+
+Cypress.Commands.add('verifyAuditEvents', (events: object[]) => {
+  return cy.wrap(getSentAuditEvents()).should('deep.equal', events)
 })
 
 Cypress.Commands.add(
