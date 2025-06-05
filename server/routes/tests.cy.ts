@@ -6,6 +6,7 @@ context('test / homepage', () => {
     cy.task('stubSignIn')
     cy.task('stubComponents')
     cy.task('stubGetCsipOverview')
+    cy.task('stubAuditSqs')
   })
 
   it('tests page', () => {
@@ -54,6 +55,23 @@ context('test / homepage', () => {
       'have.length',
       '6',
     )
+
+    cy.verifyAuditEvents([
+      {
+        who: 'USER1',
+        details: '{"pageUrl":"/","activeCaseLoadId":"LEI"}',
+        what: 'PAGE_VIEW',
+        subjectType: 'NOT_APPLICABLE',
+        service: 'CSIP',
+      },
+      {
+        who: 'USER1',
+        details: '{"pageUrl":"/","activeCaseLoadId":"LEI"}',
+        what: 'PAGE_VIEW_ACCESS_ATTEMPT',
+        subjectType: 'NOT_APPLICABLE',
+        service: 'CSIP',
+      },
+    ])
   })
 
   const navigateToTestPage = () => {

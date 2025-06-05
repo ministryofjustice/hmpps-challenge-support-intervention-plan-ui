@@ -38,9 +38,13 @@ export default class AuditService {
   ) {
     const event: AuditEvent = {
       ...auditEvent,
-      ...(query ? { details: query } : {}),
+      details: {
+        ...auditEvent.details,
+        ...query,
+      },
       what: isAttempt ? 'PAGE_VIEW_ACCESS_ATTEMPT' : 'PAGE_VIEW',
     }
+
     const prisonNumber = journeyData?.prisoner?.prisonerNumber
     const searchTerm = query?.['query']
 

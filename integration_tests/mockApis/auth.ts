@@ -174,6 +174,21 @@ const stubGetCaseLoads = () => {
   })
 }
 
+const stubAuditSqs = () =>
+  stubFor({
+    request: {
+      method: 'POST',
+      url: '/',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/xml',
+      },
+      body: '{ }',
+    },
+  })
+
 export default {
   getSignInUrl,
   stubAuthPing: ping,
@@ -191,4 +206,5 @@ export default {
       token(userToken),
       tokenVerification.stubVerifyToken(),
     ]),
+  stubAuditSqs,
 }
