@@ -61,5 +61,25 @@ describe('Audit service', () => {
         details: { extraDetails: 'example' },
       })
     })
+
+    it('truncate subjectId to 80 characters if it is too long', async () => {
+      await auditService.logPageView(
+        {},
+        { query: 'a'.repeat(150) },
+        {
+          who: 'user1',
+          correlationId: 'request123',
+        },
+      )
+
+      expect(hmppsAuditClient.sendMessage).toHaveBeenCalledWith({
+        what: 'PAGE_VIEW',
+        who: 'user1',
+        subjectId: 'a'.repeat(80),
+        subjectType: 'SEARCH_TERM',
+        correlationId: 'request123',
+        details: { query: 'a'.repeat(150) },
+      })
+    })
   })
 })
