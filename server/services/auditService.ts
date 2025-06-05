@@ -27,7 +27,7 @@ export default class AuditService {
       },
     }
 
-    await this.hmppsAuditClient.sendMessage(this.populateSubjectIntoEvent(event, journeyData?.prisoner?.prisonerNumber))
+    await this.hmppsAuditClient.sendMessage(this.processEvent(event, journeyData?.prisoner?.prisonerNumber))
   }
 
   async logPageView(
@@ -44,7 +44,18 @@ export default class AuditService {
     const prisonNumber = journeyData?.prisoner?.prisonerNumber
     const searchTerm = query?.['query']
 
-    await this.hmppsAuditClient.sendMessage(this.populateSubjectIntoEvent(event, prisonNumber, searchTerm as string))
+    await this.hmppsAuditClient.sendMessage(this.processEvent(event, prisonNumber, searchTerm as string))
+  }
+
+  private processEvent(event: AuditEvent, prisonNumber?: string, searchTerm?: string) {
+    const result = this.populateSubjectIntoEvent(event, prisonNumber, searchTerm)
+    if (result.subjectId && result.subjectId.length > 80) {
+      return {
+        ...result,
+        subjectId: result.subjectId.substring(0, 80),
+      }
+    }
+    return result
   }
 
   private populateSubjectIntoEvent(event: AuditEvent, prisonNumber?: string, searchTerm?: string) {
