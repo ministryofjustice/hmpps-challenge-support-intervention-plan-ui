@@ -10,7 +10,7 @@
 {% block content %}
     {% include 'base/components/referral-caption.njk' %}
     <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ "Behaviour involvement" if isProactiveReferral else "Incident involvement" }}</h1>
-
+    <div class="govuk-visually-hidden" id="assaultedStaffName-announce" aria-live="polite"></div>
     <form method="post">
       <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
@@ -69,4 +69,19 @@
           alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
       }) }}
     </form>
+{% endblock %}
+
+{% block additionalScripts %}
+    <script type="text/javascript" nonce="{{ cspNonce }}">
+        const assaultedStaffYes = document.querySelector('#isStaffAssaulted')
+        const srAnnounce = document.querySelector('#assaultedStaffName-announce')
+        
+        assaultedStaffYes?.addEventListener('change', () => {           
+            if (assaultedStaffYes?.checked) {
+              const newElement = document.createElement('span')
+              newElement.innerText = 'Provide their names'
+              srAnnounce.appendChild(newElement)
+            }
+        })
+    </script>
 {% endblock %}

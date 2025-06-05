@@ -34,6 +34,24 @@ context('test /develop-an-initial-plan', () => {
     validateOptionalInput()
   })
 
+  it('should use screen reader callouts', () => {
+    navigateToTestPage()
+    cy.url().should('to.match', /\/develop-an-initial-plan$/)
+    validateScreenReaderCallout()
+  })
+
+  const validateScreenReaderCallout = () => {
+    cy.get('#caseManager-announce')
+      .should('have.attr', 'aria-live', 'polite')
+      .should('have.class', 'govuk-visually-hidden')
+      .children()
+      .should('have.length', 0)
+
+    getIsNotCaseManagerRadio().click()
+    cy.get('#caseManager-announce').children().should('have.length', 1)
+    cy.get('#caseManager-announce').children().eq(0).should('contain.text', 'Provide their name')
+  }
+
   const navigateToTestPage = () => {
     cy.signIn()
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/develop-an-initial-plan/start`)
