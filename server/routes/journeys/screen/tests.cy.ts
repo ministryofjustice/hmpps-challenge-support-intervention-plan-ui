@@ -73,6 +73,13 @@ context('test /screen', () => {
     cy.url().should('to.match', /\/sign-out/)
   })
 
+  it('should deny access if not a CSIP processor', () => {
+    cy.task('stubSignIn', { roles: [] })
+    cy.signIn({ failOnStatusCode: false })
+    cy.visit(START_URL, { failOnStatusCode: false })
+    cy.findByText('You do not have permission to access this page').should('be.visible')
+  })
+
   const validatePageContents = () => {
     cy.get('.govuk-back-link')
       .eq(0)

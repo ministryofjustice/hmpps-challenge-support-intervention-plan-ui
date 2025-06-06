@@ -35,4 +35,13 @@ context('test /csip-record/:recordUuid/develop-an-initial-plan/start', () => {
     })
     cy.url().should('to.match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550\/referral$/)
   })
+
+  it('should deny access if not a CSIP processor', () => {
+    cy.task('stubSignIn', { roles: [] })
+    cy.signIn({ failOnStatusCode: false })
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/develop-an-initial-plan/start`, {
+      failOnStatusCode: false,
+    })
+    cy.findByText('You do not have permission to access this page').should('be.visible')
+  })
 })
