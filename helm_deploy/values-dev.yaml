@@ -30,7 +30,6 @@ generic-service:
       - digital_staff_and_mojo
       - moj_cloud_platform
       - prisons
-      - accessibility-testing-1
 
 generic-prometheus-alerts:
   alertSeverity: hmpps-alerts-api-non-prod
