@@ -18,8 +18,13 @@ context('Make a Referral Journey', () => {
     cy.task('stubCsipRecordPostSuccess')
   })
 
+  it('should use screen reader callouts', () => {
+    navigateToTestPage()
+    validateScreenReaderCallout()
+  })
+
   it('test involvement, including all edge cases', () => {
-    setupDataSignInAndGo()
+    navigateToTestPage()
 
     checkProactiveReactiveContent()
 
@@ -31,6 +36,18 @@ context('Make a Referral Journey', () => {
 
     checkEmptyInputNotOverriddenByJourneyData()
   })
+
+  const validateScreenReaderCallout = () => {
+    cy.get('#assaultedStaffName-announce')
+      .should('have.attr', 'aria-live', 'polite')
+      .should('have.class', 'govuk-visually-hidden')
+      .children()
+      .should('have.length', 0)
+
+    cy.get('#isStaffAssaulted').click()
+    cy.get('#assaultedStaffName-announce').children().should('have.length', 1)
+    cy.get('#assaultedStaffName-announce').children().eq(0).should('contain.text', 'Provide their name')
+  }
 
   const goBackCheckValuesSaved = () => {
     cy.findByRole('textbox', { name: /names of staff assaulted/i }).type('staff stafferson', { delay: 0 })
@@ -157,7 +174,7 @@ context('Make a Referral Journey', () => {
     checkAxeAccessibility()
   }
 
-  const setupDataSignInAndGo = () => {
+  const navigateToTestPage = () => {
     cy.signIn()
     cy.visit('/prisoners/A1111AA/referral/start')
     injectJourneyDataAndReload(uuid, {
