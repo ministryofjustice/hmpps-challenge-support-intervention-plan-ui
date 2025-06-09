@@ -9,6 +9,7 @@ declare global {
        */
       signIn(options?: { failOnStatusCode: boolean }): Chainable<string>
       verifyJourneyData(uuid: string, validator: (journeyData: JourneyData) => void): Chainable<void>
+      verifyAuditEvents(events: object[]): Chainable<unknown>
       pageCheckCharacterThresholdMessage(
         element: Cypress.Chainable<JQuery<HTMLElement>>,
         maxChars: number,
