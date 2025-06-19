@@ -121,7 +121,7 @@ context('test /csip-records', () => {
     checkChangeScreenLink(false)
   })
 
-  it('should render a post-investigation, pre decision csip record (read only)', () => {
+  it('should render a post-investigation, pre decision csip record (read only - cannot record decision, but can update investigation)', () => {
     cy.task('stubSignIn', { roles: [] })
     cy.task('stubCsipRecordSuccessAwaitingDecision')
 
@@ -131,7 +131,7 @@ context('test /csip-records', () => {
     cy.findAllByRole('button', { name: /[\s\S]*record decision[\s\S]*/i }).should('not.exist')
     cy.findByRole('heading', { name: /decision/i }).should('not.exist')
     cy.findAllByRole('link', { name: /update referral/i }).should('have.length', 0)
-    cy.findAllByRole('link', { name: /update investigation/i }).should('have.length', 0)
+    cy.findAllByRole('link', { name: /update investigation/i }).should('have.length', 1)
     checkInvestigationDetailsExist()
 
     checkTabsAndReferral()
@@ -190,22 +190,6 @@ context('test /csip-records', () => {
     )
 
     checkContributoryFactors()
-  })
-
-  it('should render a post-screen csip record (read only)', () => {
-    cy.task('stubSignIn', { roles: [] })
-    cy.task('stubCsipRecordGetSuccessAfterScreeningWithoutReason')
-
-    navigateToTestPage()
-
-    cy.findByRole('link', { name: /investigation/i }).should('not.exist')
-    cy.findByRole('link', { name: /referral/i }).should('not.exist')
-    cy.findByRole('heading', { name: /referral details/i }).should('be.visible')
-    cy.findByRole('heading', { name: /referral screening/i }).should('be.visible')
-    cy.findAllByRole('button', { name: /record investigation/i }).should('not.exist')
-
-    cy.get('.govuk-details__summary-text').should('have.length', 0)
-    checkChangeScreenLink(false, false)
   })
 
   it('should render a post-screen csip record (no screening reason)', () => {
@@ -295,7 +279,7 @@ context('test /csip-records', () => {
     cy.findByRole('link', { name: /referral/i }).should('not.exist')
     cy.findByRole('heading', { name: /referral details/i }).should('be.visible')
     cy.findByRole('heading', { name: /referral screening/i }).should('be.visible')
-    cy.findAllByRole('button', { name: /record investigation/i }).should('not.exist')
+    cy.findAllByRole('button', { name: /record investigation/i }).should('have.length', 2)
 
     cy.get('.govuk-details__summary-text')
       .should('have.length', 1)

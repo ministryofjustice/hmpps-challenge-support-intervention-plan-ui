@@ -91,6 +91,7 @@ export class CsipRecordController {
           secondaryButton = {
             label: 'Update referral',
             link: `/csip-record/${recordUuid}/update-referral/start`,
+            allowAllDpsUser: true,
           }
         }
         break
@@ -102,6 +103,7 @@ export class CsipRecordController {
         secondaryButton = {
           label: 'Update referral',
           link: `/csip-record/${recordUuid}/update-referral/start`,
+          allowAllDpsUser: true,
         }
         break
       case 'PLAN_PENDING':
@@ -135,6 +137,7 @@ export class CsipRecordController {
         actionButton = {
           label: 'Record investigation',
           action: 'investigation',
+          allowAllDpsUser: true,
         }
         break
       case 'AWAITING_DECISION':
@@ -145,6 +148,7 @@ export class CsipRecordController {
         secondaryButton = {
           label: 'Update investigation',
           link: `/csip-record/${recordUuid}/update-investigation/start`,
+          allowAllDpsUser: true,
         }
         break
       case 'CSIP_OPEN':
