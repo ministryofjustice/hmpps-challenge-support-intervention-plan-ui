@@ -29,15 +29,15 @@ export const JourneyRoutes = (services: Services) => {
 
   router.use('/', ReferralRoutes({ services, path: '/referral' }))
   router.use('/', UpdateReferralRoutes({ services, path: '/update-referral' }))
+  router.use('/', InvestigationRoutes({ services, path: '/record-investigation' }))
+  router.use('/', UpdateInvestigationRoutes({ services, path: '/update-investigation' }))
 
   router.use(authorisationMiddleware([AuthorisedRoles.ROLE_CSIP_PROCESSOR]))
 
   router.use('/', ScreenRoutes({ services, path: '/screen' }))
-  router.use('/', InvestigationRoutes({ services, path: '/record-investigation' }))
   router.use('/', DecisionRoutes({ services, path: '/record-decision' }))
   router.use('/', DevelopPlanRoutes({ services, path: '/develop-an-initial-plan' }))
   router.use('/', EditLogCodeRoutes({ services, path: '/edit-log-code' }))
-  router.use('/', UpdateInvestigationRoutes({ services, path: '/update-investigation' }))
   router.use('/', UpdateDecisionRoutes({ services, path: '/update-decision' }))
   router.use('/', UpdatePlanRoutes({ services, path: '/update-plan' }))
   router.use('/', RecordReviewRoutes({ services, path: '/record-review' }))
