@@ -45,7 +45,7 @@ export class ReviewCheckAnswersController extends BaseJourneyController {
         recordedBy: res.locals.user.username,
         reviewDate: format(new Date(), 'yyyy-MM-dd'),
         recordedByDisplayName: res.locals.user.displayName,
-        attendees: review.attendees!.map(attendee => ({
+        attendees: (review.attendees || []).map(attendee => ({
           contribution: attendee.contribution!,
           isAttended: attendee.isAttended!,
           name: attendee.name!,

@@ -193,6 +193,25 @@ context('test /record-review/check-answers', () => {
     cy.findByRole('button', { name: /Continue/i }).should('not.exist')
   })
 
+  it('should allow closing a CSIP with no attendees', () => {
+    cy.signIn()
+    cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-review/start`)
+
+    injectJourneyDataAndReload(uuid, {
+      isCheckAnswers: true,
+      review: {
+        reviewDate: '2024-04-05',
+        nextReviewDate: '2024-05-06',
+        outcome: 'CLOSE_CSIP',
+        summary: 'a summary',
+      },
+    })
+
+    cy.visit(`${uuid}/record-review/check-answers`)
+
+    continueToConfirmation()
+  })
+
   const navigateToTestPage = () => {
     cy.signIn()
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-review/start`)
