@@ -32,7 +32,7 @@ context('test /record-review/close-csip', () => {
     checkAxeAccessibility()
     validatePageContents()
     getCloseButton().click()
-    cy.url().should('to.match', /\/check-answers$/)
+    cy.url().should('to.match', /\/record-review$/)
 
     cy.go('back')
     getCancelButton().click()
@@ -58,7 +58,7 @@ context('test /record-review/close-csip', () => {
     checkAxeAccessibility()
     validatePageContents()
     getCloseButton().click()
-    cy.url().should('to.match', /\/check-answers$/)
+    cy.url().should('to.match', /\/record-review$/)
   })
 
   it('should try out all cases - with multiple open identified need', () => {
@@ -81,7 +81,7 @@ context('test /record-review/close-csip', () => {
     checkAxeAccessibility()
     validatePageContents()
     getCloseButton().click()
-    cy.url().should('to.match', /\/check-answers$/)
+    cy.url().should('to.match', /\/record-review$/)
   })
 
   const validatePageContents = () => {

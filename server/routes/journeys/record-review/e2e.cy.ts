@@ -101,8 +101,6 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
 
     clickAndCompleteOutcomeKeepOnPlan()
 
-    stateGuardShouldBounceBackTo(uuid, /record-review\/next-review-date$/)
-
     completeNextReviewDate()
 
     cy.findByRole('link', { name: /Check and save report/ }).click()
@@ -137,10 +135,13 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     cy.findByRole('radio', { name: `Close the CSIP` }).click()
     getContinueButton().click()
 
-    stateGuardShouldBounceBackTo(uuid, /record-review\/close-csip/)
+    stateGuardShouldBounceBackTo(uuid, /record-review$/)
 
+    cy.findByRole('link', { name: /Outcome/ }).click()
+    cy.findByRole('radio', { name: `Close the CSIP` }).click()
+    getContinueButton().click()
     cy.findByRole('button', { name: /Yes, close CSIP/ }).click()
-    cy.findByRole('button', { name: /Record review and close CSIP/ }).click()
+    cy.url().should('to.match', /\/record-review$/)
   })
 
   it('should show cancellation check page', () => {

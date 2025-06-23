@@ -14,6 +14,6 @@ export class CloseCsipController {
       delete req.journeyData.review!.outcomeSubJourney
     }
     delete req.journeyData.review!.nextReviewDate
-    res.redirect('check-answers')
+    res.redirect(req.journeyData.isCheckAnswers ? 'check-answers' : '../record-review')
   }
 }

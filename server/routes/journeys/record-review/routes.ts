@@ -14,6 +14,7 @@ import { CloseCsipRoutes } from './close-csip/routes'
 import { ConfirmationRoutes } from './confirmation/routes'
 import journeyStateGuard, { isMissingValues } from '../../../middleware/journeyStateGuard'
 import { CancelController } from '../../cancellation-check/controller'
+import { JourneyData } from '../../../@types/express'
 
 function Routes({ csipApiService, auditService }: Services) {
   const { router, get } = JourneyRouter()
@@ -80,23 +81,21 @@ const guard = {
     return undefined
   },
   'check-answers': (req: Request) => {
-    if (req.journeyData.review?.outcomeSubJourney?.outcome === ReviewOutcome.CLOSE_CSIP) {
-      return '/close-csip'
-    }
+    const { review } = req.journeyData
 
-    if (
-      req.journeyData.review?.outcomeSubJourney?.outcome === ReviewOutcome.REMAIN_ON_CSIP &&
-      !req.journeyData.review?.nextReviewDate
-    ) {
+    if (review?.outcome === ReviewOutcome.REMAIN_ON_CSIP && !review?.nextReviewDate) {
       return '/next-review-date'
     }
 
+    const closeRequiredProps = ['outcome', 'summary'] as Array<keyof JourneyData['review']>
+    const remainRequiredProps = ['nextReviewDate', 'outcome', 'summary'] as Array<keyof JourneyData['review']>
+
     if (
-      req.journeyData.review?.outcome !== ReviewOutcome.CLOSE_CSIP &&
-      isMissingValues(req.journeyData.review!, ['attendees', 'nextReviewDate', 'outcome', 'summary'])
+      isMissingValues(review!, review?.outcome === ReviewOutcome.CLOSE_CSIP ? closeRequiredProps : remainRequiredProps)
     ) {
       return ''
     }
+
     return undefined
   },
 }

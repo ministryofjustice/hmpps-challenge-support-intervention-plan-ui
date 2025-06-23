@@ -7,7 +7,7 @@
 {% set completedStatus = { text: "Completed" } %}
 {% set incompleteStatus = { tag: { text: "Incomplete", classes: "govuk-tag--blue" } } %}
 {% set notReadyStatus = { text: "Cannot save yet", classes: "govuk-task-list__status--cannot-start-yet" } %}
-{% set formCompleted = review.summary and review.attendees and review.outcome %}
+{% set formCompleted = review.summary and review.attendees and review.attendees.length and review.outcome %}
 
 {% block innerContent %}
   <span class="govuk-caption-l">Record a CSIP review</span>
@@ -34,7 +34,7 @@
         },
         classes: "custom-task-list-first-row",
         href: "record-review/participants-summary",
-        status: completedStatus if review.attendees else incompleteStatus
+        status: completedStatus if review.attendees and review.attendees.length else incompleteStatus
       },
       {
         title: {
