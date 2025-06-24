@@ -58,7 +58,7 @@ context('test /update-planned-intervention/:uuid', () => {
     getInputTextbox().type('a'.repeat(1000), { delay: 0 })
     getContinueButton().click()
 
-    cy.findByRole('link', { name: /Update on planned intervention must be [0-9,]+ characters or less/i }).should(
+    cy.findByRole('link', { name: /Update to the planned intervention must be [0-9,]+ characters or less/i }).should(
       'be.visible',
     )
   })

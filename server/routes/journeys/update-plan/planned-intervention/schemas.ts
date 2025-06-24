@@ -10,7 +10,7 @@ const TOO_LONG_ERROR_MSG = (maxLengthChars: number) =>
 
 export const schemaFactory = async (req: Request, res: Response) => {
   const { identifiedNeedUuid } = req.params
-  const identifiedNeed = req.journeyData.csipRecord!.plan!.identifiedNeeds.find(
+  const identifiedNeed = req.journeyData.plan!.identifiedNeeds!.find(
     need => need.identifiedNeedUuid === identifiedNeedUuid,
   )
 
