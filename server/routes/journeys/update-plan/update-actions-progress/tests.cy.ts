@@ -57,6 +57,13 @@ context('test /update-actions-progress/:uuid', () => {
     cy.findAllByText(`You have ${1000 - generateSaveTimestamp('John Smith').length} characters remaining`).should(
       'be.visible',
     )
+
+    getInputTextbox().type('a'.repeat(1000), { delay: 0 })
+    getContinueButton().click()
+
+    cy.findByRole('link', { name: /Update on actions and progress must be [0-9,]+ characters or less/i }).should(
+      'be.visible',
+    )
   })
 
   it('should try out with closed need', () => {

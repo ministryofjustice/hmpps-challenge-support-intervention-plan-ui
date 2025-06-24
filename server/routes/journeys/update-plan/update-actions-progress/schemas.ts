@@ -21,7 +21,7 @@ export const schemaFactory = async (req: Request, res: Response) => {
   return createSchema({
     progression: z
       .string({ message: PROGRESSION_REQUIRED_MSG })
-      .max(4000, TOO_LONG_ERROR_MSG(maxLengthChars))
+      .max(maxLengthChars, TOO_LONG_ERROR_MSG(maxLengthChars))
       .refine(val => val?.trim().length > 0, { message: PROGRESSION_REQUIRED_MSG }),
   })
 }
