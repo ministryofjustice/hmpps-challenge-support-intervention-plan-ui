@@ -54,6 +54,13 @@ context('test /update-planned-intervention/:uuid', () => {
     cy.findAllByText(`You have ${1000 - generateSaveTimestamp('John Smith').length} characters remaining`).should(
       'be.visible',
     )
+
+    getInputTextbox().type('a'.repeat(1000), { delay: 0 })
+    getContinueButton().click()
+
+    cy.findByRole('link', { name: /Update on planned intervention must be [0-9,]+ characters or less/i }).should(
+      'be.visible',
+    )
   })
 
   it('should not include inset text when no existing intervention details', () => {
