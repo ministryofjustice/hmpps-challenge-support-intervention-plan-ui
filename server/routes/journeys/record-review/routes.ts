@@ -80,23 +80,21 @@ const guard = {
     return undefined
   },
   'check-answers': (req: Request) => {
-    if (req.journeyData.review?.outcomeSubJourney?.outcome === ReviewOutcome.CLOSE_CSIP) {
-      return '/close-csip'
-    }
+    const { review } = req.journeyData
 
-    if (
-      req.journeyData.review?.outcomeSubJourney?.outcome === ReviewOutcome.REMAIN_ON_CSIP &&
-      !req.journeyData.review?.nextReviewDate
-    ) {
+    if (review?.outcome === ReviewOutcome.REMAIN_ON_CSIP && !review?.nextReviewDate) {
       return '/next-review-date'
     }
 
-    if (
-      req.journeyData.review?.outcome !== ReviewOutcome.CLOSE_CSIP &&
-      isMissingValues(req.journeyData.review!, ['attendees', 'nextReviewDate', 'outcome', 'summary'])
-    ) {
+    const isMissingProps = isMissingValues(
+      review!,
+      review?.outcome === ReviewOutcome.CLOSE_CSIP ? ['outcome', 'summary'] : ['nextReviewDate', 'outcome', 'summary'],
+    )
+
+    if (isMissingProps || !review?.attendees?.length) {
       return ''
     }
+
     return undefined
   },
 }
