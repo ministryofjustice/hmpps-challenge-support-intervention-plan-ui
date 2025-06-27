@@ -4,7 +4,8 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 context('test /update-investigation/triggers', () => {
   const uuid = uuidV4()
 
-  const getInputTextbox = () => cy.findByRole('textbox', { name: "Add information about Tes'name User’s triggers" })
+  const getInputTextbox = () =>
+    cy.findByRole('textbox', { name: "Add information about Tes'name User’s risks and triggers" })
   const getContinueButton = () => cy.findByRole('button', { name: /Confirm and save/ })
 
   beforeEach(() => {
@@ -49,7 +50,7 @@ context('test /update-investigation/triggers', () => {
   }
 
   const validatePageContents = () => {
-    cy.findByRole('heading', { name: "Add information about Tes'name User’s triggers" }).should('be.visible')
+    cy.findByRole('heading', { name: "Add information about Tes'name User’s risks and triggers" }).should('be.visible')
     cy.findByText('spiders').should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /Cancel/i })
@@ -57,13 +58,16 @@ context('test /update-investigation/triggers', () => {
       .and('have.attr', 'href')
       .and('match', /csip-records\/02e5854f-f7b1-4c56-bec8-69e390eb8550/)
     cy.findByText(/Where to find information on a prisoner’s triggers/).should('not.exist')
-    cy.title().should('equal', 'Add information about the prisoner’s triggers - Update a CSIP investigation - DPS')
+    cy.title().should(
+      'equal',
+      'Add information about the prisoner’s risks and triggers - Update a CSIP investigation - DPS',
+    )
   }
 
   const validateErrorMessage = () => {
     getInputTextbox().clear()
     getContinueButton().click()
-    cy.findByRole('link', { name: /Enter an update about the prisoner’s triggers/i })
+    cy.findByRole('link', { name: /Enter an update about the prisoner’s risks and triggers/i })
       .should('be.visible')
       .click()
     getInputTextbox().should('be.focused')
@@ -72,7 +76,9 @@ context('test /update-investigation/triggers', () => {
       delay: 0,
     })
     getContinueButton().click()
-    cy.findByRole('link', { name: /Update about the prisoner’s triggers must be [0-9,]+ characters or less/i })
+    cy.findByRole('link', {
+      name: /Update about the prisoner’s risks and triggers must be [0-9,]+ characters or less/i,
+    })
       .should('be.visible')
       .click()
     cy.findAllByText(/You have [0-9,]+ characters too many/)
@@ -82,7 +88,7 @@ context('test /update-investigation/triggers', () => {
 
     getInputTextbox().clear().type('  ')
     getContinueButton().click()
-    cy.findByRole('link', { name: /Enter an update about the prisoner’s triggers/i })
+    cy.findByRole('link', { name: /Enter an update about the prisoner’s risks and triggers/i })
       .should('be.visible')
       .click()
     getInputTextbox().should('be.focused')

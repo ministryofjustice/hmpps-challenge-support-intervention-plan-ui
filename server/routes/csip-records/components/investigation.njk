@@ -73,13 +73,13 @@
         },
         {
           key: {
-            text: 'Triggers'
+            text: 'Risks and triggers'
           },
           value: {
             html: (investigation.personsTrigger or 'Not provided') | escape | boldAppendStamp | nl2br | summaryListActionAddInformation(isUpdate, username, investigation.personsTrigger, { 
                 href: "update-investigation/triggers#personsTrigger",
                 text: "Add information",
-                visuallyHiddenText: "about the prisoner’s triggers",
+                visuallyHiddenText: "about the prisoner’s risks and triggers",
                 classes: "govuk-link--no-visited-state"
             })
           }

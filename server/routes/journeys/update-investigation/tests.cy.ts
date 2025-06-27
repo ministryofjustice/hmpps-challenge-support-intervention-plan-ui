@@ -154,7 +154,7 @@ context('test /update-investigation', () => {
     cy.findByRole('link', { name: /add information about the prisoner’s usual behaviour presentation/i }).should(
       'be.visible',
     )
-    cy.findByRole('link', { name: /add information about the prisoner’s triggers/i }).should('be.visible')
+    cy.findByRole('link', { name: /add information about the prisoner’s risks and triggers/i }).should('be.visible')
     cy.findByRole('link', { name: /add information about the prisoner’s protective factors/i }).should('be.visible')
 
     cy.get('#main-content > div > div > dl > div:nth-child(7) > dt').should('contain.text', 'Recorded by')

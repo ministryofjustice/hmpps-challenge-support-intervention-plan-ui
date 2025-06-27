@@ -5,12 +5,12 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Add information about the prisoner’s triggers - Update a CSIP investigation" if isUpdate else "What are the prisoner’s triggers? - Record a CSIP investigation" %}
+{% set pageTitle = "Add information about the prisoner’s risks and triggers - Update a CSIP investigation" if isUpdate else "What are the prisoner’s risks and triggers? - Record a CSIP investigation" %}
 
 {% block innerContent %}
     {% include 'base/components/investigation-caption.njk' %}
     <label for="personsTrigger">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ "Add information about " + prisoner | firstNameSpaceLastName | possessiveComma + " triggers" if isUpdate else "What are " + prisoner | firstNameSpaceLastName | possessiveComma + " triggers?" }}</h1>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ "Add information about " + prisoner | firstNameSpaceLastName | possessiveComma + " risks and triggers" if isUpdate else "What are " + prisoner | firstNameSpaceLastName | possessiveComma + " risks and triggers?" }}</h1>
     </label>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>

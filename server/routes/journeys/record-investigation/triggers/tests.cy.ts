@@ -4,7 +4,7 @@ import { checkAxeAccessibility } from '../../../../../integration_tests/support/
 context('test /record-investigation/triggers', () => {
   const uuid = uuidV4()
 
-  const getInputTextbox = () => cy.findByRole('textbox', { name: "What are Tes'name User’s triggers?" })
+  const getInputTextbox = () => cy.findByRole('textbox', { name: "What are Tes'name User’s risks and triggers?" })
   const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ context('test /record-investigation/triggers', () => {
   it('should try out all cases', () => {
     navigateToTestPage()
     cy.url().should('to.match', /\/triggers$/)
-    cy.title().should('equal', 'What are the prisoner’s triggers? - Record a CSIP investigation - DPS')
+    cy.title().should('equal', 'What are the prisoner’s risks and triggers? - Record a CSIP investigation - DPS')
     checkAxeAccessibility()
 
     validatePageContents()
@@ -38,7 +38,7 @@ context('test /record-investigation/triggers', () => {
   }
 
   const validatePageContents = () => {
-    cy.findByRole('heading', { name: "What are Tes'name User’s triggers?" }).should('be.visible')
+    cy.findByRole('heading', { name: "What are Tes'name User’s risks and triggers?" }).should('be.visible')
     cy.findByText(/Where to find information on a prisoner’s triggers/).should('be.visible')
     getInputTextbox().should('be.visible')
     getContinueButton().should('be.visible')
@@ -49,8 +49,8 @@ context('test /record-investigation/triggers', () => {
 
   const validateErrorMessage = () => {
     getContinueButton().click()
-    cy.title().should('equal', 'Error: What are the prisoner’s triggers? - Record a CSIP investigation - DPS')
-    cy.findByRole('link', { name: /Enter a description of the prisoner’s triggers/i })
+    cy.title().should('equal', 'Error: What are the prisoner’s risks and triggers? - Record a CSIP investigation - DPS')
+    cy.findByRole('link', { name: /Enter a description of the prisoner’s risks and triggers/i })
       .should('be.visible')
       .click()
     getInputTextbox().should('be.focused')
@@ -60,7 +60,7 @@ context('test /record-investigation/triggers', () => {
     })
     getContinueButton().click()
     cy.findByRole('link', {
-      name: /Description of the prisoner’s triggers must be 4,000 characters or less/i,
+      name: /Description of the prisoner’s risks and triggers must be 4,000 characters or less/i,
     })
       .should('be.visible')
       .click()
