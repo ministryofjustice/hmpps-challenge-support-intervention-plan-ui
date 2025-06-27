@@ -3,10 +3,10 @@ import { Request, Response } from 'express'
 import { createSchema } from '../../../../middleware/validationMiddleware'
 import { getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
 
-const ERROR_MSG = 'Enter a description of the prisoner’s triggers'
-const UPDATE_ERROR_MSG = 'Enter an update about the prisoner’s triggers'
+const ERROR_MSG = 'Enter a description of the prisoner’s risks and triggers'
+const UPDATE_ERROR_MSG = 'Enter an update about the prisoner’s risks and triggers'
 const TOO_LONG_ERROR_MSG = (isUpdate: boolean | undefined, maxLengthChars: number) =>
-  `${isUpdate ? 'Update about' : 'Description of'} the prisoner’s triggers must be ${maxLengthChars.toLocaleString()} characters or less`
+  `${isUpdate ? 'Update about' : 'Description of'} the prisoner’s risks and triggers must be ${maxLengthChars.toLocaleString()} characters or less`
 
 export const schemaFactory = async (req: Request, res: Response) => {
   const maxLengthChars = req.journeyData.isUpdate

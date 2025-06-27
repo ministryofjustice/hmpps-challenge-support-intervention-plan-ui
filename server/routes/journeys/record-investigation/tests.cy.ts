@@ -70,7 +70,7 @@ context('test /record-investigation', () => {
       .should('have.attr', 'href')
       .and('match', /record-investigation\/usual-behaviour-presentation$/)
 
-    cy.findByRole('link', { name: "Tes'name User’s triggers" })
+    cy.findByRole('link', { name: "Tes'name User’s risks and triggers" })
       .should('have.attr', 'href')
       .and('match', /record-investigation\/triggers$/)
 
