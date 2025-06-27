@@ -10,7 +10,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     WHY_BEHAVIOUR: 'Why the behaviour occurred',
     EVIDENCE: 'Evidence secured',
     USUAL_BEHAVIOUR: 'Usual behaviour presentation',
-    TRIGGERS: "Tes'name User’s triggers",
+    TRIGGERS: "Tes'name User’s risks and triggers",
     PROTECTIVE_FACTORS: 'Protective factors',
     CHECK: 'Check and save report',
   }
@@ -92,7 +92,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     govukTaskListStatusShouldBe(sections.USUAL_BEHAVIOUR, 'Completed')
     cy.findAllByText('Incomplete').should('have.length', 2)
 
-    completeTextboxSection(sections.TRIGGERS, /triggers$/, "What are Tes'name User’s triggers?")
+    completeTextboxSection(sections.TRIGGERS, /triggers$/, "What are Tes'name User’s risks and triggers?")
 
     stateGuardShouldBounceBackTo(/record-investigation$/)
     cy.findAllByText('Cannot save yet').should('have.length', 1)
@@ -159,7 +159,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
       "What is Tes'name User’s usual behaviour presentation?",
     )
 
-    completeTextboxSection(sections.TRIGGERS, /triggers$/, "What are Tes'name User’s triggers?")
+    completeTextboxSection(sections.TRIGGERS, /triggers$/, "What are Tes'name User’s risks and triggers?")
 
     completeTextboxSection(
       sections.PROTECTIVE_FACTORS,
@@ -284,7 +284,7 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
       sections.USUAL_BEHAVIOUR,
       "What is Tes'name User’s usual behaviour presentation? cypress e2e test",
     )
-    verifySummaryText('Triggers', "What are Tes'name User’s triggers? cypress e2e test")
+    verifySummaryText('Risks and triggers', "What are Tes'name User’s risks and triggers? cypress e2e test")
     verifySummaryText('Protective factors', "What are the protective factors for Tes'name User? cypress e2e test")
     verifyCyaChangeLinks()
   }
@@ -319,11 +319,11 @@ context('test /csip-record/:recordUuid/record-investigation/start', () => {
     getContinueButton().click()
     verifySummaryText(sections.USUAL_BEHAVIOUR, 'usual-behaviour-presentation changed')
 
-    cy.findByRole('link', { name: /Change the description of the prisoner’s triggers/ }).click()
+    cy.findByRole('link', { name: /Change the description of the prisoner’s risks and triggers/ }).click()
     cy.url().should('to.match', /triggers$/)
     cy.get('textarea').clear().type('triggers changed', { delay: 0 })
     getContinueButton().click()
-    verifySummaryText('Triggers', 'triggers changed')
+    verifySummaryText('Risks and triggers', 'triggers changed')
 
     cy.findByRole('link', { name: /Change the description of the prisoner’s protective factors/ }).click()
     cy.url().should('to.match', /protective-factors$/)

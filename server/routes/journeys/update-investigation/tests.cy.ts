@@ -74,7 +74,7 @@ context('test /update-investigation', () => {
       ['evidenceSecured', 'Evidence secured'],
       ['occurrenceReason', 'Why this occurred'],
       ['personsUsualBehaviour', 'Usual behaviour presentation'],
-      ['personsTrigger', 'Triggers'],
+      ['personsTrigger', 'Risks and triggers'],
       ['protectiveFactors', 'Protective factors'],
     ]
 
