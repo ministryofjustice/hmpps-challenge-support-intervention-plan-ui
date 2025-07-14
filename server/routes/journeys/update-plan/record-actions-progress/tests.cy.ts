@@ -6,7 +6,7 @@ context('test /update-plan/record-actions-progress', () => {
   const uuid = uuidV4()
 
   const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
-  const getSummary = () => cy.findByRole('textbox', { name: 'Record any actions or progress (optional)' })
+  const getSummary = () => cy.findByRole('textbox', { name: "Record Tes'name User’s input, actions and progress" })
 
   beforeEach(() => {
     cy.task('reset')
@@ -54,8 +54,10 @@ context('test /update-plan/record-actions-progress', () => {
   }
 
   const validatePageContents = () => {
-    cy.findByRole('heading', { name: 'Record any actions or progress (optional)' }).should('be.visible')
-    cy.title().should('equal', 'Record any actions or progress - Update plan - DPS')
+    cy.findByRole('heading', { name: "Record Tes'name User’s input, actions and progress" }).should('be.visible')
+    cy.title().should('equal', "Record Tes'name User’s input, actions and progress - Update plan - DPS")
+
+    cy.findByText('foobar').should('be.visible')
 
     cy.findByRole('link', { name: /^back/i })
       .should('have.attr', 'href')

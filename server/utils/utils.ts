@@ -94,3 +94,5 @@ export const summarisePrisoner = ({
   status,
   prisonName,
 })
+
+export const possessiveComma = (name: string) => (name.endsWith('s') ? `${name}’` : `${name}’s`)

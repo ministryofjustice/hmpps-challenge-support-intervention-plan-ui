@@ -83,7 +83,7 @@ context('test /csip-records', () => {
 
     cy.get('[id$=csip-plan]').within(() => {
       // Next review date
-      cy.get('.govuk-summary-list__value').eq(2).should('contain.text', '-')
+      cy.get('.govuk-summary-list__value').eq(4).should('contain.text', '-')
 
       // Ensure identified need text is wrapped and doesn't break page boundaries (750px in cypress tests)
       cy.get('.govuk-summary-card__title')
@@ -398,6 +398,8 @@ context('test /csip-records', () => {
     cy.findByText('some person').should('be.visible')
     cy.findByText('plan reason').should('be.visible')
     cy.findByText('25 May 2024').should('be.visible')
+    cy.findByText('3 April 2024').should('be.visible')
+    cy.findByText('20 April 2024').should('be.visible')
 
     cy.get('[id$=csip-plan]').within(() => {
       cy.get('.govuk-summary-card').should('have.length', 3)

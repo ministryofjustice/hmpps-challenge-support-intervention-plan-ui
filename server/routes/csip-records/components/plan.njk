@@ -28,6 +28,14 @@
     rows: [
       {
         key: {
+          text: 'Plan date'
+        },
+        value: {
+          text: (plan.createdAt | formatDisplayDate) or '-'
+        }
+      },
+      {
+        key: {
           text: 'Case Manager'
         },
         value: {
@@ -61,6 +69,14 @@
             }
           ]
         } if isUpdate else undefined
+      },
+      {
+        key: {
+          text: 'First review date'
+        },
+        value: {
+          text: (plan.firstCaseReviewDate | formatDisplayDate) or '-'
+        }
       },
       {
         key: {

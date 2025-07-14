@@ -1323,6 +1323,8 @@ const csipOpen: components['schemas']['CsipRecord'] = {
     caseManager: 'some person',
     reasonForPlan: 'plan reason',
     nextCaseReviewDate: '2024-05-25',
+    createdAt: '2024-04-03',
+    firstCaseReviewDate: '2024-04-20',
     identifiedNeeds: [
       {
         identifiedNeedUuid: 'a0000000-f7b1-4c56-bec8-69e390eb0001',

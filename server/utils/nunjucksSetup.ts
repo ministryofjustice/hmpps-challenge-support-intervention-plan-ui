@@ -3,7 +3,7 @@ import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
-import { convertToTitleCase, initialiseName, sentenceCase } from './utils'
+import { convertToTitleCase, initialiseName, possessiveComma, sentenceCase } from './utils'
 import config from '../config'
 import { buildErrorSummaryList, customErrorOrderBuilder, findError } from '../middleware/validationMiddleware'
 import { formatDateLongMonthConcise, formatDateConcise, todayStringGBFormat } from './datetimeUtils'
@@ -84,7 +84,7 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('customErrorOrderBuilder', customErrorOrderBuilder)
   njkEnv.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
   njkEnv.addFilter('lastNameCommaFirstName', lastNameCommaFirstName)
-  njkEnv.addFilter('possessiveComma', (name: string) => (name.endsWith('s') ? `${name}’` : `${name}’s`))
+  njkEnv.addFilter('possessiveComma', possessiveComma)
   njkEnv.addFilter('softHyphenate', softHyphenate)
   njkEnv.addFilter('datePriority', datePriority)
   njkEnv.addFilter('convertToSortableColumns', convertToSortableColumns)
