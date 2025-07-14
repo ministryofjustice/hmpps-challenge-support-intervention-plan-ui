@@ -78,9 +78,11 @@ context('test /update-plan/check-answers', () => {
 
     cy.findByRole('link', { name: /Change the actions and progress/i }).click()
     cy.url().should('to.match', /record-actions-progress#progression/i)
-    cy.findByRole('textbox', { name: /Record any actions or progress \(optional\)/i }).clear()
+    cy.findByRole('textbox', { name: /Record Tes'name User’s input, actions and progress/i })
+      .clear()
+      .type('a')
     cy.findByRole('button', { name: /continue/i }).click()
-    cy.contains('dt', 'Actions and progress').next().should('include.text', 'Not provided')
+    cy.contains('dt', 'Actions and progress').next().should('include.text', 'a')
   }
 
   const validatePageContents = () => {
