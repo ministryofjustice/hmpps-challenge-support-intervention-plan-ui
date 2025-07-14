@@ -5,7 +5,7 @@ import { injectJourneyDataAndReload } from '../../../../../integration_tests/uti
 context('test /develop-an-initial-plan/record-actions-progress', () => {
   const uuid = uuidV4()
 
-  const getInputTextbox = () => cy.findByRole('textbox', { name: 'Record any actions or progress (optional)' })
+  const getInputTextbox = () => cy.findByRole('textbox', { name: "Record Tes'name User’s input, actions and progress" })
   const getContinueButton = () => cy.findByRole('button', { name: /Continue/ })
 
   beforeEach(() => {
@@ -115,8 +115,11 @@ context('test /develop-an-initial-plan/record-actions-progress', () => {
   }
 
   const validatePageContents = () => {
-    cy.findByRole('heading', { name: /Record any actions or progress \(optional\)/ }).should('be.visible')
+    cy.findByRole('heading', { name: /Record Tes'name User’s input, actions and progress/ }).should('be.visible')
     cy.findByText('Some need').should('be.visible')
+    cy.findByText(
+      "This must include Tes'name User’s input into the identified need. If Tes'name User has not inputted, an explanation is required.",
+    ).should('be.visible')
     getInputTextbox().should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /^back/i })
@@ -125,6 +128,13 @@ context('test /develop-an-initial-plan/record-actions-progress', () => {
   }
 
   const validateErrorMessage = () => {
+    getInputTextbox().clear()
+    getContinueButton().click()
+    cy.findByRole('link', { name: /Enter Tes'name User’s input, actions and progress/i })
+      .should('be.visible')
+      .click()
+    getInputTextbox().should('be.focused')
+
     getInputTextbox().type('a'.repeat(4001), {
       delay: 0,
     })

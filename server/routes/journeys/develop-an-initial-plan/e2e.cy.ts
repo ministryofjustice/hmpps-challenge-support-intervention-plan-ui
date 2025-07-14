@@ -173,9 +173,12 @@ context('test /csip-record/:recordUuid/develop-an-initial-plan/start', () => {
     getContinueButton().click()
 
     stateGuardShouldBounceBackTo(uuid, /\/develop-an-initial-plan\/record-actions-progress\/1$/)
-    cy.findByRole('textbox', { name: 'Record any actions or progress (optional)' }).type('Actions and progress', {
-      delay: 0,
-    })
+    cy.findByRole('textbox', { name: "Record Tes'name User’s input, actions and progress" }).type(
+      'Actions and progress',
+      {
+        delay: 0,
+      },
+    )
 
     getContinueButton().click()
   }

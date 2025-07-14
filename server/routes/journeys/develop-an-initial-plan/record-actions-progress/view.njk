@@ -4,17 +4,22 @@
 
 {% extends "partials/layout.njk" %}
 
-{% set pageTitle = "Record any actions or progress - " + ("Update plan" if isUpdate else "Develop an initial plan") %}
+{% set titleText = "Record " + prisoner | firstNameSpaceLastName | possessiveComma + " input, actions and progress" %}
+{% set pageTitle = titleText + " - " + ("Update plan" if isUpdate else "Develop an initial plan") %}
 
 {% block innerContent %}
     {% include 'base/components/plan-caption.njk' %}
     <label for="progression">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">Record any actions or progress (optional)</h1>
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ titleText }}</h1>
     </label>
 
     <div class="govuk-!-margin-bottom-6">
         <h1 class="govuk-heading-s govuk-!-margin-0">Identified need summary:</h1>
         <p class="break-word">{{ identifiedNeed }}</p>
+    </div>
+
+    <div class="govuk-hint govuk-!-margin-bottom-6">
+        This must include {{ prisoner | firstNameSpaceLastName | possessiveComma }} input into the identified need. If {{ prisoner | firstNameSpaceLastName }} has not inputted, an explanation is required.
     </div>
 
     <form method="post">

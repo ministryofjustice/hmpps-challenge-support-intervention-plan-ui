@@ -1039,7 +1039,7 @@ export interface components {
       )[]
       /** @description Any other actions that are recommended to be considered. */
       actionOther?: string
-      history: components['schemas']['DecisionAndActions'][]
+      history: unknown[]
     }
     /** @description A need identified in the CSIP Plan */
     IdentifiedNeed: {
@@ -1140,6 +1140,8 @@ export interface components {
       identifiedNeeds: components['schemas']['IdentifiedNeed'][]
       /** @description Regular reviews of the CSIP Plan */
       reviews: components['schemas']['Review'][]
+      /** Format: date-time */
+      createdAt?: string
     }
     /** @description A reference data code to categorise various aspects related to a CSIP record */
     ReferenceData: {
@@ -1284,7 +1286,7 @@ export interface components {
       date: string
       /** @description The reasons for the safer custody screening outcome decision. */
       reasonForDecision?: string
-      history: components['schemas']['SaferCustodyScreeningOutcome'][]
+      history: unknown[]
     }
     /** @description The request body to create or update the Safer Custody Screening Outcome on the CSIP referral */
     UpsertSaferCustodyScreeningOutcomeRequest: {

@@ -1,6 +1,6 @@
 import { NewActionsProgressionController } from './controller'
 import { validate } from '../../../../middleware/validationMiddleware'
-import { schema } from '../../develop-an-initial-plan/record-actions-progress/schemas'
+import { schemaFactory } from '../../develop-an-initial-plan/record-actions-progress/schemas'
 import { JourneyRouter } from '../../base/routes'
 
 export const NewActionsProgressionRoutes = () => {
@@ -8,7 +8,7 @@ export const NewActionsProgressionRoutes = () => {
   const controller = new NewActionsProgressionController()
 
   get('/', controller.GET)
-  post('/', validate(schema), controller.POST)
+  post('/', validate(schemaFactory), controller.POST)
 
   return router
 }

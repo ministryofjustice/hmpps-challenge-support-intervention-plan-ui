@@ -6,6 +6,7 @@ export class NewActionsProgressionController {
     return res.render('develop-an-initial-plan/record-actions-progress/view', {
       progression:
         res.locals.formResponses?.['progression'] ?? req.journeyData.plan!.identifiedNeedSubJourney!.progression,
+      identifiedNeed: req.journeyData.plan!.identifiedNeedSubJourney!.identifiedNeed,
       backUrl: 'intervention-details',
       isUpdate: true,
     })
