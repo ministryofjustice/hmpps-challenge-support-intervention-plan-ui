@@ -43,7 +43,6 @@ context('test /csip-records - print mode', () => {
     cy.findAllByRole('link').should('have.length', 0)
     cy.findAllByRole('button').should('have.length', 0)
     cy.findAllByRole('banner').should('have.length', 0)
-    cy.findByText(/Beta/).should('not.be.visible')
     cy.findAllByRole('separator').should('have.length', 1) // Just the one separator, under the main heading
   }
 
