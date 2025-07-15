@@ -29,6 +29,9 @@ export default function routes(services: Services): Router {
   router.get('/how-to-make-a-referral', (_req, res) =>
     res.render('how-to-make-a-referral/view', { showBreadcrumbs: true }),
   )
+  router.get('/accessibility-statement', (_req, res) =>
+    res.render('accessibility-statement/view', { showBreadcrumbs: true }),
+  )
 
   router.use(insertJourneyIdentifier())
 
