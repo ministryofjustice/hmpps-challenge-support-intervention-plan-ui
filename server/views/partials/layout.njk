@@ -1,5 +1,4 @@
 {% extends "govuk/template.njk" %}
-{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "partials/miniProfile/macro.njk" import miniProfile %}
@@ -58,13 +57,6 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {{ govukPhaseBanner({
-    tag: {
-      text: "Beta"
-    },
-    html: 'This is a new service – your <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/NEWCSIP/" target="_blank">feedback</a> will help us to improve it.'
-  }) }}
-
   {% if backUrl %}
     {{ govukBackLink({
       text: backUrlText or "Back",
