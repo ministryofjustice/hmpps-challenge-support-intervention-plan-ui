@@ -22,7 +22,7 @@ context('test /manage-csips', () => {
   it('prisoner found and user has permission to see', () => {
     cy.task('stubGetPrisoner')
     cy.signIn()
-    cy.visit(`/prisoner-csips/A1111AA`)
+    cy.visit(`/prisoner-csips/A1111AA?sort=invalid`)
 
     cy.get('.mini-profile').should('have.length', 1)
     cy.get('.mini-profile-info').children().should('have.length', 5)

@@ -42,12 +42,6 @@ export class PrisonerCsipsController extends BaseJourneyController {
       hrefTemplate: `?${sortQueryParams.toString()}&sort={sort}`,
     })
   }
-
-  POST = async (req: Request, res: Response) => {
-    const queryParams = new URLSearchParams({ query: req.body.query, status: req.body.status, page: '1', sort: '' })
-
-    res.redirect(`${req.originalUrl.split('?')[0]!}?${queryParams.toString()}`)
-  }
 }
 
 function getSortParam(req: Request) {
