@@ -6,7 +6,7 @@ export default function createErrorHandler(production: boolean) {
   return (error: HTTPError, req: Request, res: Response, _next: NextFunction): void => {
     logger.error(`Error handling request for '${req.originalUrl}', user '${res.locals.user?.username}'`, error)
 
-    if (error.status === 404) {
+    if (error.status === 404 || error.responseStatus === 404 || error.deniedPermissionChecks?.length) {
       return res.notFound()
     }
 

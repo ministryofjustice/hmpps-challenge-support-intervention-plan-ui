@@ -913,6 +913,60 @@ const createMockSearchCsipRecord = (params: Partial<CsipSearchResults['content']
   }
 }
 
+const stubSearchCsipRecordsPrisonerCsips = () => {
+  const reviewDate = new Date()
+  reviewDate.setDate(reviewDate.getDate() + 1)
+  const prisoner = { prisonNumber: 'A1111AA', firstName: "Tes'Name", lastName: 'User' }
+  return createHttpStub(
+    'GET',
+    '/csip-api/search/csip-records',
+    {
+      page: { matches: '.*' },
+      size: { equalTo: '25' },
+      query: { matches: '.*' },
+      sort: { matches: '.*' },
+    },
+    undefined,
+    200,
+    {
+      content: [
+        createMockSearchCsipRecord({ prisoner, caseManager: 'Overdue Manager' }),
+        createMockSearchCsipRecord({
+          prisoner,
+          caseManager: 'Soon Due Manager',
+          nextReviewDate: reviewDate.toISOString().substring(0, 10),
+          status: { code: 'CSIP_OPEN', description: 'CSIP open' },
+        }),
+        createMockSearchCsipRecord({
+          prisoner,
+          status: { code: 'AWAITING_DECISION', description: 'Awaiting decision' },
+        }),
+        createMockSearchCsipRecord({ prisoner, status: { code: 'PLAN_PENDING', description: 'Plan pending' } }),
+        createMockSearchCsipRecord({
+          prisoner,
+          status: { code: 'INVESTIGATION_PENDING', description: 'Investigation pending' },
+        }),
+        createMockSearchCsipRecord({
+          prisoner,
+          status: { code: 'REFERRAL_SUBMITTED', description: 'Referral submitted' },
+        }),
+        createMockSearchCsipRecord({ prisoner, status: { code: 'REFERRAL_PENDING', description: 'Referral pending' } }),
+        createMockSearchCsipRecord({
+          prisoner,
+          status: { code: 'NO_FURTHER_ACTION', description: 'No further action' },
+        }),
+        createMockSearchCsipRecord({
+          prisoner,
+          status: { code: 'SUPPORT_OUTSIDE_CSIP', description: 'Support outside of CSIP' },
+        }),
+      ],
+      metadata: {
+        totalElements: 100,
+      },
+    },
+  )
+}
+
 const stubSearchCsipRecords = () => {
   const reviewDate = new Date()
   reviewDate.setDate(reviewDate.getDate() + 1)
@@ -1499,4 +1553,5 @@ export default {
   stubCsipRecordGetSuccessAfterScreeningWithHistory,
   stubCsipRecordSuccessPlanPendingWithDecisionHistory,
   stubCsipRecordSuccessCsipOpenWith,
+  stubSearchCsipRecordsPrisonerCsips,
 }

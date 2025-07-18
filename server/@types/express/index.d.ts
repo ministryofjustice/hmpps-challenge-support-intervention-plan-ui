@@ -149,6 +149,9 @@ export declare global {
       verified?: boolean
       id: string
       journeyData: JourneyData
+      middleware?: {
+        prisonerData?: Prisoner
+      }
 
       logout(done: (err: unknown) => void): void
       systemClientToken: string
