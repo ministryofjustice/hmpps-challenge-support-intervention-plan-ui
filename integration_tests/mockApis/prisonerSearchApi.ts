@@ -12,9 +12,35 @@ const stubGetPrisoner = () => {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       jsonBody: {
+        prisonId: 'LEI',
         firstName: "Tes'Name",
         lastName: 'User',
         prisonerNumber: 'A1111AA',
+        dateOfBirth: '1932-02-02',
+        status: 'On remand',
+        prisonName: 'HMP Kirkham',
+        cellLocation: 'A-1-1',
+      },
+    },
+  })
+}
+
+const stubGetPrisonerOutOfCaseLoad = () => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/prisoner-search-api/prisoner/NOCASELOAD',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        prisonId: 'MDI',
+        firstName: "Tes'Name",
+        lastName: 'User',
+        prisonerNumber: 'NOCASELOAD',
         dateOfBirth: '1932-02-02',
         status: 'On remand',
         prisonName: 'HMP Kirkham',
@@ -58,6 +84,7 @@ const stubGetPrisoner404 = () => {
 
 export default {
   stubGetPrisoner,
+  stubGetPrisonerOutOfCaseLoad,
   stubGetPrisoner500,
   stubGetPrisoner404,
 }

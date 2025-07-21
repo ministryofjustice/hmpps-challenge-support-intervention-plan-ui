@@ -7,6 +7,7 @@ import { JourneyRoutes } from './journeys/routes'
 import { CsipRecordRoutes } from './csip-records/routes'
 import { SearchCsipRoutes } from './manage-csips/routes'
 import { HomePageController } from './controller'
+import { PrisonerCsipRoutes } from './prisoner-csips/routes'
 
 export default function routes(services: Services): Router {
   const router = Router({ mergeParams: true })
@@ -23,6 +24,7 @@ export default function routes(services: Services): Router {
   })
 
   router.use('/csip-records/:recordUuid', CsipRecordRoutes(services))
+  router.use('/prisoner-csips', PrisonerCsipRoutes(services))
   router.use('/manage-csips', SearchCsipRoutes(services))
   router.use('/manage-plans', SearchCsipRoutes(services))
   router.use('/manage-referrals', SearchCsipRoutes(services))

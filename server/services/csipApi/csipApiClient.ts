@@ -58,15 +58,16 @@ export default class CsipApiClient {
     page,
     size,
   }: {
-    prisonCode: string
+    prisonCode?: string
     query?: string
     status?: CsipRecordStatus[] | null
     sort: string
     page: number
     size: number
   }): Promise<CsipSearchResults> {
+    const prisonCodeAppend = prisonCode ? `&prisonCode=${prisonCode}` : ''
     return this.restClient.get<CsipSearchResults>({
-      path: `/search/csip-records?page=${page}&size=${size}&prisonCode=${prisonCode}&query=${encodeURIComponent(query ?? '')}&status=${status ?? ''}&sort=${sort}`,
+      path: `/search/csip-records?page=${page}${prisonCodeAppend}&size=${size}&query=${encodeURIComponent(query ?? '')}&status=${status ?? ''}&sort=${sort}`,
     })
   }
 

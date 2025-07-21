@@ -1,0 +1,71 @@
+{% from "partials/simplePagination/macro.njk" import simplePagination %}
+{% from "partials/statusTag/macro.njk" import statusTag %}
+{% from "partials/sortableTable/macro.njk" import sortableTable %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../manage-csips/components/reviewDate.njk" import reviewDate %}
+
+{% set fullWidth = true %}
+{% set pageTitle = "CSIPs for " + prisoner | firstNameSpaceLastName %}
+{% extends "partials/layout.njk" %}
+
+{% block innerContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">{{ pageTitle }}</h1>
+    </div>
+  </div>
+
+<hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-8">
+
+  {% set csipRecordRows = [] %}
+  {% for csipRecord in records %}
+    {% set csipRecordRows = (csipRecordRows.push([
+      {
+        html: '<a class="govuk-link--no-visited-state" href="' + prisonerProfileUrl + '/prisoner/' + csipRecord.prisoner.prisonNumber + '">' + csipRecord.prisoner | lastNameCommaFirstName + "</a><br/>" + csipRecord.prisoner.prisonNumber
+      },
+      {
+        classes: 'col-width-200',
+        html: csipRecord.prisoner.location | softHyphenate(20)
+      },
+      {
+        text: csipRecord.referralDate | formatSimpleDisplayDate
+      },
+      {
+        classes: 'col-width-200',
+        html: csipRecord.logCode or '-'
+      },
+      {
+        classes: 'col-width-200',
+        html: (csipRecord.caseManager | softHyphenate(20)) or '-'
+      },
+      {
+        html: reviewDate({  date: csipRecord.nextReviewDate | formatSimpleDisplayDate, emptyLabel: '-' })
+      },
+      {
+        html: statusTag({ record: csipRecord })
+      },
+      {
+        html: '<a class="govuk-link govuk-link--no-visited-state" href="/csip-records/' + csipRecord.id + '">View<span class="govuk-visually-hidden"><span id="prisoner-name">' + csipRecord.prisoner | lastNameCommaFirstName + '</span> CSIP record</span></a>'
+      }
+    ] | select()), csipRecordRows) %}
+  {% endfor %}
+
+  {{ sortableTable(paginationParams, {
+    firstCellIsHeader: false,
+    classes: 'table-vertical-align-middle govuk-!-margin-top-6',
+    head: [
+      { text: 'Name and prison number' },
+      { text: "Location" },
+      { text: "Referral date", key: 'referralDate' },
+      { text: "CSIP log code", key: 'logCode' },
+      { text: "Case Manager", key: 'caseManager' },
+      { text: "Next review date", key: 'nextReviewDate' },
+      { text: 'CSIP status', key: 'status' },
+      { text: '' }
+    ] | select() | convertToSortableColumns(sort or 'referralDate,asc', hrefTemplate),
+    rows: csipRecordRows
+  }) }}
+
+{% endblock %}
