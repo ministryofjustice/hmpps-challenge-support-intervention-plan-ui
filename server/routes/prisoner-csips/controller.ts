@@ -13,14 +13,14 @@ export class PrisonerCsipsController extends BaseJourneyController {
     }
 
     const { content: records, metadata } = await this.csipApiService.searchAndSortCsipRecords(req, {
-      sort: filterParams.sort || 'name,asc',
+      sort: filterParams.sort || 'referralDate,asc',
       query: filterParams.query,
       page: filterParams.page,
       size: PAGE_SIZE,
     })
 
     const paginationQueryParams = new URLSearchParams({
-      sort: filterParams.sort || 'name,asc',
+      sort: filterParams.sort || 'referralDate,asc',
       query: filterParams.query,
     })
     const sortQueryParams = new URLSearchParams({ query: filterParams.query })
