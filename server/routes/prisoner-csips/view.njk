@@ -56,15 +56,15 @@
     firstCellIsHeader: false,
     classes: 'table-vertical-align-middle govuk-!-margin-top-6',
     head: [
-      { text: 'Name and prison number', key: 'name' },
-      { text: "Location", key: 'location' },
+      { text: 'Name and prison number' },
+      { text: "Location" },
       { text: "Referral date", key: 'referralDate' },
       { text: "CSIP log code", key: 'logCode' },
       { text: "Case Manager", key: 'caseManager' },
       { text: "Next review date", key: 'nextReviewDate' },
       { text: 'CSIP status', key: 'status' },
       { text: '' }
-    ] | select() | convertToSortableColumns(sort or 'nextReviewDate,asc', hrefTemplate),
+    ] | select() | convertToSortableColumns(sort or 'referralDate,asc', hrefTemplate),
     rows: csipRecordRows
   }) }}
 

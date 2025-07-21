@@ -43,13 +43,13 @@ context('test /manage-csips', () => {
       .should('contain.text', 'results')
 
     // Table headers
-    cy.get('.govuk-table > thead > tr > th > a > button').eq(0).should('have.text', 'Name and prison number')
-    cy.get('.govuk-table > thead > tr > th > a > button').eq(1).should('have.text', 'Location')
-    cy.get('.govuk-table > thead > tr > th > a > button').eq(2).should('have.text', 'Referral date')
-    cy.get('.govuk-table > thead > tr > th > a > button').eq(3).should('have.text', 'CSIP log code')
-    cy.get('.govuk-table > thead > tr > th > a > button').eq(4).should('have.text', 'Case Manager')
-    cy.get('.govuk-table > thead > tr > th > a > button').eq(5).should('have.text', 'Next review date')
-    cy.get('.govuk-table > thead > tr > th > a > button').eq(6).should('have.text', 'CSIP status')
+    cy.get('.govuk-table > thead > tr > th').eq(0).should('have.text', 'Name and prison number')
+    cy.get('.govuk-table > thead > tr > th').eq(1).should('have.text', 'Location')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(0).should('have.text', 'Referral date')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(1).should('have.text', 'CSIP log code')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(2).should('have.text', 'Case Manager')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(3).should('have.text', 'Next review date')
+    cy.get('.govuk-table > thead > tr > th > a > button').eq(4).should('have.text', 'CSIP status')
 
     // All statuses are represented in the table
     cy.get('.govuk-table__body > tr > td > strong').eq(0).should('have.text', 'CSIP closed')
