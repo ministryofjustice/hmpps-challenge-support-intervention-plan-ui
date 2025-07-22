@@ -77,10 +77,12 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
     req.flash(FLASH_KEY__FORM_RESPONSES, JSON.stringify(req.body))
 
     const flattened = z.flattenError(result.error)
-    // { formErrors: string[], fieldErrors: { [key: string]: string[] } }
 
     const deduplicatedFieldErrors = Object.fromEntries(
-      Object.entries(flattened.fieldErrors).map(([key, value]) => [key, [...new Set(value || [])]]),
+      Object.entries(flattened.fieldErrors).map(([key, value]) => [
+        key,
+        Array.isArray(value) ? [...new Set(value)] : [],
+      ]),
     )
 
     if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'e2e-test') {
