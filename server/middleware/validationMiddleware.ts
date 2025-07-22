@@ -76,9 +76,13 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
     }
     req.flash(FLASH_KEY__FORM_RESPONSES, JSON.stringify(req.body))
 
+    const flattened = z.flattenError(result.error)
+    // { formErrors: string[], fieldErrors: { [key: string]: string[] } }
+
     const deduplicatedFieldErrors = Object.fromEntries(
-      Object.entries(result.error.flatten().fieldErrors).map(([key, value]) => [key, [...new Set(value || [])]]),
+      Object.entries(flattened.fieldErrors).map(([key, value]) => [key, [...new Set(value || [])]]),
     )
+
     if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'e2e-test') {
       // eslint-disable-next-line no-console
       console.error(
@@ -103,8 +107,10 @@ const validateDateBase = (requiredErr: string, invalidErr: string) => {
       return `${value[0]}-${month}-${date}T00:00:00Z` // We put a full timestamp on it so it gets parsed as UTC time and the date doesn't get changed due to locale
     })
     .transform(date => parseISO(date))
-    .superRefine((date, ctx) => {
-      return isValid(date) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: invalidErr })
+    .check(ctx => {
+      if (!isValid(ctx.value)) {
+        ctx.issues.push({ code: 'custom', message: invalidErr, input: ctx.value })
+      }
     })
 }
 
@@ -114,23 +120,26 @@ export const validateTransformDate = (requiredErr: string, invalidErr: string) =
 
 export const validateTransformPastDate = (requiredErr: string, invalidErr: string, maxErr: string) => {
   return validateDateBase(requiredErr, invalidErr)
-    .superRefine(
-      (date, ctx) => isBefore(date, new Date()) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: maxErr }),
-    )
+    .check(ctx => {
+      const date = ctx.value
+      if (!isBefore(date, new Date())) {
+        ctx.issues.push({ code: 'custom', message: maxErr, input: ctx.value })
+      }
+    })
     .transform(date => date.toISOString().substring(0, 10))
 }
 
 export const validateTransformFutureDate = (requiredErr: string, invalidErr: string, maxErr: string) => {
   return validateDateBase(requiredErr, invalidErr)
-    .superRefine((date, ctx) => {
+    .check(ctx => {
       const today = new Date()
       today.setHours(0)
       today.setMinutes(0)
       today.setSeconds(0)
       today.setMilliseconds(0)
-      return (
-        isAfter(date, today) || isEqual(date, today) || ctx.addIssue({ code: z.ZodIssueCode.custom, message: maxErr })
-      )
+      if (!isAfter(ctx.value, today) && !isEqual(ctx.value, today)) {
+        ctx.issues.push({ code: 'custom', message: maxErr, input: ctx.value })
+      }
     })
     .transform(date => date.toISOString().substring(0, 10))
 }

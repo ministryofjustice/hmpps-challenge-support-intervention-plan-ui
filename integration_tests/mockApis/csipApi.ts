@@ -1271,7 +1271,7 @@ export const basicCsip = {
         factorType: { code: `CODE4`, description: 'Text with a TLA' },
       },
     ],
-    isSaferCustodyTeamInformed: YES_NO_ANSWER.Enum.YES,
+    isSaferCustodyTeamInformed: YES_NO_ANSWER.enum.YES,
     otherInformation: `Text
 
     • Bullet 1
