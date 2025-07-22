@@ -150,7 +150,7 @@ context('test /update-actions-progress/:uuid', () => {
     })
     getContinueButton().click()
     cy.findByRole('link', {
-      name: /Update on actions and progress must be [0-9,]+ characters or less/i,
+      name: /^Update on actions and progress must be [0-9,]+ characters or less$/i,
     })
       .should('be.visible')
       .click()

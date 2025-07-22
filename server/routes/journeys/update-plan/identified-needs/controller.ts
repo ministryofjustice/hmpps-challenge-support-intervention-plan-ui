@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { PatchPlanController } from '../../base/patchPlanController'
 import { identifiedNeedSorter } from '../../../../utils/sorters'
+import { getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldUtils'
 
 export class UpdateIdentifiedNeedsController extends PatchPlanController {
   GET = async (req: Request, res: Response) => {
@@ -21,6 +22,10 @@ export class UpdateIdentifiedNeedsController extends PatchPlanController {
         closedDate: need.closedDate ?? null,
         progression: need.progression ?? null,
         identifiedNeedUuid: need.identifiedNeedUuid,
+        canEditIntervention:
+          getMaxCharsAndThresholdForAppend(res.locals.user.displayName, need.intervention).maxLengthChars > 0,
+        canEditProgression:
+          getMaxCharsAndThresholdForAppend(res.locals.user.displayName, need.progression).maxLengthChars > 0,
       })),
     }
     req.journeyData.isUpdate = true

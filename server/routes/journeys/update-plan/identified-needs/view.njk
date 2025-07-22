@@ -111,7 +111,7 @@
                   classes: "govuk-link--no-visited-state"
                 }
               ]
-            } if not need.closedDate else undefined
+            } if need.canEditIntervention and not need.closedDate else undefined
           },
           {
             key: {
@@ -129,7 +129,7 @@
                   classes: "govuk-link--no-visited-state"
                 }
               ]
-            } if not need.closedDate else undefined
+            } if need.canEditProgression and not need.closedDate else undefined
           },
           {
             key: {

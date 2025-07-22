@@ -6,7 +6,7 @@ import { getMaxCharsAndThresholdForAppend } from '../../../../utils/appendFieldU
 const PROGRESSION_REQUIRED_MSG = 'Enter an update on actions and progress'
 
 const TOO_LONG_ERROR_MSG = (maxLengthChars: number) =>
-  `'Update on actions and progress must be ${maxLengthChars.toLocaleString()} characters or less`
+  `Update on actions and progress must be ${maxLengthChars.toLocaleString()} characters or less`
 
 export const schemaFactory = async (req: Request, res: Response) => {
   const { identifiedNeedUuid } = req.params
