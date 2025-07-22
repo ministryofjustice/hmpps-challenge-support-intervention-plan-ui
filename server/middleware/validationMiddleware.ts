@@ -76,10 +76,8 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
     }
     req.flash(FLASH_KEY__FORM_RESPONSES, JSON.stringify(req.body))
 
-    const flattened = z.flattenError(result.error)
-
     const deduplicatedFieldErrors = Object.fromEntries(
-      Object.entries(flattened.fieldErrors).map(([key, value]) => [
+      Object.entries(z.flattenError(result.error).fieldErrors).map(([key, value]) => [
         key,
         Array.isArray(value) ? [...new Set(value)] : [],
       ]),
