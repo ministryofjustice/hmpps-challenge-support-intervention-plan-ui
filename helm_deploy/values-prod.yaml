@@ -22,4 +22,4 @@ generic-service:
     FEATURE_CHANGE_FLOWS: "false"
 
 generic-prometheus-alerts:
-  alertSeverity: hmpps-alerts-api-prod
+  alertSeverity: maintenance-alerts-prod-warning
