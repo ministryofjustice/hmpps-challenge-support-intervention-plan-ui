@@ -32,5 +32,5 @@ generic-service:
       - prisons
 
 generic-prometheus-alerts:
-  alertSeverity: hmpps-alerts-api-non-prod
+  alertSeverity: maintenance-alerts-non-prod-warning
   businessHoursOnly: true
