@@ -82,7 +82,7 @@
     "@ministryofjustice/hmpps-prison-permissions-lib": "^0.0.1-alpha.15",
     "@opentelemetry/api": "~1.8.0",
     "@sentry/cli": "^2.47.1",
-    "@sentry/node": "^9.40.0",
+    "@sentry/node": "^10.2.0",
     "agentkeepalive": "^4.6.0",
     "applicationinsights": "^2.9.7",
     "body-parser": "^2.2.0",
