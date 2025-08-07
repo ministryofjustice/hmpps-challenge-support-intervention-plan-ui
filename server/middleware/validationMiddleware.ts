@@ -122,6 +122,34 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
       deduplicatedFieldErrors['incidentTime-hour'] = ['Enter a time using the 24-hour clock']
     }
 
+    // Handle conditional validation for involvement journey
+    // When involvementType is missing and isStaffAssaulted is not provided, add missing isStaffAssaulted error
+    if (
+      (req.baseUrl.includes('/involvement') || req.originalUrl.includes('/involvement')) &&
+      deduplicatedFieldErrors['involvementType'] &&
+      !deduplicatedFieldErrors['isStaffAssaulted'] &&
+      (req.body['isStaffAssaulted'] === undefined ||
+        req.body['isStaffAssaulted'] === '' ||
+        req.body['isStaffAssaulted'].trim().length === 0)
+    ) {
+      // Determine if this is proactive or reactive referral to use correct error message
+      const isProactive = !!req.journeyData?.referral?.isProactiveReferral
+      const errorMessage = `Select if any staff were assaulted ${isProactive ? 'as a result of the behaviour' : 'during the incident'} or not`
+      deduplicatedFieldErrors['isStaffAssaulted'] = [errorMessage]
+    }
+
+    // Handle conditional validation for involvement journey - assaultedStaffName error
+    // When involvementType is missing and isStaffAssaulted=true but no staff name provided, add missing assaultedStaffName error
+    if (
+      (req.baseUrl.includes('/involvement') || req.originalUrl.includes('/involvement')) &&
+      deduplicatedFieldErrors['involvementType'] &&
+      !deduplicatedFieldErrors['assaultedStaffName'] &&
+      req.body['isStaffAssaulted'] === 'true' &&
+      (!req.body['assaultedStaffName'] || req.body['assaultedStaffName'].trim().length === 0)
+    ) {
+      deduplicatedFieldErrors['assaultedStaffName'] = ['Enter the names of staff assaulted']
+    }
+
     req.flash(FLASH_KEY__VALIDATION_ERRORS, JSON.stringify(deduplicatedFieldErrors))
     // Remove any hash from the URL by appending an empty hash string
     return res.redirect(`${req.baseUrl}#`)
