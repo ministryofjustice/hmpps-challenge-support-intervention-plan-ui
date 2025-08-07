@@ -38,8 +38,21 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
 
   return createSchema({
     incidentDate: validateTransformPastDate(INCIDENT_DATE_MSG, INCIDENT_DATE_INVALID_MSG, INCIDENT_DATE_FUTURE_MSG),
-    hour: z.string(),
+    // Add direct validation for hour field to catch values like "25"
+    hour: z.string().superRefine((val, ctx) => {
+      // Only validate when hour has a value
+      if (val && !parse24Hour(val).success) {
+        // Add the issue to 'incidentTime-hour' (which is the field name expected by the template)
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Enter a time using the 24-hour clock',
+          path: ['incidentTime-hour'], // Add error to the special field
+        })
+      }
+    }),
     minute: z.string(),
+    // Add explicit error field that will match the template's expected field name
+    'incidentTime-hour': z.string().optional(),
     incidentLocation: z
       .string({ message: INCIDENT_LOCATION_MSG })
       .transform(validateAndTransformReferenceData(incidentLocationMap, INCIDENT_LOCATION_MSG)),
@@ -48,10 +61,21 @@ export const schemaFactory = (csipApiService: CsipApiService) => async (req: Req
       .transform(validateAndTransformReferenceData(incidentTypeMap, INCIDENT_TYPE_MSG)),
   })
     .superRefine((val, ctx) => {
+      // Case 1: Both hour and minute are provided but at least one is invalid
       if (
-        !!val.hour?.length !== !!val.minute?.length ||
-        (val.hour?.length && val.minute?.length && (!parse24Hour(val.hour).success || !parseMinute(val.minute).success))
+        val.hour?.length &&
+        val.minute?.length &&
+        (!parse24Hour(val.hour).success || !parseMinute(val.minute).success)
       ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Enter a time using the 24-hour clock',
+          path: ['incidentTime-hour'],
+        })
+      }
+
+      // Case 2: Only one of hour or minute is provided (incomplete time)
+      else if (!!val.hour?.length !== !!val.minute?.length) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Enter a time using the 24-hour clock',
