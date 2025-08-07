@@ -1,0 +1,41 @@
+{
+  "results": {
+    "tool": {
+      "name": "cypress"
+    },
+    "summary": {
+      "tests": 2,
+      "failed": 0,
+      "passed": 2,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0,
+      "start": 1754581685695,
+      "stop": 1754581698400
+    },
+    "tests": [
+      {
+        "name": "test /develop-an-initial-plan should try out all cases",
+        "status": "passed",
+        "duration": 4235,
+        "rawStatus": "passed",
+        "type": "e2e",
+        "filePath": "server/routes/journeys/develop-an-initial-plan/tests.cy.ts",
+        "retries": 0,
+        "flaky": false,
+        "browser": "electron 118.0.5993.159"
+      },
+      {
+        "name": "test /develop-an-initial-plan should use screen reader callouts",
+        "status": "passed",
+        "duration": 3847,
+        "rawStatus": "passed",
+        "type": "e2e",
+        "filePath": "server/routes/journeys/develop-an-initial-plan/tests.cy.ts",
+        "retries": 0,
+        "flaky": false,
+        "browser": "electron 118.0.5993.159"
+      }
+    ]
+  }
+}

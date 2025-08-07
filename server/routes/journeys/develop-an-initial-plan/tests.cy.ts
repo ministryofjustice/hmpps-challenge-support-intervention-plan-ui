@@ -87,7 +87,8 @@ context('test /develop-an-initial-plan', () => {
     getCaseManagerTextField().should('be.visible')
     getContinueButton().click()
 
-    cy.findByRole('link', { name: /Enter the Case Manager’s name/i })
+    cy.get('.govuk-error-summary').should('be.visible')
+    cy.findByRole('link', { name: /Enter the Case Manager's name/i })
       .should('be.visible')
       .click()
 

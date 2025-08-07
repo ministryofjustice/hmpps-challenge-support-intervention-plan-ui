@@ -99,12 +99,15 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
       ]),
     )
 
-    if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'e2e-test') {
-      // eslint-disable-next-line no-console
-      console.error(
-        `There were validation errors: ${JSON.stringify(result.error.format())} || body was: ${JSON.stringify(req.body)}`,
-      )
+    if (
+      (req.baseUrl.includes('/develop-an-initial-plan') || req.originalUrl.includes('/develop-an-initial-plan')) &&
+      req.body['isCaseManager'] === 'false' &&
+      (!req.body['caseManager'] || req.body['caseManager'].trim().length === 0) &&
+      !deduplicatedFieldErrors['caseManager']
+    ) {
+      deduplicatedFieldErrors['caseManager'] = ["Enter the Case Manager's name"]
     }
+
     req.flash(FLASH_KEY__VALIDATION_ERRORS, JSON.stringify(deduplicatedFieldErrors))
     // Remove any hash from the URL by appending an empty hash string
     return res.redirect(`${req.baseUrl}#`)
