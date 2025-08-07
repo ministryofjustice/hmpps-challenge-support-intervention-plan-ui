@@ -99,6 +99,8 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
       ]),
     )
 
+    // Handle conditional validation for develop-an-initial-plan journey
+    // When isCaseManager='false' and caseManager is empty, add missing caseManager error
     if (
       (req.baseUrl.includes('/develop-an-initial-plan') || req.originalUrl.includes('/develop-an-initial-plan')) &&
       req.body['isCaseManager'] === 'false' &&
@@ -106,6 +108,18 @@ export const validate = (schema: z.ZodTypeAny | SchemaFactory): RequestHandler =
       !deduplicatedFieldErrors['caseManager']
     ) {
       deduplicatedFieldErrors['caseManager'] = ["Enter the Case Manager's name"]
+    }
+
+    // Handle conditional validation for update-referral/details journey
+    // When incidentDate is missing and time fields have issues, add missing time validation error
+    if (
+      (req.baseUrl.includes('/update-referral/details') || req.originalUrl.includes('/update-referral/details')) &&
+      deduplicatedFieldErrors['incidentDate'] &&
+      !deduplicatedFieldErrors['incidentTime-hour'] &&
+      (req.body['hour'] || req.body['minute']) &&
+      req.body['hour'] !== req.body['minute'] // One field filled but not both, or invalid values
+    ) {
+      deduplicatedFieldErrors['incidentTime-hour'] = ['Enter a time using the 24-hour clock']
     }
 
     req.flash(FLASH_KEY__VALIDATION_ERRORS, JSON.stringify(deduplicatedFieldErrors))
