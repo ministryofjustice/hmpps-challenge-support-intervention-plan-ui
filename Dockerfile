@@ -10,8 +10,8 @@ LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
 ENV TZ=Europe/London
 RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
 
-RUN addgroup --gid 2000 --system appgroup && \
-        adduser --uid 2000 --system appuser --gid 2000
+RUN addgroup -g 2000 -S appgroup && \
+        adduser -u 2000 -S appuser -G appgroup
 
 WORKDIR /app
 
@@ -25,11 +25,9 @@ ENV BUILD_NUMBER=${BUILD_NUMBER}
 ENV GIT_REF=${GIT_REF}
 ENV GIT_BRANCH=${GIT_BRANCH}
 
-RUN apt-get update && \
-        apt-get upgrade -y && \
-        apt-get dist-upgrade -y && \
-        apt-get autoremove -y && \
-        rm -rf /var/lib/apt/lists/*
+RUN apk update && \
+        apk upgrade && \
+        rm -rf /var/cache/apk/*
 
 # Stage: build assets
 FROM base as build
