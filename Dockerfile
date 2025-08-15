@@ -1,5 +1,5 @@
 # Stage: base image
-FROM node:24.5.0-alpine3.22 as base
+FROM node:24.6.0-alpine3.22 as base
 
 ARG BUILD_NUMBER
 ARG GIT_REF
