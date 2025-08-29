@@ -45,7 +45,7 @@ const auditConfig = () => ({
 
 export default {
   buildNumber: get('BUILD_NUMBER', '1_0_0', requiredInProduction),
-  productId: get('PRODUCT_ID', 'UNASSIGNED', requiredInProduction),
+  productId: get('PRODUCT_ID', 'DPS094', requiredInProduction),
   gitRef: get('GIT_REF', 'xxxxxxxxxxxxxxxxxxx', requiredInProduction),
   branchName: get('GIT_BRANCH', 'xxxxxxxxxxxxxxxxxxx', requiredInProduction),
   production,
@@ -65,6 +65,7 @@ export default {
   apis: {
     hmppsAuth: {
       url: get('HMPPS_AUTH_URL', 'http://localhost:9090/auth', requiredInProduction),
+      healthPath: '/health/ping',
       externalUrl: get('HMPPS_AUTH_EXTERNAL_URL', get('HMPPS_AUTH_URL', 'http://localhost:9090/auth')),
       timeout: {
         response: Number(get('HMPPS_AUTH_TIMEOUT_RESPONSE', 10000)),
@@ -78,6 +79,7 @@ export default {
     },
     tokenVerification: {
       url: get('TOKEN_VERIFICATION_API_URL', 'http://localhost:8100', requiredInProduction),
+      healthPath: '/health/ping',
       timeout: {
         response: Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000)),
         deadline: Number(get('TOKEN_VERIFICATION_API_TIMEOUT_DEADLINE', 5000)),
@@ -87,6 +89,7 @@ export default {
     },
     csipApi: {
       url: get('CSIP_API_URL', 'http://localhost:8082', requiredInProduction),
+      healthPath: '/health/ping',
       timeout: {
         response: Number(get('CSIP_API_TIMEOUT_RESPONSE', 20000)),
         deadline: Number(get('CSIP_API_TIMEOUT_DEADLINE', 20000)),
@@ -95,6 +98,7 @@ export default {
     },
     prisonerSearchApi: {
       url: get('PRISONER_SEARCH_API_URL', 'http://localhost:8082', requiredInProduction),
+      healthPath: '/health/ping',
       timeout: {
         response: Number(get('PRISONER_SEARCH_API_TIMEOUT_RESPONSE', 20000)),
         deadline: Number(get('PRISONER_SEARCH_API_TIMEOUT_DEADLINE', 20000)),
@@ -103,6 +107,7 @@ export default {
     },
     prisonApi: {
       url: get('PRISON_API_URL', 'http://127.0.0.1:8080', requiredInProduction),
+      healthPath: '/health/ping',
       timeout: {
         response: Number(get('PRISON_API_TIMEOUT_RESPONSE', 10000)),
         deadline: Number(get('PRISON_API_TIMEOUT_DEADLINE', 10000)),
@@ -110,10 +115,13 @@ export default {
       agent: new AgentConfig(Number(get('PRISON_API_TIMEOUT_RESPONSE', 10000))),
     },
     componentApi: {
+      url: get('COMPONENT_API_URL', 'http://127.0.0.1:8082', requiredInProduction),
+      healthPath: '/health',
       timeout: {
         response: Number(get('COMPONENT_API_TIMEOUT_RESPONSE', 2500)),
         deadline: Number(get('COMPONENT_API_TIMEOUT_DEADLINE', 2500)),
       },
+      agent: new AgentConfig(Number(get('COMPONENT_API_TIMEOUT_RESPONSE', 2500))),
     },
   },
   serviceUrls: {

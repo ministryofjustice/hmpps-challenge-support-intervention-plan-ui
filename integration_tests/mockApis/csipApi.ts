@@ -30,6 +30,10 @@ const createHttpStub = (
   })
 }
 
+const ping = () => {
+  return createBasicHttpStub('GET', '/csip-api/health/ping', 200)
+}
+
 const stubAreaOfWork = () => {
   return createBasicHttpStub('GET', '/csip-api/reference-data/area-of-work', 200, [
     {
@@ -1229,22 +1233,22 @@ export const basicCsip = {
     • Bullet 1
     • Bullet 2
     • Bullet 3
-    
+
     Paragraph
-    
+
     <script>alert('concerns');</script>
-    
+
     <button>this button should be escaped</button>`,
     knownReasons: `Text
 
     • Bullet 1
     • Bullet 2
     • Bullet 3
-    
+
     Paragraph
-    
+
     <script>alert('xss');</script>
-    
+
     <button>also should be escaped</button>`,
     contributoryFactors: [
       {
@@ -1259,11 +1263,11 @@ export const basicCsip = {
         • Bullet 1
         • Bullet 2
         • Bullet 3
-        
+
         Paragraph
-        
+
         <script>alert('xss');</script>
-        
+
         <button>factor comment button should be escaped</button>`,
       },
       {
@@ -1277,11 +1281,11 @@ export const basicCsip = {
     • Bullet 1
     • Bullet 2
     • Bullet 3
-    
+
     Paragraph
-    
+
     <script>alert('xss');</script>
-    
+
     <button>otherinfo button should be escaped</button>`,
   },
 }
@@ -1332,12 +1336,12 @@ const csipOpen: components['schemas']['CsipRecord'] = {
       date: '2024-08-01',
       nextSteps: `stuff up
           and there
-          
+
           whilst also being down here`,
       actions: ['OPEN_CSIP_ALERT'],
       actionOther: `some action
           with another one
-          
+
           a final action`,
     },
   },
@@ -1457,12 +1461,12 @@ const planPendingBody: components['schemas']['CsipRecord'] = {
       date: '2024-08-01',
       nextSteps: `stuff up
           and there
-          
+
           whilst also being down here`,
       actions: ['OPEN_CSIP_ALERT'],
       actionOther: `some action
           with another one
-          
+
           a final action`,
     },
   },
@@ -1476,6 +1480,7 @@ const stubCsipRecordSuccessCsipOpen = (reviews = csipOpen.plan!.reviews) => {
 }
 
 export default {
+  stubCSIPPing: ping,
   stubAreaOfWork,
   stubIncidentLocation,
   stubIncidentType,

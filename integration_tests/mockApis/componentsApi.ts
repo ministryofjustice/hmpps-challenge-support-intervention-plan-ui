@@ -1,5 +1,16 @@
 import { stubFor } from './wiremock'
 
+const ping = () =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/components/health',
+    },
+    response: {
+      status: 200,
+    },
+  })
+
 const stubComponentsFail = () => {
   return stubFor({
     request: {
@@ -105,6 +116,7 @@ const stubComponentsNoCsip = () => {
 }
 
 export default {
+  stubComponentsPing: ping,
   stubComponents,
   stubComponentsNoCsip,
   stubComponentsFail,
