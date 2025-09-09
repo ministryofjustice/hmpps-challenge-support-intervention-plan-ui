@@ -1,13 +1,14 @@
 import { stubFor } from './wiremock'
 
-const ping = () =>
+const ping = (status = 200) =>
   stubFor({
+    priority: 6,
     request: {
       method: 'GET',
       urlPattern: '/components/health',
     },
     response: {
-      status: 200,
+      status,
     },
   })
 

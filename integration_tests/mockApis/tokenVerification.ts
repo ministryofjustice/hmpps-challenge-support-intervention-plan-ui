@@ -4,6 +4,7 @@ import { stubFor } from './wiremock'
 export default {
   stubTokenVerificationPing: (httpStatus = 200): SuperAgentRequest =>
     stubFor({
+      priority: 6,
       request: {
         method: 'GET',
         urlPattern: '/verification/health/ping',

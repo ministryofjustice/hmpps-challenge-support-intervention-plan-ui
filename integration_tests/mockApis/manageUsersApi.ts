@@ -19,14 +19,15 @@ const stubUser = (name: string = 'john smith') =>
     },
   })
 
-const ping = () =>
+const ping = (status = 200) =>
   stubFor({
+    priority: 6,
     request: {
       method: 'GET',
       urlPattern: '/manage-users-api/health/ping',
     },
     response: {
-      status: 200,
+      status,
     },
   })
 

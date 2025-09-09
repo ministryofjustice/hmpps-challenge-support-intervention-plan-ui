@@ -30,9 +30,17 @@ const createHttpStub = (
   })
 }
 
-const ping = () => {
-  return createBasicHttpStub('GET', '/csip-api/health/ping', 200)
-}
+const ping = (status = 200) =>
+  stubFor({
+    priority: 6,
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/health/ping',
+    },
+    response: {
+      status,
+    },
+  })
 
 const stubAreaOfWork = () => {
   return createBasicHttpStub('GET', '/csip-api/reference-data/area-of-work', 200, [
