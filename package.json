@@ -173,6 +173,6 @@
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.2",
     "typescript": "^5.9.2",
-    "wait-on": "^8.0.5"
+    "wait-on": "^9.0.0"
   }
 }
