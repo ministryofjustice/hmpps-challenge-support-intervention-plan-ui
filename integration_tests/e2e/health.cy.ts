@@ -1,6 +1,11 @@
 import { expect } from 'chai'
+import { resetStubs } from '../mockApis/wiremock'
 
 context('Healthcheck', () => {
+  afterEach(() => {
+    resetStubs()
+  })
+
   context('All healthy', () => {
     beforeEach(() => {
       cy.task('reset')
