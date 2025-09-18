@@ -56,7 +56,7 @@ context('Healthcheck', () => {
         expect(response.body.components.prisonApi.status).to.equal('UP')
       })
     })
-    
+
     it('Ping is visible and UP', () => {
       cy.request('/ping').its('body.status').should('equal', 'UP')
     })
