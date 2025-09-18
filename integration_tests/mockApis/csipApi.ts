@@ -1,3 +1,18 @@
+/**
+ * IMPORTANT:
+ * This mock API file is whitespace-sensitive.
+ *
+ * The tests rely on the exact whitespace in this file.
+ * Do not add, remove, or alter any spaces, tabs, or newlines.
+ *
+ * NOTE: Some IDEs/editors may automatically remove or adjust
+ * whitespace (e.g. trimming trailing spaces or collapsing
+ * blank lines). Please ensure your editor is configured to
+ * leave whitespace unchanged in this file.
+ *
+ * Any change to whitespace may cause tests to fail.
+ */
+
 import { stubFor } from './wiremock'
 import { YES_NO_ANSWER } from '../../server/routes/journeys/referral/safer-custody/schemas'
 import { CsipRecord, CsipSearchResults, ReferenceData } from '../../server/@types/csip/csipApiTypes'
