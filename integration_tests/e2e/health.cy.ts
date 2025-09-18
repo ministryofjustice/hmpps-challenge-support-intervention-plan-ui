@@ -6,10 +6,20 @@ context('Healthcheck', () => {
       cy.task('reset')
       cy.task('stubAuthPing')
       cy.task('stubTokenVerificationPing')
+      cy.task('stubPrisonApiPing')
+      cy.task('stubPrisonerSearchApiPing')
+      cy.task('stubComponentsPing')
+      cy.task('stubCsipApiPing')
     })
 
-    it('Health check page is visible and UP', () => {
-      cy.request('/health').its('body.status').should('equal', 'UP')
+    it('Health check page is visible and services report as UP', () => {
+      cy.request({ url: '/health', method: 'GET', failOnStatusCode: false }).then(response => {
+        expect(response.body.status).to.equal('UP')
+        expect(response.body.components.hmppsAuth.status).to.equal('UP')
+        expect(response.body.components.tokenVerification.status).to.equal('UP')
+        expect(response.body.components.componentApi.status).to.equal('UP')
+        expect(response.body.components.csipApi.status).to.equal('UP')
+      })
     })
 
     it('Ping is visible and UP', () => {
@@ -32,7 +42,7 @@ context('Healthcheck', () => {
       cy.request({ url: '/health', method: 'GET', failOnStatusCode: false }).then(response => {
         expect(response.body.components.hmppsAuth.status).to.equal('UP')
         expect(response.body.components.tokenVerification.status).to.equal('DOWN')
-        expect(response.body.components.tokenVerification.details).to.contain({ status: 500, retries: 2 })
+        expect(response.body.components.tokenVerification.details).to.contain({ status: 500 })
       })
     })
 

@@ -1,5 +1,16 @@
 import { stubFor } from './wiremock'
 
+const ping = () =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/prison-api/health/ping',
+    },
+    response: {
+      status: 200,
+    },
+  })
+
 const stubGetPrisonerImage = () => {
   return stubFor({
     request: {
@@ -75,6 +86,7 @@ const stubGetCaseLoadsFail = () => {
 }
 
 export default {
+  stubPrisonApiPing: ping,
   stubGetPrisonerImage,
   stubGetOneCaseLoad,
   stubGetCaseloadsNoneActive,
