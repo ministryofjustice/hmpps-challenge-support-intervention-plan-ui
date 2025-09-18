@@ -30,6 +30,17 @@ const createHttpStub = (
   })
 }
 
+const ping = () =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/csip-api/health/ping',
+    },
+    response: {
+      status: 200,
+    },
+  })
+
 const stubAreaOfWork = () => {
   return createBasicHttpStub('GET', '/csip-api/reference-data/area-of-work', 200, [
     {
@@ -1476,6 +1487,7 @@ const stubCsipRecordSuccessCsipOpen = (reviews = csipOpen.plan!.reviews) => {
 }
 
 export default {
+  stubCsipApiPing: ping,
   stubAreaOfWork,
   stubIncidentLocation,
   stubIncidentType,
