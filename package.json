@@ -76,7 +76,7 @@
     "@cypress/code-coverage": "^3.14.6",
     "@microsoft/applicationinsights-clickanalytics-js": "^3.3.9",
     "@microsoft/applicationinsights-web": "^3.3.9",
-    "@ministryofjustice/frontend": "^5.1.5",
+    "@ministryofjustice/frontend": "^6.0.0",
     "@ministryofjustice/hmpps-auth-clients": "^0.0.3",
     "@ministryofjustice/hmpps-connect-dps-components": "^2.2.0",
     "@ministryofjustice/hmpps-monitoring": "^0.0.1",
