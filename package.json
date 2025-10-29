@@ -28,7 +28,7 @@
     "rebuild": "npm run clean && npm i && npm run build",
     "swagger": "npx openapi-typescript https://csip-api-dev.hmpps.service.justice.gov.uk/v3/api-docs > ./server/@types/csip/index.d.ts",
     "precommit:secrets": "gitleaks git --pre-commit --redact --staged --verbose --config .gitleaks/config.toml --gitleaks-ignore-path .gitleaks/.gitleaksignore",
-    "precommit:lint": "node_modules/.bin/lint-staged",
+    "precommit:lint": "lint-staged",
     "precommit:verify": "npm run typecheck && npm test",
     "setup": "npm ci && hmpps-npm-script-run-allowlist"
   },
