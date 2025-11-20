@@ -65,6 +65,7 @@ context('test /screen', () => {
 
     cy.url().should('to.match', /\/check-answers$/)
     cy.go('back')
+    cy.location('pathname').should('eq', `/${PAGE_URL}`)
 
     cy.get('input[name="_csrf"]').first().invoke('val', 'changed value')
 
