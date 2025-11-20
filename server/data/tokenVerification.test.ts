@@ -12,6 +12,7 @@ describe('token verification api tests', () => {
   })
 
   afterEach(() => {
+    nock.abortPendingRequests()
     nock.cleanAll()
   })
 
