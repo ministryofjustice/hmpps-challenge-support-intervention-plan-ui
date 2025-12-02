@@ -91,7 +91,6 @@
     "@opentelemetry/sdk-trace-base": "2.5.1",
     "@sentry/opentelemetry": "10.76.2",
     "agentkeepalive": "^4.6.0",
-    "body-parser": "^2.3.0",
     "bunyan": "^1.8.15",
     "bunyan-format": "^0.2.1",
     "compression": "^1.8.2",
