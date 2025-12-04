@@ -3,7 +3,7 @@ import hmppsConfig from '@ministryofjustice/eslint-config-hmpps'
 export default [
   ...hmppsConfig({
     extraIgnorePaths: ['assets'],
-    extraPathsAllowingDevDependencies: ['**/*.cy.ts'],
+    extraPathsAllowingDevDependencies: ['**/*.cy.ts', '.allowed-scripts.mjs'],
   }),
   {
     rules: {
