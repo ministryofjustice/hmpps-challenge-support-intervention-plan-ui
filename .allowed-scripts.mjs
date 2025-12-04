@@ -1,7 +1,7 @@
 import { configureAllowedScripts } from '@ministryofjustice/hmpps-npm-script-allowlist'
 
 export default configureAllowedScripts({
-   allowlist: {
+  allowlist: {
     // Needed by Sentry CLI for error reporting and source map uploads
     'node_modules/@sentry/cli@2.58.2': 'ALLOW',
     // Needed by Cypress for running tests
@@ -14,5 +14,5 @@ export default configureAllowedScripts({
     'node_modules/fsevents@2.3.3': 'ALLOW',
     // Native solution to quickly resolve module paths, used by Jest and ESLint
     'node_modules/unrs-resolver@1.9.2': 'ALLOW',
-   },
+  },
 })
