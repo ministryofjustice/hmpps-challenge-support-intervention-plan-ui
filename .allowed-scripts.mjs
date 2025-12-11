@@ -5,7 +5,7 @@ export default configureAllowedScripts({
     // Needed by esbuild for watching files during development
     'node_modules/@parcel/watcher@2.5.1': 'ALLOW',
     // Needed by Sentry CLI for error reporting and source map uploads
-    'node_modules/@sentry/cli@2.58.2': 'ALLOW',
+    'node_modules/@sentry/cli@2.58.3': 'ALLOW',
     // Needed by Cypress for running tests
     'node_modules/cypress@15.7.1': 'ALLOW',
     // Provides native integration, supporting performance monitoring and bunyan logging
