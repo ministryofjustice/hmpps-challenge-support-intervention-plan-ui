@@ -147,7 +147,7 @@
     "aws-sdk-client-mock": "^4.1.0",
     "axe-core": "^4.11.1",
     "chai": "^6.2.2",
-    "chokidar": "^3.6.0",
+    "chokidar": "^5.0.0",
     "concurrently": "^9.2.1",
     "cypress": "^15.8.2",
     "cypress-axe": "^1.7.0",
