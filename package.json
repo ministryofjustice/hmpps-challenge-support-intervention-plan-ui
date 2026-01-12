@@ -77,11 +77,12 @@
   },
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.966.0",
+    "@cypress/code-coverage": "^3.14.7",
     "@microsoft/applicationinsights-clickanalytics-js": "^3.3.10",
     "@microsoft/applicationinsights-web": "^3.3.10",
     "@ministryofjustice/frontend": "^7.1.1",
     "@ministryofjustice/hmpps-auth-clients": "^1.0.1",
-    "@ministryofjustice/hmpps-connect-dps-components": "^5.2.0",
+    "@ministryofjustice/hmpps-connect-dps-components": "^2.2.0",
     "@ministryofjustice/hmpps-monitoring": "^1.0.0",
     "@ministryofjustice/hmpps-prison-permissions-lib": "^1.1.0",
     "@opentelemetry/api": "~1.9.0",
@@ -115,7 +116,6 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.14.7",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@jgoz/esbuild-plugin-typecheck": "^4.0.4",
     "@ministryofjustice/eslint-config-hmpps": "^1.0.2",
