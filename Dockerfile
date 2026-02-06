@@ -32,13 +32,13 @@ ARG GIT_BRANCH
 
 COPY package*.json .allowed-scripts.mjs ./
 COPY .npmrc .allowed-scripts.mjs ./
-RUN CYPRESS_INSTALL_BINARY=0 npm run setup --no-audit
+RUN NPM_CONFIG_AUDIT=false NPM_CONFIG_FUND=false CYPRESS_INSTALL_BINARY=0 npm run setup
 ENV NODE_ENV='production'
 
 COPY . .
 RUN --mount=type=secret,id=sentry SENTRY_AUTH_TOKEN=$(cat /run/secrets/sentry) npm run build
 
-RUN npm prune --no-audit --omit=dev --omit=optional
+RUN npm prune --no-audit --no-fund --omit=dev --omit=optional
 
 # Stage: copy production assets and dependencies
 FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine-runtime
