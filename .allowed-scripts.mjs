@@ -3,9 +3,9 @@ import { configureAllowedScripts } from '@ministryofjustice/hmpps-npm-script-all
 export default configureAllowedScripts({
   allowlist: {
     // Needed by esbuild for watching files during development
-    'node_modules/@parcel/watcher@2.5.1': 'ALLOW',
+    'node_modules/@parcel/watcher@2.5.6': 'ALLOW',
     // Needed by Sentry CLI for error reporting and source map uploads
-    'node_modules/@sentry/cli@3.3.0': 'ALLOW',
+    'node_modules/@sentry/cli@3.3.2': 'ALLOW',
     // Needed by Cypress for running tests
     'node_modules/cypress@15.11.0': 'ALLOW',
     // Provides native integration, supporting performance monitoring and bunyan logging
