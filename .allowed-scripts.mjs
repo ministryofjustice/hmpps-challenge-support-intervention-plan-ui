@@ -3,15 +3,15 @@ import { configureAllowedScripts } from '@ministryofjustice/hmpps-npm-script-all
 export default configureAllowedScripts({
   allowlist: {
     // Needed by esbuild for watching files during development
-    'node_modules/@parcel/watcher@2.5.1': 'ALLOW',
+    'node_modules/@parcel/watcher@2.5.6': 'ALLOW',
     // Needed by Sentry CLI for error reporting and source map uploads
-    'node_modules/@sentry/cli@3.3.0': 'ALLOW',
+    'node_modules/@sentry/cli@3.3.5': 'ALLOW',
     // Needed by Cypress for running tests
-    'node_modules/cypress@15.11.0': 'ALLOW',
+    'node_modules/cypress@15.13.1': 'ALLOW',
     // Provides native integration, supporting performance monitoring and bunyan logging
     'node_modules/dtrace-provider@0.8.8': 'ALLOW',
     // Needed by esbuild for watching files during development
-    'node_modules/esbuild@0.27.3': 'ALLOW',
+    'node_modules/esbuild@0.28.0': 'ALLOW',
     // Needed by Jest for running tests in watch mode
     'node_modules/fsevents@2.3.3': 'ALLOW',
     // Native solution to quickly resolve module paths, used by Jest and ESLint
