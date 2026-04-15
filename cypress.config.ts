@@ -11,6 +11,7 @@ import componentsApi from './integration_tests/mockApis/componentsApi'
 import logAccessibilityViolations from './integration_tests/support/accessibilityViolations'
 
 export default defineConfig({
+  allowCypressEnv: false,
   chromeWebSecurity: false,
   fixturesFolder: 'integration_tests/fixtures',
   screenshotsFolder: 'integration_tests/screenshots',
