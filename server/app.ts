@@ -3,7 +3,6 @@ import express from 'express'
 import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
 
 import * as Sentry from '@sentry/node'
-import cypressCoverage from '@cypress/code-coverage/middleware/express'
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import { appInsightsMiddleware } from './utils/azureAppInsights'
@@ -37,6 +36,11 @@ export default function createApp(services: Services): express.Application {
   const app = express()
 
   if (process.env.NODE_ENV === 'e2e-test') {
+    // Loaded only for instrumented Cypress runs; production does not need this dev dependency.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports, global-require, import/no-extraneous-dependencies
+    const cypressCoverage = require('@cypress/code-coverage/middleware/express') as (
+      expressApp: express.Application,
+    ) => void
     cypressCoverage(app)
   }
 
