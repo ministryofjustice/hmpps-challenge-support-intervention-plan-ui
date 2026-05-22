@@ -106,4 +106,5 @@ jobs:
     with:
       environment: 'prod'
       app_version: '${{ needs.build.outputs.app_version }}'
+      show_changelog: false
       helm_timeout: '5m'
