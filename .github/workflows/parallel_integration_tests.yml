@@ -43,7 +43,10 @@ jobs:
       - name: Get wiremock
         shell: bash
         run: |
-          curl -o wiremock.jar https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/3.9.1/wiremock-standalone-3.9.1.jar
+          WIREMOCK_VERSION="3.9.2"
+          WIREMOCK_SHA256="77b88dc41c3268e3ce391f3fef222b0cd0696f286d3fc35a84ba22ffcb877012"
+          curl --fail --location --show-error --output wiremock.jar "https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/${WIREMOCK_VERSION}/wiremock-standalone-${WIREMOCK_VERSION}.jar"
+          echo "${WIREMOCK_SHA256}  wiremock.jar" | sha256sum --check
       - name: Determine test split
         id: split-tests
         shell: bash
