@@ -3,7 +3,7 @@ import flash from 'connect-flash'
 import * as Sentry from '@sentry/node'
 import { Router } from 'express'
 import { Strategy } from 'passport-oauth2'
-import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
+import { getFrontendComponents } from '@ministryofjustice/hmpps-connect-dps-components'
 import config from '../config'
 import tokenVerifier from '../data/tokenVerification'
 import { HmppsUser } from '../interfaces/hmppsUser'
@@ -45,7 +45,10 @@ export default function setupAuthentication() {
 
   router.get(
     '/autherror',
-    dpsComponents.getPageComponents({ dpsUrl: config.serviceUrls.digitalPrison }),
+    getFrontendComponents({
+      componentApiConfig: config.apis.componentApi,
+      dpsUrl: config.serviceUrls.digitalPrison,
+    }),
     (_req, res) => {
       res.status(401)
       return res.render('autherror')

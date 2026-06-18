@@ -12,7 +12,7 @@ export const csipStatusTagClass = (csipRecord: CsipRecord) => {
     case 'CSIP_CLOSED':
       return 'govuk-tag--grey'
     case 'CSIP_OPEN':
-      return 'govuk-tag--turquoise'
+      return 'govuk-tag--teal'
     case 'INVESTIGATION_PENDING':
       return 'govuk-tag--blue'
     case 'NO_FURTHER_ACTION':
