@@ -1,3 +1,5 @@
+@use "govuk-frontend/dist/govuk/index" as *;
+
 .govuk-main-wrapper {
   min-height: 600px;
 }
@@ -50,8 +52,8 @@
 }
 
 .dropshadow {
-  border: 1px solid govuk-colour('dark-grey');
-  box-shadow: 0 5px govuk-colour('mid-grey');
+  border: 1px solid govuk-colour('black', $variant: 'tint-25');
+  box-shadow: 0 5px govuk-colour('black', $variant: 'tint-80');
 }
 
 .hide {
@@ -64,7 +66,7 @@
 }
 
 .light-box {
-  border: 1px solid govuk-colour('light-grey');
+  border: 1px solid govuk-colour('black', $variant: 'tint-95');
 }
 
 .govuk-summary-card__title {

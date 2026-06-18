@@ -6,6 +6,12 @@ context('test /manage-csips', () => {
   const getClearLink = () => cy.findByRole('link', { name: /Clear/ })
   const getQueryInput = () => cy.findByRole('textbox', { name: /Name or prison number/ })
   const getStatusSelect = () => cy.findByRole('combobox', { name: /CSIP status/ })
+  const expectCurrentPage = (page: string) =>
+    cy
+      .get('[aria-current="page"]')
+      .first()
+      .invoke('text')
+      .then(text => expect(text.trim()).to.eq(page))
 
   beforeEach(() => {
     cy.task('reset')
@@ -59,22 +65,22 @@ context('test /manage-csips', () => {
     cy.get('.govuk-table > thead > tr > th > a > button').eq(6).should('have.text', 'CSIP status')
 
     // status labels and overdue review dates are styled
-    cy.get('.govuk-table__body > tr > td > strong').eq(1).should('have.class', 'govuk-tag--turquoise')
+    cy.get('.govuk-table__body > tr > td > strong').eq(1).should('have.class', 'govuk-tag--teal')
     cy.get('.govuk-table__body > tr > td > strong').eq(0).should('have.class', 'govuk-tag--grey')
     cy.get('.govuk-table__body > tr > td > span').eq(2).should('have.class', 'govuk-tag--red')
     cy.get('.govuk-table__body > tr > td > span').eq(1).should('have.class', 'govuk-tag--yellow')
 
     // on page change, filter and sort persist
-    cy.findAllByRole('link', { name: /Page 4 of 4/ })
+    cy.findAllByRole('link', { name: /Page 4/ })
       .first()
       .click()
-    cy.get('[aria-current="page"]').first().should('have.text', '4')
+    expectCurrentPage('4')
     getQueryInput().should('have.value', 'A1234CD')
     cy.get('[aria-sort="ascending"]').findByText('Name and prison number').should('exist')
 
     // on sort, filter persist, go to first page
     cy.findByRole('button', { name: /^Name and prison number$/ }).click()
-    cy.get('[aria-current="page"]').first().should('have.text', '1')
+    expectCurrentPage('1')
     getQueryInput().should('have.value', 'A1234CD')
     cy.get('[aria-sort="descending"]').findByText('Name and prison number').should('exist')
 
@@ -82,7 +88,7 @@ context('test /manage-csips', () => {
     cy.visit(`manage-csips?status=CSIP_CLOSED&page=3`)
     getStatusSelect().should('have.value', 'CSIP_CLOSED')
     getQueryInput().should('have.value', '')
-    cy.get('[aria-current="page"]').first().should('have.text', '3')
+    expectCurrentPage('3')
     cy.get('[aria-sort="descending"]').should('not.exist')
 
     cy.visit(`manage-csips?sort=nextReviewDate,desc`)
@@ -94,17 +100,16 @@ context('test /manage-csips', () => {
     getFilterButton().click()
     getStatusSelect().should('have.value', 'CSIP_OPEN')
     getQueryInput().should('have.value', "Tes'name")
-    cy.get('[aria-current="page"]').first().should('have.text', '1')
+    expectCurrentPage('1')
     cy.get('[aria-sort="descending"]').should('not.exist')
 
     cy.visit(`manage-csips?sort=nextReviewDate,desc`)
     cy.get('[aria-sort="descending"]').findByText('Next review date').should('exist')
 
-    cy.get('.moj-pagination__item--next > a').eq(0).should('have.text', 'Next Results page')
-    cy.get('.moj-pagination__item--next > a > span').eq(0).should('have.text', ' Results page')
-    cy.get('.moj-pagination__item--next').eq(0).click()
-    cy.get('.moj-pagination__item--prev > a').eq(0).should('have.text', 'Previous Results page')
-    cy.get('.moj-pagination__item--prev > a > span').eq(0).should('have.text', ' Results page')
+    cy.findAllByRole('link', { name: /Next/ }).first().click()
+    cy.findAllByRole('link', { name: /Previous/ })
+      .first()
+      .should('be.visible')
 
     cy.findAllByRole('link', { name: 'View Smith, John CSIP record' }).should('be.visible')
 
@@ -114,7 +119,7 @@ context('test /manage-csips', () => {
     getClearLink().click()
     getStatusSelect().and('have.value', '')
     getQueryInput().should('have.value', '')
-    cy.get('[aria-current="page"]').first().should('have.text', '1')
+    expectCurrentPage('1')
     cy.get('[aria-sort="descending"]').should('not.exist')
   })
 

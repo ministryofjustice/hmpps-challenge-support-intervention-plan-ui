@@ -1,6 +1,6 @@
 import express from 'express'
 
-import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
+import { getFrontendComponents, retrieveCaseLoadData } from '@ministryofjustice/hmpps-connect-dps-components'
 
 import * as Sentry from '@sentry/node'
 import nunjucksSetup from './utils/nunjucksSetup'
@@ -70,18 +70,15 @@ export default function createApp(services: Services): express.Application {
   app.get('/prisoner-image/:prisonerNumber', new PrisonerImageRoutes(services.prisonApiService).GET)
   app.get(
     '*any',
-    dpsComponents.getPageComponents({
+    getFrontendComponents({
       logger,
-      includeSharedData: true,
+      componentApiConfig: config.apis.componentApi,
       dpsUrl: config.serviceUrls.digitalPrison,
-      timeoutOptions: {
-        response: config.apis.componentApi.timeout.response,
-        deadline: config.apis.componentApi.timeout.deadline,
-      },
+      requestOptions: { includeSharedData: true },
     }),
   )
   app.use(breadcrumbs())
-  app.use(dpsComponents.retrieveCaseLoadData({ logger }))
+  app.use(retrieveCaseLoadData({ logger, prisonApiConfig: config.apis.prisonApi }))
   app.use('*any', populateAuditEventDetails())
   app.use(checkServiceEnabledForActiveCaseLoad(services.csipApiService))
   app.use(populateValidationErrors())

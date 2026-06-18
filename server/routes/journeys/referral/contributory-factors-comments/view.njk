@@ -15,7 +15,7 @@
             html: (factor.comment or 'Not provided') | escape | nl2br
         } if factor.comment else {
             classes: 'govuk-link govuk-link--no-visited-state',
-            html: '<a href="' + (factor.factorType.code | lower | escape)  + '-comment">Add comment<span class="govuk-visually-hidden"> on ' + (factor.factorType.description | escape) + ' factor</span></a>'
+            html: '<a class="govuk-link govuk-link--no-visited-state" href="' + (factor.factorType.code | lower | escape)  + '-comment">Add comment<span class="govuk-visually-hidden"> on ' + (factor.factorType.description | escape) + ' factor</span></a>'
         },
         actions: {
             items: [

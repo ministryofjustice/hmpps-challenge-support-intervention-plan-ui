@@ -1,3 +1,5 @@
+@use "govuk-frontend/dist/govuk/index" as *;
+
 .hmpps-card-heading-background {
   h2 {
     margin: 0;
@@ -30,12 +32,12 @@
 
   .hmpps-mini-card__sub-text {
     margin-bottom: 10px;
-    color: govuk-colour('dark-grey');
+    color: govuk-colour('black', $variant: 'tint-25');
   }
 
   .hmpps-mini-card__error {
     font-weight: 700;
-    color: $govuk-error-colour;
+    color: govuk-functional-colour('error');
     margin-bottom: 10px;
     margin-top: -5px;
   }
