@@ -111,7 +111,7 @@
     "redis": "^5.12.1",
     "superagent": "^10.3.0",
     "url-value-parser": "^2.2.0",
-    "uuid": "^13.0.2",
+    "uuid": "^14.0.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -182,7 +182,7 @@
   "overrides": {
     "diff": "^8.0.3",
     "istanbul-lib-processinfo": {
-      "uuid": "^11.1.1"
+      "uuid": "^14.0.1"
     },
     "serialize-javascript": "^7.0.4"
   }
