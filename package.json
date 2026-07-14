@@ -111,7 +111,7 @@
     "redis": "^5.12.1",
     "superagent": "^10.3.0",
     "url-value-parser": "^2.2.0",
-    "uuid": "^13.0.2",
+    "uuid": "^14.0.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -180,6 +180,9 @@
     "wait-on": "^9.0.10"
   },
   "overrides": {
+    "brace-expansion@1": "^1.1.16",
+    "qs": "^6.15.3",
+    "@opentelemetry/core@2": "^2.8.0",
     "diff": "^8.0.3",
     "istanbul-lib-processinfo": {
       "uuid": "^11.1.1"
