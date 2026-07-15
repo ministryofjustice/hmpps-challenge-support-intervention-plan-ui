@@ -24,6 +24,7 @@ generic-service:
     AUDIT_SQS_REGION: "eu-west-2"
     AUDIT_SERVICE_NAME: "hmpps-challenge-support-intervention-plan-ui"
     FEATURE_CHANGE_FLOWS: "true"
+    FEATURE_JDA_FRONTEND_WORK: "true"
 
   allowlist:
     groups:

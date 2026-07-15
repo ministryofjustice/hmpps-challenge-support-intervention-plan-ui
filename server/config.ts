@@ -1,4 +1,5 @@
 const production = process.env.NODE_ENV === 'production'
+const environmentName = `${get('ENVIRONMENT_NAME', '')}`
 
 function get<T>(name: string, fallback: T, options = { requireInProduction: false }): T | string {
   const envVar = process.env[name]
@@ -132,7 +133,8 @@ export default {
     audit: auditConfig(),
   },
   ingressUrl: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
-  environmentName: get('ENVIRONMENT_NAME', ''),
+  environmentName,
+  isDevelopmentEnvironment: environmentName.toUpperCase() === 'DEV',
   appInsightsConnectionString: get('APPLICATIONINSIGHTS_CONNECTION_STRING', '', requiredInProduction),
   sentry: {
     dsn: process.env['SENTRY_DSN'],
@@ -144,5 +146,6 @@ export default {
   },
   features: {
     changeFlows: get('FEATURE_CHANGE_FLOWS', 'false') === 'true',
+    jdaFrontendWork: get('FEATURE_JDA_FRONTEND_WORK', 'false') === 'true',
   },
 }
