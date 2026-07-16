@@ -1,5 +1,4 @@
 const production = process.env.NODE_ENV === 'production'
-const environmentName = `${get('ENVIRONMENT_NAME', '')}`
 
 function get<T>(name: string, fallback: T, options = { requireInProduction: false }): T | string {
   const envVar = process.env[name]
@@ -13,6 +12,18 @@ function get<T>(name: string, fallback: T, options = { requireInProduction: fals
 }
 
 const requiredInProduction = { requireInProduction: true }
+
+function getCsv(name: string, fallback: string[] = []): string[] {
+  const envVar = process.env[name]
+  if (!envVar) {
+    return fallback
+  }
+
+  return envVar
+    .split(',')
+    .map(it => it.trim())
+    .filter(Boolean)
+}
 
 export class AgentConfig {
   // Sets the working socket to timeout after timeout milliseconds of inactivity on the working socket.
@@ -133,8 +144,7 @@ export default {
     audit: auditConfig(),
   },
   ingressUrl: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
-  environmentName,
-  isDevelopmentEnvironment: environmentName.toUpperCase() === 'DEV',
+  environmentName: get('ENVIRONMENT_NAME', ''),
   appInsightsConnectionString: get('APPLICATIONINSIGHTS_CONNECTION_STRING', '', requiredInProduction),
   sentry: {
     dsn: process.env['SENTRY_DSN'],
@@ -146,6 +156,7 @@ export default {
   },
   features: {
     changeFlows: get('FEATURE_CHANGE_FLOWS', 'false') === 'true',
-    jdaFrontendWork: get('FEATURE_JDA_FRONTEND_WORK', 'false') === 'true',
+    csipAssistEnabled: get('FEATURE_CSIP_ASSIST', 'false') === 'true',
+    csipAssistActivePrisons: getCsv('CSIP_ASSIST_ACTIVE_PRISONS').map(it => it.toUpperCase()),
   },
 }
