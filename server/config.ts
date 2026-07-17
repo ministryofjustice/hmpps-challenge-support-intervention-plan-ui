@@ -13,6 +13,18 @@ function get<T>(name: string, fallback: T, options = { requireInProduction: fals
 
 const requiredInProduction = { requireInProduction: true }
 
+function getCsv(name: string, fallback: string[] = []): string[] {
+  const envVar = process.env[name]
+  if (!envVar) {
+    return fallback
+  }
+
+  return envVar
+    .split(',')
+    .map(it => it.trim())
+    .filter(Boolean)
+}
+
 export class AgentConfig {
   // Sets the working socket to timeout after timeout milliseconds of inactivity on the working socket.
   timeout: number
@@ -144,5 +156,7 @@ export default {
   },
   features: {
     changeFlows: get('FEATURE_CHANGE_FLOWS', 'false') === 'true',
+    csipAssistEnabled: get('FEATURE_CSIP_ASSIST', 'false') === 'true',
+    csipAssistActivePrisons: getCsv('CSIP_ASSIST_ACTIVE_PRISONS').map(it => it.toUpperCase()),
   },
 }
