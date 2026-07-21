@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { SchemaType } from './schemas'
-import csipAssistEnabled from '../../../../../utils/featureToggles'
+import csipAssistEnabled from '../../../../utils/featureToggles'
 
 export class UsualBehaviourPresentationController {
   GET = async (req: Request, res: Response) => {
