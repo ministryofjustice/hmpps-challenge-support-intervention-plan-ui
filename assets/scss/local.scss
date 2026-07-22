@@ -80,3 +80,104 @@
 .govuk-summary-card__title-wrapper * strong {
   max-height: fit-content;
 }
+
+.case-note-card {
+  border-color: #ababab;
+  box-shadow: none;
+}
+
+.case-note-card__header-info {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  column-gap: govuk-spacing(4);
+  row-gap: govuk-spacing(2);
+}
+
+.case-note-card__header-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.case-note-card__date-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: govuk-spacing(4);
+  row-gap: govuk-spacing(1);
+}
+
+.case-note-card__author-location {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: govuk-spacing(4);
+  row-gap: govuk-spacing(1);
+}
+
+.case-note-card__created-by,
+.case-note-card__prison-name {
+  color: #626a6e;
+  white-space: nowrap;
+}
+
+.case-note-card__type {
+  color: #505a5f;
+  margin-top: govuk-spacing(2);
+}
+
+.case-note-card__score-item {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.case-note-card__score-label {
+  font-size: 1.1875rem;
+  margin-right: 0.3em;
+}
+
+.suggested-case-notes__relevance-badge {
+  background-color: govuk-colour('white');
+  color: #ca3535;
+  border-color: #ca3535;
+}
+
+.case-note-card__details {
+  margin-top: govuk-spacing(3);
+}
+
+.case-note-card__text {
+  line-height: 1.6;
+}
+
+@media (min-width: 40.0625em) {
+  .suggested-case-notes__relevance-badge {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+@include govuk-media-query($until: tablet) {
+  .case-note-card__header-info {
+    flex-direction: column;
+    row-gap: govuk-spacing(2);
+  }
+
+  .case-note-card__date-line {
+    align-items: flex-start;
+  }
+
+  .case-note-card__created-by,
+  .case-note-card__prison-name {
+    white-space: normal;
+  }
+
+  .case-note-card__score-item {
+    text-align: left;
+  }
+
+  .case-note-card__type {
+    margin-top: govuk-spacing(1);
+  }
+}
