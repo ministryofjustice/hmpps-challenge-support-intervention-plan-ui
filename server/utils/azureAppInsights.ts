@@ -1,86 +1,59 @@
-import {
-  Contracts,
-  defaultClient,
-  DistributedTracingModes,
-  getCorrelationContext,
-  setup,
-  TelemetryClient,
-} from 'applicationinsights'
-import { Request, RequestHandler } from 'express'
-import { v4 } from 'uuid'
-import { EnvelopeTelemetry } from 'applicationinsights/out/Declarations/Contracts'
+import { defaultClient, DistributedTracingModes, setup, TelemetryClient } from 'applicationinsights'
+import { trace } from '@opentelemetry/api'
+import type { IncomingMessage } from 'node:http'
+import { RequestHandler } from 'express'
 import type { ApplicationInfo } from '../applicationInfo'
 
-export function initialiseAppInsights(): void {
+const ignoredRequestPaths = new Set(['/health', '/ping', '/metrics'])
+
+export function isIgnoredAppInsightsRequest(request: Pick<IncomingMessage, 'url'>): boolean {
+  const path = request.url?.split('?', 1)[0]
+  return path !== undefined && ignoredRequestPaths.has(path)
+}
+
+export function initialiseAppInsights({ applicationName, buildNumber }: ApplicationInfo, overrideName?: string): void {
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
     // eslint-disable-next-line no-console
     console.log('Enabling azure application insights')
 
-    setup().setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C).start()
-  }
-}
-
-function addUserDataToRequests(envelope: EnvelopeTelemetry, contextObjects: Record<string, unknown> | undefined) {
-  const isRequest = envelope.data.baseType === Contracts.TelemetryTypeString['Request']
-  if (isRequest) {
-    const { username, activeCaseLoad } =
-      (contextObjects?.['http.ServerRequest'] as Request | undefined)?.res?.locals?.user || {}
-    if (username) {
-      const properties = envelope.data.baseData?.['properties']
-      // eslint-disable-next-line no-param-reassign
-      envelope.data.baseData ??= {}
-      // eslint-disable-next-line no-param-reassign
-      envelope.data.baseData['properties'] = {
-        username,
-        activeCaseLoadId: activeCaseLoad?.caseLoadId,
-        ...properties,
-      }
+    const httpInstrumentationConfig = {
+      enabled: true,
+      ignoreIncomingRequestHook: isIgnoredAppInsightsRequest,
     }
-  }
-  return true
-}
 
-export function buildAppInsightsClient(
-  { applicationName, buildNumber }: ApplicationInfo,
-  overrideName?: string,
-): TelemetryClient | null {
-  if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
+    const configuration = setup()
     defaultClient.context.tags['ai.cloud.role'] = overrideName || applicationName
     defaultClient.context.tags['ai.application.ver'] = buildNumber
-
-    defaultClient.addTelemetryProcessor(({ data }) => {
-      const { url } = data.baseData!
-      return !url?.endsWith('/health') && !url?.endsWith('/ping') && !url?.endsWith('/metrics')
-    })
-
-    defaultClient.addTelemetryProcessor(addUserDataToRequests)
-
-    defaultClient.addTelemetryProcessor(({ tags, data }, contextObjects) => {
-      const operationNameOverride =
-        contextObjects?.['correlationContext']?.customProperties?.getProperty('operationName')
-      if (operationNameOverride && tags) {
-        // eslint-disable-next-line no-param-reassign
-        tags['ai.operation.name'] = operationNameOverride
-        if (data?.baseData) {
-          // eslint-disable-next-line no-param-reassign
-          data.baseData['name'] = operationNameOverride
-        }
-      }
-      return true
-    })
-
-    return defaultClient
+    configuration
+      .setAzureMonitorOptions({
+        instrumentationOptions: {
+          http: httpInstrumentationConfig,
+        },
+      })
+      .setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C)
+      .start()
   }
-  return null
+}
+
+export function buildAppInsightsClient(): TelemetryClient | null {
+  return process.env.APPLICATIONINSIGHTS_CONNECTION_STRING ? defaultClient : null
 }
 
 export function appInsightsMiddleware(): RequestHandler {
   return (req, res, next) => {
+    const requestSpan = trace.getActiveSpan()
+
     res.prependOnceListener('finish', () => {
-      const context = getCorrelationContext()
-      if (context && req.route) {
-        context.customProperties.setProperty('operationName', `${req.method} ${req.route?.path}`)
-        context.customProperties.setProperty('operationId', v4())
+      if (requestSpan && req.route) {
+        requestSpan.updateName(`${req.method} ${req.route.path}`)
+
+        const { username, activeCaseLoad } = res.locals.user || {}
+        if (username) {
+          requestSpan.setAttribute('username', username)
+        }
+        if (activeCaseLoad?.caseLoadId) {
+          requestSpan.setAttribute('activeCaseLoadId', activeCaseLoad.caseLoadId)
+        }
       }
     })
     next()

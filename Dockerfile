@@ -1,5 +1,5 @@
 # Stage: base image
-FROM node:24.17.0-alpine3.24 as base
+FROM node:24.18.0-alpine3.24 as base
 
 ARG BUILD_NUMBER
 ARG GIT_REF
@@ -44,10 +44,14 @@ ENV NODE_ENV='production'
 COPY . .
 RUN --mount=type=secret,id=sentry SENTRY_AUTH_TOKEN=$(cat /run/secrets/sentry) npm run build
 
-RUN npm prune --no-audit --omit=dev
+RUN npm prune --no-audit --omit=dev --omit=optional
 
 # Stage: copy production assets and dependencies
 FROM base
+
+RUN rm -rf /usr/local/lib/node_modules/npm \
+        /usr/local/bin/npm \
+        /usr/local/bin/npx
 
 COPY --from=build --chown=appuser:appgroup \
         /app/package.json \
@@ -64,4 +68,4 @@ EXPOSE 3000
 ENV NODE_ENV='production'
 USER 2000
 
-CMD [ "npm", "start" ]
+CMD [ "sh", "-c", "node dist/server.js | node_modules/.bin/bunyan -o short" ]

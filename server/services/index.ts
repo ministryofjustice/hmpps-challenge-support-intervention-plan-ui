@@ -23,11 +23,17 @@ export const services = () => {
   const csipApiService = new CsipApiService(csipApiClient)
   const prisonerSearchService = new PrisonerSearchService(prisonerSearchApiClient)
   const prisonApiService = new PrisonApiService(prisonerImageClient)
+  const permissionsTelemetryClient = appInsightsClient
+    ? {
+        trackEvent: (name: string, attributes?: Record<string, string | number | boolean>) =>
+          appInsightsClient.trackEvent({ name, ...(attributes && { properties: attributes }) }),
+      }
+    : undefined
   const prisonerPermissionsService = PermissionsService.create({
     prisonerSearchConfig: config.apis.prisonerSearchApi,
     authenticationClient: new AuthenticationClient(config.apis.hmppsAuth, logger, tokenStore),
     logger,
-    telemetryClient: appInsightsClient!,
+    ...(permissionsTelemetryClient && { telemetryClient: permissionsTelemetryClient }),
   })
 
   return {
