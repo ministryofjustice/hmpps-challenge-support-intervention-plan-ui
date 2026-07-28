@@ -20,7 +20,7 @@ export const EditLogCodeRoutes = ({ services, path }: { services: Services; path
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/edit-log-code/start', StartJourneyRoutes(services))
-  router.use(path, journeyStateGuard(allPagesRequireCsipRecord(), services.appInsightsClient))
+  router.use(path, journeyStateGuard(allPagesRequireCsipRecord()))
   router.use(path, Routes(services))
 
   return router

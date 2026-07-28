@@ -14,8 +14,6 @@ export default configureAllowedScripts({
     'node_modules/esbuild@0.28.1': 'ALLOW',
     // Needed by Jest for running tests in watch mode
     'node_modules/fsevents@2.3.3': 'ALLOW',
-    // Only warns about direct dependency version syntax; no build output is required.
-    'node_modules/protobufjs@7.6.5': 'FORBID',
     // Native solution to quickly resolve module paths, used by Jest and ESLint
     'node_modules/unrs-resolver@1.11.1': 'ALLOW',
   },

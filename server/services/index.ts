@@ -1,5 +1,6 @@
 import { PermissionsService } from '@ministryofjustice/hmpps-prison-permissions-lib'
 import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
+import { telemetry } from '@ministryofjustice/hmpps-azure-telemetry'
 import { dataAccess } from '../data'
 import PrisonerSearchService from './prisonerSearch/prisonerSearchService'
 import AuditService from './auditService'
@@ -9,31 +10,18 @@ import config from '../config'
 import logger from '../../logger'
 
 export const services = () => {
-  const {
-    applicationInfo,
-    hmppsAuditClient,
-    prisonerSearchApiClient,
-    prisonerImageClient,
-    csipApiClient,
-    tokenStore,
-    appInsightsClient,
-  } = dataAccess()
+  const { applicationInfo, hmppsAuditClient, prisonerSearchApiClient, prisonerImageClient, csipApiClient, tokenStore } =
+    dataAccess()
 
   const auditService = new AuditService(hmppsAuditClient)
   const csipApiService = new CsipApiService(csipApiClient)
   const prisonerSearchService = new PrisonerSearchService(prisonerSearchApiClient)
   const prisonApiService = new PrisonApiService(prisonerImageClient)
-  const permissionsTelemetryClient = appInsightsClient
-    ? {
-        trackEvent: (name: string, attributes?: Record<string, string | number | boolean>) =>
-          appInsightsClient.trackEvent({ name, ...(attributes && { properties: attributes }) }),
-      }
-    : undefined
   const prisonerPermissionsService = PermissionsService.create({
     prisonerSearchConfig: config.apis.prisonerSearchApi,
     authenticationClient: new AuthenticationClient(config.apis.hmppsAuth, logger, tokenStore),
     logger,
-    ...(permissionsTelemetryClient && { telemetryClient: permissionsTelemetryClient }),
+    telemetryClient: telemetry,
   })
 
   return {
@@ -43,7 +31,6 @@ export const services = () => {
     prisonerSearchService,
     prisonApiService,
     tokenStore,
-    appInsightsClient,
     prisonerPermissionsService,
   }
 }

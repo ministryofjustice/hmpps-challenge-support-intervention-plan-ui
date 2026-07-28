@@ -32,7 +32,7 @@ export const UpdateInvestigationRoutes = ({ services, path }: { services: Servic
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/update-investigation/start', StartJourneyRoutes(services))
-  router.use(path, journeyStateGuard(allPagesRequireCsipRecord(), services.appInsightsClient))
+  router.use(path, journeyStateGuard(allPagesRequireCsipRecord()))
   router.use(path, Routes(services))
 
   return router

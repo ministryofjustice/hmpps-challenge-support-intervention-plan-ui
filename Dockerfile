@@ -68,4 +68,4 @@ EXPOSE 3000
 ENV NODE_ENV='production'
 USER 2000
 
-CMD [ "sh", "-c", "node dist/server.js | node_modules/.bin/bunyan -o short" ]
+CMD [ "node", "dist/server.js" ]

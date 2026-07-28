@@ -5,7 +5,7 @@ import { getFrontendComponents, retrieveCaseLoadData } from '@ministryofjustice/
 import * as Sentry from '@sentry/node'
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
-import { appInsightsMiddleware } from './utils/azureAppInsights'
+import { telemetryMiddleware } from './utils/azureAppInsights'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
 
 import setUpAuthentication from './middleware/setUpAuthentication'
@@ -49,7 +49,6 @@ export default function createApp(services: Services): express.Application {
   app.set('port', process.env.PORT || 3000)
 
   app.use(sentryMiddleware())
-  app.use(appInsightsMiddleware())
   app.use(setUpHealthChecks(services.applicationInfo))
   app.use(setUpWebSecurity())
   app.use(setUpWebSession())
@@ -62,6 +61,7 @@ export default function createApp(services: Services): express.Application {
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
+  app.use(telemetryMiddleware())
   app.use(populateClientToken())
   app.use((_req, res, next) => {
     res.notFound = () => res.status(404).render('pages/not-found')

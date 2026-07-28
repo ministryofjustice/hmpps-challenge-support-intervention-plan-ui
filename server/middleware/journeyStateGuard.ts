@@ -1,4 +1,4 @@
-import { TelemetryClient } from 'applicationinsights'
+import { telemetry } from '@ministryofjustice/hmpps-azure-telemetry'
 import type { NextFunction, Request, Response } from 'express'
 import { validate } from 'uuid'
 
@@ -19,29 +19,22 @@ const recordJourneyGuardFailedEvent = (
   flow: string | undefined,
   requestedPage: string | undefined,
   redirectTo: string | undefined,
-  appInsightsClient: TelemetryClient | null,
 ) => {
-  if (!appInsightsClient) {
-    return
-  }
-  appInsightsClient.trackEvent({
-    name: 'JourneyStateGuardCheckFailed',
-    properties: {
-      failReason,
-      username: res.locals.user.displayName,
-      ...(res.locals.user.activeCaseLoad?.caseLoadId && {
-        activeCaseLoadId: res.locals.user.activeCaseLoad.caseLoadId,
-      }),
-      ...(csipId && { csipId }),
-      prisonerNumber: res.locals.prisoner?.prisonerNumber,
-      flow,
-      requestedPage,
-      redirectTo,
-    },
+  telemetry.trackEvent('JourneyStateGuardCheckFailed', {
+    failReason,
+    username: res.locals.user.displayName,
+    ...(res.locals.user.activeCaseLoad?.caseLoadId && {
+      activeCaseLoadId: res.locals.user.activeCaseLoad.caseLoadId,
+    }),
+    ...(csipId && { csipId }),
+    ...(res.locals.prisoner?.prisonerNumber && { prisonerNumber: res.locals.prisoner.prisonerNumber }),
+    ...(flow && { flow }),
+    ...(requestedPage && { requestedPage }),
+    ...(redirectTo && { redirectTo }),
   })
 }
 
-export default function journeyStateGuard(rules: JourneyStateGuard, appInsightsClient: TelemetryClient | null) {
+export default function journeyStateGuard(rules: JourneyStateGuard) {
   return (req: Request, res: Response, next: NextFunction): void => {
     const [, uuid, flow, requestedPage] = req.originalUrl.split('/')
     const csipIdInRequest = req.journeyData?.csipRecord?.recordUuid
@@ -62,15 +55,7 @@ export default function journeyStateGuard(rules: JourneyStateGuard, appInsightsC
     if (!req.journeyData?.prisoner) {
       // The relevant /start for this journey has not been visited
       // We don't have a CSIP record id so we can't automatically do this.
-      recordJourneyGuardFailedEvent(
-        res,
-        'PRISONER_MISSING',
-        csipIdInRequest,
-        flow,
-        requestedPage,
-        '/',
-        appInsightsClient,
-      )
+      recordJourneyGuardFailedEvent(res, 'PRISONER_MISSING', csipIdInRequest, flow, requestedPage, '/')
       return res.redirect(`/`)
     }
 
@@ -98,15 +83,7 @@ export default function journeyStateGuard(rules: JourneyStateGuard, appInsightsC
         if (requestedPage === latestValidPage) {
           return next()
         }
-        recordJourneyGuardFailedEvent(
-          res,
-          'INVALID_STATE',
-          csipIdInRequest,
-          flow,
-          requestedPage,
-          redirectTo,
-          appInsightsClient,
-        )
+        recordJourneyGuardFailedEvent(res, 'INVALID_STATE', csipIdInRequest, flow, requestedPage, redirectTo)
         return res.redirect(`/${uuid}/${flow}${redirectTo}`)
       }
 
@@ -121,15 +98,7 @@ export default function journeyStateGuard(rules: JourneyStateGuard, appInsightsC
         if (requestedPage === latestValidPage) {
           return next()
         }
-        recordJourneyGuardFailedEvent(
-          res,
-          'INVALID_STATE',
-          csipIdInRequest,
-          flow,
-          requestedPage,
-          redirectTo,
-          appInsightsClient,
-        )
+        recordJourneyGuardFailedEvent(res, 'INVALID_STATE', csipIdInRequest, flow, requestedPage, redirectTo)
         return res.redirect(`/${uuid}/${flow}${redirectTo}`)
       }
       latestValidPage = targetRedirect.startsWith('/') ? targetRedirect.split('/')[1] || '' : targetRedirect

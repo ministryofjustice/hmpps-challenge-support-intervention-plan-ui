@@ -1,9 +1,7 @@
 /* eslint-disable import/first */
-import { buildAppInsightsClient } from '../utils/azureAppInsights'
 import applicationInfoSupplier from '../applicationInfo'
 
 const applicationInfo = applicationInfoSupplier()
-const appInsightsClient = buildAppInsightsClient()
 
 import HmppsAuthClient from './hmppsAuthClient'
 import { createRedisClient } from './redisClient'
@@ -27,7 +25,6 @@ export const dataAccess = () => ({
   prisonerSearchApiClient: (token: string) => new PrisonerSearchRestClient(token),
   prisonerImageClient: (token: string) => new PrisonApiRestClient(token),
   tokenStore,
-  appInsightsClient,
 })
 
 export type DataAccess = ReturnType<typeof dataAccess>
