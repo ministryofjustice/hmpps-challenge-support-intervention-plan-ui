@@ -13,9 +13,12 @@ export class UsualBehaviourPresentationController {
   GET = async (req: Request, res: Response) => {
     const personsUsualBehaviour =
       res.locals.formResponses?.['personsUsualBehaviour'] ?? req.journeyData.investigation?.personsUsualBehaviour
-    const showSuggestedCaseNotesWidget = csipAssistEnabled(
+    const csipAssistFeatureEnabled = csipAssistEnabled(
       res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId,
     )
+    const localDevWidgetEnabled =
+      process.env.NODE_ENV === 'development' && req.journeyData.csipRecord?.recordUuid === 'local-dev-record'
+    const showSuggestedCaseNotesWidget = csipAssistFeatureEnabled || localDevWidgetEnabled
 
     let suggestedCaseNotesWidget: SuggestedCaseNotesWidgetModel | undefined
 

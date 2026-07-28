@@ -25,12 +25,19 @@ export default class SuggestedCaseNotesService {
   private cachedResponse: SuggestedCaseNotesResponse | undefined
 
   async getSuggestedCaseNotes(): Promise<SuggestedCaseNotesResponse> {
-    if (this.cachedResponse) {
+    const shouldUseCache = process.env.NODE_ENV !== 'development'
+
+    if (shouldUseCache && this.cachedResponse) {
       return this.cachedResponse
     }
 
     const fileContents = await readFile(this.fixturePath, 'utf-8')
-    this.cachedResponse = JSON.parse(fileContents) as SuggestedCaseNotesResponse
-    return this.cachedResponse
+    const parsed = JSON.parse(fileContents) as SuggestedCaseNotesResponse
+
+    if (shouldUseCache) {
+      this.cachedResponse = parsed
+    }
+
+    return parsed
   }
 }
