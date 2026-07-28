@@ -32,7 +32,7 @@ export const ChangeDecisionRoutes = ({ services, path }: { services: Services; p
   const { router } = JourneyRouter()
 
   router.use('/check-change-decision', CheckChangeDecisionRoutes())
-  router.use(path, journeyStateGuard(guard, services.appInsightsClient))
+  router.use(path, journeyStateGuard(guard))
   router.use(path, Routes(services))
 
   return router

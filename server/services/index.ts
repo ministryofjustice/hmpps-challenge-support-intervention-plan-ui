@@ -1,5 +1,6 @@
 import { PermissionsService } from '@ministryofjustice/hmpps-prison-permissions-lib'
 import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
+import { telemetry } from '@ministryofjustice/hmpps-azure-telemetry'
 import { dataAccess } from '../data'
 import PrisonerSearchService from './prisonerSearch/prisonerSearchService'
 import AuditService from './auditService'
@@ -9,15 +10,8 @@ import config from '../config'
 import logger from '../../logger'
 
 export const services = () => {
-  const {
-    applicationInfo,
-    hmppsAuditClient,
-    prisonerSearchApiClient,
-    prisonerImageClient,
-    csipApiClient,
-    tokenStore,
-    appInsightsClient,
-  } = dataAccess()
+  const { applicationInfo, hmppsAuditClient, prisonerSearchApiClient, prisonerImageClient, csipApiClient, tokenStore } =
+    dataAccess()
 
   const auditService = new AuditService(hmppsAuditClient)
   const csipApiService = new CsipApiService(csipApiClient)
@@ -27,7 +21,7 @@ export const services = () => {
     prisonerSearchConfig: config.apis.prisonerSearchApi,
     authenticationClient: new AuthenticationClient(config.apis.hmppsAuth, logger, tokenStore),
     logger,
-    telemetryClient: appInsightsClient!,
+    telemetryClient: telemetry,
   })
 
   return {
@@ -37,7 +31,6 @@ export const services = () => {
     prisonerSearchService,
     prisonApiService,
     tokenStore,
-    appInsightsClient,
     prisonerPermissionsService,
   }
 }

@@ -1,14 +1,7 @@
 /* eslint-disable import/first */
-/*
- * Do appinsights first as it does some magic instrumentation work, i.e. it affects other 'require's
- * In particular, applicationinsights automatically collects bunyan logs
- */
-import { initialiseAppInsights, buildAppInsightsClient } from '../utils/azureAppInsights'
 import applicationInfoSupplier from '../applicationInfo'
 
 const applicationInfo = applicationInfoSupplier()
-initialiseAppInsights()
-const appInsightsClient = buildAppInsightsClient(applicationInfo)
 
 import HmppsAuthClient from './hmppsAuthClient'
 import { createRedisClient } from './redisClient'
@@ -32,7 +25,6 @@ export const dataAccess = () => ({
   prisonerSearchApiClient: (token: string) => new PrisonerSearchRestClient(token),
   prisonerImageClient: (token: string) => new PrisonApiRestClient(token),
   tokenStore,
-  appInsightsClient,
 })
 
 export type DataAccess = ReturnType<typeof dataAccess>

@@ -33,7 +33,7 @@ export const UpdateReviewRoutes = ({ services, path }: { services: Services; pat
   const { router } = JourneyRouter()
 
   router.use('/csip-record/:csipRecordId/update-review/start', StartJourneyRoutes(services))
-  router.use(path, journeyStateGuard(allPagesRequireCsipRecord(), services.appInsightsClient))
+  router.use(path, journeyStateGuard(allPagesRequireCsipRecord()))
   router.use(path, Routes(services))
 
   return router
