@@ -22,6 +22,7 @@ export type SuggestedCaseNotesResponse = {
 
 export default class SuggestedCaseNotesService {
   private readonly fixturePath = path.resolve(process.cwd(), '..', 'fixtures', 'csip-assist-response.json')
+
   private cachedResponse: SuggestedCaseNotesResponse | undefined
 
   async getSuggestedCaseNotes(): Promise<SuggestedCaseNotesResponse> {

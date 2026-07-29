@@ -13,13 +13,13 @@ export class UsualBehaviourPresentationController {
   GET = async (req: Request, res: Response) => {
     const personsUsualBehaviour =
       res.locals.formResponses?.['personsUsualBehaviour'] ?? req.journeyData.investigation?.personsUsualBehaviour
-    const csipAssistFeatureEnabled = csipAssistEnabled(
+    const showSuggestedCaseNotesWidget = csipAssistEnabled(
       res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId,
     )
 
     let suggestedCaseNotesWidget: SuggestedCaseNotesWidgetModel | undefined
 
-    if (csipAssistFeatureEnabled) {
+    if (showSuggestedCaseNotesWidget) {
       const response = await this.suggestedCaseNotesService.getSuggestedCaseNotes()
       suggestedCaseNotesWidget = buildSuggestedCaseNotesWidgetModel({
         response,
@@ -31,7 +31,7 @@ export class UsualBehaviourPresentationController {
       personsUsualBehaviour,
       backUrl: '../record-investigation',
       maxLengthChars: 4000,
-      csipAssistFeatureEnabled,
+      showSuggestedCaseNotesWidget,
       suggestedCaseNotesWidget,
     })
   }

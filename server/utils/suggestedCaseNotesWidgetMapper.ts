@@ -39,10 +39,9 @@ const buildTextFragments = (annotatedText: string): SuggestedCaseNoteTextFragmen
   const fragments: SuggestedCaseNoteTextFragment[] = []
 
   let lastIndex = 0
-  let match: RegExpExecArray | null = null
 
   // Parse mark tags into safe text fragments so templates never render raw HTML.
-  while ((match = markRegex.exec(annotatedText)) !== null) {
+  for (let match = markRegex.exec(annotatedText); match !== null; match = markRegex.exec(annotatedText)) {
     const plainTextBefore = stripSupportedMarkup(annotatedText.slice(lastIndex, match.index))
     if (plainTextBefore) {
       fragments.push({ text: plainTextBefore, highlighted: false })
@@ -75,15 +74,14 @@ export const buildSuggestedCaseNotesWidgetModel = ({
     (a, b) => relevanceRank[b.relevance] - relevanceRank[a.relevance],
   )
 
-  const notes = sortedNotes
-    .map(item => {
-      return {
-        itemId: item.case_note_id,
-        caseNoteText: stripSupportedMarkup(item.annotated_case_note),
-        relevanceLabel: labelForRelevance(item.relevance),
-        textFragments: buildTextFragments(item.annotated_case_note),
-      }
-    })
+  const notes = sortedNotes.map(item => {
+    return {
+      itemId: item.case_note_id,
+      caseNoteText: stripSupportedMarkup(item.annotated_case_note),
+      relevanceLabel: labelForRelevance(item.relevance),
+      textFragments: buildTextFragments(item.annotated_case_note),
+    }
+  })
 
   return {
     behaviourType: response.behaviourType,
