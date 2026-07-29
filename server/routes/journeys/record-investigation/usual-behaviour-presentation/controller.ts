@@ -16,9 +16,7 @@ export class UsualBehaviourPresentationController {
     const csipAssistFeatureEnabled = csipAssistEnabled(
       res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId,
     )
-    const localDevWidgetEnabled =
-      process.env.NODE_ENV === 'development' && req.journeyData.csipRecord?.recordUuid === 'local-dev-record'
-    const showSuggestedCaseNotesWidget = csipAssistFeatureEnabled || localDevWidgetEnabled
+    const showSuggestedCaseNotesWidget = csipAssistFeatureEnabled
 
     let suggestedCaseNotesWidget: SuggestedCaseNotesWidgetModel | undefined
 
