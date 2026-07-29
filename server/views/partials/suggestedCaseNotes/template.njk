@@ -1,32 +1,41 @@
 <section class="govuk-!-margin-top-9" data-qa="suggested-case-notes-widget">
     <h2 class="govuk-heading-l govuk-!-margin-bottom-4">Suggested Case Notes</h2>
-
-    <div class="card case-note-card" data-qa="suggested-case-notes-card">
-        <div class="case-note-card__header-info govuk-!-margin-bottom-3">
-            <div class="case-note-card__header-text">
-                <div class="case-note-card__date-line">
-                    <h3 class="govuk-heading-m govuk-!-margin-bottom-0 case-note-card__date">16 Jan 2026, 4:33pm</h3>
-                    <div class="case-note-card__author-location">
-                        <p class="govuk-body-s govuk-!-margin-bottom-0 case-note-card__created-by"><strong>Created by:</strong> Alastair McCloskey</p>
-                        <p class="govuk-body-s govuk-!-margin-bottom-0 case-note-card__prison-name"><strong>At:</strong> Moorland (HMP &amp; YOI)</p>
+    {% if widget and widget.notes and widget.notes.length %}
+        {% for note in widget.notes %}
+            <div class="card case-note-card govuk-!-margin-bottom-4" data-qa="suggested-case-notes-card">
+                <div class="case-note-card__header-info govuk-!-margin-bottom-3">
+                    <div class="case-note-card__header-text">
+                        <h3 class="govuk-heading-m govuk-!-margin-bottom-0 case-note-card__date">Suggested note {{ loop.index }}</h3>
+                        <p class="govuk-body-s govuk-!-margin-top-1 govuk-!-margin-bottom-0">Ref: {{ note.itemId }}</p>
+                    </div>
+                    <div class="case-note-card__score-item">
+                        <p class="govuk-body-s govuk-!-margin-bottom-0">
+                            <span class="case-note-card__score-label">Relevance:</span>
+                            <span class="moj-badge {% if note.relevanceLabel === 'High' %}moj-badge--red{% elseif note.relevanceLabel === 'Medium' %}moj-badge--blue{% else %}moj-badge--grey{% endif %} suggested-case-notes__relevance-badge">{{ note.relevanceLabel }}</span>
+                        </p>
                     </div>
                 </div>
-                <p class="govuk-body-s govuk-!-margin-bottom-0 case-note-card__type">ACHIEVEMENTS / CHAPLAINCY</p>
-            </div>
-            <div class="case-note-card__score-item">
-                <p class="govuk-body-s govuk-!-margin-bottom-0">
-                    <span class="case-note-card__score-label">Relevance:</span>
-                    <span class="moj-badge moj-badge--red suggested-case-notes__relevance-badge">High</span>
-                </p>
-            </div>
-        </div>
 
-        <div class="case-note-card__details">
-            <p class="govuk-body govuk-!-margin-bottom-3 case-note-card__text">
-                Prisoner attended chaplaincy session and demonstrated positive engagement with spiritual development programme.
-                Shown maturity and respect during discussion.
-            </p>
-            <a class="govuk-link" href="#" aria-label="Open more details for this suggested case note">More details added (2 amendments)</a>
+                <div class="case-note-card__details">
+                    <p class="govuk-body govuk-!-margin-bottom-3 case-note-card__text">
+                        {% if widget.showHighlighting and note.textFragments %}
+                            {% for fragment in note.textFragments %}
+                                {% if fragment.highlighted %}
+                                    <mark class="hods-highlight"><strong>{{ fragment.text }}</strong></mark>
+                                {% else %}
+                                    {{ fragment.text }}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            {{ note.caseNoteText }}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="govuk-inset-text govuk-!-margin-top-2">
+            {{ widget.emptyStateMessage if widget else 'No suggested case notes are available for this record right now.' }}
         </div>
-    </div>
+    {% endif %}
 </section>
