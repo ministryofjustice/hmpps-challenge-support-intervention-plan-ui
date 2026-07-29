@@ -1,7 +1,17 @@
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 
-export type SuggestedCaseNotesBehaviourType = 0 | 1 | 2
+export type SuggestedCaseNotesBehaviourType =
+  | 'usual_behaviour_presentation'
+  | 'risks_and_triggers'
+  | 'protective_factors'
+
+export type SuggestedCaseNotesRequest = {
+  referralId: string
+  behaviourType: SuggestedCaseNotesBehaviourType
+  sortField: 'relevance'
+  sortOrder: 'asc' | 'desc'
+}
 
 export type SuggestedCaseNoteRelevance = 'high' | 'medium' | 'low'
 
@@ -25,11 +35,17 @@ export default class SuggestedCaseNotesService {
 
   private cachedResponse: SuggestedCaseNotesResponse | undefined
 
-  async getSuggestedCaseNotes(): Promise<SuggestedCaseNotesResponse> {
+  async getSuggestedCaseNotes(request: SuggestedCaseNotesRequest): Promise<SuggestedCaseNotesResponse> {
     const shouldUseCache = process.env.NODE_ENV !== 'development'
 
     if (shouldUseCache && this.cachedResponse) {
-      return this.cachedResponse
+      return {
+        ...this.cachedResponse,
+        referralId: request.referralId,
+        behaviourType: request.behaviourType,
+        sortField: request.sortField,
+        sortOrder: request.sortOrder,
+      }
     }
 
     const fileContents = await readFile(this.fixturePath, 'utf-8')
@@ -39,6 +55,12 @@ export default class SuggestedCaseNotesService {
       this.cachedResponse = parsed
     }
 
-    return parsed
+    return {
+      ...parsed,
+      referralId: request.referralId,
+      behaviourType: request.behaviourType,
+      sortField: request.sortField,
+      sortOrder: request.sortOrder,
+    }
   }
 }

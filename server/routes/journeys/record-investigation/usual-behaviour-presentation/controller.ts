@@ -20,7 +20,12 @@ export class UsualBehaviourPresentationController {
     let suggestedCaseNotesWidget: SuggestedCaseNotesWidgetModel | undefined
 
     if (showSuggestedCaseNotesWidget) {
-      const response = await this.suggestedCaseNotesService.getSuggestedCaseNotes()
+      const response = await this.suggestedCaseNotesService.getSuggestedCaseNotes({
+        referralId: req.journeyData.csipRecord?.recordUuid ?? '',
+        behaviourType: 'usual_behaviour_presentation',
+        sortField: 'relevance',
+        sortOrder: 'desc',
+      })
       suggestedCaseNotesWidget = buildSuggestedCaseNotesWidgetModel({
         response,
         showHighlighting: true,
