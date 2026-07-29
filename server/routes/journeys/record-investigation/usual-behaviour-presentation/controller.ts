@@ -16,11 +16,10 @@ export class UsualBehaviourPresentationController {
     const csipAssistFeatureEnabled = csipAssistEnabled(
       res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId,
     )
-    const showSuggestedCaseNotesWidget = csipAssistFeatureEnabled
 
     let suggestedCaseNotesWidget: SuggestedCaseNotesWidgetModel | undefined
 
-    if (showSuggestedCaseNotesWidget) {
+    if (csipAssistFeatureEnabled) {
       const response = await this.suggestedCaseNotesService.getSuggestedCaseNotes()
       suggestedCaseNotesWidget = buildSuggestedCaseNotesWidgetModel({
         response,
@@ -32,7 +31,7 @@ export class UsualBehaviourPresentationController {
       personsUsualBehaviour,
       backUrl: '../record-investigation',
       maxLengthChars: 4000,
-      showSuggestedCaseNotesWidget,
+      csipAssistFeatureEnabled,
       suggestedCaseNotesWidget,
     })
   }
