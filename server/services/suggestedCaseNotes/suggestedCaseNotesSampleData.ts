@@ -1,0 +1,29 @@
+import type { SuggestedCaseNotesResponse } from './suggestedCaseNotesService'
+
+export const suggestedCaseNotesSampleData: SuggestedCaseNotesResponse = {
+  prisonerId: 'A1234AA',
+  referralId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+  behaviourType: 'usual_behaviour_presentation',
+  sortField: 'relevance',
+  sortOrder: 'desc',
+  suggestedCaseNotes: [
+    {
+      relevance: 'high',
+      case_note_id: 'f4ee95d0-49a4-46a2-a485-b8f26f089170',
+      annotated_case_note:
+        'During morning medication round, prisoner appeared visibly tense and pacing near the hatch. <mark>Prisoner became agitated</mark> following a verbal altercation with another prisoner and required repeated staff prompts to de-escalate.',
+    },
+    {
+      relevance: 'medium',
+      case_note_id: 'a2bc7e31-8d14-4f29-bc92-1e3a7d450923',
+      annotated_case_note:
+        'On association, staff observed increased frustration after a dispute about queue order. <mark>Staff observed raised voice and refusal to return to cell</mark> until spoken to by a senior officer.',
+    },
+    {
+      relevance: 'low',
+      case_note_id: 'c9de3f42-1a05-4c37-ad83-2f4b8e561034',
+      annotated_case_note:
+        'At evening meal the prisoner looked withdrawn and avoided interaction with peers. <mark>Prisoner appeared unsettled</mark> but accepted guidance and did not escalate further.',
+    },
+  ],
+}

@@ -1,5 +1,4 @@
-import { readFile } from 'node:fs/promises'
-import path from 'node:path'
+import { suggestedCaseNotesSampleData } from './suggestedCaseNotesSampleData'
 
 export type SuggestedCaseNotesBehaviourType =
   | 'usual_behaviour_presentation'
@@ -25,38 +24,21 @@ export type SuggestedCaseNotesResponse = {
   prisonerId: string
   referralId: string
   behaviourType: SuggestedCaseNotesBehaviourType
-  sortField: string
+  sortField: 'relevance'
   sortOrder: 'asc' | 'desc'
   suggestedCaseNotes: SuggestedCaseNoteResponseItem[]
 }
 
 export default class SuggestedCaseNotesService {
-  private readonly fixturePath = path.resolve(process.cwd(), '..', 'fixtures', 'csip-assist-response.json')
-
   private cachedResponse: SuggestedCaseNotesResponse | undefined
 
   async getSuggestedCaseNotes(request: SuggestedCaseNotesRequest): Promise<SuggestedCaseNotesResponse> {
-    const shouldUseCache = process.env.NODE_ENV !== 'development'
-
-    if (shouldUseCache && this.cachedResponse) {
-      return {
-        ...this.cachedResponse,
-        referralId: request.referralId,
-        behaviourType: request.behaviourType,
-        sortField: request.sortField,
-        sortOrder: request.sortOrder,
-      }
-    }
-
-    const fileContents = await readFile(this.fixturePath, 'utf-8')
-    const parsed = JSON.parse(fileContents) as SuggestedCaseNotesResponse
-
-    if (shouldUseCache) {
-      this.cachedResponse = parsed
+    if (!this.cachedResponse) {
+      this.cachedResponse = structuredClone(suggestedCaseNotesSampleData)
     }
 
     return {
-      ...parsed,
+      ...this.cachedResponse,
       referralId: request.referralId,
       behaviourType: request.behaviourType,
       sortField: request.sortField,
