@@ -37,8 +37,10 @@ export default class SuggestedCaseNotesService {
       this.cachedResponse = structuredClone(suggestedCaseNotesSampleData)
     }
 
+    const response = structuredClone(this.cachedResponse)
+
     return {
-      ...this.cachedResponse,
+      ...response,
       referralId: request.referralId,
       behaviourType: request.behaviourType,
       sortField: request.sortField,

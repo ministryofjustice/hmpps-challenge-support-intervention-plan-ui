@@ -1,20 +1,19 @@
 import config from '../config'
 
 const csipAssistEnabled = (activeCaseLoadId?: string): boolean => {
-  if (!config.features.csipAssistEnabled) {
+  if (!config.features.csipAssistEnabled || !activeCaseLoadId || !config.features.csipAssistActivePrisons) {
     return false
   }
 
-  const enabledPrisons = config.features.csipAssistActivePrisons
-  if (enabledPrisons.includes(config.features.csipAssistAllPrisonsToken)) {
+  if (config.features.csipAssistActivePrisons === '***') {
     return true
   }
 
-  if (!activeCaseLoadId || enabledPrisons.length === 0) {
-    return false
-  }
-
-  return enabledPrisons.includes(activeCaseLoadId.toUpperCase())
+  return config.features.csipAssistActivePrisons
+    .split(',')
+    .map(it => it.trim().toUpperCase())
+    .filter(Boolean)
+    .includes(activeCaseLoadId.toUpperCase())
 }
 
 export default csipAssistEnabled
