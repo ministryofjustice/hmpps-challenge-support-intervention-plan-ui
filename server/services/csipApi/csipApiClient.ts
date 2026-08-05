@@ -10,10 +10,7 @@ import {
   ReferenceDataType,
 } from '../../@types/csip/csipApiTypes'
 import { components } from '../../@types/csip'
-import type {
-  SuggestedCaseNotesRequest,
-  SuggestedCaseNotesResponse,
-} from '../suggestedCaseNotes/types'
+import type { SuggestedCaseNotesRequest, SuggestedCaseNotesResponse } from '../suggestedCaseNotes/types'
 
 export interface ServiceConfigInfo {
   git: {

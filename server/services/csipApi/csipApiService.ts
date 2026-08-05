@@ -10,10 +10,7 @@ import {
 } from '../../@types/csip/csipApiTypes'
 import CsipApiClient, { ServiceConfigInfo } from './csipApiClient'
 import { components } from '../../@types/csip'
-import type {
-  SuggestedCaseNotesRequest,
-  SuggestedCaseNotesResponse,
-} from '../suggestedCaseNotes/types'
+import type { SuggestedCaseNotesRequest, SuggestedCaseNotesResponse } from '../suggestedCaseNotes/types'
 
 export default class CsipApiService {
   constructor(private readonly csipApiClientBuilder: RestClientBuilder<CsipApiClient>) {}

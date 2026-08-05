@@ -2,10 +2,7 @@ import nock from 'nock'
 
 import config from '../../config'
 import CsipApiClient from './csipApiClient'
-import type {
-  SuggestedCaseNotesRequest,
-  SuggestedCaseNotesResponse,
-} from '../suggestedCaseNotes/types'
+import type { SuggestedCaseNotesRequest, SuggestedCaseNotesResponse } from '../suggestedCaseNotes/types'
 
 describe('CsipApiClient', () => {
   afterEach(() => {

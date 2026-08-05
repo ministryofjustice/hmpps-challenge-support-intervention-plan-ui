@@ -49,7 +49,8 @@ export class UsualBehaviourPresentationController {
         suggestedCaseNotesWidget = {
           behaviourType: 'usual_behaviour_presentation',
           showHighlighting: true,
-          emptyStateMessage: 'Suggested Case Notes are temporarily unavailable. You can still continue and save this page.',
+          emptyStateMessage:
+            'Suggested Case Notes are temporarily unavailable. You can still continue and save this page.',
           notes: [],
         }
       }

@@ -1,5 +1,5 @@
-import SuggestedCaseNotesService, {
-} from './suggestedCaseNotesService'
+import type { Request } from 'express'
+import SuggestedCaseNotesService from './suggestedCaseNotesService'
 import CsipApiService from '../csipApi/csipApiService'
 import type { SuggestedCaseNotesRequest, SuggestedCaseNotesResponse } from './types'
 
@@ -39,7 +39,7 @@ describe('SuggestedCaseNotesService', () => {
       },
     }
 
-    const response = await service.getSuggestedCaseNotes(req as any, requestFixture)
+    const response = await service.getSuggestedCaseNotes(req as unknown as Request, requestFixture)
 
     expect(response).toEqual(responseFixture)
     expect(csipApiService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, 'A1234AA', requestFixture)
@@ -54,7 +54,7 @@ describe('SuggestedCaseNotesService', () => {
       journeyData: {},
     }
 
-    await expect(service.getSuggestedCaseNotes(req as any, requestFixture)).rejects.toThrow(
+    await expect(service.getSuggestedCaseNotes(req as unknown as Request, requestFixture)).rejects.toThrow(
       'Missing prisoner number for suggested case notes request',
     )
     expect(csipApiService.getSuggestedCaseNotes).not.toHaveBeenCalled()
@@ -73,7 +73,7 @@ describe('SuggestedCaseNotesService', () => {
       },
     }
 
-    await service.getSuggestedCaseNotes(req as any, requestFixture)
+    await service.getSuggestedCaseNotes(req as unknown as Request, requestFixture)
 
     expect(csipApiService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, 'A1234AA', requestFixture)
   })
@@ -91,7 +91,7 @@ describe('SuggestedCaseNotesService', () => {
       },
     }
 
-    await expect(service.getSuggestedCaseNotes(req as any, requestFixture)).rejects.toThrow(
+    await expect(service.getSuggestedCaseNotes(req as unknown as Request, requestFixture)).rejects.toThrow(
       "Invalid prisoner number format for suggested case notes request: 'INVALID'",
     )
     expect(csipApiService.getSuggestedCaseNotes).not.toHaveBeenCalled()
