@@ -22,7 +22,7 @@ export const services = () => {
 
   const auditService = new AuditService(hmppsAuditClient)
   const csipApiService = new CsipApiService(csipApiClient)
-  const suggestedCaseNotesService = new SuggestedCaseNotesService()
+  const suggestedCaseNotesService = new SuggestedCaseNotesService(csipApiService)
   const prisonerSearchService = new PrisonerSearchService(prisonerSearchApiClient)
   const prisonApiService = new PrisonApiService(prisonerImageClient)
   const prisonerPermissionsService = PermissionsService.create({

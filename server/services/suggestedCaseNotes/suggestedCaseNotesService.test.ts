@@ -1,54 +1,99 @@
 import SuggestedCaseNotesService, {
-  SuggestedCaseNotesRequest,
-  SuggestedCaseNotesResponse,
 } from './suggestedCaseNotesService'
-import requestFixture from './fixtures/csip-assist-request.json'
-import responseFixture from './fixtures/csip-assist-response.json'
+import CsipApiService from '../csipApi/csipApiService'
+import type { SuggestedCaseNotesRequest, SuggestedCaseNotesResponse } from './types'
 
-const typedRequestFixture = requestFixture as SuggestedCaseNotesRequest
-const typedResponseFixture = responseFixture as SuggestedCaseNotesResponse
+const requestFixture: SuggestedCaseNotesRequest = {
+  referralId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+  behaviourType: 'usual_behaviour_presentation',
+  sortField: 'relevance',
+  sortOrder: 'desc',
+}
+
+const responseFixture: SuggestedCaseNotesResponse = {
+  prisonerId: 'A1234AA',
+  referralId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+  behaviourType: 'usual_behaviour_presentation',
+  sortField: 'relevance',
+  sortOrder: 'desc',
+  suggestedCaseNotes: [
+    {
+      relevance: 'high',
+      case_note_id: 'f4ee95d0-49a4-46a2-a485-b8f26f089170',
+      annotated_case_note: 'Example annotated note',
+    },
+  ],
+}
 
 describe('SuggestedCaseNotesService', () => {
-  it('returns sample response and overlays request fields', async () => {
-    const service = new SuggestedCaseNotesService()
+  it('delegates to csip api service with prisoner number from journey data', async () => {
+    const csipApiService = {
+      getSuggestedCaseNotes: jest.fn().mockResolvedValue(responseFixture),
+    } as unknown as jest.Mocked<CsipApiService>
+    const service = new SuggestedCaseNotesService(csipApiService)
+    const req = {
+      journeyData: {
+        prisoner: {
+          prisonerNumber: 'A1234AA',
+        },
+      },
+    }
 
-    const response = await service.getSuggestedCaseNotes({
-      ...typedRequestFixture,
-      referralId: 'different-referral-id',
-      behaviourType: 'risks_and_triggers',
-      sortOrder: 'asc',
-    })
+    const response = await service.getSuggestedCaseNotes(req as any, requestFixture)
 
-    expect(response).toMatchObject({
-      ...responseFixture,
-      referralId: 'different-referral-id',
-      behaviourType: 'risks_and_triggers',
-      sortField: 'relevance',
-      sortOrder: 'asc',
-    })
+    expect(response).toEqual(responseFixture)
+    expect(csipApiService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, 'A1234AA', requestFixture)
   })
 
-  it('returns consistent suggested case notes data', async () => {
-    const service = new SuggestedCaseNotesService()
+  it('throws when prisoner number is missing', async () => {
+    const csipApiService = {
+      getSuggestedCaseNotes: jest.fn(),
+    } as unknown as jest.Mocked<CsipApiService>
+    const service = new SuggestedCaseNotesService(csipApiService)
+    const req = {
+      journeyData: {},
+    }
 
-    const response = await service.getSuggestedCaseNotes(typedRequestFixture)
-
-    expect(response.suggestedCaseNotes).toEqual(typedResponseFixture.suggestedCaseNotes)
-  })
-
-  it('does not mutate cached base data when callers mutate a previous response', async () => {
-    const service = new SuggestedCaseNotesService()
-
-    const initialResponse = await service.getSuggestedCaseNotes(typedRequestFixture)
-    initialResponse.suggestedCaseNotes[0]!.annotated_case_note = 'mutated note'
-
-    const response = await service.getSuggestedCaseNotes({
-      ...typedRequestFixture,
-      referralId: 'another-referral-id',
-    })
-
-    expect(response.suggestedCaseNotes[0]!.annotated_case_note).toBe(
-      typedResponseFixture.suggestedCaseNotes[0]!.annotated_case_note,
+    await expect(service.getSuggestedCaseNotes(req as any, requestFixture)).rejects.toThrow(
+      'Missing prisoner number for suggested case notes request',
     )
+    expect(csipApiService.getSuggestedCaseNotes).not.toHaveBeenCalled()
+  })
+
+  it('normalises valid prisoner numbers before calling csip api service', async () => {
+    const csipApiService = {
+      getSuggestedCaseNotes: jest.fn().mockResolvedValue(responseFixture),
+    } as unknown as jest.Mocked<CsipApiService>
+    const service = new SuggestedCaseNotesService(csipApiService)
+    const req = {
+      journeyData: {
+        prisoner: {
+          prisonerNumber: ' a1234aa ',
+        },
+      },
+    }
+
+    await service.getSuggestedCaseNotes(req as any, requestFixture)
+
+    expect(csipApiService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, 'A1234AA', requestFixture)
+  })
+
+  it('throws when prisoner number format is invalid', async () => {
+    const csipApiService = {
+      getSuggestedCaseNotes: jest.fn(),
+    } as unknown as jest.Mocked<CsipApiService>
+    const service = new SuggestedCaseNotesService(csipApiService)
+    const req = {
+      journeyData: {
+        prisoner: {
+          prisonerNumber: 'INVALID',
+        },
+      },
+    }
+
+    await expect(service.getSuggestedCaseNotes(req as any, requestFixture)).rejects.toThrow(
+      "Invalid prisoner number format for suggested case notes request: 'INVALID'",
+    )
+    expect(csipApiService.getSuggestedCaseNotes).not.toHaveBeenCalled()
   })
 })

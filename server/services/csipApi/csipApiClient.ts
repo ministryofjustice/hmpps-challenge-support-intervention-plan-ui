@@ -10,6 +10,10 @@ import {
   ReferenceDataType,
 } from '../../@types/csip/csipApiTypes'
 import { components } from '../../@types/csip'
+import type {
+  SuggestedCaseNotesRequest,
+  SuggestedCaseNotesResponse,
+} from '../suggestedCaseNotes/types'
 
 export interface ServiceConfigInfo {
   git: {
@@ -248,6 +252,16 @@ export default class CsipApiClient {
   async addNewAttendee(reviewUuid: string, payload: components['schemas']['CreateAttendeeRequest']) {
     return this.restClient.post<components['schemas']['Attendee']>({
       path: `/csip-records/plan/reviews/${reviewUuid}/attendees`,
+      data: payload,
+    })
+  }
+
+  async getSuggestedCaseNotes(
+    prisonerNumber: string,
+    payload: SuggestedCaseNotesRequest,
+  ): Promise<SuggestedCaseNotesResponse> {
+    return this.restClient.post<SuggestedCaseNotesResponse>({
+      path: `/v1/suggestedCaseNotes/${prisonerNumber}`,
       data: payload,
     })
   }
