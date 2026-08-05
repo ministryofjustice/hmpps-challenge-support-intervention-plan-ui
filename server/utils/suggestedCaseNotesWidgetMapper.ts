@@ -1,8 +1,8 @@
 import {
   SuggestedCaseNotesBehaviourType,
-  SuggestedCaseNotesResponse,
   SuggestedCaseNoteResponseItem,
-} from '../services/suggestedCaseNotes/suggestedCaseNotesService'
+  SuggestedCaseNotesResponse,
+} from '../services/suggestedCaseNotes/types'
 
 export type SuggestedCaseNoteTextFragment = {
   text: string
