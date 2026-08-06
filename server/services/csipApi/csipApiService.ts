@@ -10,6 +10,7 @@ import {
 } from '../../@types/csip/csipApiTypes'
 import CsipApiClient, { ServiceConfigInfo } from './csipApiClient'
 import { components } from '../../@types/csip'
+import type { SuggestedCaseNotesRequest, SuggestedCaseNotesResponse } from '../suggestedCaseNotes/types'
 
 export default class CsipApiService {
   constructor(private readonly csipApiClientBuilder: RestClientBuilder<CsipApiClient>) {}
@@ -178,5 +179,13 @@ export default class CsipApiService {
 
   addNewAttendee(req: Request, payload: components['schemas']['CreateAttendeeRequest']) {
     return this.csipApiClientBuilder(req.systemClientToken).addNewAttendee(req.journeyData.review!.reviewUuid!, payload)
+  }
+
+  getSuggestedCaseNotes(
+    req: Request,
+    prisonerNumber: string,
+    payload: SuggestedCaseNotesRequest,
+  ): Promise<SuggestedCaseNotesResponse> {
+    return this.csipApiClientBuilder(req.systemClientToken).getSuggestedCaseNotes(prisonerNumber, payload)
   }
 }

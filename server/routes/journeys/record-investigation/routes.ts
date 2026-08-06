@@ -17,7 +17,7 @@ import { ConfirmationRoutes } from './confirmation/routes'
 import journeyStateGuard, { JourneyStateGuard, isMissingValues } from '../../../middleware/journeyStateGuard'
 import { CancelController } from '../../cancellation-check/controller'
 
-function Routes({ csipApiService, auditService }: Services) {
+function Routes({ csipApiService, auditService, suggestedCaseNotesService }: Services) {
   const { router, get } = JourneyRouter()
   const controller = new RecordInvestigationController()
 
@@ -25,7 +25,7 @@ function Routes({ csipApiService, auditService }: Services) {
   router.use('/staff-involved', StaffInvolvedRoutes())
   router.use('/why-behaviour-occurred', OccurrenceReasonRoutes())
   router.use('/evidence-secured', EvidenceSecuredRoutes())
-  router.use('/usual-behaviour-presentation', UsualBehaviourPresentationRoutes())
+  router.use('/usual-behaviour-presentation', UsualBehaviourPresentationRoutes(suggestedCaseNotesService))
   router.use('/triggers', TriggersRoutes())
   router.use('/protective-factors', ProtectiveFactorsRoutes())
   router.use('/interviews-summary', InterviewsSummaryRoutes())

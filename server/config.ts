@@ -144,5 +144,7 @@ export default {
   },
   features: {
     changeFlows: get('FEATURE_CHANGE_FLOWS', 'false') === 'true',
+    csipAssistEnabled: get('FEATURE_CSIP_ASSIST', 'false') === 'true',
+    csipAssistActivePrisons: get('CSIP_ASSIST_ACTIVE_PRISONS', ''),
   },
 }

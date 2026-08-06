@@ -6,6 +6,7 @@ import PrisonerSearchService from './prisonerSearch/prisonerSearchService'
 import AuditService from './auditService'
 import PrisonApiService from './prisonApi/prisonApiService'
 import CsipApiService from './csipApi/csipApiService'
+import SuggestedCaseNotesService from './suggestedCaseNotes/suggestedCaseNotesService'
 import config from '../config'
 import logger from '../../logger'
 
@@ -15,6 +16,7 @@ export const services = () => {
 
   const auditService = new AuditService(hmppsAuditClient)
   const csipApiService = new CsipApiService(csipApiClient)
+  const suggestedCaseNotesService = new SuggestedCaseNotesService(csipApiService)
   const prisonerSearchService = new PrisonerSearchService(prisonerSearchApiClient)
   const prisonApiService = new PrisonApiService(prisonerImageClient)
   const prisonerPermissionsService = PermissionsService.create({
@@ -28,6 +30,7 @@ export const services = () => {
     applicationInfo,
     auditService,
     csipApiService,
+    suggestedCaseNotesService,
     prisonerSearchService,
     prisonApiService,
     tokenStore,
