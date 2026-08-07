@@ -1,5 +1,10 @@
 <section class="govuk-!-margin-top-9" data-qa="suggested-case-notes-widget">
     <h2 class="govuk-heading-l govuk-!-margin-bottom-4">Suggested Case Notes</h2>
+    {% if widget and widget.highlightToggleHref and widget.highlightToggleText and widget.notes and widget.notes.length %}
+        <p class="govuk-body govuk-!-margin-bottom-4">
+            <a class="govuk-link govuk-link--no-visited-state" href="{{ widget.highlightToggleHref }}">{{ widget.highlightToggleText }}</a>
+        </p>
+    {% endif %}
     {% if widget and widget.notes and widget.notes.length %}
         {% for note in widget.notes %}
             <div class="card case-note-card govuk-!-margin-bottom-4" data-qa="suggested-case-notes-card">

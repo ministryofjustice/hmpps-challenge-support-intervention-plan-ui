@@ -16,6 +16,7 @@ export type SuggestedCaseNoteResponseItem = {
   relevance: SuggestedCaseNoteRelevance
   case_note_id: string
   annotated_case_note: string
+  is_sensitive?: boolean
 }
 
 export type SuggestedCaseNotesResponse = {
@@ -24,6 +25,8 @@ export type SuggestedCaseNotesResponse = {
   behaviourType: SuggestedCaseNotesBehaviourType
   sortField: 'relevance'
   sortOrder: 'asc' | 'desc'
+  hasSensitiveNotes?: boolean
+  userCanViewSensitiveNotes?: boolean
   suggestedCaseNotes: SuggestedCaseNoteResponseItem[]
 }
 

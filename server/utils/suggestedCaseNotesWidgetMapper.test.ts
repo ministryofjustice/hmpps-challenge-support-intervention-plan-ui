@@ -59,4 +59,47 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
       { text: 'No highlights available for this note.', highlighted: false },
     ])
   })
+
+  it('builds highlighted fragments from supported span annotation markers', () => {
+    const response = buildResponse()
+    response.suggestedCaseNotes = [
+      {
+        relevance: 'medium',
+        case_note_id: '3',
+        annotated_case_note: 'Prefix <span data="1"><strong>highlight</strong></span> suffix',
+      },
+    ]
+
+    const result = buildSuggestedCaseNotesWidgetModel({ response })
+
+    expect(result.notes[0]).toMatchObject({
+      caseNoteText: 'Prefix highlight suffix',
+      textFragments: [
+        { text: 'Prefix ', highlighted: false },
+        { text: 'highlight', highlighted: true },
+        { text: ' suffix', highlighted: false },
+      ],
+    })
+  })
+
+  it('suppresses notes when sensitive content is present and the user lacks permission', () => {
+    const response = buildResponse()
+    response.hasSensitiveNotes = true
+    response.userCanViewSensitiveNotes = false
+    response.suggestedCaseNotes = [
+      {
+        relevance: 'high',
+        case_note_id: '4',
+        annotated_case_note: 'Sensitive note',
+        is_sensitive: true,
+      },
+    ]
+
+    const result = buildSuggestedCaseNotesWidgetModel({ response })
+
+    expect(result.notes).toEqual([])
+    expect(result.emptyStateMessage).toBe(
+      'Suggested Case Notes cannot be shown because you do not have permission to view sensitive notes.',
+    )
+  })
 })
