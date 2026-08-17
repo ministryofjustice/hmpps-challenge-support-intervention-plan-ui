@@ -1,6 +1,7 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "partials/suggestedCaseNotes/macro.njk" import suggestedCaseNotes %}
 {% from "partials/submitButton/macro.njk" import submitButton %}
 
 {% extends "partials/layout.njk" %}
@@ -8,43 +9,55 @@
 {% set pageTitle = "Add information about the protective factors for the prisoner - Update a CSIP investigation" if isUpdate else "What are the protective factors for the prisoner? - Record a CSIP investigation" %}
 
 
-{% block innerContent %}
-    {% include 'base/components/investigation-caption.njk' %}
-    <label for="protectiveFactors">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ "Add information about the protective factors for " + (prisoner | firstNameSpaceLastName) if isUpdate else "What are the protective factors for " + (prisoner | firstNameSpaceLastName) + "?" }}</h1>
-    </label>
-    <form method="post">
-        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        {% if not isUpdate %}
-            {{ govukDetails({
-                summaryText: "Help with understanding protective factors",
-                html: '
-                <p>Protective factors are anything that helps a prisoner deal more effectively
-                with stressful events or triggers. </p>
-                <p>Include information on any: </p>
-                <ul class="govuk-list govuk-list--bullet">
-                <li>positive influences on their behaviour, both historic and recent</li>
-                <li>skills, strengths, resources, supports or coping strategies</li>
-                </ul>'
-            }) }}
-        {% endif %}
-        {% if currentProtectiveFactors %}
-            {{ govukInsetText({
-                html: currentProtectiveFactors | escape | boldAppendStamp | nl2br
-            }) }}
-        {% endif %}
-        {{ govukCharacterCount({
-            maxlength: maxLengthChars,
-            rows: 5,
-            threshold: threshold or "75",
-            id: "protectiveFactors",
-            name: "protectiveFactors",
-            value: protectiveFactors,
-            errorMessage: validationErrors | findError('protectiveFactors')
-        }) }}
-        {{ submitButton({
-            text: "Confirm and save" if isUpdate else "Continue",
-            alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
-        }) }}
-    </form>
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% include 'base/components/investigation-caption.njk' %}
+            <label for="protectiveFactors">
+                <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ "Add information about the protective factors for " + (prisoner | firstNameSpaceLastName) if isUpdate else "What are the protective factors for " + (prisoner | firstNameSpaceLastName) + "?" }}</h1>
+            </label>
+            <form method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+                {% if not isUpdate %}
+                    {{ govukDetails({
+                        summaryText: "Help with understanding protective factors",
+                        html: '
+                        <p>Protective factors are anything that helps a prisoner deal more effectively
+                        with stressful events or triggers. </p>
+                        <p>Include information on any: </p>
+                        <ul class="govuk-list govuk-list--bullet">
+                        <li>positive influences on their behaviour, both historic and recent</li>
+                        <li>skills, strengths, resources, supports or coping strategies</li>
+                        </ul>'
+                    }) }}
+                {% endif %}
+                {% if currentProtectiveFactors %}
+                    {{ govukInsetText({
+                        html: currentProtectiveFactors | escape | boldAppendStamp | nl2br
+                    }) }}
+                {% endif %}
+                {{ govukCharacterCount({
+                    maxlength: maxLengthChars,
+                    rows: 5,
+                    threshold: threshold or "75",
+                    id: "protectiveFactors",
+                    name: "protectiveFactors",
+                    value: protectiveFactors,
+                    errorMessage: validationErrors | findError('protectiveFactors')
+                }) }}
+                {{ submitButton({
+                    text: "Confirm and save" if isUpdate else "Continue",
+                    alternativeHyperlinkHref: isUpdate and ("/csip-records/" + recordUuid)
+                }) }}
+            </form>
+        </div>
+    </div>
+
+    {% if showSuggestedCaseNotesWidget %}
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                {{ suggestedCaseNotes(suggestedCaseNotesWidget) }}
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
