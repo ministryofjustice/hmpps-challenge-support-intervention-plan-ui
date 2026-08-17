@@ -30,8 +30,8 @@ ARG BUILD_NUMBER
 ARG GIT_REF
 ARG GIT_BRANCH
 
-COPY package*.json .allowed-scripts.mjs ./
-COPY .npmrc .allowed-scripts.mjs ./
+RUN npm install -g npm@12.0.2
+COPY package*.json .npmrc ./
 RUN NPM_CONFIG_AUDIT=false NPM_CONFIG_FUND=false CYPRESS_INSTALL_BINARY=0 npm run setup
 ENV NODE_ENV='production'
 
