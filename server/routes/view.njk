@@ -6,6 +6,13 @@
 {% block content %}
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">CSIP (Challenge, Support and Intervention Plans)</h1>
 
+    {% if showDevShortcuts %}
+        <div class="govuk-inset-text">
+            <p class="govuk-body govuk-!-margin-bottom-1">Development shortcut</p>
+            <a class="govuk-link govuk-link--no-visited-state" href="/dev/usual-behaviour-presentation">Open usual behaviour presentation (widget preview)</a>
+        </div>
+    {% endif %}
+
     <div class="homepage-content">
         <div class="govuk-width-container">
             <div class="govuk-grid-row">

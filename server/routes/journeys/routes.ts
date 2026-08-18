@@ -27,6 +27,31 @@ export const JourneyRoutes = (services: Services) => {
 
   router.use(populatePrisonerSummary())
 
+  router.get('/dev/usual-behaviour-presentation-local', (req, res) => {
+    if (process.env.NODE_ENV !== 'development') {
+      return res.redirect('/')
+    }
+
+    req.journeyData.csipRecord = {
+      recordUuid: 'local-dev-record',
+      logCode: 'CSIP-DEV-LOCAL',
+    } as unknown as NonNullable<typeof req.journeyData.csipRecord>
+    req.journeyData.investigation = req.journeyData.investigation ?? {}
+    req.journeyData.prisoner = {
+      firstName: 'Test',
+      lastName: 'Prisoner',
+      prisonerNumber: 'A1234BC',
+      prisonId: 'MDI',
+      dateOfBirth: '1990-01-01',
+      prisonName: 'Moorland (HMP & YOI)',
+      cellLocation: '3-2-027',
+      status: 'ACTIVE IN',
+    }
+
+    const journeyId = req.baseUrl.split('/').filter(Boolean).pop()
+    return res.redirect(`/${journeyId}/record-investigation/usual-behaviour-presentation`)
+  })
+
   router.use('/', ReferralRoutes({ services, path: '/referral' }))
   router.use('/', UpdateReferralRoutes({ services, path: '/update-referral' }))
   router.use('/', InvestigationRoutes({ services, path: '/record-investigation' }))

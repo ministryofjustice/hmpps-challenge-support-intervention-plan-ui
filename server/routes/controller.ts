@@ -10,6 +10,7 @@ export class HomePageController extends BaseJourneyController {
     return res.render('view', {
       showBreadcrumbs: true,
       activeCaseLoadName: res.locals.user.activeCaseLoad?.description,
+      showDevShortcuts: process.env.NODE_ENV === 'development',
       ...counts,
     })
   }

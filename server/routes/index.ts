@@ -16,6 +16,14 @@ export default function routes(services: Services): Router {
 
   get('/', controller.GET)
 
+  get('/dev/usual-behaviour-presentation', async (_req, res) => {
+    if (process.env.NODE_ENV !== 'development') {
+      return res.redirect('/')
+    }
+
+    return res.redirect('/dev/usual-behaviour-presentation-local')
+  })
+
   router.get('/not-authorised', (_req, res) => {
     res.status(403)
     return res.render('not-authorised', {

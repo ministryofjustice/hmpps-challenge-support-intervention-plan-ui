@@ -7,6 +7,7 @@ export default function StartJourneyRoutes({ csipApiService, prisonerSearchServi
   const controller = new StartJourneyController(csipApiService, prisonerSearchService)
 
   get('/', controller.redirectWithCsipData('/record-investigation'))
+  get('/usual-behaviour', controller.redirectWithCsipData('/record-investigation/usual-behaviour-presentation'))
 
   return router
 }
