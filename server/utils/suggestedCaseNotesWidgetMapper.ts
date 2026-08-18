@@ -1,8 +1,4 @@
-import {
-  SuggestedCaseNotesBehaviourType,
-  SuggestedCaseNoteResponseItem,
-  SuggestedCaseNotesResponse,
-} from '../services/suggestedCaseNotes/types'
+import { SuggestedCaseNotesBehaviourType, SuggestedCaseNotesResponse } from '../services/suggestedCaseNotes/types'
 
 export type SuggestedCaseNoteTextFragment = {
   text: string
@@ -12,8 +8,12 @@ export type SuggestedCaseNoteTextFragment = {
 export type SuggestedCaseNotesWidgetCard = {
   itemId: string
   caseNoteText: string
-  relevanceLabel: 'Low' | 'Medium' | 'High'
   textFragments: SuggestedCaseNoteTextFragment[]
+  createdAt?: string
+  createdBy?: string
+  location?: string
+  type?: string
+  amendments: { createdAt: string; textFragments: SuggestedCaseNoteTextFragment[] }[]
 }
 
 export type SuggestedCaseNotesWidgetModel = {
@@ -24,15 +24,6 @@ export type SuggestedCaseNotesWidgetModel = {
   highlightToggleHref?: string
   highlightToggleText?: string
 }
-
-const relevanceRank: Record<'high' | 'medium' | 'low', number> = {
-  high: 3,
-  medium: 2,
-  low: 1,
-}
-
-const labelForRelevance = (relevance: SuggestedCaseNoteResponseItem['relevance']): 'Low' | 'Medium' | 'High' =>
-  relevance[0]!.toUpperCase().concat(relevance.slice(1)) as 'Low' | 'Medium' | 'High'
 
 const stripSupportedMarkup = (text: string): string => text.replace(/<\/?(?:mark|span|strong)\b[^>]*>/gi, '')
 
@@ -88,16 +79,23 @@ export const buildSuggestedCaseNotesWidgetModel = ({
     }
   }
 
-  const sortedNotes = [...response.suggestedCaseNotes].sort(
-    (a, b) => relevanceRank[b.relevance] - relevanceRank[a.relevance],
-  )
-
-  const notes = sortedNotes.map(item => {
-    return {
+  const notes = response.suggestedCaseNotes.map(item => {
+    const note = {
       itemId: item.case_note_id,
       caseNoteText: stripSupportedMarkup(item.annotated_case_note),
-      relevanceLabel: labelForRelevance(item.relevance),
       textFragments: buildTextFragments(item.annotated_case_note),
+      amendments: (item.amendments ?? []).map(amendment => ({
+        createdAt: amendment.created_at,
+        textFragments: buildTextFragments(amendment.annotated_text),
+      })),
+    }
+
+    return {
+      ...note,
+      ...(item.created_at ? { createdAt: item.created_at } : {}),
+      ...(item.created_by ? { createdBy: item.created_by } : {}),
+      ...(item.location ? { location: item.location } : {}),
+      ...(item.type ? { type: item.type } : {}),
     }
   })
 

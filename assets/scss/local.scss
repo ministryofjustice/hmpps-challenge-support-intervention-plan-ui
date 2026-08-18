@@ -84,6 +84,50 @@
 .case-note-card {
   border-color: #ababab;
   box-shadow: none;
+  border-radius: 0;
+  width: auto;
+  box-sizing: border-box;
+  padding: govuk-spacing(6);
+  margin-bottom: govuk-spacing(8);
+}
+
+.suggested-case-notes__heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: govuk-spacing(4);
+}
+
+.suggested-case-notes__controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin-bottom: govuk-spacing(6);
+  padding: govuk-spacing(3) govuk-spacing(4);
+  background-color: #f3f2f1;
+  overflow-x: auto;
+}
+
+.suggested-case-notes__control-group {
+  display: flex;
+  align-items: center;
+  gap: govuk-spacing(4);
+  flex: 0 0 auto;
+}
+
+.suggested-case-notes__control-group--right {
+  margin-left: auto;
+}
+
+.suggested-case-notes__control {
+  flex: 0 0 auto;
+  font-size: 16px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.suggested-case-notes__control--selected {
+  font-weight: 700;
 }
 
 .case-note-card__header-info {
@@ -123,24 +167,20 @@
 }
 
 .case-note-card__type {
-  color: #505a5f;
-  margin-top: govuk-spacing(2);
+  margin-left: auto;
+  white-space: nowrap;
 }
 
-.case-note-card__score-item {
-  flex-shrink: 0;
-  text-align: right;
-}
-
-.case-note-card__score-label {
-  font-size: 1.1875rem;
-  margin-right: 0.3em;
-}
-
-.suggested-case-notes__relevance-badge {
-  background-color: govuk-colour('white');
-  color: #ca3535;
-  border-color: #ca3535;
+.case-note-card__type-tag {
+  display: inline-block;
+  padding: 0 govuk-spacing(1);
+  border: 2px solid govuk-colour('green');
+  color: govuk-colour('green');
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  vertical-align: middle;
 }
 
 .case-note-card__details {
@@ -151,11 +191,21 @@
   line-height: 1.6;
 }
 
-@media (min-width: 40.0625em) {
-  .suggested-case-notes__relevance-badge {
-    font-size: 14px;
-    line-height: 20px;
-  }
+.case-note-card__amendments {
+  margin-left: govuk-spacing(8);
+  padding-top: govuk-spacing(4);
+  border-top: 1px solid govuk-colour('mid-grey');
+}
+
+.case-note-card__amendment + .case-note-card__amendment {
+  margin-top: govuk-spacing(4);
+  padding-top: govuk-spacing(4);
+  border-top: 1px solid govuk-colour('mid-grey');
+}
+
+.hods-highlight {
+  background-color: #ffe5cc;
+  border-bottom: 2px solid #ffb266;
 }
 
 @include govuk-media-query($until: tablet) {
@@ -173,11 +223,18 @@
     white-space: normal;
   }
 
-  .case-note-card__score-item {
-    text-align: left;
+  .case-note-card__type {
+    margin-left: 0;
+    white-space: normal;
   }
 
-  .case-note-card__type {
-    margin-top: govuk-spacing(1);
+  .case-note-card__amendments {
+    margin-left: govuk-spacing(4);
+  }
+
+  .suggested-case-notes__heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0;
   }
 }

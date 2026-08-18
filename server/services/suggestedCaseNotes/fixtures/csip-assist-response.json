@@ -2,23 +2,69 @@
   "prisonerId": "A1234AA",
   "referralId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "behaviourType": "usual_behaviour_presentation",
-  "sortField": "relevance",
+  "sortField": "date_created",
   "sortOrder": "desc",
   "suggestedCaseNotes": [
     {
       "relevance": "high",
       "case_note_id": "f4ee95d0-49a4-46a2-a485-b8f26f089170",
-      "annotated_case_note": "During morning medication round, prisoner appeared visibly tense and pacing near the hatch. <mark>Prisoner became agitated</mark> following a verbal altercation with another prisoner and required repeated staff prompts to de-escalate."
+      "created_at": "2026-05-24T09:00:00Z",
+      "created_by": "PCO Jones",
+      "location": "Moorland (HMP & YOI)",
+      "type": "Negative Behaviour / Incentive Warning",
+      "annotated_case_note": "During morning medication round, prisoner appeared visibly tense and pacing near the hatch. <mark>Prisoner became agitated</mark> following a verbal altercation with another prisoner and required repeated staff prompts to de-escalate.",
+      "amendments": [
+        {
+          "created_at": "2026-08-05T16:45:00Z",
+          "annotated_text": "During association he approached staff to raise a minor concern about his cell temperature, <mark>remained polite and easy to reason with throughout</mark>, and <mark>thanked staff for looking into it</mark>."
+        }
+      ]
     },
     {
       "relevance": "medium",
       "case_note_id": "a2bc7e31-8d14-4f29-bc92-1e3a7d450923",
+      "created_at": "2026-05-23T11:00:00Z",
+      "created_by": "Officer Smith",
+      "location": "Moorland (HMP & YOI)",
+      "type": "Negative Behaviour / Incentive Warning",
       "annotated_case_note": "On association, staff observed increased frustration after a dispute about queue order. <mark>Staff observed raised voice and refusal to return to cell</mark> until spoken to by a senior officer."
     },
     {
       "relevance": "low",
       "case_note_id": "c9de3f42-1a05-4c37-ad83-2f4b8e561034",
-      "annotated_case_note": "At evening meal the prisoner looked withdrawn and avoided interaction with peers. <mark>Prisoner appeared unsettled</mark> but accepted guidance and did not escalate further."
+      "created_at": "2026-04-21T10:00:00Z",
+      "created_by": "Mental Health Team",
+      "location": "Moorland (HMP & YOI)",
+      "type": "Report / Safer Custody",
+      "annotated_case_note": "At evening meal the prisoner looked withdrawn and avoided interaction with peers. <mark>Prisoner appeared unsettled</mark> but accepted guidance and did not escalate further.",
+      "amendments": [
+        {
+          "created_at": "2026-08-02T14:30:00Z",
+          "annotated_text": "Spoke at length with the wing officer about his upcoming release plan and <mark>appeared calm and cooperative throughout the conversation</mark>, engaging well with the questions asked of him."
+        },
+        {
+          "created_at": "2026-08-04T08:15:00Z",
+          "annotated_text": "Follow-up check the next day found no further issues to report and he remained settled for the rest of the shift."
+        }
+      ]
+    },
+    {
+      "relevance": "medium",
+      "case_note_id": "7e6f4a2b-48a7-4db2-bd21-6d1c6f2b9c11",
+      "created_at": "2026-04-10T15:00:00Z",
+      "created_by": "Key Worker Team",
+      "location": "Moorland (HMP & YOI)",
+      "type": "Key Worker Activity / Key Worker Session",
+      "annotated_case_note": "I conducted a key worker session with Darren. We discussed his health, family contact, meaningful activity and plans for the future. He said he was <mark>feeling safe on the wing</mark> and wanted to continue engaging with education."
+    },
+    {
+      "relevance": "low",
+      "case_note_id": "1c2d3e4f-5061-4789-9abc-def012345678",
+      "created_at": "2026-03-29T17:00:00Z",
+      "created_by": "ESOL Tutor",
+      "location": "Moorland (HMP & YOI)",
+      "type": "Positive Behaviour / Quality Work",
+      "annotated_case_note": "Good effort seen in ESOL this morning with finding the purpose of texts. Darren completed the activity independently and supported another learner when asked."
     }
   ]
 }
