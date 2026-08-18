@@ -86,6 +86,46 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
     })
   })
 
+  it('maps case note metadata and amendment fragments', () => {
+    const response = buildResponse()
+    response.suggestedCaseNotes = [
+      {
+        relevance: 'high',
+        case_note_id: 'metadata-1',
+        created_at: '2026-05-24T09:00:00Z',
+        created_by: 'PCO Jones',
+        location: 'Moorland (HMP & YOI)',
+        type: 'General / History Sheet Entry',
+        annotated_case_note: 'Original note',
+        amendments: [
+          {
+            created_at: '2026-08-05T16:45:00Z',
+            annotated_text: 'Amended <mark>positive behaviour</mark>',
+          },
+        ],
+      },
+    ]
+
+    const result = buildSuggestedCaseNotesWidgetModel({ response })
+
+    expect(result.notes[0]).toMatchObject({
+      itemId: 'metadata-1',
+      createdAt: '2026-05-24T09:00:00Z',
+      createdBy: 'PCO Jones',
+      location: 'Moorland (HMP & YOI)',
+      type: 'General / History Sheet Entry',
+      amendments: [
+        {
+          createdAt: '2026-08-05T16:45:00Z',
+          textFragments: [
+            { text: 'Amended ', highlighted: false },
+            { text: 'positive behaviour', highlighted: true },
+          ],
+        },
+      ],
+    })
+  })
+
   it('suppresses notes when sensitive content is present and the user lacks permission', () => {
     const response = buildResponse()
     response.hasSensitiveNotes = true
