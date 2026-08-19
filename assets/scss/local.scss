@@ -81,103 +81,169 @@
   max-height: fit-content;
 }
 
-.case-note-card {
-  border-color: #ababab;
-  box-shadow: none;
-}
+$case-note-border: #ababab;
+$case-note-muted-text: #626a6e;
+$case-note-highlight: #ffe5cc;
+$case-note-highlight-border: #ffb266;
 
-.case-note-card__header-info {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  column-gap: govuk-spacing(4);
-  row-gap: govuk-spacing(2);
-}
+.suggested-case-notes {
+  &__heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: govuk-spacing(4);
+  }
 
-.case-note-card__header-text {
-  min-width: 0;
-  flex: 1;
-}
+  &__controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin-bottom: govuk-spacing(6);
+    padding: govuk-spacing(3) govuk-spacing(4);
+    background-color: govuk-colour('black', $variant: 'tint-95');
+    overflow-x: auto;
+  }
 
-.case-note-card__date-line {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  flex-wrap: wrap;
-  column-gap: govuk-spacing(4);
-  row-gap: govuk-spacing(1);
-}
+  &__control-group {
+    display: flex;
+    align-items: center;
+    gap: govuk-spacing(4);
+    flex: 0 0 auto;
 
-.case-note-card__author-location {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  column-gap: govuk-spacing(4);
-  row-gap: govuk-spacing(1);
-}
+    &--right {
+      margin-left: auto;
+    }
+  }
 
-.case-note-card__created-by,
-.case-note-card__prison-name {
-  color: #626a6e;
-  white-space: nowrap;
-}
-
-.case-note-card__type {
-  color: #505a5f;
-  margin-top: govuk-spacing(2);
-}
-
-.case-note-card__score-item {
-  flex-shrink: 0;
-  text-align: right;
-}
-
-.case-note-card__score-label {
-  font-size: 1.1875rem;
-  margin-right: 0.3em;
-}
-
-.suggested-case-notes__relevance-badge {
-  background-color: govuk-colour('white');
-  color: #ca3535;
-  border-color: #ca3535;
-}
-
-.case-note-card__details {
-  margin-top: govuk-spacing(3);
-}
-
-.case-note-card__text {
-  line-height: 1.6;
-}
-
-@media (min-width: 40.0625em) {
-  .suggested-case-notes__relevance-badge {
-    font-size: 14px;
+  &__control {
+    flex: 0 0 auto;
+    font-size: 16px;
     line-height: 20px;
-  }
-}
+    white-space: nowrap;
 
-@include govuk-media-query($until: tablet) {
-  .case-note-card__header-info {
-    flex-direction: column;
-    row-gap: govuk-spacing(2);
+    &--selected {
+      font-weight: 700;
+    }
   }
 
-  .case-note-card__date-line {
-    align-items: flex-start;
+  .case-note-card {
+    border-color: $case-note-border;
+    box-shadow: none;
+    border-radius: 0;
+    width: auto;
+    box-sizing: border-box;
+    padding: govuk-spacing(6);
+    margin-bottom: govuk-spacing(8);
+
+    &__header-info {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      column-gap: govuk-spacing(4);
+      row-gap: govuk-spacing(2);
+    }
+
+    &__header-text {
+      min-width: 0;
+      flex: 1;
+    }
+
+    &__date-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      column-gap: govuk-spacing(4);
+      row-gap: govuk-spacing(1);
+    }
+
+    &__author-location {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      column-gap: govuk-spacing(4);
+      row-gap: govuk-spacing(1);
+    }
+
+    &__created-by,
+    &__prison-name {
+      color: $case-note-muted-text;
+      white-space: nowrap;
+    }
+
+    &__type {
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    &__type-tag {
+      display: inline-block;
+      padding: 0 govuk-spacing(1);
+      border: 2px solid govuk-colour('green');
+      color: govuk-colour('green');
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+
+    &__details {
+      margin-top: govuk-spacing(3);
+    }
+
+    &__text {
+      line-height: 1.6;
+    }
+
+    &__amendments {
+      margin-left: govuk-spacing(8);
+      padding-top: govuk-spacing(4);
+      border-top: 1px solid govuk-colour('mid-grey');
+    }
+
+    &__amendment + &__amendment {
+      margin-top: govuk-spacing(4);
+      padding-top: govuk-spacing(4);
+      border-top: 1px solid govuk-colour('mid-grey');
+    }
   }
 
-  .case-note-card__created-by,
-  .case-note-card__prison-name {
-    white-space: normal;
+  .hods-highlight {
+    background-color: $case-note-highlight;
+    border-bottom: 2px solid $case-note-highlight-border;
   }
 
-  .case-note-card__score-item {
-    text-align: left;
-  }
+  @include govuk-media-query($until: tablet) {
+    &__heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0;
+    }
 
-  .case-note-card__type {
-    margin-top: govuk-spacing(1);
+    .case-note-card {
+      &__header-info {
+        flex-direction: column;
+        row-gap: govuk-spacing(2);
+      }
+
+      &__date-line {
+        align-items: flex-start;
+      }
+
+      &__created-by,
+      &__prison-name {
+        white-space: normal;
+      }
+
+      &__type {
+        margin-left: 0;
+        white-space: normal;
+      }
+
+      &__amendments {
+        margin-left: govuk-spacing(4);
+      }
+    }
   }
 }

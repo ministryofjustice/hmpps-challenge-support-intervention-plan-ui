@@ -1,23 +1,30 @@
-<section class="govuk-!-margin-top-9" data-qa="suggested-case-notes-widget">
-    <h2 class="govuk-heading-l govuk-!-margin-bottom-4">Suggested Case Notes</h2>
-    {% if widget and widget.highlightToggleHref and widget.highlightToggleText and widget.notes and widget.notes.length %}
-        <p class="govuk-body govuk-!-margin-bottom-4">
-            <a class="govuk-link govuk-link--no-visited-state" href="{{ widget.highlightToggleHref }}">{{ widget.highlightToggleText }}</a>
-        </p>
-    {% endif %}
+<section class="suggested-case-notes govuk-!-margin-top-9" data-qa="suggested-case-notes-widget">
+    <div class="suggested-case-notes__heading">
+        <h2 class="govuk-heading-l govuk-!-margin-bottom-4">Suggested Case Notes</h2>
+        <a class="govuk-link govuk-link--no-visited-state" href="#">Give feedback</a>
+    </div>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-4">An AI tool has identified case notes relevant to this question.</h3>
+    <nav class="suggested-case-notes__controls" aria-label="Case notes display options">
+        <div class="suggested-case-notes__control-group">
+            <span class="suggested-case-notes__control suggested-case-notes__control--selected">Sorted by date created</span>
+            <a class="suggested-case-notes__control govuk-link govuk-link--no-visited-state" href="#">Sort by most recent activity</a>
+        </div>
+        <div class="suggested-case-notes__control-group suggested-case-notes__control-group--right">
+            <a class="suggested-case-notes__control govuk-link govuk-link--no-visited-state" href="#">Turn off highlights</a>
+            <a class="suggested-case-notes__control govuk-link govuk-link--no-visited-state" href="#">Expand all case notes</a>
+        </div>
+    </nav>
     {% if widget and widget.notes and widget.notes.length %}
         {% for note in widget.notes %}
-            <div class="card case-note-card govuk-!-margin-bottom-4" data-qa="suggested-case-notes-card">
+            <article class="card case-note-card govuk-!-margin-bottom-4" data-qa="suggested-case-notes-card">
                 <div class="case-note-card__header-info govuk-!-margin-bottom-3">
                     <div class="case-note-card__header-text">
-                        <h3 class="govuk-heading-m govuk-!-margin-bottom-0 case-note-card__date">Suggested note {{ loop.index }}</h3>
-                        <p class="govuk-body-s govuk-!-margin-top-1 govuk-!-margin-bottom-0">Ref: {{ note.itemId }}</p>
-                    </div>
-                    <div class="case-note-card__score-item">
-                        <p class="govuk-body-s govuk-!-margin-bottom-0">
-                            <span class="case-note-card__score-label">Relevance:</span>
-                            <span class="moj-badge {% if note.relevanceLabel === 'High' %}moj-badge--red{% elseif note.relevanceLabel === 'Medium' %}moj-badge--blue{% else %}moj-badge--grey{% endif %} suggested-case-notes__relevance-badge">{{ note.relevanceLabel }}</span>
-                        </p>
+                        <div class="case-note-card__date-line">
+                            <h3 class="govuk-heading-m govuk-!-margin-bottom-0 case-note-card__date">{{ note.createdAt or 'Suggested note ' + loop.index }}</h3>
+                            {% if note.location %}<p class="govuk-body-s govuk-!-margin-bottom-0 case-note-card__prison-name">{{ note.location }}</p>{% endif %}
+                            {% if note.type %}<p class="govuk-body-s govuk-!-margin-bottom-0 case-note-card__type"><span class="case-note-card__type-tag">{{ note.type }}</span></p>{% endif %}
+                        </div>
+                        {% if note.createdBy %}<p class="govuk-body-s govuk-!-margin-top-1 govuk-!-margin-bottom-0 case-note-card__created-by">{{ note.createdBy }}</p>{% endif %}
                     </div>
                 </div>
 
@@ -35,8 +42,25 @@
                             {{ note.caseNoteText }}
                         {% endif %}
                     </p>
+                    {% if note.amendments and note.amendments.length %}
+                        <div class="case-note-card__amendments">
+                            <h4 class="govuk-heading-m">More details</h4>
+                            {% for amendment in note.amendments %}
+                                <div class="case-note-card__amendment">
+                                    <h5 class="govuk-heading-s">{{ amendment.createdAt }}</h5>
+                                    <p class="govuk-body case-note-card__text">
+                                        {% if widget.showHighlighting %}
+                                            {% for fragment in amendment.textFragments %}{% if fragment.highlighted %}<mark class="hods-highlight"><strong>{{ fragment.text }}</strong></mark>{% else %}{{ fragment.text }}{% endif %}{% endfor %}
+                                        {% else %}
+                                            {% for fragment in amendment.textFragments %}{{ fragment.text }}{% endfor %}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
-            </div>
+            </article>
         {% endfor %}
     {% else %}
         <div class="govuk-inset-text govuk-!-margin-top-2">

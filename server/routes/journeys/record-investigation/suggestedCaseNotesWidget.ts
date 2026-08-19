@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import logger from '../../../../logger'
 import SuggestedCaseNotesService from '../../../services/suggestedCaseNotes/suggestedCaseNotesService'
-import { SuggestedCaseNotesBehaviourType } from '../../../services/suggestedCaseNotes/types'
+import { SuggestedCaseNotesBehaviourType, SuggestedCaseNotesResponse } from '../../../services/suggestedCaseNotes/types'
 import csipAssistEnabled from '../../../utils/featureToggles'
 import {
   buildSuggestedCaseNotesWidgetModel,
@@ -24,16 +24,19 @@ export const loadSuggestedCaseNotesWidget = async ({
   suggestedCaseNotesService,
   behaviourType,
   pageName,
+  forceShow = false,
+  previewResponse,
 }: {
   req: Request
   res: Response
   suggestedCaseNotesService: SuggestedCaseNotesService
   behaviourType: SuggestedCaseNotesBehaviourType
   pageName: string
+  forceShow?: boolean
+  previewResponse?: SuggestedCaseNotesResponse
 }): Promise<{ showSuggestedCaseNotesWidget: boolean; suggestedCaseNotesWidget?: SuggestedCaseNotesWidgetModel }> => {
-  const showSuggestedCaseNotesWidget = csipAssistEnabled(
-    res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId,
-  )
+  const showSuggestedCaseNotesWidget =
+    forceShow || csipAssistEnabled(res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId)
 
   if (!showSuggestedCaseNotesWidget) {
     return { showSuggestedCaseNotesWidget }
@@ -42,12 +45,14 @@ export const loadSuggestedCaseNotesWidget = async ({
   const showHighlighting = getShowHighlighting(req)
 
   try {
-    const response = await suggestedCaseNotesService.getSuggestedCaseNotes(req, {
-      referralId: req.journeyData.csipRecord?.recordUuid ?? '',
-      behaviourType,
-      sortField: 'relevance',
-      sortOrder: 'desc',
-    })
+    const response =
+      previewResponse ??
+      (await suggestedCaseNotesService.getSuggestedCaseNotes(req, {
+        referralId: req.journeyData.csipRecord?.recordUuid ?? '',
+        behaviourType,
+        sortField: 'date_created',
+        sortOrder: 'desc',
+      }))
 
     if (process.env.NODE_ENV === 'development') {
       logger.info(

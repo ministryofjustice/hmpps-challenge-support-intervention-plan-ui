@@ -7,7 +7,7 @@ const typedResponseFixture = responseFixture as SuggestedCaseNotesResponse
 const buildResponse = (): SuggestedCaseNotesResponse => structuredClone(typedResponseFixture)
 
 describe('buildSuggestedCaseNotesWidgetModel', () => {
-  it('sorts notes by relevance from high to low', () => {
+  it('preserves the API note order', () => {
     const response = buildResponse()
     response.suggestedCaseNotes = [
       response.suggestedCaseNotes[2]!,
@@ -17,7 +17,11 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
 
     const result = buildSuggestedCaseNotesWidgetModel({ response })
 
-    expect(result.notes.map(note => note.relevanceLabel)).toEqual(['High', 'Medium', 'Low'])
+    expect(result.notes.map(note => note.itemId)).toEqual([
+      'c9de3f42-1a05-4c37-ad83-2f4b8e561034',
+      'f4ee95d0-49a4-46a2-a485-b8f26f089170',
+      'a2bc7e31-8d14-4f29-bc92-1e3a7d450923',
+    ])
   })
 
   it('builds plain and highlighted fragments and strips supported markup from text', () => {
@@ -78,6 +82,46 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
         { text: 'Prefix ', highlighted: false },
         { text: 'highlight', highlighted: true },
         { text: ' suffix', highlighted: false },
+      ],
+    })
+  })
+
+  it('maps case note metadata and amendment fragments', () => {
+    const response = buildResponse()
+    response.suggestedCaseNotes = [
+      {
+        relevance: 'high',
+        case_note_id: 'metadata-1',
+        created_at: '2026-05-24T09:00:00Z',
+        created_by: 'PCO Jones',
+        location: 'Moorland (HMP & YOI)',
+        type: 'General / History Sheet Entry',
+        annotated_case_note: 'Original note',
+        amendments: [
+          {
+            created_at: '2026-08-05T16:45:00Z',
+            annotated_text: 'Amended <mark>positive behaviour</mark>',
+          },
+        ],
+      },
+    ]
+
+    const result = buildSuggestedCaseNotesWidgetModel({ response })
+
+    expect(result.notes[0]).toMatchObject({
+      itemId: 'metadata-1',
+      createdAt: '2026-05-24T09:00:00Z',
+      createdBy: 'PCO Jones',
+      location: 'Moorland (HMP & YOI)',
+      type: 'General / History Sheet Entry',
+      amendments: [
+        {
+          createdAt: '2026-08-05T16:45:00Z',
+          textFragments: [
+            { text: 'Amended ', highlighted: false },
+            { text: 'positive behaviour', highlighted: true },
+          ],
+        },
       ],
     })
   })

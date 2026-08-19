@@ -38,7 +38,7 @@ describe('record investigation suggested case notes controllers', () => {
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, {
       referralId: 'ref-123',
       behaviourType: 'usual_behaviour_presentation',
-      sortField: 'relevance',
+      sortField: 'date_created',
       sortOrder: 'desc',
     })
     expect(res.render).toHaveBeenCalledWith(
@@ -63,7 +63,7 @@ describe('record investigation suggested case notes controllers', () => {
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, {
       referralId: 'ref-123',
       behaviourType: 'risks_and_triggers',
-      sortField: 'relevance',
+      sortField: 'date_created',
       sortOrder: 'desc',
     })
     expect(res.render).toHaveBeenCalledWith(
@@ -88,7 +88,7 @@ describe('record investigation suggested case notes controllers', () => {
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, {
       referralId: 'ref-123',
       behaviourType: 'protective_factors',
-      sortField: 'relevance',
+      sortField: 'date_created',
       sortOrder: 'desc',
     })
     expect(res.render).toHaveBeenCalledWith(
