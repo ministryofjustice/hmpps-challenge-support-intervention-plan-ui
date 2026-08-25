@@ -6,7 +6,12 @@ import fs from 'fs'
 import { convertToTitleCase, initialiseName, possessiveComma, sentenceCase } from './utils'
 import config from '../config'
 import { buildErrorSummaryList, customErrorOrderBuilder, findError } from '../middleware/validationMiddleware'
-import { formatDateLongMonthConcise, formatDateConcise, formatDateLongMonthWithTime, todayStringGBFormat } from './datetimeUtils'
+import {
+  formatDateLongMonthConcise,
+  formatDateConcise,
+  formatDateLongMonthWithTime,
+  todayStringGBFormat,
+} from './datetimeUtils'
 import { YES_NO_ANSWER } from '../routes/journeys/referral/safer-custody/schemas'
 import { csipStatusDisplayText, csipStatusTagClass, identifiedNeedsActionLabel } from './csipDisplayTextUtils'
 import {
