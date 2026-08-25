@@ -35,6 +35,10 @@ export const loadSuggestedCaseNotesWidget = async ({
   forceShow?: boolean
   previewResponse?: SuggestedCaseNotesResponse
 }): Promise<{ showSuggestedCaseNotesWidget: boolean; suggestedCaseNotesWidget?: SuggestedCaseNotesWidgetModel }> => {
+  let sortField = req.query['sortField'] as string
+  if (!sortField || !['createdDate', 'lastAmendedDate'].includes(sortField)) {
+    sortField = 'createdDate'
+  }
   const showSuggestedCaseNotesWidget =
     forceShow || csipAssistEnabled(res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId)
 
@@ -50,7 +54,7 @@ export const loadSuggestedCaseNotesWidget = async ({
       (await suggestedCaseNotesService.getSuggestedCaseNotes(req, {
         referralId: req.journeyData.csipRecord?.recordUuid ?? '',
         behaviourType,
-        sortField: 'date_created',
+        sortField,
         sortOrder: 'desc',
       }))
 
@@ -79,7 +83,7 @@ export const loadSuggestedCaseNotesWidget = async ({
 
     return {
       showSuggestedCaseNotesWidget,
-      suggestedCaseNotesWidget,
+      suggestedCaseNotesWidget: { ...suggestedCaseNotesWidget, sortField },
     }
   } catch (error) {
     logger.warn(error, `Failed to load suggested case notes for ${pageName} page`)
@@ -90,6 +94,7 @@ export const loadSuggestedCaseNotesWidget = async ({
         behaviourType,
         showHighlighting,
         emptyStateMessage: SUGGESTED_CASE_NOTES_UNAVAILABLE_MESSAGE,
+        sortField,
         notes: [],
       },
     }

@@ -831,6 +831,38 @@ const stubPostPlan = () => {
   return createBasicHttpStub('POST', `/csip-api/csip-records/${uuidRegex}/plan`, 200)
 }
 
+const stubSuggestedCaseNotesEmpty = () => {
+  return createBasicHttpStub('POST', '/csip-api/v1/suggestedCaseNotes/[A-Za-z0-9]+', 200, {
+    prisonerId: 'A1234AA',
+    referralId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    behaviourType: 'usual_behaviour_presentation',
+    sortField: 'createdDate',
+    sortOrder: 'desc',
+    suggestedCaseNotes: [],
+  })
+}
+
+const stubSuggestedCaseNotes = () => {
+  return createBasicHttpStub('POST', '/csip-api/v1/suggestedCaseNotes/[A-Za-z0-9]+', 200, {
+    prisonerId: 'A1234AA',
+    referralId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    behaviourType: 'usual_behaviour_presentation',
+    sortField: 'createdDate',
+    sortOrder: 'desc',
+    suggestedCaseNotes: [
+      {
+        relevance: 'high',
+        case_note_id: 'f4ee95d0-49a4-46a2-a485-b8f26f089170',
+        created_at: '2026-05-24T09:00:00Z',
+        created_by: 'PCO Jones',
+        location: 'Moorland (HMP & YOI)',
+        type: 'Negative Behaviour / Incentive Warning',
+        annotated_case_note: 'Prisoner became agitated following a verbal altercation with another prisoner.',
+      },
+    ],
+  })
+}
+
 const stubPatchPlanSuccess = () => {
   return createBasicHttpStub('PATCH', `/csip-api/csip-records/${uuidRegex}/plan`, 200)
 }
@@ -1581,4 +1613,6 @@ export default {
   stubCsipRecordSuccessPlanPendingWithDecisionHistory,
   stubCsipRecordSuccessCsipOpenWith,
   stubSearchCsipRecordsPrisonerCsips,
+  stubSuggestedCaseNotes,
+  stubSuggestedCaseNotesEmpty,
 }
