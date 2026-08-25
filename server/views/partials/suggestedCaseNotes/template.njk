@@ -7,11 +7,11 @@
     <nav class="suggested-case-notes__controls" aria-label="Case notes display options">
         <div class="suggested-case-notes__control-group">
             {% if widget.sortField == 'createdDate' %}
-                <a class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-bold font-colour--black govuk-link--no-underline" href="?sortField=createdDate" data-qa="sort-by-date-created">Sorted by date created</a>
                 <a class="govuk-link govuk-link--no-visited-state govuk-link govuk-link--no-visited-state" href="?sortField=lastAmendedDate" data-qa="sort-by-most-recent-activity">Sort by most recent activity</a>
+                <a class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-bold font-colour--black govuk-link--no-underline" href="?sortField=createdDate" data-qa="sort-by-date-created">Sorted by date created</a>
             {% else %}
-                <a class="govuk-link govuk-link--no-visited-state govuk-link govuk-link--no-visited-state" href="?sortField=createdDate" data-qa="sort-by-date-created">Sort by date created</a>
                 <a class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-bold font-colour--black govuk-link--no-underline" href="?sortField=lastAmendedDate" data-qa="sort-by-most-recent-activity">Sorted by most recent activity</a>
+                <a class="govuk-link govuk-link--no-visited-state govuk-link govuk-link--no-visited-state" href="?sortField=createdDate" data-qa="sort-by-date-created">Sort by date created</a>
             {% endif %}
         </div>
         <div class="suggested-case-notes__control-group suggested-case-notes__control-group--right">
