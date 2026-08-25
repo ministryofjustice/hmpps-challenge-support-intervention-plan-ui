@@ -98,6 +98,45 @@ describe('loadSuggestedCaseNotesWidget', () => {
     })
   })
 
+  it('defaults sortField to createdDate when the query value is not supported', async () => {
+    const suggestedCaseNotesService = {
+      getSuggestedCaseNotes: jest.fn().mockResolvedValue(responseFixture),
+    } as unknown as SuggestedCaseNotesService
+
+    const req = {
+      query: { sortField: 'unsupportedSortField' },
+      path: '/record-investigation/usual-behaviour-presentation',
+      originalUrl: '/record-investigation/usual-behaviour-presentation?sortField=unsupportedSortField',
+      journeyData: {
+        prisoner: { prisonerNumber: 'A1234AA' },
+        csipRecord: { recordUuid: 'ref-123' },
+      },
+    } as unknown as Request
+    const res = {
+      locals: {
+        user: {
+          activeCaseLoadId: 'MDI',
+        },
+      },
+    } as Response
+
+    const result = await loadSuggestedCaseNotesWidget({
+      req,
+      res,
+      suggestedCaseNotesService,
+      behaviourType: 'usual_behaviour_presentation',
+      pageName: 'usual behaviour presentation',
+    })
+
+    expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, {
+      referralId: 'ref-123',
+      behaviourType: 'usual_behaviour_presentation',
+      sortField: 'createdDate',
+      sortOrder: 'desc',
+    })
+    expect(result.suggestedCaseNotesWidget?.sortField).toBe('createdDate')
+  })
+
   it('returns a non-blocking empty state when the API call fails', async () => {
     const suggestedCaseNotesService = {
       getSuggestedCaseNotes: jest.fn().mockRejectedValue(new Error('boom')),
