@@ -23,6 +23,7 @@ export type SuggestedCaseNotesWidgetModel = {
   notes: SuggestedCaseNotesWidgetCard[]
   highlightToggleHref?: string
   highlightToggleText?: string
+  sortField: string
 }
 
 const stripSupportedMarkup = (text: string): string => text.replace(/<\/?(?:mark|span|strong)\b[^>]*>/gi, '')
@@ -73,6 +74,7 @@ export const buildSuggestedCaseNotesWidgetModel = ({
     return {
       behaviourType: response.behaviourType,
       showHighlighting,
+      sortField: response.sortField,
       emptyStateMessage:
         'Suggested Case Notes cannot be shown because you do not have permission to view sensitive notes.',
       notes: [],
@@ -102,6 +104,7 @@ export const buildSuggestedCaseNotesWidgetModel = ({
   return {
     behaviourType: response.behaviourType,
     showHighlighting,
+    sortField: response.sortField,
     emptyStateMessage: 'No suggested case notes are available for this record right now.',
     notes,
   }

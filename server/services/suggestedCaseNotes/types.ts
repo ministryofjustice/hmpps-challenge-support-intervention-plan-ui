@@ -6,7 +6,7 @@ export type SuggestedCaseNotesBehaviourType =
 export type SuggestedCaseNotesRequest = {
   referralId: string
   behaviourType: SuggestedCaseNotesBehaviourType
-  sortField: 'relevance' | 'date_created' | 'most_recent_activity'
+  sortField: string
   sortOrder: 'asc' | 'desc'
 }
 
@@ -33,7 +33,7 @@ export type SuggestedCaseNotesResponse = {
   prisonerId: string
   referralId: string
   behaviourType: SuggestedCaseNotesBehaviourType
-  sortField: 'relevance' | 'date_created' | 'most_recent_activity'
+  sortField: string
   sortOrder: 'asc' | 'desc'
   hasSensitiveNotes?: boolean
   userCanViewSensitiveNotes?: boolean

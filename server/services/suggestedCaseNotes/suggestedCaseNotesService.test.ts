@@ -78,6 +78,31 @@ describe('SuggestedCaseNotesService', () => {
     expect(csipApiService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, 'A1234AA', requestFixture)
   })
 
+  it('passes sortField through to csip api service', async () => {
+    const csipApiService = {
+      getSuggestedCaseNotes: jest.fn().mockResolvedValue(responseFixture),
+    } as unknown as jest.Mocked<CsipApiService>
+    const service = new SuggestedCaseNotesService(csipApiService)
+    const req = {
+      journeyData: {
+        prisoner: {
+          prisonerNumber: 'A1234AA',
+        },
+      },
+    }
+    const requestWithLastAmendedDate: SuggestedCaseNotesRequest = {
+      ...requestFixture,
+      sortField: 'lastAmendedDate',
+    }
+
+    await service.getSuggestedCaseNotes(req as unknown as Request, requestWithLastAmendedDate)
+
+    expect(csipApiService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, 'A1234AA', {
+      ...requestFixture,
+      sortField: 'lastAmendedDate',
+    })
+  })
+
   it('throws when prisoner number format is invalid', async () => {
     const csipApiService = {
       getSuggestedCaseNotes: jest.fn(),

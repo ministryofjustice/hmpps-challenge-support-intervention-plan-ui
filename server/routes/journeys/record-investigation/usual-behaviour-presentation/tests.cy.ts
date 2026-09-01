@@ -32,13 +32,13 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
     verifySubmittedValueIsPersisted()
   })
 
-  const navigateToTestPage = () => {
+  const navigateToTestPage = (sortField?: 'createdDate' | 'lastAmendedDate') => {
     cy.signIn()
     cy.visit(`${uuid}/csip-record/02e5854f-f7b1-4c56-bec8-69e390eb8550/record-investigation/start`, {
       failOnStatusCode: false,
     })
     cy.url().should('to.match', /\/record-investigation$/)
-    cy.visit(`${uuid}/record-investigation/usual-behaviour-presentation`)
+    cy.visit(`${uuid}/record-investigation/usual-behaviour-presentation${sortField ? `?sortField=${sortField}` : ''}`)
   }
 
   const validatePageContents = () => {
@@ -88,4 +88,50 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
     cy.reload()
     getInputTextbox().should('have.value', "<script>alert('xss');</script>")
   }
+
+  it('should show the empty state message when there are no suggested case notes', () => {
+    cy.task('stubSuggestedCaseNotesEmpty')
+    navigateToTestPage()
+    cy.url().should('to.match', /\/usual-behaviour-presentation$/)
+
+    cy.get('[data-qa="suggested-case-notes-empty-message"]')
+      .should('be.visible')
+      .and('contain.text', 'No suggested case notes are available for this record right now.')
+  })
+
+  it('should not show the empty state message when suggested case notes exist', () => {
+    cy.task('stubSuggestedCaseNotes')
+    navigateToTestPage()
+    cy.url().should('to.match', /\/usual-behaviour-presentation$/)
+
+    cy.get('[data-qa="suggested-case-notes-empty-message"]').should('not.exist')
+  })
+
+  context('when sorting suggested case notes', () => {
+    it('should update both link texts and the query string when sorting by date created', () => {
+      navigateToTestPage('lastAmendedDate')
+      cy.url().should('include', 'sortField=lastAmendedDate')
+      cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sort by date created')
+      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by most recent activity')
+
+      cy.get('[data-qa="sort-by-date-created"]').should('be.visible').click()
+
+      cy.url().should('include', 'sortField=createdDate')
+      cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sorted by date created')
+      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sort by most recent activity')
+    })
+
+    it('should update both link texts and the query string when sorting by most recent activity', () => {
+      navigateToTestPage('createdDate')
+      cy.url().should('include', 'sortField=createdDate')
+      cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sorted by date created')
+      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sort by most recent activity')
+
+      cy.get('[data-qa="sort-by-most-recent-activity"]').should('be.visible').click()
+
+      cy.url().should('include', 'sortField=lastAmendedDate')
+      cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sort by date created')
+      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by most recent activity')
+    })
+  })
 })

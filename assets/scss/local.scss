@@ -247,3 +247,9 @@ $case-note-highlight-border: #ffb266;
     }
   }
 }
+
+.font-colour {
+  &--black {
+    color: govuk-colour('black') !important;
+  }
+}

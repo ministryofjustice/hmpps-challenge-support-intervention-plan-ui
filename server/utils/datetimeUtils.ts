@@ -43,6 +43,9 @@ export const formatDateConcise = (value?: string) => value && format(new Date(Da
 export const formatDateLongMonthConcise = (value?: string) =>
   value && format(new Date(Date.parse(value)), 'd LLLL yyyy')
 
+export const formatDateLongMonthWithTime = (value?: string) =>
+  value && format(new Date(Date.parse(value)), 'd LLLL yyyy, h:mmaaa')
+
 export const formatDisplayDateTime = (value?: string) =>
   value && DATE_TIME_FORMAT_GB_VERBOSE.format(new Date(Date.parse(value)))
 

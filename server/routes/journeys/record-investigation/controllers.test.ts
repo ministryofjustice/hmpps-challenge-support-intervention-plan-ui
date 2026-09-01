@@ -8,7 +8,7 @@ const responseFixture = {
   prisonerId: 'A1234AA',
   referralId: 'ref-123',
   behaviourType: 'usual_behaviour_presentation' as const,
-  sortField: 'relevance' as const,
+  sortField: 'createdDate' as const,
   sortOrder: 'desc' as const,
   suggestedCaseNotes: [
     {
@@ -38,7 +38,7 @@ describe('record investigation suggested case notes controllers', () => {
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, {
       referralId: 'ref-123',
       behaviourType: 'usual_behaviour_presentation',
-      sortField: 'date_created',
+      sortField: 'createdDate',
       sortOrder: 'desc',
     })
     expect(res.render).toHaveBeenCalledWith(
@@ -63,7 +63,7 @@ describe('record investigation suggested case notes controllers', () => {
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, {
       referralId: 'ref-123',
       behaviourType: 'risks_and_triggers',
-      sortField: 'date_created',
+      sortField: 'createdDate',
       sortOrder: 'desc',
     })
     expect(res.render).toHaveBeenCalledWith(
@@ -88,7 +88,7 @@ describe('record investigation suggested case notes controllers', () => {
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, {
       referralId: 'ref-123',
       behaviourType: 'protective_factors',
-      sortField: 'date_created',
+      sortField: 'createdDate',
       sortOrder: 'desc',
     })
     expect(res.render).toHaveBeenCalledWith(
@@ -96,11 +96,31 @@ describe('record investigation suggested case notes controllers', () => {
       expect.objectContaining({ showSuggestedCaseNotesWidget: true }),
     )
   })
+
+  it('passes sortField from query through to suggested case notes service', async () => {
+    const suggestedCaseNotesService = {
+      getSuggestedCaseNotes: jest.fn().mockResolvedValue(responseFixture),
+    }
+    const controller = new UsualBehaviourPresentationController(suggestedCaseNotesService as never)
+    const req = buildRequest('/record-investigation/usual-behaviour-presentation', {
+      sortField: 'lastAmendedDate',
+    })
+    const res = buildResponse()
+
+    await controller.GET(req, res)
+
+    expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, {
+      referralId: 'ref-123',
+      behaviourType: 'usual_behaviour_presentation',
+      sortField: 'lastAmendedDate',
+      sortOrder: 'desc',
+    })
+  })
 })
 
-const buildRequest = (path: string): Request => {
+const buildRequest = (path: string, query: Record<string, string> = {}): Request => {
   return {
-    query: {},
+    query,
     path,
     originalUrl: path,
     journeyData: {
