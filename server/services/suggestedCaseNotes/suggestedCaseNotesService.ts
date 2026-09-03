@@ -1,4 +1,3 @@
-import { Request } from 'express'
 import CsipApiService from '../csipApi/csipApiService'
 import {
   isValidPrisonerNumber,
@@ -12,9 +11,11 @@ export type { SuggestedCaseNotesBehaviourType, SuggestedCaseNotesRequest, Sugges
 export default class SuggestedCaseNotesService {
   constructor(private readonly csipApiService: CsipApiService) {}
 
-  async getSuggestedCaseNotes(req: Request, request: SuggestedCaseNotesRequest): Promise<SuggestedCaseNotesResponse> {
-    const prisonerNumberValue = req.journeyData.prisoner?.prisonerNumber
-
+  async getSuggestedCaseNotes(
+    systemClientToken: string,
+    prisonerNumberValue: string | undefined,
+    request: SuggestedCaseNotesRequest,
+  ): Promise<SuggestedCaseNotesResponse> {
     if (!prisonerNumberValue) {
       throw new Error('Missing prisoner number for suggested case notes request')
     }
@@ -25,6 +26,6 @@ export default class SuggestedCaseNotesService {
       throw new Error(`Invalid prisoner number format for suggested case notes request: '${prisonerNumberValue}'`)
     }
 
-    return this.csipApiService.getSuggestedCaseNotes(req, prisonerNumber, request)
+    return this.csipApiService.getSuggestedCaseNotes(systemClientToken, prisonerNumber, request)
   }
 }

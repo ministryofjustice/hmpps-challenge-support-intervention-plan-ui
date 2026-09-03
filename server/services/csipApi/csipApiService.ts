@@ -182,10 +182,10 @@ export default class CsipApiService {
   }
 
   getSuggestedCaseNotes(
-    req: Request,
+    systemClientToken: string,
     prisonerNumber: string,
     payload: SuggestedCaseNotesRequest,
   ): Promise<SuggestedCaseNotesResponse> {
-    return this.csipApiClientBuilder(req.systemClientToken).getSuggestedCaseNotes(prisonerNumber, payload)
+    return this.csipApiClientBuilder(systemClientToken).getSuggestedCaseNotes(prisonerNumber, payload)
   }
 }
