@@ -35,7 +35,7 @@ describe('record investigation suggested case notes controllers', () => {
 
     await controller.GET(req, res)
 
-    expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, {
+    expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
       referralId: 'ref-123',
       behaviourType: 'usual_behaviour_presentation',
       sortField: 'createdDate',
@@ -60,7 +60,7 @@ describe('record investigation suggested case notes controllers', () => {
 
     await controller.GET(req, res)
 
-    expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, {
+    expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
       referralId: 'ref-123',
       behaviourType: 'risks_and_triggers',
       sortField: 'createdDate',
@@ -85,7 +85,7 @@ describe('record investigation suggested case notes controllers', () => {
 
     await controller.GET(req, res)
 
-    expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, {
+    expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
       referralId: 'ref-123',
       behaviourType: 'protective_factors',
       sortField: 'createdDate',
@@ -109,7 +109,7 @@ describe('record investigation suggested case notes controllers', () => {
 
     await controller.GET(req, res)
 
-    expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, {
+    expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
       referralId: 'ref-123',
       behaviourType: 'usual_behaviour_presentation',
       sortField: 'lastAmendedDate',
@@ -123,6 +123,7 @@ const buildRequest = (path: string, query: Record<string, string> = {}): Request
     query,
     path,
     originalUrl: path,
+    systemClientToken: 'token-1',
     journeyData: {
       investigation: {},
       prisoner: { prisonerNumber: 'A1234AA' },

@@ -1,4 +1,3 @@
-import { Request, Response } from 'express'
 import logger from '../../../../logger'
 import SuggestedCaseNotesService from '../../../services/suggestedCaseNotes/suggestedCaseNotesService'
 import { SuggestedCaseNotesBehaviourType, SuggestedCaseNotesResponse } from '../../../services/suggestedCaseNotes/types'
@@ -11,48 +10,56 @@ import {
 const SUGGESTED_CASE_NOTES_UNAVAILABLE_MESSAGE =
   'Suggested Case Notes are temporarily unavailable. You can still continue and save this page.'
 
-const getShowHighlighting = (req: Request): boolean => req.query['suggestedCaseNotesHighlighting'] !== 'off'
-
-const buildHighlightToggleHref = (req: Request, showHighlighting: boolean): string => {
-  const currentPath = (req.originalUrl || req.path || '').split('?')[0]
-  return `${currentPath}?suggestedCaseNotesHighlighting=${showHighlighting ? 'off' : 'on'}`
-}
-
-export const loadSuggestedCaseNotesWidget = async ({
-  req,
-  res,
-  suggestedCaseNotesService,
-  behaviourType,
-  pageName,
-  forceShow = false,
-  previewResponse,
-}: {
-  req: Request
-  res: Response
+export type LoadSuggestedCaseNotesWidgetOptions = {
   suggestedCaseNotesService: SuggestedCaseNotesService
   behaviourType: SuggestedCaseNotesBehaviourType
   pageName: string
+  systemClientToken: string
+  activeCaseLoadId?: string | undefined
+  prisonerNumber?: string | undefined
+  referralId?: string | undefined
+  currentPath: string
+  sortFieldQuery?: string | undefined
+  highlightingQuery?: string | undefined
   forceShow?: boolean
   previewResponse?: SuggestedCaseNotesResponse
-}): Promise<{ showSuggestedCaseNotesWidget: boolean; suggestedCaseNotesWidget?: SuggestedCaseNotesWidgetModel }> => {
-  let sortField = req.query['sortField'] as string
-  if (!sortField || !['createdDate', 'lastAmendedDate'].includes(sortField)) {
-    sortField = 'createdDate'
-  }
-  const showSuggestedCaseNotesWidget =
-    forceShow || csipAssistEnabled(res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId)
+}
+
+const buildHighlightToggleHref = (currentPath: string, showHighlighting: boolean): string =>
+  `${currentPath}?suggestedCaseNotesHighlighting=${showHighlighting ? 'off' : 'on'}`
+
+export const loadSuggestedCaseNotesWidget = async ({
+  suggestedCaseNotesService,
+  behaviourType,
+  pageName,
+  systemClientToken,
+  activeCaseLoadId,
+  prisonerNumber,
+  referralId,
+  currentPath,
+  sortFieldQuery,
+  highlightingQuery,
+  forceShow = false,
+  previewResponse,
+}: LoadSuggestedCaseNotesWidgetOptions): Promise<{
+  showSuggestedCaseNotesWidget: boolean
+  suggestedCaseNotesWidget?: SuggestedCaseNotesWidgetModel
+}> => {
+  const sortField =
+    sortFieldQuery && ['createdDate', 'lastAmendedDate'].includes(sortFieldQuery) ? sortFieldQuery : 'createdDate'
+  const showSuggestedCaseNotesWidget = forceShow || csipAssistEnabled(activeCaseLoadId)
 
   if (!showSuggestedCaseNotesWidget) {
     return { showSuggestedCaseNotesWidget }
   }
 
-  const showHighlighting = getShowHighlighting(req)
+  const showHighlighting = highlightingQuery !== 'off'
 
   try {
     const response =
       previewResponse ??
-      (await suggestedCaseNotesService.getSuggestedCaseNotes(req, {
-        referralId: req.journeyData.csipRecord?.recordUuid ?? '',
+      (await suggestedCaseNotesService.getSuggestedCaseNotes(systemClientToken, prisonerNumber, {
+        referralId: referralId ?? '',
         behaviourType,
         sortField,
         sortOrder: 'desc',
@@ -61,8 +68,8 @@ export const loadSuggestedCaseNotesWidget = async ({
     if (process.env.NODE_ENV === 'development') {
       logger.info(
         {
-          prisonerNumber: req.journeyData.prisoner?.prisonerNumber,
-          referralId: req.journeyData.csipRecord?.recordUuid,
+          prisonerNumber,
+          referralId,
           suggestedCaseNotesResponse: response,
           behaviourType,
           pageName,
@@ -77,7 +84,7 @@ export const loadSuggestedCaseNotesWidget = async ({
     })
 
     if (suggestedCaseNotesWidget.notes.length > 0) {
-      suggestedCaseNotesWidget.highlightToggleHref = buildHighlightToggleHref(req, showHighlighting)
+      suggestedCaseNotesWidget.highlightToggleHref = buildHighlightToggleHref(currentPath, showHighlighting)
       suggestedCaseNotesWidget.highlightToggleText = showHighlighting ? 'Turn highlighting off' : 'Turn highlighting on'
     }
 

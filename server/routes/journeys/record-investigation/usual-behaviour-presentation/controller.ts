@@ -10,11 +10,16 @@ export class UsualBehaviourPresentationController {
     const personsUsualBehaviour =
       res.locals.formResponses?.['personsUsualBehaviour'] ?? req.journeyData.investigation?.personsUsualBehaviour
     const { showSuggestedCaseNotesWidget, suggestedCaseNotesWidget } = await loadSuggestedCaseNotesWidget({
-      req,
-      res,
       suggestedCaseNotesService: this.suggestedCaseNotesService,
       behaviourType: 'usual_behaviour_presentation',
       pageName: 'usual behaviour presentation',
+      systemClientToken: req.systemClientToken,
+      activeCaseLoadId: res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId,
+      prisonerNumber: req.journeyData.prisoner?.prisonerNumber,
+      referralId: req.journeyData.csipRecord?.recordUuid,
+      currentPath: (req.originalUrl || req.path || '').split('?')[0]!,
+      sortFieldQuery: req.query['sortField'] as string,
+      highlightingQuery: req.query['suggestedCaseNotesHighlighting'] as string,
     })
 
     res.render('record-investigation/usual-behaviour-presentation/view', {

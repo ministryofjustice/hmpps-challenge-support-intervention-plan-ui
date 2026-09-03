@@ -10,11 +10,16 @@ export class ProtectiveFactorsController {
     const protectiveFactors =
       res.locals.formResponses?.['protectiveFactors'] ?? req.journeyData.investigation?.protectiveFactors
     const { showSuggestedCaseNotesWidget, suggestedCaseNotesWidget } = await loadSuggestedCaseNotesWidget({
-      req,
-      res,
       suggestedCaseNotesService: this.suggestedCaseNotesService,
       behaviourType: 'protective_factors',
       pageName: 'protective factors',
+      systemClientToken: req.systemClientToken,
+      activeCaseLoadId: res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId,
+      prisonerNumber: req.journeyData.prisoner?.prisonerNumber,
+      referralId: req.journeyData.csipRecord?.recordUuid,
+      currentPath: (req.originalUrl || req.path || '').split('?')[0]!,
+      sortFieldQuery: req.query['sortField'] as string,
+      highlightingQuery: req.query['suggestedCaseNotesHighlighting'] as string,
     })
 
     res.render('record-investigation/protective-factors/view', {

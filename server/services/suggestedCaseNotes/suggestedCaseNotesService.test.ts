@@ -1,4 +1,3 @@
-import type { Request } from 'express'
 import SuggestedCaseNotesService from './suggestedCaseNotesService'
 import CsipApiService from '../csipApi/csipApiService'
 import type { SuggestedCaseNotesRequest, SuggestedCaseNotesResponse } from './types'
@@ -26,23 +25,16 @@ const responseFixture: SuggestedCaseNotesResponse = {
 }
 
 describe('SuggestedCaseNotesService', () => {
-  it('delegates to csip api service with prisoner number from journey data', async () => {
+  it('delegates to csip api service with the given prisoner number', async () => {
     const csipApiService = {
       getSuggestedCaseNotes: jest.fn().mockResolvedValue(responseFixture),
     } as unknown as jest.Mocked<CsipApiService>
     const service = new SuggestedCaseNotesService(csipApiService)
-    const req = {
-      journeyData: {
-        prisoner: {
-          prisonerNumber: 'A1234AA',
-        },
-      },
-    }
 
-    const response = await service.getSuggestedCaseNotes(req as unknown as Request, requestFixture)
+    const response = await service.getSuggestedCaseNotes('token-1', 'A1234AA', requestFixture)
 
     expect(response).toEqual(responseFixture)
-    expect(csipApiService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, 'A1234AA', requestFixture)
+    expect(csipApiService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', requestFixture)
   })
 
   it('throws when prisoner number is missing', async () => {
@@ -50,11 +42,8 @@ describe('SuggestedCaseNotesService', () => {
       getSuggestedCaseNotes: jest.fn(),
     } as unknown as jest.Mocked<CsipApiService>
     const service = new SuggestedCaseNotesService(csipApiService)
-    const req = {
-      journeyData: {},
-    }
 
-    await expect(service.getSuggestedCaseNotes(req as unknown as Request, requestFixture)).rejects.toThrow(
+    await expect(service.getSuggestedCaseNotes('token-1', undefined, requestFixture)).rejects.toThrow(
       'Missing prisoner number for suggested case notes request',
     )
     expect(csipApiService.getSuggestedCaseNotes).not.toHaveBeenCalled()
@@ -65,17 +54,10 @@ describe('SuggestedCaseNotesService', () => {
       getSuggestedCaseNotes: jest.fn().mockResolvedValue(responseFixture),
     } as unknown as jest.Mocked<CsipApiService>
     const service = new SuggestedCaseNotesService(csipApiService)
-    const req = {
-      journeyData: {
-        prisoner: {
-          prisonerNumber: ' a1234aa ',
-        },
-      },
-    }
 
-    await service.getSuggestedCaseNotes(req as unknown as Request, requestFixture)
+    await service.getSuggestedCaseNotes('token-1', ' a1234aa ', requestFixture)
 
-    expect(csipApiService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, 'A1234AA', requestFixture)
+    expect(csipApiService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', requestFixture)
   })
 
   it('passes sortField through to csip api service', async () => {
@@ -83,21 +65,14 @@ describe('SuggestedCaseNotesService', () => {
       getSuggestedCaseNotes: jest.fn().mockResolvedValue(responseFixture),
     } as unknown as jest.Mocked<CsipApiService>
     const service = new SuggestedCaseNotesService(csipApiService)
-    const req = {
-      journeyData: {
-        prisoner: {
-          prisonerNumber: 'A1234AA',
-        },
-      },
-    }
     const requestWithLastAmendedDate: SuggestedCaseNotesRequest = {
       ...requestFixture,
       sortField: 'lastAmendedDate',
     }
 
-    await service.getSuggestedCaseNotes(req as unknown as Request, requestWithLastAmendedDate)
+    await service.getSuggestedCaseNotes('token-1', 'A1234AA', requestWithLastAmendedDate)
 
-    expect(csipApiService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, 'A1234AA', {
+    expect(csipApiService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
       ...requestFixture,
       sortField: 'lastAmendedDate',
     })
@@ -108,15 +83,8 @@ describe('SuggestedCaseNotesService', () => {
       getSuggestedCaseNotes: jest.fn(),
     } as unknown as jest.Mocked<CsipApiService>
     const service = new SuggestedCaseNotesService(csipApiService)
-    const req = {
-      journeyData: {
-        prisoner: {
-          prisonerNumber: 'INVALID',
-        },
-      },
-    }
 
-    await expect(service.getSuggestedCaseNotes(req as unknown as Request, requestFixture)).rejects.toThrow(
+    await expect(service.getSuggestedCaseNotes('token-1', 'INVALID', requestFixture)).rejects.toThrow(
       "Invalid prisoner number format for suggested case notes request: 'INVALID'",
     )
     expect(csipApiService.getSuggestedCaseNotes).not.toHaveBeenCalled()

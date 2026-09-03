@@ -1,4 +1,3 @@
-import type { Request, Response } from 'express'
 import config from '../../../config'
 import SuggestedCaseNotesService from '../../../services/suggestedCaseNotes/suggestedCaseNotesService'
 import { loadSuggestedCaseNotesWidget } from './suggestedCaseNotesWidget'
@@ -30,26 +29,13 @@ describe('loadSuggestedCaseNotesWidget', () => {
       getSuggestedCaseNotes: jest.fn(),
     } as unknown as SuggestedCaseNotesService
 
-    const req = {
-      query: {},
-      path: '/record-investigation/triggers',
-      originalUrl: '/record-investigation/triggers',
-      journeyData: {},
-    } as unknown as Request
-    const res = {
-      locals: {
-        user: {
-          activeCaseLoadId: 'MDI',
-        },
-      },
-    } as Response
-
     const result = await loadSuggestedCaseNotesWidget({
-      req,
-      res,
       suggestedCaseNotesService,
       behaviourType: 'risks_and_triggers',
       pageName: 'risks and triggers',
+      systemClientToken: 'token-1',
+      activeCaseLoadId: 'MDI',
+      currentPath: '/record-investigation/triggers',
     })
 
     expect(result).toEqual({ showSuggestedCaseNotesWidget: false })
@@ -64,29 +50,16 @@ describe('loadSuggestedCaseNotesWidget', () => {
       }),
     } as unknown as SuggestedCaseNotesService
 
-    const req = {
-      query: { suggestedCaseNotesHighlighting: 'off' },
-      path: '/record-investigation/triggers',
-      originalUrl: '/record-investigation/triggers?suggestedCaseNotesHighlighting=off',
-      journeyData: {
-        prisoner: { prisonerNumber: 'A1234AA' },
-        csipRecord: { recordUuid: 'ref-123' },
-      },
-    } as unknown as Request
-    const res = {
-      locals: {
-        user: {
-          activeCaseLoadId: 'MDI',
-        },
-      },
-    } as Response
-
     const result = await loadSuggestedCaseNotesWidget({
-      req,
-      res,
       suggestedCaseNotesService,
       behaviourType: 'risks_and_triggers',
       pageName: 'risks and triggers',
+      systemClientToken: 'token-1',
+      activeCaseLoadId: 'MDI',
+      prisonerNumber: 'A1234AA',
+      referralId: 'ref-123',
+      currentPath: '/record-investigation/triggers',
+      highlightingQuery: 'off',
     })
 
     expect(result.showSuggestedCaseNotesWidget).toBe(true)
@@ -103,32 +76,19 @@ describe('loadSuggestedCaseNotesWidget', () => {
       getSuggestedCaseNotes: jest.fn().mockResolvedValue(responseFixture),
     } as unknown as SuggestedCaseNotesService
 
-    const req = {
-      query: { sortField: 'unsupportedSortField' },
-      path: '/record-investigation/usual-behaviour-presentation',
-      originalUrl: '/record-investigation/usual-behaviour-presentation?sortField=unsupportedSortField',
-      journeyData: {
-        prisoner: { prisonerNumber: 'A1234AA' },
-        csipRecord: { recordUuid: 'ref-123' },
-      },
-    } as unknown as Request
-    const res = {
-      locals: {
-        user: {
-          activeCaseLoadId: 'MDI',
-        },
-      },
-    } as Response
-
     const result = await loadSuggestedCaseNotesWidget({
-      req,
-      res,
       suggestedCaseNotesService,
       behaviourType: 'usual_behaviour_presentation',
       pageName: 'usual behaviour presentation',
+      systemClientToken: 'token-1',
+      activeCaseLoadId: 'MDI',
+      prisonerNumber: 'A1234AA',
+      referralId: 'ref-123',
+      currentPath: '/record-investigation/usual-behaviour-presentation',
+      sortFieldQuery: 'unsupportedSortField',
     })
 
-    expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith(req, {
+    expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
       referralId: 'ref-123',
       behaviourType: 'usual_behaviour_presentation',
       sortField: 'createdDate',
@@ -142,29 +102,15 @@ describe('loadSuggestedCaseNotesWidget', () => {
       getSuggestedCaseNotes: jest.fn().mockRejectedValue(new Error('boom')),
     } as unknown as SuggestedCaseNotesService
 
-    const req = {
-      query: {},
-      path: '/record-investigation/protective-factors',
-      originalUrl: '/record-investigation/protective-factors',
-      journeyData: {
-        prisoner: { prisonerNumber: 'A1234AA' },
-        csipRecord: { recordUuid: 'ref-123' },
-      },
-    } as unknown as Request
-    const res = {
-      locals: {
-        user: {
-          activeCaseLoadId: 'MDI',
-        },
-      },
-    } as Response
-
     const result = await loadSuggestedCaseNotesWidget({
-      req,
-      res,
       suggestedCaseNotesService,
       behaviourType: 'protective_factors',
       pageName: 'protective factors',
+      systemClientToken: 'token-1',
+      activeCaseLoadId: 'MDI',
+      prisonerNumber: 'A1234AA',
+      referralId: 'ref-123',
+      currentPath: '/record-investigation/protective-factors',
     })
 
     expect(result).toMatchObject({
