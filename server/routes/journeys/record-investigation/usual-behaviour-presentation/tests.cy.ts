@@ -44,6 +44,7 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
   const validatePageContents = () => {
     cy.findByRole('heading', { name: "What is Tes'name User’s usual behaviour presentation?" }).should('be.visible')
     cy.findByText(/Where to find information on a prisoner’s usual behaviour presentation/).should('be.visible')
+    cy.findByText('How to use the Suggested Case Notes').should('be.visible')
     getInputTextbox().should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /^back/i })

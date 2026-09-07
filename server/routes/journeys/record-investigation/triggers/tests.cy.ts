@@ -40,6 +40,7 @@ context('test /record-investigation/triggers', () => {
   const validatePageContents = () => {
     cy.findByRole('heading', { name: "What are Tes'name User’s risks and triggers?" }).should('be.visible')
     cy.findByText(/Where to find information on a prisoner’s triggers/).should('be.visible')
+    cy.findByText('How to use the Suggested Case Notes').should('be.visible')
     getInputTextbox().should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /^back/i })
