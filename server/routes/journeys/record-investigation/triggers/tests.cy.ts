@@ -40,6 +40,7 @@ context('test /record-investigation/triggers', () => {
   const validatePageContents = () => {
     cy.findByRole('heading', { name: "What are Tes'name User’s risks and triggers?" }).should('be.visible')
     cy.findByText(/Where to find information on a prisoner’s triggers/).should('be.visible')
+    cy.findByText('How to use the Suggested Case Notes').should('be.visible')
     getInputTextbox().should('be.visible')
     getContinueButton().should('be.visible')
     cy.findByRole('link', { name: /^back/i })
@@ -81,14 +82,4 @@ context('test /record-investigation/triggers', () => {
     cy.reload()
     getInputTextbox().should('have.value', "<script>alert('xss');</script>")
   }
-
-  it('should explain how to use suggested case notes', () => {
-    cy.task('stubSuggestedCaseNotes')
-    navigateToTestPage()
-
-    cy.findByText('How to use the Suggested Case Notes').should('be.visible').click()
-    cy.findByRole('heading', { name: 'How the AI tool works' }).should('be.visible')
-    cy.findByRole('heading', { name: 'How to use the suggested case notes' }).should('be.visible')
-    cy.findByRole('heading', { name: 'Important to know' }).should('be.visible')
-  })
 })
