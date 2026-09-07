@@ -34,6 +34,7 @@
                           <li>other records, such as offence or sentence information</li>
                         </ul>'
                     }) }}
+                    {% include 'base/components/suggested-case-notes-guidance.njk' %}
                 {% endif %}
                 {% if isUpdate and currentPersonsUsualBehaviour %}
                     {{ govukInsetText({

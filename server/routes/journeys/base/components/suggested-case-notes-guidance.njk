@@ -1,0 +1,37 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{{ govukDetails({
+    summaryText: "How to use the Suggested Case Notes",
+    html: '
+    <p>An AI tool has found and suggested the below case notes. This AI tool is powered by a type of technology called a Large Language Model (LLM) which can read and understand large amounts of text.</p>
+    <h2 class="govuk-heading-s govuk-!-margin-top-6">How the AI tool works</h2>
+    <p>The AI tool:</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>searches case notes stored in DPS</li>
+        <li>follows guidance developed with the Safety team to identify relevant information including:
+            <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-2">
+                <li>prisoners’ risks and triggers</li>
+                <li>recent incidents and patterns</li>
+                <li>important history and context</li>
+            </ul>
+        </li>
+        <li>finds case notes, highlights extracts from these case notes, and orders these extracts by relevance</li>
+        <li>displays the case note in full so you can see the context of these extracts</li>
+    </ul>
+    <h2 class="govuk-heading-s govuk-!-margin-top-6">How to use the suggested case notes</h2>
+    <p>You should:</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>Review the extracts in the results</li>
+        <li>Scan all the case notes for context</li>
+        <li>Use your judgement to decide what is relevant</li>
+        <li>Summarise your findings</li>
+    </ul>
+    <h2 class="govuk-heading-s govuk-!-margin-top-6">Important to know</h2>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>The AI tool helps you find information. It does not make decisions for you.</li>
+        <li>The AI tool does not rewrite any of the case notes. It searches all the existing case notes and presents extracts that might be relevant.</li>
+        <li>Extracts are based on existing data and can be traced back to original case notes.</li>
+        <li>You remain responsible for reviewing and acting on the information.</li>
+        <li>The tool is designed to be safe, transparent and aligned with the MOJ’s AI policy.</li>
+    </ul>'
+}) }}

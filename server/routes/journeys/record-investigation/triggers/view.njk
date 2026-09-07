@@ -31,6 +31,7 @@
                         <li>find information in other records</li>
                         </ul>'
                     }) }}
+                    {% include 'base/components/suggested-case-notes-guidance.njk' %}
                 {% endif %}
                 {% if isUpdate and currentPersonsTrigger %}
                     {{ govukInsetText({

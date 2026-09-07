@@ -107,6 +107,16 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
     cy.get('[data-qa="suggested-case-notes-empty-message"]').should('not.exist')
   })
 
+  it('should explain how to use suggested case notes', () => {
+    cy.task('stubSuggestedCaseNotes')
+    navigateToTestPage()
+
+    cy.findByText('How to use the Suggested Case Notes').should('be.visible').click()
+    cy.findByRole('heading', { name: 'How the AI tool works' }).should('be.visible')
+    cy.findByRole('heading', { name: 'How to use the suggested case notes' }).should('be.visible')
+    cy.findByRole('heading', { name: 'Important to know' }).should('be.visible')
+  })
+
   context('when sorting suggested case notes', () => {
     it('should update both link texts and the query string when sorting by date created', () => {
       navigateToTestPage('lastAmendedDate')
