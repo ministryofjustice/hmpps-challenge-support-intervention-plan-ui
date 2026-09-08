@@ -5,7 +5,7 @@ import { loadSuggestedCaseNotesWidget } from './suggestedCaseNotesWidget'
 const responseFixture = {
   prisonerId: 'A1234AA',
   referralId: 'ref-123',
-  behaviourType: 'usualBehaviourPresentation' as const,
+  behaviourType: 'usual_behaviour_presentation' as const,
   sortField: 'relevance' as const,
   sortOrder: 'desc' as const,
   suggestedCaseNotes: [
