@@ -29,7 +29,7 @@ export type SuggestedCaseNotesWidgetModel = {
 const stripSupportedMarkup = (text: string): string => text.replace(/<\/?(?:mark|span|strong)\b[^>]*>/gi, '')
 
 const shouldSuppressSensitiveNotes = (response: SuggestedCaseNotesResponse): boolean => {
-  const hasSensitiveNotes = response.hasSensitiveNotes || response.suggestedCaseNotes.some(item => item.is_sensitive)
+  const hasSensitiveNotes = response.hasSensitiveNotes || response.suggestedCaseNotes.some(item => item.isSensitive)
 
   return hasSensitiveNotes === true && response.userCanViewSensitiveNotes === false
 }
@@ -83,19 +83,19 @@ export const buildSuggestedCaseNotesWidgetModel = ({
 
   const notes = response.suggestedCaseNotes.map(item => {
     const note = {
-      itemId: item.case_note_id,
-      caseNoteText: stripSupportedMarkup(item.annotated_case_note),
-      textFragments: buildTextFragments(item.annotated_case_note),
+      itemId: item.caseNoteId,
+      caseNoteText: stripSupportedMarkup(item.annotatedCaseNote),
+      textFragments: buildTextFragments(item.annotatedCaseNote),
       amendments: (item.amendments ?? []).map(amendment => ({
-        createdAt: amendment.created_at,
-        textFragments: buildTextFragments(amendment.annotated_text),
+        createdAt: amendment.createdAt,
+        textFragments: buildTextFragments(amendment.annotatedText),
       })),
     }
 
     return {
       ...note,
-      ...(item.created_at ? { createdAt: item.created_at } : {}),
-      ...(item.created_by ? { createdBy: item.created_by } : {}),
+      ...(item.createdAt ? { createdAt: item.createdAt } : {}),
+      ...(item.createdBy ? { createdBy: item.createdBy } : {}),
       ...(item.location ? { location: item.location } : {}),
       ...(item.type ? { type: item.type } : {}),
     }

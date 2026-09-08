@@ -11,7 +11,7 @@ export class ProtectiveFactorsController {
       res.locals.formResponses?.['protectiveFactors'] ?? req.journeyData.investigation?.protectiveFactors
     const { showSuggestedCaseNotesWidget, suggestedCaseNotesWidget } = await loadSuggestedCaseNotesWidget({
       suggestedCaseNotesService: this.suggestedCaseNotesService,
-      behaviourType: 'protective_factors',
+      behaviourType: 'protectiveFactors',
       pageName: 'protective factors',
       systemClientToken: req.systemClientToken,
       activeCaseLoadId: res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId,

@@ -5,14 +5,14 @@ import { loadSuggestedCaseNotesWidget } from './suggestedCaseNotesWidget'
 const responseFixture = {
   prisonerId: 'A1234AA',
   referralId: 'ref-123',
-  behaviourType: 'usual_behaviour_presentation' as const,
+  behaviourType: 'usualBehaviourPresentation' as const,
   sortField: 'relevance' as const,
   sortOrder: 'desc' as const,
   suggestedCaseNotes: [
     {
       relevance: 'high' as const,
-      case_note_id: '1',
-      annotated_case_note: 'Before <span data="1">highlight</span> after',
+      caseNoteId: '1',
+      annotatedCaseNote: 'Before <span data="1">highlight</span> after',
     },
   ],
 }
@@ -31,7 +31,7 @@ describe('loadSuggestedCaseNotesWidget', () => {
 
     const result = await loadSuggestedCaseNotesWidget({
       suggestedCaseNotesService,
-      behaviourType: 'risks_and_triggers',
+      behaviourType: 'risksAndTriggers',
       pageName: 'risks and triggers',
       systemClientToken: 'token-1',
       activeCaseLoadId: 'MDI',
@@ -46,13 +46,13 @@ describe('loadSuggestedCaseNotesWidget', () => {
     const suggestedCaseNotesService = {
       getSuggestedCaseNotes: jest.fn().mockResolvedValue({
         ...responseFixture,
-        behaviourType: 'risks_and_triggers',
+        behaviourType: 'risksAndTriggers',
       }),
     } as unknown as SuggestedCaseNotesService
 
     const result = await loadSuggestedCaseNotesWidget({
       suggestedCaseNotesService,
-      behaviourType: 'risks_and_triggers',
+      behaviourType: 'risksAndTriggers',
       pageName: 'risks and triggers',
       systemClientToken: 'token-1',
       activeCaseLoadId: 'MDI',
@@ -64,7 +64,7 @@ describe('loadSuggestedCaseNotesWidget', () => {
 
     expect(result.showSuggestedCaseNotesWidget).toBe(true)
     expect(result.suggestedCaseNotesWidget).toMatchObject({
-      behaviourType: 'risks_and_triggers',
+      behaviourType: 'risksAndTriggers',
       showHighlighting: false,
       highlightToggleHref: '/record-investigation/triggers?suggestedCaseNotesHighlighting=on',
       highlightToggleText: 'Turn highlighting on',
@@ -78,7 +78,7 @@ describe('loadSuggestedCaseNotesWidget', () => {
 
     const result = await loadSuggestedCaseNotesWidget({
       suggestedCaseNotesService,
-      behaviourType: 'usual_behaviour_presentation',
+      behaviourType: 'usualBehaviourPresentation',
       pageName: 'usual behaviour presentation',
       systemClientToken: 'token-1',
       activeCaseLoadId: 'MDI',
@@ -90,7 +90,7 @@ describe('loadSuggestedCaseNotesWidget', () => {
 
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
       referralId: 'ref-123',
-      behaviourType: 'usual_behaviour_presentation',
+      behaviourType: 'usualBehaviourPresentation',
       sortField: 'createdDate',
       sortOrder: 'desc',
     })
@@ -104,7 +104,7 @@ describe('loadSuggestedCaseNotesWidget', () => {
 
     const result = await loadSuggestedCaseNotesWidget({
       suggestedCaseNotesService,
-      behaviourType: 'protective_factors',
+      behaviourType: 'protectiveFactors',
       pageName: 'protective factors',
       systemClientToken: 'token-1',
       activeCaseLoadId: 'MDI',
@@ -116,7 +116,7 @@ describe('loadSuggestedCaseNotesWidget', () => {
     expect(result).toMatchObject({
       showSuggestedCaseNotesWidget: true,
       suggestedCaseNotesWidget: {
-        behaviourType: 'protective_factors',
+        behaviourType: 'protectiveFactors',
         showHighlighting: true,
         notes: [],
         emptyStateMessage:

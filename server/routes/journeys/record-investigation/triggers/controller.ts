@@ -10,7 +10,7 @@ export class TriggersController {
     const personsTrigger = res.locals.formResponses?.['personsTrigger'] ?? req.journeyData.investigation?.personsTrigger
     const { showSuggestedCaseNotesWidget, suggestedCaseNotesWidget } = await loadSuggestedCaseNotesWidget({
       suggestedCaseNotesService: this.suggestedCaseNotesService,
-      behaviourType: 'risks_and_triggers',
+      behaviourType: 'risksAndTriggers',
       pageName: 'risks and triggers',
       systemClientToken: req.systemClientToken,
       activeCaseLoadId: res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId,

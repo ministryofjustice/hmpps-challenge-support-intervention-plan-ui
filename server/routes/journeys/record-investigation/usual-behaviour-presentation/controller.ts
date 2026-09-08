@@ -11,7 +11,7 @@ export class UsualBehaviourPresentationController {
       res.locals.formResponses?.['personsUsualBehaviour'] ?? req.journeyData.investigation?.personsUsualBehaviour
     const { showSuggestedCaseNotesWidget, suggestedCaseNotesWidget } = await loadSuggestedCaseNotesWidget({
       suggestedCaseNotesService: this.suggestedCaseNotesService,
-      behaviourType: 'usual_behaviour_presentation',
+      behaviourType: 'usualBehaviourPresentation',
       pageName: 'usual behaviour presentation',
       systemClientToken: req.systemClientToken,
       activeCaseLoadId: res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId,

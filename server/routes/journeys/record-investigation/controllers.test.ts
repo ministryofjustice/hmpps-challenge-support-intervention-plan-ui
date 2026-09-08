@@ -7,14 +7,14 @@ import { UsualBehaviourPresentationController } from './usual-behaviour-presenta
 const responseFixture = {
   prisonerId: 'A1234AA',
   referralId: 'ref-123',
-  behaviourType: 'usual_behaviour_presentation' as const,
+  behaviourType: 'usualBehaviourPresentation' as const,
   sortField: 'createdDate' as const,
   sortOrder: 'desc' as const,
   suggestedCaseNotes: [
     {
       relevance: 'high' as const,
-      case_note_id: '1',
-      annotated_case_note: 'Example',
+      caseNoteId: '1',
+      annotatedCaseNote: 'Example',
     },
   ],
 }
@@ -37,7 +37,7 @@ describe('record investigation suggested case notes controllers', () => {
 
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
       referralId: 'ref-123',
-      behaviourType: 'usual_behaviour_presentation',
+      behaviourType: 'usualBehaviourPresentation',
       sortField: 'createdDate',
       sortOrder: 'desc',
     })
@@ -51,7 +51,7 @@ describe('record investigation suggested case notes controllers', () => {
     const suggestedCaseNotesService = {
       getSuggestedCaseNotes: jest.fn().mockResolvedValue({
         ...responseFixture,
-        behaviourType: 'risks_and_triggers',
+        behaviourType: 'risksAndTriggers',
       }),
     }
     const controller = new TriggersController(suggestedCaseNotesService as never)
@@ -62,7 +62,7 @@ describe('record investigation suggested case notes controllers', () => {
 
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
       referralId: 'ref-123',
-      behaviourType: 'risks_and_triggers',
+      behaviourType: 'risksAndTriggers',
       sortField: 'createdDate',
       sortOrder: 'desc',
     })
@@ -76,7 +76,7 @@ describe('record investigation suggested case notes controllers', () => {
     const suggestedCaseNotesService = {
       getSuggestedCaseNotes: jest.fn().mockResolvedValue({
         ...responseFixture,
-        behaviourType: 'protective_factors',
+        behaviourType: 'protectiveFactors',
       }),
     }
     const controller = new ProtectiveFactorsController(suggestedCaseNotesService as never)
@@ -87,7 +87,7 @@ describe('record investigation suggested case notes controllers', () => {
 
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
       referralId: 'ref-123',
-      behaviourType: 'protective_factors',
+      behaviourType: 'protectiveFactors',
       sortField: 'createdDate',
       sortOrder: 'desc',
     })
@@ -111,7 +111,7 @@ describe('record investigation suggested case notes controllers', () => {
 
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
       referralId: 'ref-123',
-      behaviourType: 'usual_behaviour_presentation',
+      behaviourType: 'usualBehaviourPresentation',
       sortField: 'lastAmendedDate',
       sortOrder: 'desc',
     })

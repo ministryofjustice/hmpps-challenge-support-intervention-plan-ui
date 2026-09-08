@@ -29,8 +29,8 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
     response.suggestedCaseNotes = [
       {
         relevance: 'high',
-        case_note_id: '1',
-        annotated_case_note: 'Before <mark><strong>highlighted section</strong></mark> after',
+        caseNoteId: '1',
+        annotatedCaseNote: 'Before <mark><strong>highlighted section</strong></mark> after',
       },
     ]
 
@@ -51,8 +51,8 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
     response.suggestedCaseNotes = [
       {
         relevance: 'low',
-        case_note_id: '2',
-        annotated_case_note: 'No highlights available for this note.',
+        caseNoteId: '2',
+        annotatedCaseNote: 'No highlights available for this note.',
       },
     ]
 
@@ -69,8 +69,8 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
     response.suggestedCaseNotes = [
       {
         relevance: 'medium',
-        case_note_id: '3',
-        annotated_case_note: 'Prefix <span data="1"><strong>highlight</strong></span> suffix',
+        caseNoteId: '3',
+        annotatedCaseNote: 'Prefix <span data="1"><strong>highlight</strong></span> suffix',
       },
     ]
 
@@ -91,16 +91,16 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
     response.suggestedCaseNotes = [
       {
         relevance: 'high',
-        case_note_id: 'metadata-1',
-        created_at: '2026-05-24T09:00:00Z',
-        created_by: 'PCO Jones',
+        caseNoteId: 'metadata-1',
+        createdAt: '2026-05-24T09:00:00Z',
+        createdBy: 'PCO Jones',
         location: 'Moorland (HMP & YOI)',
         type: 'General / History Sheet Entry',
-        annotated_case_note: 'Original note',
+        annotatedCaseNote: 'Original note',
         amendments: [
           {
-            created_at: '2026-08-05T16:45:00Z',
-            annotated_text: 'Amended <mark>positive behaviour</mark>',
+            createdAt: '2026-08-05T16:45:00Z',
+            annotatedText: 'Amended <mark>positive behaviour</mark>',
           },
         ],
       },
@@ -133,9 +133,9 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
     response.suggestedCaseNotes = [
       {
         relevance: 'high',
-        case_note_id: '4',
-        annotated_case_note: 'Sensitive note',
-        is_sensitive: true,
+        caseNoteId: '4',
+        annotatedCaseNote: 'Sensitive note',
+        isSensitive: true,
       },
     ]
 

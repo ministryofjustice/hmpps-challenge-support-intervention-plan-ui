@@ -4,7 +4,7 @@ import type { SuggestedCaseNotesRequest, SuggestedCaseNotesResponse } from './ty
 
 const requestFixture: SuggestedCaseNotesRequest = {
   referralId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  behaviourType: 'usual_behaviour_presentation',
+  behaviourType: 'usualBehaviourPresentation',
   sortField: 'relevance',
   sortOrder: 'desc',
 }
@@ -12,14 +12,14 @@ const requestFixture: SuggestedCaseNotesRequest = {
 const responseFixture: SuggestedCaseNotesResponse = {
   prisonerId: 'A1234AA',
   referralId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  behaviourType: 'usual_behaviour_presentation',
+  behaviourType: 'usualBehaviourPresentation',
   sortField: 'relevance',
   sortOrder: 'desc',
   suggestedCaseNotes: [
     {
       relevance: 'high',
-      case_note_id: 'f4ee95d0-49a4-46a2-a485-b8f26f089170',
-      annotated_case_note: 'Example annotated note',
+      caseNoteId: 'f4ee95d0-49a4-46a2-a485-b8f26f089170',
+      annotatedCaseNote: 'Example annotated note',
     },
   ],
 }
