@@ -14,7 +14,7 @@ describe('CsipApiClient', () => {
 
     const request: SuggestedCaseNotesRequest = {
       referralId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      behaviourType: 'usualBehaviourPresentation',
+      behaviourType: 'usual_behaviour_presentation',
       sortField: 'relevance',
       sortOrder: 'desc',
     }
@@ -22,7 +22,7 @@ describe('CsipApiClient', () => {
     const response: SuggestedCaseNotesResponse = {
       prisonerId: 'A1234AA',
       referralId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      behaviourType: 'usualBehaviourPresentation',
+      behaviourType: 'usual_behaviour_presentation',
       sortField: 'relevance',
       sortOrder: 'desc',
       suggestedCaseNotes: [
