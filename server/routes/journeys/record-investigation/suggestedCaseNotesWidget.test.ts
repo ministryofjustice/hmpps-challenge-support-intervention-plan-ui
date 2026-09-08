@@ -31,7 +31,7 @@ describe('loadSuggestedCaseNotesWidget', () => {
 
     const result = await loadSuggestedCaseNotesWidget({
       suggestedCaseNotesService,
-      behaviourType: 'risksAndTriggers',
+      behaviourType: 'risks_and_triggers',
       pageName: 'risks and triggers',
       systemClientToken: 'token-1',
       activeCaseLoadId: 'MDI',
@@ -46,13 +46,13 @@ describe('loadSuggestedCaseNotesWidget', () => {
     const suggestedCaseNotesService = {
       getSuggestedCaseNotes: jest.fn().mockResolvedValue({
         ...responseFixture,
-        behaviourType: 'risksAndTriggers',
+        behaviourType: 'risks_and_triggers',
       }),
     } as unknown as SuggestedCaseNotesService
 
     const result = await loadSuggestedCaseNotesWidget({
       suggestedCaseNotesService,
-      behaviourType: 'risksAndTriggers',
+      behaviourType: 'risks_and_triggers',
       pageName: 'risks and triggers',
       systemClientToken: 'token-1',
       activeCaseLoadId: 'MDI',
@@ -64,7 +64,7 @@ describe('loadSuggestedCaseNotesWidget', () => {
 
     expect(result.showSuggestedCaseNotesWidget).toBe(true)
     expect(result.suggestedCaseNotesWidget).toMatchObject({
-      behaviourType: 'risksAndTriggers',
+      behaviourType: 'risks_and_triggers',
       showHighlighting: false,
       highlightToggleHref: '/record-investigation/triggers?suggestedCaseNotesHighlighting=on',
       highlightToggleText: 'Turn highlighting on',
@@ -78,7 +78,7 @@ describe('loadSuggestedCaseNotesWidget', () => {
 
     const result = await loadSuggestedCaseNotesWidget({
       suggestedCaseNotesService,
-      behaviourType: 'usualBehaviourPresentation',
+      behaviourType: 'usual_behaviour_presentation',
       pageName: 'usual behaviour presentation',
       systemClientToken: 'token-1',
       activeCaseLoadId: 'MDI',
@@ -90,7 +90,7 @@ describe('loadSuggestedCaseNotesWidget', () => {
 
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
       referralId: 'ref-123',
-      behaviourType: 'usualBehaviourPresentation',
+      behaviourType: 'usual_behaviour_presentation',
       sortField: 'createdDate',
       sortOrder: 'desc',
     })
@@ -104,7 +104,7 @@ describe('loadSuggestedCaseNotesWidget', () => {
 
     const result = await loadSuggestedCaseNotesWidget({
       suggestedCaseNotesService,
-      behaviourType: 'protectiveFactors',
+      behaviourType: 'protective_factors',
       pageName: 'protective factors',
       systemClientToken: 'token-1',
       activeCaseLoadId: 'MDI',
@@ -116,7 +116,7 @@ describe('loadSuggestedCaseNotesWidget', () => {
     expect(result).toMatchObject({
       showSuggestedCaseNotesWidget: true,
       suggestedCaseNotesWidget: {
-        behaviourType: 'protectiveFactors',
+        behaviourType: 'protective_factors',
         showHighlighting: true,
         notes: [],
         emptyStateMessage:
