@@ -852,12 +852,12 @@ const stubSuggestedCaseNotes = () => {
     suggestedCaseNotes: [
       {
         relevance: 'high',
-        case_note_id: 'f4ee95d0-49a4-46a2-a485-b8f26f089170',
-        created_at: '2026-05-24T09:00:00Z',
-        created_by: 'PCO Jones',
+        caseNoteId: 'f4ee95d0-49a4-46a2-a485-b8f26f089170',
+        createdAt: '2026-05-24T09:00:00Z',
+        createdBy: 'PCO Jones',
         location: 'Moorland (HMP & YOI)',
         type: 'Negative Behaviour / Incentive Warning',
-        annotated_case_note: 'Prisoner became agitated following a verbal altercation with another prisoner.',
+        annotatedCaseNote: 'Prisoner became agitated following a verbal altercation with another prisoner.',
       },
     ],
   })

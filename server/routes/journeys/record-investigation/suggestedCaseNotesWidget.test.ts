@@ -11,8 +11,8 @@ const responseFixture = {
   suggestedCaseNotes: [
     {
       relevance: 'high' as const,
-      case_note_id: '1',
-      annotated_case_note: 'Before <span data="1">highlight</span> after',
+      caseNoteId: '1',
+      annotatedCaseNote: 'Before <span data="1">highlight</span> after',
     },
   ],
 }

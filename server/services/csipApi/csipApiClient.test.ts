@@ -28,8 +28,8 @@ describe('CsipApiClient', () => {
       suggestedCaseNotes: [
         {
           relevance: 'high',
-          case_note_id: 'f4ee95d0-49a4-46a2-a485-b8f26f089170',
-          annotated_case_note: 'Example',
+          caseNoteId: 'f4ee95d0-49a4-46a2-a485-b8f26f089170',
+          annotatedCaseNote: 'Example',
         },
       ],
     }

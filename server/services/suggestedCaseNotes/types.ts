@@ -14,19 +14,19 @@ export type SuggestedCaseNoteRelevance = 'high' | 'medium' | 'low'
 
 export type SuggestedCaseNoteResponseItem = {
   relevance: SuggestedCaseNoteRelevance
-  case_note_id: string
-  annotated_case_note: string
-  created_at?: string
-  created_by?: string
+  caseNoteId: string
+  annotatedCaseNote: string
+  createdAt?: string
+  createdBy?: string
   location?: string
   type?: string
   amendments?: SuggestedCaseNoteAmendment[]
-  is_sensitive?: boolean
+  isSensitive?: boolean
 }
 
 export type SuggestedCaseNoteAmendment = {
-  created_at: string
-  annotated_text: string
+  createdAt: string
+  annotatedText: string
 }
 
 export type SuggestedCaseNotesResponse = {
