@@ -857,7 +857,8 @@ const stubSuggestedCaseNotes = () => {
         createdBy: 'PCO Jones',
         location: 'Moorland (HMP & YOI)',
         type: 'Negative Behaviour / Incentive Warning',
-        annotatedCaseNote: 'Prisoner became agitated following a verbal altercation with another prisoner.',
+        annotatedCaseNote:
+          'Prisoner became agitated following a <span class="annotation-type">verbal altercation</span> with another prisoner.',
       },
     ],
   })

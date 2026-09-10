@@ -15,7 +15,9 @@
             {% endif %}
         </div>
         <div class="suggested-case-notes__control-group suggested-case-notes__control-group--right">
-            <a class="suggested-case-notes__control govuk-link govuk-link--no-visited-state" href="#">Turn off highlights</a>
+            {% if widget.highlightToggleHref and widget.highlightToggleText %}
+                <a class="suggested-case-notes__control govuk-link govuk-link--no-visited-state" href="{{ widget.highlightToggleHref }}" data-qa="toggle-highlights">{{ widget.highlightToggleText }}</a>
+            {% endif %}
             <a class="suggested-case-notes__control govuk-link govuk-link--no-visited-state" href="#">Expand all case notes</a>
         </div>
     </nav>

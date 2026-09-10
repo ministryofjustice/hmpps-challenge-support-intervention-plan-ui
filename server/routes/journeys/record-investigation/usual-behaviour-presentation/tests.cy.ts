@@ -108,6 +108,37 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
     cy.get('[data-qa="suggested-case-notes-empty-message"]').should('not.exist')
   })
 
+  context('when toggling highlights', () => {
+    it('shows highlighted text and links to turn highlights off', () => {
+      cy.task('stubSuggestedCaseNotes')
+      navigateToTestPage()
+
+      cy.get('[data-qa="suggested-case-notes-card"] mark').should('contain.text', 'verbal altercation')
+      cy.get('[data-qa="toggle-highlights"]')
+        .should('have.text', 'Turn off highlights')
+        .and(
+          'have.attr',
+          'href',
+          '/record-investigation/usual-behaviour-presentation?suggestedCaseNotesHighlighting=off',
+        )
+    })
+
+    it('shows plain text and links to turn highlights on', () => {
+      cy.task('stubSuggestedCaseNotes')
+      navigateToTestPage()
+      cy.visit(`${uuid}/record-investigation/usual-behaviour-presentation?suggestedCaseNotesHighlighting=off`)
+
+      cy.get('[data-qa="suggested-case-notes-card"] mark').should('not.exist')
+      cy.get('[data-qa="toggle-highlights"]')
+        .should('have.text', 'Turn on highlights')
+        .and(
+          'have.attr',
+          'href',
+          '/record-investigation/usual-behaviour-presentation?suggestedCaseNotesHighlighting=on',
+        )
+    })
+  })
+
   context('when sorting suggested case notes', () => {
     it('should update both link texts and the query string when sorting by date created', () => {
       navigateToTestPage('lastAmendedDate')
