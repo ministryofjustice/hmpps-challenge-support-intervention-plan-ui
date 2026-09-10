@@ -9,6 +9,7 @@ import { buildErrorSummaryList, customErrorOrderBuilder, findError } from '../mi
 import {
   formatDateLongMonthConcise,
   formatDateConcise,
+  formatDateLongMonthWith24HourTime,
   formatDateLongMonthWithTime,
   todayStringGBFormat,
 } from './datetimeUtils'
@@ -87,6 +88,7 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('formatDisplayDate', formatDateLongMonthConcise)
   njkEnv.addFilter('formatSimpleDisplayDate', formatDateConcise)
   njkEnv.addFilter('formatDisplayDateWithTime', formatDateLongMonthWithTime)
+  njkEnv.addFilter('formatDisplayDateWith24HourTime', formatDateLongMonthWith24HourTime)
   njkEnv.addFilter('customErrorOrderBuilder', customErrorOrderBuilder)
   njkEnv.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
   njkEnv.addFilter('lastNameCommaFirstName', lastNameCommaFirstName)

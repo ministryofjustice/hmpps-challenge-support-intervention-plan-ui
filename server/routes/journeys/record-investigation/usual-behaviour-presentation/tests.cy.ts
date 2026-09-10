@@ -113,26 +113,26 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
       navigateToTestPage('lastAmendedDate')
       cy.url().should('include', 'sortField=lastAmendedDate')
       cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sort by date created')
-      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by most recent activity')
+      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by recently updated')
 
       cy.get('[data-qa="sort-by-date-created"]').should('be.visible').click()
 
       cy.url().should('include', 'sortField=createdDate')
       cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sorted by date created')
-      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sort by most recent activity')
+      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sort by recently updated')
     })
 
-    it('should update both link texts and the query string when sorting by most recent activity', () => {
+    it('should update both link texts and the query string when sorting by recently updated', () => {
       navigateToTestPage('createdDate')
       cy.url().should('include', 'sortField=createdDate')
       cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sorted by date created')
-      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sort by most recent activity')
+      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sort by recently updated')
 
       cy.get('[data-qa="sort-by-most-recent-activity"]').should('be.visible').click()
 
       cy.url().should('include', 'sortField=lastAmendedDate')
       cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sort by date created')
-      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by most recent activity')
+      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by recently updated')
     })
   })
 })

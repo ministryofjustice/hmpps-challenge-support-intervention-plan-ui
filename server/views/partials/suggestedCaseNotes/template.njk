@@ -3,15 +3,15 @@
         <h2 class="govuk-heading-l govuk-!-margin-bottom-4">Suggested Case Notes</h2>
         <a class="govuk-link govuk-link--no-visited-state" href="#">Give feedback</a>
     </div>
-    <h3 class="govuk-heading-s govuk-!-margin-bottom-4">An AI tool has identified case notes relevant to this question.</h3>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-4">{% if prisoner %}An AI tool has identified {{ prisoner | firstNameSpaceLastName }}'s case notes relevant to this question.{% else %}An AI tool has identified case notes relevant to this question.{% endif %}</h3>
     <nav class="suggested-case-notes__controls" aria-label="Case notes display options">
         <div class="suggested-case-notes__control-group">
             {% if widget.sortField == 'createdDate' %}
-                <a class="govuk-link govuk-link--no-visited-state govuk-link govuk-link--no-visited-state" href="?sortField=lastAmendedDate" data-qa="sort-by-most-recent-activity">Sort by most recent activity</a>
+                <a class="govuk-link govuk-link--no-visited-state" href="?sortField=lastAmendedDate" data-qa="sort-by-most-recent-activity">Sort by recently updated</a>
                 <a class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-bold font-colour--black govuk-link--no-underline" href="?sortField=createdDate" data-qa="sort-by-date-created">Sorted by date created</a>
             {% else %}
-                <a class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-bold font-colour--black govuk-link--no-underline" href="?sortField=lastAmendedDate" data-qa="sort-by-most-recent-activity">Sorted by most recent activity</a>
-                <a class="govuk-link govuk-link--no-visited-state govuk-link govuk-link--no-visited-state" href="?sortField=createdDate" data-qa="sort-by-date-created">Sort by date created</a>
+                <a class="govuk-link govuk-link--no-visited-state govuk-!-font-weight-bold font-colour--black govuk-link--no-underline" href="?sortField=lastAmendedDate" data-qa="sort-by-most-recent-activity">Sorted by recently updated</a>
+                <a class="govuk-link govuk-link--no-visited-state" href="?sortField=createdDate" data-qa="sort-by-date-created">Sort by date created</a>
             {% endif %}
         </div>
         <div class="suggested-case-notes__control-group suggested-case-notes__control-group--right">
@@ -25,9 +25,9 @@
                 <div class="case-note-card__header-info govuk-!-margin-bottom-3">
                     <div class="case-note-card__header-text">
                         <div class="case-note-card__date-line">
-                            <h3 class="govuk-heading-m govuk-!-margin-bottom-0 case-note-card__date">{{ (note.createdAt | formatDisplayDateWithTime) or 'Suggested note ' + loop.index }}</h3>
+                            <h3 class="govuk-heading-m govuk-!-margin-bottom-0 case-note-card__date">{{ (note.createdAt | formatDisplayDateWith24HourTime) or 'Suggested note ' + loop.index }}</h3>
                             {% if note.location %}<p class="govuk-body-s govuk-!-margin-bottom-0 case-note-card__prison-name">{{ note.location }}</p>{% endif %}
-                            {% if note.type %}<p class="govuk-body-s govuk-!-margin-bottom-0 case-note-card__type"><span class="case-note-card__type-tag">{{ note.type }}</span></p>{% endif %}
+                            {% if note.type %}<p class="govuk-body-s govuk-!-margin-bottom-0 case-note-card__type"><span class="moj-badge moj-badge--green">{{ note.type }}</span></p>{% endif %}
                         </div>
                         {% if note.createdBy %}<p class="govuk-body-s govuk-!-margin-top-1 govuk-!-margin-bottom-0 case-note-card__created-by">{{ note.createdBy }}</p>{% endif %}
                     </div>
@@ -51,7 +51,7 @@
                         <div class="">
                         {% for amendment in note.amendments %}
                             <div class="case-note-card__amendment govuk-inset-text">
-                                <h5 class="govuk-heading-s">{{ amendment.createdAt | formatDisplayDateWithTime }}</h5>
+                                <h5 class="govuk-heading-s">{{ amendment.createdAt | formatDisplayDateWith24HourTime }}</h5>
                                 <p class="govuk-body case-note-card__text">
                                     {% if widget.showHighlighting %}
                                         {% for fragment in amendment.textFragments %}{% if fragment.highlighted %}<mark class="hods-highlight"><strong>{{ fragment.text }}</strong></mark>{% else %}{{ fragment.text }}{% endif %}{% endfor %}
