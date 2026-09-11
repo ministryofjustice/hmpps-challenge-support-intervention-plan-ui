@@ -119,7 +119,7 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
         .and(
           'have.attr',
           'href',
-          `${uuid}/record-investigation/usual-behaviour-presentation?suggestedCaseNotesHighlighting=off`,
+          `/${uuid}/record-investigation/usual-behaviour-presentation?suggestedCaseNotesHighlighting=off`,
         )
     })
 
@@ -134,7 +134,7 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
         .and(
           'have.attr',
           'href',
-          `${uuid}/record-investigation/usual-behaviour-presentation?suggestedCaseNotesHighlighting=on`,
+          `/${uuid}/record-investigation/usual-behaviour-presentation?suggestedCaseNotesHighlighting=on`,
         )
     })
   })
