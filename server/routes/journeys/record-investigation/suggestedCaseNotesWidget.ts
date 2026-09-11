@@ -85,7 +85,7 @@ export const loadSuggestedCaseNotesWidget = async ({
 
     if (suggestedCaseNotesWidget.notes.length > 0) {
       suggestedCaseNotesWidget.highlightToggleHref = buildHighlightToggleHref(currentPath, showHighlighting)
-      suggestedCaseNotesWidget.highlightToggleText = showHighlighting ? 'Turn highlighting off' : 'Turn highlighting on'
+      suggestedCaseNotesWidget.highlightToggleText = showHighlighting ? 'Turn off highlights' : 'Turn on highlights'
     }
 
     return {

@@ -67,7 +67,7 @@ describe('loadSuggestedCaseNotesWidget', () => {
       behaviourType: 'risks_and_triggers',
       showHighlighting: false,
       highlightToggleHref: '/record-investigation/triggers?suggestedCaseNotesHighlighting=on',
-      highlightToggleText: 'Turn highlighting on',
+      highlightToggleText: 'Turn on highlights',
     })
   })
 
