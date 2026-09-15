@@ -196,13 +196,74 @@ $case-note-highlight-border: #ffb266;
       line-height: 1.6;
     }
 
+    &__text-wrapper {
+      position: relative;
+
+      &--truncated {
+        max-height: 6.4em;
+        overflow: hidden;
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 3em;
+          background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
+          pointer-events: none;
+        }
+      }
+    }
+
+    &__amendments &__text-wrapper--truncated::after {
+      background: linear-gradient(transparent, govuk-colour('black', $variant: 'tint-95'));
+    }
+
+    &__footer {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: 1.5em;
+    }
+
+    &__show-all-btn {
+      display: block;
+      background: none;
+      border: none;
+      padding: 0;
+      color: govuk-colour('blue');
+      font: inherit;
+      text-decoration: underline;
+      cursor: pointer;
+      text-decoration-thickness: max(1px, 0.0625rem);
+      text-underline-offset: 0.1578em;
+
+      &:hover {
+        color: #0b58a6;
+      }
+
+      &:active {
+        color: #0b0c0c;
+      }
+
+      &:focus {
+        color: #0b0c0c;
+        outline: 3px solid #fd0;
+        outline-offset: 0;
+      }
+    }
+
+    &__show-all-btn[hidden] {
+      display: none;
+    }
+
     &__amendments {
       margin-left: govuk-spacing(8);
       padding-top: govuk-spacing(4);
       border-top: 1px solid govuk-colour('mid-grey');
     }
 
-    &__amendment + &__amendment {
+    &__amendment+&__amendment {
       margin-top: govuk-spacing(4);
       padding-top: govuk-spacing(4);
       border-top: 1px solid govuk-colour('mid-grey');
