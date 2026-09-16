@@ -184,7 +184,7 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
           cy.get('[data-qa="expand-case-note"]').should('have.text', 'Expand case note').click()
           cy.get('[data-truncatable-text]').should('not.have.class', 'case-note-card__text-wrapper--truncated')
           cy.get('[data-qa="expand-case-note"]').should('have.attr', 'aria-expanded', 'true')
-          cy.get('[data-qa="expand-case-note"]').should('have.text', 'Show less').click()
+          cy.get('[data-qa="expand-case-note"]').should('have.text', 'Minimise case note').click()
           cy.get('[data-truncatable-text]').first().should('have.class', 'case-note-card__text-wrapper--truncated')
           cy.get('[data-qa="expand-case-note"]').should('have.attr', 'aria-expanded', 'false')
         })

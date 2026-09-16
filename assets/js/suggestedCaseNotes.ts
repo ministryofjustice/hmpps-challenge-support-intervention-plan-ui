@@ -39,22 +39,23 @@ const truncateBeforeHighlight = (content: HTMLElement): boolean => {
   return true
 }
 
-const cardExceedsThreshold = (card: HTMLElement): boolean => {
-  let exceedsThreshold = false
+const applyCardTruncation = (card: HTMLElement): boolean => {
+  let hasTruncatedContent = false
 
   card.querySelectorAll<HTMLElement>('[data-truncatable-content]').forEach(content => {
     if (countWords(content.textContent ?? '') <= TRUNCATION_THRESHOLD) return
 
-    exceedsThreshold = true
+    hasTruncatedContent = true
     const wrapper = content.closest<HTMLElement>('[data-truncatable-text]')
     if (!wrapper) return
 
     wrapper.dataset['fullHtml'] = content.innerHTML
     wrapper.classList.add('case-note-card__text-wrapper--truncated')
+    wrapper.setAttribute('aria-hidden', 'true')
     truncateBeforeHighlight(content)
   })
 
-  return exceedsThreshold
+  return hasTruncatedContent
 }
 
 const setCardExpanded = (card: HTMLElement, expanded: boolean) => {
@@ -66,8 +67,10 @@ const setCardExpanded = (card: HTMLElement, expanded: boolean) => {
     content.innerHTML = fullHtml
     if (expanded) {
       wrapper.classList.remove('case-note-card__text-wrapper--truncated')
+      wrapper.setAttribute('aria-hidden', 'false')
     } else {
       wrapper.classList.add('case-note-card__text-wrapper--truncated')
+      wrapper.setAttribute('aria-hidden', 'true')
       truncateBeforeHighlight(content)
     }
   })
@@ -95,7 +98,7 @@ export const initSuggestedCaseNotes = () => {
 
   cards.forEach(card => {
     const button = card.querySelector<HTMLButtonElement>('.case-note-card__show-all-btn')
-    if (!button || !cardExceedsThreshold(card)) return
+    if (!button || !applyCardTruncation(card)) return
 
     button.hidden = false
     button.addEventListener('click', () => {
