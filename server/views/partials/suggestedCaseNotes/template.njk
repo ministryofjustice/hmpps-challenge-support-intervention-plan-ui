@@ -18,7 +18,7 @@
             {% if widget.highlightToggleHref and widget.highlightToggleText %}
                 <a class="suggested-case-notes__control govuk-link govuk-link--no-visited-state" href="{{ widget.highlightToggleHref }}" data-qa="toggle-highlights">{{ widget.highlightToggleText }}</a>
             {% endif %}
-            <a class="suggested-case-notes__control govuk-link govuk-link--no-visited-state" href="#">Expand all case notes</a>
+            <button class="suggested-case-notes__control case-note-card__show-all-btn govuk-link govuk-link--no-visited-state" type="button" hidden aria-expanded="false" data-qa="expand-all-case-notes">Expand all case notes</button>
         </div>
     </nav>
     {% if widget and widget.notes and widget.notes.length %}
@@ -36,35 +36,44 @@
                 </div>
 
                 <div class="case-note-card__details">
-                    <p class="govuk-body govuk-!-margin-bottom-3 case-note-card__text">
+                    <div class="case-note-card__text-wrapper" data-truncatable-text>
+                    <p class="govuk-body govuk-!-margin-bottom-3 case-note-card__text" data-truncatable-content>
                         {% if widget.showHighlighting and note.textFragments %}
                             {% for fragment in note.textFragments %}
                                 {% if fragment.highlighted %}
-                                    <mark class="hods-highlight"><strong>{{ fragment.text }}</strong></mark>
+                                    <span data-truncatable-fragment="highlight"><mark class="hods-highlight"><strong>{{ fragment.text }}</strong></mark></span>
                                 {% else %}
-                                    {{ fragment.text }}
+                                    <span data-truncatable-fragment="plain">{{ fragment.text }}</span>
                                 {% endif %}
                             {% endfor %}
                         {% else %}
-                            {{ note.caseNoteText }}
+                            <span data-truncatable-fragment="plain">{{ note.caseNoteText }}</span>
                         {% endif %}
                     </p>
+                    </div>
                     {% if note.amendments and note.amendments.length %}
-                        <div class="">
+                        <div class="case-note-card__amendments govuk-inset-text">
+                            <h4 class="govuk-heading-m case-note-card__amendments-heading govuk-visually-hidden">More details</h4>
                         {% for amendment in note.amendments %}
-                            <div class="case-note-card__amendment govuk-inset-text">
+                            <div class="case-note-card__amendment">
                                 <h5 class="govuk-heading-s">{{ amendment.createdAt | formatDisplayDateWith24HourTime }}</h5>
-                                <p class="govuk-body case-note-card__text">
+                                <div class="case-note-card__text-wrapper" data-truncatable-text>
+                                <p class="govuk-body case-note-card__text" data-truncatable-content>
                                     {% if widget.showHighlighting %}
-                                        {% for fragment in amendment.textFragments %}{% if fragment.highlighted %}<mark class="hods-highlight"><strong>{{ fragment.text }}</strong></mark>{% else %}{{ fragment.text }}{% endif %}{% endfor %}
+                                        {% for fragment in amendment.textFragments %}{% if fragment.highlighted %}<span data-truncatable-fragment="highlight"><mark class="hods-highlight"><strong>{{ fragment.text }}</strong></mark></span>{% else %}<span data-truncatable-fragment="plain">{{ fragment.text }}</span>{% endif %}{% endfor %}
                                     {% else %}
-                                        {% for fragment in amendment.textFragments %}{{ fragment.text }}{% endfor %}
+                                        {% for fragment in amendment.textFragments %}<span data-truncatable-fragment="plain">{{ fragment.text }}</span>{% endfor %}
                                     {% endif %}
                                 </p>
+                                </div>
                             </div>
+                            {% if not loop.last %}<hr class="govuk-section-break govuk-section-break--s govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3">{% endif %}
                         {% endfor %}
                         </div>
                     {% endif %}
+                </div>
+                <div class="case-note-card__footer">
+                    <button class="govuk-link govuk-link--no-visited-state case-note-card__show-all-btn" type="button" hidden aria-expanded="false" data-qa="expand-case-note">Expand case note</button>
                 </div>
             </article>
         {% endfor %}

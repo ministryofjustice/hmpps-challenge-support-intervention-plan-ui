@@ -864,6 +864,30 @@ const stubSuggestedCaseNotes = () => {
   })
 }
 
+const stubSuggestedCaseNotesLong = () => {
+  const wordsBeforeHighlight = Array.from({ length: 80 }, (_, index) => `before${index}`).join(' ')
+  const wordsAfterHighlight = Array.from({ length: 80 }, (_, index) => `after${index}`).join(' ')
+  const longText = `${wordsBeforeHighlight} <mark><strong>important highlighted behaviour</strong></mark> ${wordsAfterHighlight}`
+  const longAmendment = `${Array.from({ length: 180 }, (_, index) => `amendment${index}`).join(' ')} <mark><strong>amendment highlight</strong></mark>`
+
+  return createBasicHttpStub('POST', '/csip-api/v1/suggestedCaseNotes/[A-Za-z0-9]+', 200, {
+    prisonerId: 'A1234AA',
+    referralId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    behaviourType: 'usual_behaviour_presentation',
+    sortField: 'createdDate',
+    sortOrder: 'desc',
+    suggestedCaseNotes: [
+      {
+        relevance: 'high',
+        caseNoteId: 'long-case-note-1',
+        createdAt: '2026-05-24T09:00:00Z',
+        annotatedCaseNote: longText,
+        amendments: [{ createdAt: '2026-08-05T16:45:00Z', annotatedText: longAmendment }],
+      },
+    ],
+  })
+}
+
 const stubPatchPlanSuccess = () => {
   return createBasicHttpStub('PATCH', `/csip-api/csip-records/${uuidRegex}/plan`, 200)
 }
@@ -1615,5 +1639,6 @@ export default {
   stubCsipRecordSuccessCsipOpenWith,
   stubSearchCsipRecordsPrisonerCsips,
   stubSuggestedCaseNotes,
+  stubSuggestedCaseNotesLong,
   stubSuggestedCaseNotesEmpty,
 }

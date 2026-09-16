@@ -1,6 +1,7 @@
 import * as govukFrontend from 'govuk-frontend'
 import * as mojFrontend from '@ministryofjustice/frontend'
 import Card from './card'
+import { initSuggestedCaseNotes } from './suggestedCaseNotes'
 import { nodeListForEach } from './utils'
 
 govukFrontend.initAll()
@@ -20,3 +21,5 @@ nodeListForEach(document.querySelectorAll('textarea'), function (textarea) {
     })
   }
 })
+
+initSuggestedCaseNotes()

@@ -166,4 +166,42 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
       cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by recently updated')
     })
   })
+
+  context('when truncating suggested case notes', () => {
+    beforeEach(() => {
+      cy.task('stubSuggestedCaseNotesLong')
+      navigateToTestPage()
+    })
+
+    it('truncates long notes and amendments and expands the whole card', () => {
+      cy.get('[data-qa="suggested-case-notes-card"]')
+        .first()
+        .within(() => {
+          cy.get('[data-truncatable-text]').should('have.length', 2)
+          cy.get('[data-truncatable-text]').first().should('have.class', 'case-note-card__text-wrapper--truncated')
+          cy.get('[data-truncatable-text]').first().should('contain.text', 'important highlighted behaviour')
+          cy.get('[data-truncatable-text]').first().should('contain.text', '…')
+          cy.get('[data-qa="expand-case-note"]').should('have.text', 'Expand case note').click()
+          cy.get('[data-truncatable-text]').should('not.have.class', 'case-note-card__text-wrapper--truncated')
+          cy.get('[data-qa="expand-case-note"]').should('have.attr', 'aria-expanded', 'true')
+          cy.get('[data-qa="expand-case-note"]').should('have.text', 'Minimise case note').click()
+          cy.get('[data-truncatable-text]').first().should('have.class', 'case-note-card__text-wrapper--truncated')
+          cy.get('[data-qa="expand-case-note"]').should('have.attr', 'aria-expanded', 'false')
+        })
+    })
+
+    it('expands and minimises all eligible case notes', () => {
+      cy.get('[data-qa="expand-all-case-notes"]').should('be.visible').click()
+      cy.get('[data-qa="expand-all-case-notes"]')
+        .should('have.text', 'Minimise all case notes')
+        .and('have.attr', 'aria-expanded', 'true')
+      cy.get('[data-qa="expand-case-note"]').should('have.attr', 'aria-expanded', 'true')
+
+      cy.get('[data-qa="expand-all-case-notes"]').click()
+      cy.get('[data-qa="expand-all-case-notes"]')
+        .should('have.text', 'Expand all case notes')
+        .and('have.attr', 'aria-expanded', 'false')
+      cy.get('[data-qa="expand-case-note"]').should('have.attr', 'aria-expanded', 'false')
+    })
+  })
 })
