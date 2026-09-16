@@ -18,6 +18,7 @@
             {% if widget.highlightToggleHref and widget.highlightToggleText %}
                 <a class="suggested-case-notes__control govuk-link govuk-link--no-visited-state" href="{{ widget.highlightToggleHref }}" data-qa="toggle-highlights">{{ widget.highlightToggleText }}</a>
             {% endif %}
+            <button class="suggested-case-notes__control case-note-card__show-all-btn govuk-link govuk-link--no-visited-state" type="button" hidden aria-expanded="false" data-qa="expand-all-case-notes">Expand all case notes</button>
         </div>
     </nav>
     {% if widget and widget.notes and widget.notes.length %}

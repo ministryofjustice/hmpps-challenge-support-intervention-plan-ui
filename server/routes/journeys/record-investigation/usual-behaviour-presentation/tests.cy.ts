@@ -189,5 +189,19 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
           cy.get('[data-qa="expand-case-note"]').should('have.attr', 'aria-expanded', 'false')
         })
     })
+
+    it('expands and minimises all eligible case notes', () => {
+      cy.get('[data-qa="expand-all-case-notes"]').should('be.visible').click()
+      cy.get('[data-qa="expand-all-case-notes"]')
+        .should('have.text', 'Minimise all case notes')
+        .and('have.attr', 'aria-expanded', 'true')
+      cy.get('[data-qa="expand-case-note"]').should('have.attr', 'aria-expanded', 'true')
+
+      cy.get('[data-qa="expand-all-case-notes"]').click()
+      cy.get('[data-qa="expand-all-case-notes"]')
+        .should('have.text', 'Expand all case notes')
+        .and('have.attr', 'aria-expanded', 'false')
+      cy.get('[data-qa="expand-case-note"]').should('have.attr', 'aria-expanded', 'false')
+    })
   })
 })

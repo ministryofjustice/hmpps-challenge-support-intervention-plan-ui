@@ -79,14 +79,47 @@ const setCardExpanded = (card: HTMLElement, expanded: boolean) => {
   button.setAttribute('aria-expanded', String(expanded))
 }
 
+const syncExpandAllButton = (button: HTMLButtonElement, cards: HTMLElement[]) => {
+  const cardButtons = cards
+    .map(card => card.querySelector<HTMLButtonElement>('.case-note-card__show-all-btn'))
+    .filter((cardButton): cardButton is HTMLButtonElement => cardButton !== null && !cardButton.hidden)
+  const allExpanded = cardButtons.length > 0 && cardButtons.every(cardButton => cardButton.getAttribute('aria-expanded') === 'true')
+
+  button.textContent = allExpanded ? 'Minimise all case notes' : 'Expand all case notes'
+  button.setAttribute('aria-expanded', String(allExpanded))
+}
+
 export const initSuggestedCaseNotes = () => {
-  document.querySelectorAll<HTMLElement>('[data-qa="suggested-case-notes-card"]').forEach(card => {
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-qa="suggested-case-notes-card"]'))
+  const expandAllButton = document.querySelector<HTMLButtonElement>('[data-qa="expand-all-case-notes"]')
+
+  cards.forEach(card => {
     const button = card.querySelector<HTMLButtonElement>('.case-note-card__show-all-btn')
     if (!button || !cardExceedsThreshold(card)) return
 
     button.hidden = false
     button.addEventListener('click', () => {
       setCardExpanded(card, button.getAttribute('aria-expanded') !== 'true')
+      if (expandAllButton) syncExpandAllButton(expandAllButton, cards)
     })
+  })
+
+  if (!expandAllButton) return
+
+  const hasExpandableCards = cards.some(card => {
+    const button = card.querySelector<HTMLButtonElement>('.case-note-card__show-all-btn')
+    return button !== null && !button.hidden
+  })
+  if (!hasExpandableCards) return
+
+  expandAllButton.hidden = false
+  syncExpandAllButton(expandAllButton, cards)
+  expandAllButton.addEventListener('click', () => {
+    const expand = expandAllButton.getAttribute('aria-expanded') !== 'true'
+    cards.forEach(card => {
+      const button = card.querySelector<HTMLButtonElement>('.case-note-card__show-all-btn')
+      if (button && !button.hidden) setCardExpanded(card, expand)
+    })
+    syncExpandAllButton(expandAllButton, cards)
   })
 }
