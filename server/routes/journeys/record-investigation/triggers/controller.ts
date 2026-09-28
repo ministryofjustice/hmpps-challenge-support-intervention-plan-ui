@@ -21,6 +21,11 @@ export class TriggersController {
       highlightingQuery: req.query['suggestedCaseNotesHighlighting'] as string,
     })
 
+    if (suggestedCaseNotesWidget?.notes.length) {
+      res.locals.auditEvent.details!['behaviourType'] = suggestedCaseNotesWidget.behaviourType
+      res.locals.auditEvent.details!['caseNoteIds'] = suggestedCaseNotesWidget.notes.map(note => note.itemId)
+    }
+
     res.render('record-investigation/triggers/view', {
       personsTrigger,
       backUrl: '../record-investigation',

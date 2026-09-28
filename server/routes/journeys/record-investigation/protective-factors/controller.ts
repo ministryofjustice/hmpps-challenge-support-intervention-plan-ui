@@ -22,6 +22,11 @@ export class ProtectiveFactorsController {
       highlightingQuery: req.query['suggestedCaseNotesHighlighting'] as string,
     })
 
+    if (suggestedCaseNotesWidget?.notes.length) {
+      res.locals.auditEvent.details!['behaviourType'] = suggestedCaseNotesWidget.behaviourType
+      res.locals.auditEvent.details!['caseNoteIds'] = suggestedCaseNotesWidget.notes.map(note => note.itemId)
+    }
+
     res.render('record-investigation/protective-factors/view', {
       protectiveFactors,
       backUrl: '../record-investigation',

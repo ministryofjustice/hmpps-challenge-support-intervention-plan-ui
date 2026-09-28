@@ -116,6 +116,37 @@ describe('record investigation suggested case notes controllers', () => {
       sortOrder: 'desc',
     })
   })
+
+  it('adds behaviourType and caseNoteIds to the audit event details when suggested case notes are shown', async () => {
+    const suggestedCaseNotesService = {
+      getSuggestedCaseNotes: jest.fn().mockResolvedValue(responseFixture),
+    }
+    const controller = new UsualBehaviourPresentationController(suggestedCaseNotesService as never)
+    const req = buildRequest('/record-investigation/usual-behaviour-presentation')
+    const res = buildResponse()
+
+    await controller.GET(req, res)
+
+    expect(res.locals.auditEvent.details).toEqual(
+      expect.objectContaining({
+        behaviourType: 'usual_behaviour_presentation',
+        caseNoteIds: ['1'],
+      }),
+    )
+  })
+
+  it('does not add caseNoteIds to the audit event details when no suggested case notes are returned', async () => {
+    const suggestedCaseNotesService = {
+      getSuggestedCaseNotes: jest.fn().mockResolvedValue({ ...responseFixture, suggestedCaseNotes: [] }),
+    }
+    const controller = new UsualBehaviourPresentationController(suggestedCaseNotesService as never)
+    const req = buildRequest('/record-investigation/usual-behaviour-presentation')
+    const res = buildResponse()
+
+    await controller.GET(req, res)
+
+    expect(res.locals.auditEvent.details).toEqual({})
+  })
 })
 
 const buildRequest = (path: string, query: Record<string, string> = {}): Request => {
@@ -137,6 +168,11 @@ const buildResponse = (): Response => {
     locals: {
       user: {
         activeCaseLoadId: 'MDI',
+      },
+      auditEvent: {
+        who: 'test-user',
+        correlationId: 'correlation-1',
+        details: {},
       },
     },
     render: jest.fn(),
