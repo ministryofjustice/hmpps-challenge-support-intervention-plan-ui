@@ -5,12 +5,12 @@ import { getFrontendComponents, retrieveCaseLoadData } from '@ministryofjustice/
 import * as Sentry from '@sentry/node'
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
-import { telemetryMiddleware } from './utils/azureAppInsights'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
 
 import setUpAuthentication from './middleware/setUpAuthentication'
 import setUpCsrf from './middleware/setUpCsrf'
 import setUpCurrentUser from './middleware/setUpCurrentUser'
+import userTelemetry from './middleware/userTelemetry'
 import setUpHealthChecks from './middleware/setUpHealthChecks'
 import setUpStaticResources from './middleware/setUpStaticResources'
 import setUpWebRequestParsing from './middleware/setupRequestParsing'
@@ -61,7 +61,6 @@ export default function createApp(services: Services): express.Application {
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
-  app.use(telemetryMiddleware())
   app.use(populateClientToken())
   app.use((_req, res, next) => {
     res.notFound = () => res.status(404).render('pages/not-found')
@@ -79,6 +78,7 @@ export default function createApp(services: Services): express.Application {
   )
   app.use(breadcrumbs())
   app.use(retrieveCaseLoadData({ logger, prisonApiConfig: config.apis.prisonApi }))
+  app.use(userTelemetry())
   app.use('*any', populateAuditEventDetails())
   app.use(checkServiceEnabledForActiveCaseLoad(services.csipApiService))
   app.use(populateValidationErrors())
