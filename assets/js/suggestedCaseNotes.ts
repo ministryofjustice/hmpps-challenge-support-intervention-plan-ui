@@ -1,5 +1,8 @@
 const TRUNCATION_THRESHOLD = 100
 const WORDS_BEFORE_HIGHLIGHT = 10
+// Words kept in the DOM while collapsed - the rest is removed entirely (not just visually
+// clipped), so assistive tech never reads more than what's shown behind the "Expand" control.
+const PREVIEW_WORD_LIMIT = 80
 
 const countWords = (text: string): number => text.trim().split(/\s+/).filter(Boolean).length
 
@@ -39,6 +42,29 @@ const truncateBeforeHighlight = (content: HTMLElement): boolean => {
   return true
 }
 
+const capPreviewLength = (content: HTMLElement) => {
+  const fragments = Array.from(content.querySelectorAll<HTMLElement>('[data-truncatable-fragment]'))
+  let wordsRemaining = PREVIEW_WORD_LIMIT
+  let trimmed = false
+
+  for (const fragment of fragments) {
+    if (wordsRemaining <= 0) {
+      fragment.remove()
+      trimmed = true
+      continue
+    }
+
+    const words = (fragment.textContent ?? '').trim().split(/\s+/).filter(Boolean)
+    if (words.length > wordsRemaining) {
+      fragment.textContent = words.slice(0, wordsRemaining).join(' ')
+      trimmed = true
+    }
+    wordsRemaining -= Math.min(words.length, wordsRemaining)
+  }
+
+  if (trimmed) content.append(' …')
+}
+
 const applyCardTruncation = (card: HTMLElement): boolean => {
   let hasTruncatedContent = false
 
@@ -51,8 +77,8 @@ const applyCardTruncation = (card: HTMLElement): boolean => {
 
     wrapper.dataset['fullHtml'] = content.innerHTML
     wrapper.classList.add('case-note-card__text-wrapper--truncated')
-    wrapper.setAttribute('aria-hidden', 'true')
     truncateBeforeHighlight(content)
+    capPreviewLength(content)
   })
 
   return hasTruncatedContent
@@ -67,11 +93,10 @@ const setCardExpanded = (card: HTMLElement, expanded: boolean) => {
     content.innerHTML = fullHtml
     if (expanded) {
       wrapper.classList.remove('case-note-card__text-wrapper--truncated')
-      wrapper.setAttribute('aria-hidden', 'false')
     } else {
       wrapper.classList.add('case-note-card__text-wrapper--truncated')
-      wrapper.setAttribute('aria-hidden', 'true')
       truncateBeforeHighlight(content)
+      capPreviewLength(content)
     }
   })
 
