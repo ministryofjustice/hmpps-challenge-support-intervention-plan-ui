@@ -17,6 +17,8 @@ const createToken = (userToken: UserToken) => {
   const payload = {
     name: userToken.name || 'john smith',
     user_name: 'USER1',
+    user_id: '231232',
+    user_uuid: '11111111-1111-1111-1111-111111111111',
     scope: ['read'],
     auth_source: 'nomis',
     authorities,
