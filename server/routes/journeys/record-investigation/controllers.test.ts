@@ -36,6 +36,7 @@ describe('record investigation suggested case notes controllers', () => {
     await controller.GET(req, res)
 
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
+      userName: 'test-user',
       referralId: 'ref-123',
       behaviourType: 'usual_behaviour_presentation',
       sortField: 'createdDate',
@@ -61,6 +62,7 @@ describe('record investigation suggested case notes controllers', () => {
     await controller.GET(req, res)
 
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
+      userName: 'test-user',
       referralId: 'ref-123',
       behaviourType: 'risks_and_triggers',
       sortField: 'createdDate',
@@ -86,6 +88,7 @@ describe('record investigation suggested case notes controllers', () => {
     await controller.GET(req, res)
 
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
+      userName: 'test-user',
       referralId: 'ref-123',
       behaviourType: 'protective_factors',
       sortField: 'createdDate',
@@ -110,6 +113,7 @@ describe('record investigation suggested case notes controllers', () => {
     await controller.GET(req, res)
 
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
+      userName: 'test-user',
       referralId: 'ref-123',
       behaviourType: 'usual_behaviour_presentation',
       sortField: 'lastAmendedDate',
@@ -167,6 +171,7 @@ const buildResponse = (): Response => {
   return {
     locals: {
       user: {
+        username: 'test-user',
         activeCaseLoadId: 'MDI',
       },
       auditEvent: {

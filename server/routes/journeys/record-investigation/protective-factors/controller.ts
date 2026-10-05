@@ -14,6 +14,7 @@ export class ProtectiveFactorsController {
       behaviourType: 'protective_factors',
       pageName: 'protective factors',
       systemClientToken: req.systemClientToken,
+      userName: res.locals.user.username,
       activeCaseLoadId: res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId,
       prisonerNumber: req.journeyData.prisoner?.prisonerNumber,
       referralId: req.journeyData.csipRecord?.recordUuid,

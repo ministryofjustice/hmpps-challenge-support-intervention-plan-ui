@@ -14,6 +14,7 @@ export class UsualBehaviourPresentationController {
       behaviourType: 'usual_behaviour_presentation',
       pageName: 'usual behaviour presentation',
       systemClientToken: req.systemClientToken,
+      userName: res.locals.user.username,
       activeCaseLoadId: res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId,
       prisonerNumber: req.journeyData.prisoner?.prisonerNumber,
       referralId: req.journeyData.csipRecord?.recordUuid,
