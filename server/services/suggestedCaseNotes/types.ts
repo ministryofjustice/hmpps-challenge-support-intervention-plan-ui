@@ -22,7 +22,6 @@ export type SuggestedCaseNoteResponseItem = {
   location?: string
   type?: string
   amendments?: SuggestedCaseNoteAmendment[]
-  isSensitive?: boolean
 }
 
 export type SuggestedCaseNoteAmendment = {
@@ -36,8 +35,6 @@ export type SuggestedCaseNotesResponse = {
   behaviourType: SuggestedCaseNotesBehaviourType
   sortField: string
   sortOrder: 'asc' | 'desc'
-  hasSensitiveNotes?: boolean
-  userCanViewSensitiveNotes?: boolean
   suggestedCaseNotes: SuggestedCaseNoteResponseItem[]
 }
 

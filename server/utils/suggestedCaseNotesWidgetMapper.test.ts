@@ -125,25 +125,4 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
       ],
     })
   })
-
-  it('suppresses notes when sensitive content is present and the user lacks permission', () => {
-    const response = buildResponse()
-    response.hasSensitiveNotes = true
-    response.userCanViewSensitiveNotes = false
-    response.suggestedCaseNotes = [
-      {
-        relevance: 'high',
-        caseNoteId: '4',
-        annotatedCaseNote: 'Sensitive note',
-        isSensitive: true,
-      },
-    ]
-
-    const result = buildSuggestedCaseNotesWidgetModel({ response })
-
-    expect(result.notes).toEqual([])
-    expect(result.emptyStateMessage).toBe(
-      'Suggested Case Notes cannot be shown because you do not have permission to view sensitive notes.',
-    )
-  })
 })
