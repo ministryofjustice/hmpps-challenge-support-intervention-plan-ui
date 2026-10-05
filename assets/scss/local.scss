@@ -132,28 +132,21 @@ $case-note-highlight-border: #ffb266;
 
   .case-note-card__show-all-btn {
       display: block;
-      background: none;
+      appearance: none;
       border: none;
+      background: none;
       padding: 0;
-      color: govuk-colour('blue');
-      font: inherit;
-      text-decoration: underline;
       cursor: pointer;
-      text-decoration-thickness: max(1px, 0.0625rem);
-      text-underline-offset: 0.1578em;
+      color: govuk-colour('blue');
+
+      @include govuk-link-common;
 
     &:hover {
       color: #0b58a6;
     }
 
-    &:active,
-    &:focus {
+    &:active {
       color: #0b0c0c;
-    }
-
-    &:focus {
-      outline: 3px solid #fd0;
-      outline-offset: 0;
     }
   }
 
