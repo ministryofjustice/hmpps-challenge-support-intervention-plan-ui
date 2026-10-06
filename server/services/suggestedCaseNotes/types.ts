@@ -4,7 +4,6 @@ export type SuggestedCaseNotesBehaviourType =
   | 'protective_factors'
 
 export type SuggestedCaseNotesRequest = {
-  userName: string
   referralId: string
   behaviourType: SuggestedCaseNotesBehaviourType
   sortField: string

@@ -13,7 +13,6 @@ export class TriggersController {
       behaviourType: 'risks_and_triggers',
       pageName: 'risks and triggers',
       systemClientToken: req.systemClientToken,
-      userName: res.locals.user.username,
       activeCaseLoadId: res.locals.user.activeCaseLoad?.caseLoadId || res.locals.user.activeCaseLoadId,
       prisonerNumber: req.journeyData.prisoner?.prisonerNumber,
       referralId: req.journeyData.csipRecord?.recordUuid,

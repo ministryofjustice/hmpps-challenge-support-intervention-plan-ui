@@ -34,7 +34,6 @@ describe('loadSuggestedCaseNotesWidget', () => {
       behaviourType: 'risks_and_triggers',
       pageName: 'risks and triggers',
       systemClientToken: 'token-1',
-      userName: 'test-user',
       activeCaseLoadId: 'MDI',
       currentPath: '/record-investigation/triggers',
     })
@@ -56,7 +55,6 @@ describe('loadSuggestedCaseNotesWidget', () => {
       behaviourType: 'risks_and_triggers',
       pageName: 'risks and triggers',
       systemClientToken: 'token-1',
-      userName: 'test-user',
       activeCaseLoadId: 'MDI',
       prisonerNumber: 'A1234AA',
       referralId: 'ref-123',
@@ -83,7 +81,6 @@ describe('loadSuggestedCaseNotesWidget', () => {
       behaviourType: 'usual_behaviour_presentation',
       pageName: 'usual behaviour presentation',
       systemClientToken: 'token-1',
-      userName: 'test-user',
       activeCaseLoadId: 'MDI',
       prisonerNumber: 'A1234AA',
       referralId: 'ref-123',
@@ -92,7 +89,6 @@ describe('loadSuggestedCaseNotesWidget', () => {
     })
 
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).toHaveBeenCalledWith('token-1', 'A1234AA', {
-      userName: 'test-user',
       referralId: 'ref-123',
       behaviourType: 'usual_behaviour_presentation',
       sortField: 'createdDate',
@@ -111,7 +107,6 @@ describe('loadSuggestedCaseNotesWidget', () => {
       behaviourType: 'protective_factors',
       pageName: 'protective factors',
       systemClientToken: 'token-1',
-      userName: 'test-user',
       activeCaseLoadId: 'MDI',
       prisonerNumber: 'A1234AA',
       referralId: 'ref-123',

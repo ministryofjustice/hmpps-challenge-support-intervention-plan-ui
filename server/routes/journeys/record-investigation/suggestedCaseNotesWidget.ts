@@ -15,7 +15,6 @@ export type LoadSuggestedCaseNotesWidgetOptions = {
   behaviourType: SuggestedCaseNotesBehaviourType
   pageName: string
   systemClientToken: string
-  userName: string
   activeCaseLoadId?: string | undefined
   prisonerNumber?: string | undefined
   referralId?: string | undefined
@@ -34,7 +33,6 @@ export const loadSuggestedCaseNotesWidget = async ({
   behaviourType,
   pageName,
   systemClientToken,
-  userName,
   activeCaseLoadId,
   prisonerNumber,
   referralId,
@@ -61,7 +59,6 @@ export const loadSuggestedCaseNotesWidget = async ({
     const response =
       previewResponse ??
       (await suggestedCaseNotesService.getSuggestedCaseNotes(systemClientToken, prisonerNumber, {
-        userName,
         referralId: referralId ?? '',
         behaviourType,
         sortField,
