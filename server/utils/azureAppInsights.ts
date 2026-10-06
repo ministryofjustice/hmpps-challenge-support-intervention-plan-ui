@@ -1,6 +1,8 @@
 import { flushTelemetry, initialiseTelemetry, telemetry } from '@ministryofjustice/hmpps-azure-telemetry'
+import { sentryClient } from '../sentry'
+import { startSharedTelemetry } from './sharedTelemetry'
 
-initialiseTelemetry({
+const builder = initialiseTelemetry({
   serviceName: 'hmpps-challenge-support-intervention-plan-ui',
   serviceVersion: process.env['BUILD_NUMBER'] || 'unknown',
   connectionString: process.env.APPLICATIONINSIGHTS_CONNECTION_STRING,
@@ -10,10 +12,12 @@ initialiseTelemetry({
     telemetry.processors.filterSpanWherePath(['/health', '/ping', '/info', '/metrics', '/assets/*', '/favicon.ico']),
   )
   .addModifier(telemetry.processors.enrichSpanNameWithHttpRoute())
-  .startRecording()
+
+export const shutdownTelemetry = sentryClient ? startSharedTelemetry(sentryClient) : flushTelemetry
+if (!sentryClient) builder.startRecording()
 
 const shutdown = async (): Promise<void> => {
-  await flushTelemetry()
+  await shutdownTelemetry()
   process.exit(0)
 }
 
