@@ -1,4 +1,6 @@
-import { ROOT_CONTEXT, trace, TraceFlags } from '@opentelemetry/api'
+import { propagation, ROOT_CONTEXT, trace, TraceFlags } from '@opentelemetry/api'
+import { suppressTracing } from '@opentelemetry/core'
+import type { Span } from '@opentelemetry/api'
 import { SharedPropagator } from './sharedPropagator'
 
 describe('shared telemetry propagation', () => {
@@ -32,10 +34,69 @@ describe('shared telemetry propagation', () => {
       ROOT_CONTEXT,
       {
         traceparent: `00-${traceId}-${spanId}-01`,
+        tracestate: 'vendor=value',
+        baggage: 'tenant=example',
       },
       getter,
     )
 
     expect(trace.getSpanContext(context)).toMatchObject({ traceId, spanId, isRemote: true })
+    expect(trace.getSpanContext(context)?.traceState?.serialize()).toBe('vendor=value')
+    expect(propagation.getBaggage(context)?.getEntry('tenant')?.value).toBe('example')
+  })
+
+  it('preserves W3C parent and vendor metadata alongside matching Sentry headers', () => {
+    const context = new SharedPropagator().extract(
+      ROOT_CONTEXT,
+      {
+        traceparent: `00-${traceId}-${spanId}-01`,
+        'sentry-trace': `${traceId}-3333333333333333-0`,
+        tracestate: 'vendor=value',
+        baggage: 'tenant=example',
+      },
+      getter,
+    )
+    expect(trace.getSpanContext(context)).toMatchObject({ traceId, spanId, isRemote: true })
+    expect(trace.getSpanContext(context)?.traceState?.serialize()).toBe('vendor=value')
+    expect(propagation.getBaggage(context)?.getEntry('tenant')?.value).toBe('example')
+  })
+
+  it('respects suppressed tracing', () => {
+    const context = suppressTracing(
+      trace.setSpanContext(ROOT_CONTEXT, { traceId, spanId, traceFlags: TraceFlags.SAMPLED }),
+    )
+    const carrier: Record<string, string> = {}
+    new SharedPropagator().inject(context, carrier, {
+      set: (target: Record<string, string>, key: string, value: string) => Object.assign(target, { [key]: value }),
+    })
+    expect(carrier).toEqual({})
+  })
+
+  it('preserves App Insights correlation when browser tracing headers disagree', () => {
+    const context = new SharedPropagator().extract(
+      ROOT_CONTEXT,
+      {
+        traceparent: `00-${traceId}-${spanId}-01`,
+        'sentry-trace': '33333333333333333333333333333333-4444444444444444-1',
+        baggage: 'sentry-trace_id=33333333333333333333333333333333,tenant=example',
+      },
+      getter,
+    )
+    expect(trace.getSpanContext(context)).toMatchObject({ traceId, spanId, isRemote: true })
+    expect(propagation.getBaggage(context)?.getEntry('tenant')?.value).toBe('example')
+    expect(propagation.getBaggage(context)?.getEntry('sentry-trace_id')).toBeUndefined()
+  })
+
+  it('propagates an explicitly unsampled Sentry decision for a recording App Insights span', () => {
+    const context = trace.setSpan(ROOT_CONTEXT, {
+      spanContext: () => ({ traceId, spanId, traceFlags: TraceFlags.NONE }),
+      isRecording: () => true,
+    } as Span)
+    const carrier: Record<string, string> = {}
+    new SharedPropagator().inject(context, carrier, {
+      set: (target: Record<string, string>, key: string, value: string) => Object.assign(target, { [key]: value }),
+    })
+    expect(carrier['sentry-trace']).toBe(`${traceId}-${spanId}-0`)
+    expect(carrier['traceparent']).toBe(`00-${traceId}-${spanId}-01`)
   })
 })

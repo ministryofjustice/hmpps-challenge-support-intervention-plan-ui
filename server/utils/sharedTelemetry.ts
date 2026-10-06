@@ -1,4 +1,4 @@
-import { TraceFlags } from '@opentelemetry/api'
+import { trace, TraceFlags } from '@opentelemetry/api'
 import type { Context } from '@opentelemetry/api'
 import { logs } from '@opentelemetry/api-logs'
 import { registerInstrumentations } from '@opentelemetry/instrumentation'
@@ -12,7 +12,7 @@ import { defaultInstrumentations, telemetry } from '@ministryofjustice/hmpps-azu
 import * as Sentry from '@sentry/node'
 import { SentrySampler, SentrySpanProcessor } from '@sentry/opentelemetry'
 
-import { SharedPropagator } from './sharedPropagator'
+import { remoteSentrySampled, restartSentrySampling, SharedPropagator } from './sharedPropagator'
 
 const keepSpan = telemetry.processors.filterSpanWherePath([
   '/health',
@@ -28,10 +28,19 @@ const enrichName = telemetry.processors.enrichSpanNameWithHttpRoute()
 export function appInsightsSampler(sentrySampler: Sampler): Sampler {
   return {
     shouldSample: (...args) => {
-      const result = sentrySampler.shouldSample(...args)
+      const [context, ...samplingArgs] = args
+      const remoteParent = trace.getSpanContext(context)?.isRemote
+      const samplingContext =
+        remoteParent && context.getValue(restartSentrySampling) ? trace.deleteSpan(context) : context
+      const result = sentrySampler.shouldSample(samplingContext, ...samplingArgs)
+      const inherited = remoteParent ? context.getValue(remoteSentrySampled) : undefined
+      let { decision } = result
+      if (typeof inherited === 'boolean') {
+        decision = inherited ? SamplingDecision.RECORD_AND_SAMPLED : SamplingDecision.NOT_RECORD
+      }
       return {
         ...result,
-        decision: result.decision === SamplingDecision.NOT_RECORD ? SamplingDecision.RECORD : result.decision,
+        decision: decision === SamplingDecision.NOT_RECORD ? SamplingDecision.RECORD : decision,
       }
     },
     toString: () => `AppInsights(${sentrySampler.toString()})`,
@@ -73,8 +82,8 @@ export class SharedSpanProcessor implements SpanProcessor {
       return
 
     // BatchSpanProcessor drops RECORD_ONLY spans. Mark only the export copy as
-    // sampled so App Insights receives every request; Sentry's decision and
-    // the Sentry sampling decision remain intact.
+    // sampled so App Insights receives every request; the original Sentry
+    // sampling decision remains intact.
     const exportSpan: ReadableSpan = {
       ...span,
       duration: span.duration,

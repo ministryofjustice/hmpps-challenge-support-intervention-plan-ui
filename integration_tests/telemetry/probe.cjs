@@ -44,7 +44,15 @@ if (process.env.PROBE_MODE === 'fixed') {
     .startRecording()
 }
 
+const http = require('http')
 const express = require('express')
+
+const downstreamHeaders = []
+const dependency = http.createServer((req, res) => {
+  downstreamHeaders.push(req.headers)
+  res.end('ok')
+})
+dependency.listen(0, '127.0.0.1')
 
 if (process.env.PROBE_MODE === 'original')
   Sentry.init({ dsn: process.env.SENTRY_DSN, tracesSampleRate: Number(process.env.SENTRY_TRACES_SAMPLE_RATE) })
@@ -75,6 +83,15 @@ app.get('/first', async (_req, res) => {
   await new Promise(resolve => {
     setTimeout(resolve, 25)
   })
+  await new Promise((resolve, reject) => {
+    http
+      .get(`http://127.0.0.1:${dependency.address().port}/health`, response => {
+        response.resume()
+        response.on('end', resolve)
+      })
+      .on('error', reject)
+  })
+  logger.info('TELEMETRY_REQUEST_LOG_PROBE')
   if (process.env.SENTRY_DSN) Sentry.captureException(new Error('FIRST_ERROR_PROBE'))
   res.send('ok')
 })
@@ -91,7 +108,19 @@ const server = app.listen(0, '127.0.0.1', async () => {
     const base = `http://127.0.0.1:${server.address().port}`
     await Promise.all(
       ['/first', '/second', '/health', '/assets/probe.js'].map(async path => {
-        const response = await fetch(base + path)
+        const parentCase = process.env.PROBE_PARENT_CASE
+        const traceId = '11111111111111111111111111111111'
+        const spanId = '2222222222222222'
+        const headers = parentCase
+          ? {
+              traceparent: `00-${traceId}-${spanId}-01`,
+              'sentry-trace':
+                parentCase === 'conflict'
+                  ? '33333333333333333333333333333333-4444444444444444-1'
+                  : `${traceId}-${spanId}-${parentCase}`,
+            }
+          : {}
+        const response = await fetch(base + path, { headers })
         await response.text()
       }),
     )
@@ -99,15 +128,22 @@ const server = app.listen(0, '127.0.0.1', async () => {
     await new Promise(resolve => {
       server.close(resolve)
     })
+    dependency.closeAllConnections()
+    await new Promise(resolve => {
+      dependency.close(resolve)
+    })
     const globalProvider = require('@opentelemetry/api').trace.getTracerProvider()
     const provider = globalProvider.getDelegate ? globalProvider.getDelegate() : globalProvider
-    if (provider.forceFlush) await provider.forceFlush()
+    // The shared implementation must flush through its own shutdown path.
+    // The legacy library needs its delegate flushed to observe the control.
+    const shared = process.env.PROBE_MODE === 'fixed' && process.env.SENTRY_DSN
+    if (!shared && provider.forceFlush) await provider.forceFlush()
     if (process.env.PROBE_MODE === 'fixed') {
       await require(`${process.env.PROBE_BUILD_DIR}/utils/azureAppInsights.js`).shutdownTelemetry()
     } else {
       await require('@ministryofjustice/hmpps-azure-telemetry').flushTelemetry()
     }
-    await Sentry.flush(2000)
+    if (!shared) await Sentry.flush(2000)
     console.log(
       `PROBE_RESULT=${JSON.stringify({
         azureRequests: azureEnvelopes
@@ -117,6 +153,10 @@ const server = app.listen(0, '127.0.0.1', async () => {
           .filter(envelope => envelope.data.baseType === 'MessageData')
           .map(envelope => envelope.data.baseData.message),
         rawLogCount: rawLogs.length,
+        downstreamHeaders,
+        azureRequestLogs: azureEnvelopes
+          .filter(envelope => envelope.data.baseType === 'MessageData')
+          .map(envelope => ({ message: envelope.data.baseData.message, traceId: envelope.tags['ai.operation.id'] })),
         requests: spans
           .filter(span => span.kind === 1)
           .map(span => ({

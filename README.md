@@ -235,7 +235,11 @@ App Insights records all requests. `SENTRY_TRACES_SAMPLE_RATE` still controls
 Sentry performance tracing (default `0.05`). Requests outside the Sentry sample
 remain recording spans, and only their App Insights export copies are marked
 sampled. W3C trace propagation keeps downstream App Insights tracing enabled.
-Health checks and static assets retain their existing telemetry exclusions.
+Sentry propagation carries its separate sampled decision, so a request outside
+the performance sample stays unsampled downstream. Incoming W3C trace IDs take
+precedence when browser tracing headers disagree; unrelated baggage and
+tracestate are preserved. Health checks and static assets retain their existing
+telemetry exclusions.
 Without `SENTRY_DSN`, the HMPPS telemetry library starts its usual provider.
 
 Run the local regression probe with:
@@ -248,7 +252,10 @@ The probe uses `DEBUG_TELEMETRY=true`, a synthetic signed-in user, a loopback
 HTTP server and local transports. It exercises Azure's real request/log
 serialization and Sentry error/transaction envelopes without sending telemetry
 to external services. It checks duplicates, user attributes, concurrent error
-isolation, route exclusions, Bunyan logs, and Sentry sample rates of zero and one.
+isolation, route exclusions, correlated Bunyan logs, shutdown flushing, and
+Sentry sample rates of zero and one. It also covers inherited sampling decisions,
+conflicting tracing headers, downstream HTTP propagation and debug exporters
+being disabled as in production.
 The previous setup produces two server spans per request locally; user metadata
 is present on the HMPPS copy and missing from the Sentry copy. This reproduces
 the duplicates but does not reproduce production's absence of metadata on both
