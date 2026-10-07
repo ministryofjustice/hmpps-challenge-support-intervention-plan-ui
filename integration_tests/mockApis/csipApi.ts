@@ -865,7 +865,7 @@ const stubSuggestedCaseNotes = () => {
 }
 
 const stubSuggestedCaseNotesLong = () => {
-  const wordsBeforeHighlight = Array.from({ length: 80 }, (_, index) => `before${index}`).join(' ')
+  const wordsBeforeHighlight = Array.from({ length: 40 }, (_, index) => `before${index}`).join(' ')
   const wordsAfterHighlight = Array.from({ length: 80 }, (_, index) => `after${index}`).join(' ')
   const longText = `${wordsBeforeHighlight} <mark><strong>important highlighted behaviour</strong></mark> ${wordsAfterHighlight}`
   const longAmendment = `${Array.from({ length: 180 }, (_, index) => `amendment${index}`).join(' ')} <mark><strong>amendment highlight</strong></mark>`
