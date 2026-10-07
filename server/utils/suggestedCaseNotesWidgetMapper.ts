@@ -28,12 +28,6 @@ export type SuggestedCaseNotesWidgetModel = {
 
 const stripSupportedMarkup = (text: string): string => text.replace(/<\/?(?:mark|span|strong)\b[^>]*>/gi, '')
 
-const shouldSuppressSensitiveNotes = (response: SuggestedCaseNotesResponse): boolean => {
-  const hasSensitiveNotes = response.hasSensitiveNotes || response.suggestedCaseNotes.some(item => item.isSensitive)
-
-  return hasSensitiveNotes === true && response.userCanViewSensitiveNotes === false
-}
-
 const buildTextFragments = (annotatedText: string): SuggestedCaseNoteTextFragment[] => {
   const annotationRegex = /<(mark|span)\b[^>]*>([\s\S]*?)<\/\1>/gi
   const fragments: SuggestedCaseNoteTextFragment[] = []
@@ -70,17 +64,6 @@ export const buildSuggestedCaseNotesWidgetModel = ({
   response: SuggestedCaseNotesResponse
   showHighlighting?: boolean
 }): SuggestedCaseNotesWidgetModel => {
-  if (shouldSuppressSensitiveNotes(response)) {
-    return {
-      behaviourType: response.behaviourType,
-      showHighlighting,
-      sortField: response.sortField,
-      emptyStateMessage:
-        'Suggested Case Notes cannot be shown because you do not have permission to view sensitive notes.',
-      notes: [],
-    }
-  }
-
   const notes = response.suggestedCaseNotes.map(item => {
     const note = {
       itemId: item.caseNoteId,
