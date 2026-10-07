@@ -1,68 +1,36 @@
-const TRUNCATION_THRESHOLD = 100
-const WORDS_BEFORE_HIGHLIGHT = 10
-// Words kept in the DOM while collapsed - the rest is removed entirely (not just visually
-// clipped), so assistive tech never reads more than what's shown behind the "Expand" control.
-const PREVIEW_WORD_LIMIT = 80
+const TRUNCATION_THRESHOLD = 60
 
 const countWords = (text: string): number => text.trim().split(/\s+/).filter(Boolean).length
 
-const truncateBeforeHighlight = (content: HTMLElement): boolean => {
+const truncateContent = (content: HTMLElement): void => {
   const fragments = Array.from(content.querySelectorAll<HTMLElement>('[data-truncatable-fragment]'))
-  const firstHighlightIndex = fragments.findIndex(fragment => fragment.dataset['truncatableFragment'] === 'highlight')
-  if (firstHighlightIndex < 0) return false
+  const visibleFragments: HTMLElement[] = []
+  let wordsRemaining = TRUNCATION_THRESHOLD
 
-  const wordsBeforeHighlight = fragments
-    .slice(0, firstHighlightIndex)
-    .reduce((count, fragment) => count + countWords(fragment.textContent ?? ''), 0)
-  if (wordsBeforeHighlight <= WORDS_BEFORE_HIGHLIGHT) return false
+  for (const fragment of fragments) {
+    if (wordsRemaining <= 0) break
 
-  let wordsToRemove = wordsBeforeHighlight - WORDS_BEFORE_HIGHLIGHT
-  const visibleFragments = fragments.slice(firstHighlightIndex)
-  const precedingFragments = fragments.slice(0, firstHighlightIndex)
-
-  for (let index = precedingFragments.length - 1; index >= 0 && wordsToRemove > 0; index -= 1) {
-    const fragment = precedingFragments[index]!
+    const isHighlight = fragment.dataset['truncatableFragment'] === 'highlight'
     const words = (fragment.textContent ?? '').trim().split(/\s+/).filter(Boolean)
-    if (words.length <= wordsToRemove) {
-      wordsToRemove -= words.length
-      continue
+    if (words.length <= wordsRemaining) {
+      visibleFragments.push(fragment)
+      wordsRemaining -= words.length
+    } else if (isHighlight) {
+      wordsRemaining = 0
+    } else {
+      const shortenedFragment = fragment.cloneNode(true) as HTMLElement
+      shortenedFragment.textContent = words.slice(0, wordsRemaining).join(' ')
+      visibleFragments.push(shortenedFragment)
+      wordsRemaining = 0
     }
-
-    const shortenedFragment = fragment.cloneNode(true) as HTMLElement
-    shortenedFragment.textContent = words.slice(words.length - wordsToRemove).join(' ')
-    visibleFragments.unshift(shortenedFragment)
-    wordsToRemove = 0
   }
 
-  content.replaceChildren('… ')
+  content.replaceChildren()
   visibleFragments.forEach((fragment, index) => {
     if (index > 0) content.append(' ')
     content.append(fragment)
   })
-  return true
-}
-
-const capPreviewLength = (content: HTMLElement) => {
-  const fragments = Array.from(content.querySelectorAll<HTMLElement>('[data-truncatable-fragment]'))
-  let wordsRemaining = PREVIEW_WORD_LIMIT
-  let trimmed = false
-
-  for (const fragment of fragments) {
-    if (wordsRemaining <= 0) {
-      fragment.remove()
-      trimmed = true
-      continue
-    }
-
-    const words = (fragment.textContent ?? '').trim().split(/\s+/).filter(Boolean)
-    if (words.length > wordsRemaining) {
-      fragment.textContent = words.slice(0, wordsRemaining).join(' ')
-      trimmed = true
-    }
-    wordsRemaining -= Math.min(words.length, wordsRemaining)
-  }
-
-  if (trimmed) content.append(' …')
+  content.append('…')
 }
 
 const applyCardTruncation = (card: HTMLElement): boolean => {
@@ -77,8 +45,7 @@ const applyCardTruncation = (card: HTMLElement): boolean => {
 
     wrapper.dataset['fullHtml'] = content.innerHTML
     wrapper.classList.add('case-note-card__text-wrapper--truncated')
-    truncateBeforeHighlight(content)
-    capPreviewLength(content)
+    truncateContent(content)
   })
 
   return hasTruncatedContent
@@ -95,8 +62,7 @@ const setCardExpanded = (card: HTMLElement, expanded: boolean) => {
       wrapper.classList.remove('case-note-card__text-wrapper--truncated')
     } else {
       wrapper.classList.add('case-note-card__text-wrapper--truncated')
-      truncateBeforeHighlight(content)
-      capPreviewLength(content)
+      truncateContent(content)
     }
   })
 
