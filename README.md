@@ -226,7 +226,8 @@ A changelog for the service is available [here](./CHANGELOG.md)
 ## App Insights and Sentry telemetry
 
 When `SENTRY_DSN` is configured, `server/utils/azureAppInsights.ts` starts one
-OpenTelemetry provider for both exporters. Sentry does not install a second
+OpenTelemetry provider for both exporters using the library
+`.withProvider(...)` hook. Sentry does not install a second
 provider or duplicate HTTP/Express span instrumentation. The existing HMPPS
 HTTP, Express and Bunyan instrumentation is shared, and Sentry's error and
 request isolation integrations remain enabled.
@@ -247,8 +248,12 @@ vendor state travels in `tracestate`. Health checks and static assets retain
 their existing telemetry exclusions, and their children stay outside Sentry's
 performance sample.
 Without `SENTRY_DSN`, the HMPPS telemetry library starts its usual provider.
-The library currently has no provider extension hook; moving the shared
-startup into a supported library hook would remove the local provider bridge.
+The library owns provider, exporter, logger, resource and instrumentation
+setup in both paths. CSIP supplies only its Sentry integration and the Azure
+export-copy adapter through the provider hook. This switch requires the
+provider-hook library release (planned as `1.2.0`); the registry dependency and
+lockfile must be updated once that release is available. Local verification
+uses a packed build of the library branch.
 
 Run the local regression probe with:
 

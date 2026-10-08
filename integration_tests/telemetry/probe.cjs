@@ -172,16 +172,16 @@ const server = app.listen(0, '127.0.0.1', async () => {
     }
     const globalProvider = require('@opentelemetry/api').trace.getTracerProvider()
     const provider = globalProvider.getDelegate ? globalProvider.getDelegate() : globalProvider
-    // The shared implementation must flush through its own shutdown path.
-    // The legacy library needs its delegate flushed to observe the control.
-    const shared = process.env.PROBE_MODE === 'fixed' && process.env.SENTRY_DSN
-    if (!shared && provider.forceFlush) await provider.forceFlush()
+    // Fixed startup relies entirely on the library-owned shutdown handle.
+    // The previous setup remains an explicitly flushed reproduction control.
+    const managed = process.env.PROBE_MODE === 'fixed'
+    if (!managed && provider.forceFlush) await provider.forceFlush()
     if (process.env.PROBE_MODE === 'fixed') {
       await require(`${process.env.PROBE_BUILD_DIR}/utils/azureAppInsights.js`).shutdownTelemetry()
     } else {
       await require('@ministryofjustice/hmpps-azure-telemetry').flushTelemetry()
     }
-    if (!shared) await Sentry.flush(2000)
+    if (!managed) await Sentry.flush(2000)
     console.log(
       `PROBE_RESULT=${JSON.stringify({
         azureRequests: azureEnvelopes

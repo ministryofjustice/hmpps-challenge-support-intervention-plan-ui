@@ -1,12 +1,16 @@
 import { flushTelemetry, initialiseTelemetry } from '@ministryofjustice/hmpps-azure-telemetry'
+import * as Sentry from '@sentry/node'
 import { sentryClient } from '../sentry'
-import { startSharedTelemetry } from './sharedTelemetry'
+import { configureSentryTelemetry } from './sharedTelemetry'
 import { enrichName, keepSpan, telemetryConfig } from './telemetryConfig'
 
 const builder = initialiseTelemetry(telemetryConfig).addFilter(keepSpan).addModifier(enrichName)
 
-export const shutdownTelemetry = sentryClient ? startSharedTelemetry(sentryClient) : flushTelemetry
-if (!sentryClient) builder.startRecording()
+if (sentryClient) configureSentryTelemetry(builder, sentryClient)
+const recording = builder.startRecording()
+if (sentryClient) Sentry.validateOpenTelemetrySetup()
+
+export const shutdownTelemetry = recording ? () => recording.shutdown() : flushTelemetry
 
 const shutdown = async (): Promise<void> => {
   try {

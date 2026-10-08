@@ -1,7 +1,6 @@
 import { propagation, ROOT_CONTEXT, trace, TraceFlags } from '@opentelemetry/api'
 import { suppressTracing } from '@opentelemetry/core'
 import type { Span } from '@opentelemetry/api'
-import { shutdownSharedTelemetry } from './sharedTelemetry'
 import { SharedPropagator } from './sharedPropagator'
 
 describe('shared telemetry propagation', () => {
@@ -100,18 +99,5 @@ describe('shared telemetry propagation', () => {
     })
     expect(carrier['sentry-trace']).toBe(`${traceId}-${spanId}-0`)
     expect(carrier['traceparent']).toBe(`00-${traceId}-${spanId}-01`)
-  })
-})
-
-describe('telemetry shutdown failures', () => {
-  it('attempts every flush and shutdown even if each stage fails', async () => {
-    const fail = () => jest.fn().mockRejectedValue(new Error('export unavailable'))
-    const provider = { forceFlush: fail(), shutdown: fail() }
-    const loggerProvider = { forceFlush: fail(), shutdown: fail() }
-    const sentryFlush = fail()
-    await expect(shutdownSharedTelemetry(provider, loggerProvider, sentryFlush)).resolves.toBeUndefined()
-    ;[provider.forceFlush, provider.shutdown, loggerProvider.forceFlush, loggerProvider.shutdown, sentryFlush].forEach(
-      action => expect(action).toHaveBeenCalledTimes(1),
-    )
   })
 })
