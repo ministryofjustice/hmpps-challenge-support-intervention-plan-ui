@@ -222,3 +222,77 @@ Or run tests with the cypress UI:
 ## Change log
 
 A changelog for the service is available [here](./CHANGELOG.md)
+
+## App Insights and Sentry telemetry
+
+When `SENTRY_DSN` is configured, `server/utils/azureAppInsights.ts` starts one
+OpenTelemetry provider for both exporters. Sentry does not install a second
+provider or duplicate HTTP/Express span instrumentation. The existing HMPPS
+HTTP, Express and Bunyan instrumentation is shared, and Sentry's error and
+request isolation integrations remain enabled.
+
+App Insights records all requests. `SENTRY_TRACES_SAMPLE_RATE` still controls
+Sentry performance tracing (default `0.05`). Requests outside the Sentry sample
+remain recording spans, and only their App Insights export copies are marked
+sampled. W3C propagation preserves an explicit upstream unsampled (`-00`)
+decision; otherwise downstream App Insights tracing stays enabled independently
+of Sentry sampling.
+Sentry propagation carries its separate sampled decision, so a request outside
+the performance sample stays unsampled downstream. Incoming W3C trace IDs take
+precedence when browser tracing headers disagree; unrelated baggage and
+tracestate are preserved. Each exporter retains its own upstream parent span
+ID when the two headers have different parents in the same trace. Sentry's
+dynamic sampling context stays local and travels in baggage, while valid
+vendor state travels in `tracestate`. Health checks and static assets retain
+their existing telemetry exclusions, and their children stay outside Sentry's
+performance sample.
+Without `SENTRY_DSN`, the HMPPS telemetry library starts its usual provider.
+The library currently has no provider extension hook; moving the shared
+startup into a supported library hook would remove the local provider bridge.
+
+Run the local regression probe with:
+
+```sh
+npx jest --runInBand --coverage=false server/telemetryTracingCompatibility.test.ts server/utils/sharedTelemetry.test.ts
+```
+
+The probe uses `DEBUG_TELEMETRY=true`, a synthetic signed-in user, a loopback
+HTTP server and local transports. It exercises Azure's real request/log
+serialization and Sentry error/transaction envelopes without sending telemetry
+to external services. It checks duplicates, user attributes, concurrent error
+isolation, route exclusions, correlated Bunyan logs, shutdown flushing, and
+Sentry sample rates of zero and one. It also covers inherited sampling decisions,
+conflicting tracing headers, distinct upstream parents, Sentry sampling
+metadata, downstream HTTP propagation and debug exporters being disabled as
+in production. Failed Azure exports are exercised through both explicit
+shutdown and SIGTERM: Sentry still flushes and the process exits successfully.
+Service identity, route filters and name enrichment are shared in
+`server/utils/telemetryConfig.ts`. The shared startup also forwards log exporter
+flushes and registers the current meter provider.
+The previous setup produces two server spans per request locally; user metadata
+is present on the HMPPS copy and missing from the Sentry copy. This reproduces
+the duplicates but does not reproduce production's absence of metadata on both
+copies, so production verification is required.
+
+After deployment, run this in the `nomisapi-<env>` Log Analytics workspace,
+replacing the timestamp with the deployment completion time to exclude older
+requests:
+
+```kusto
+let deployedAt = datetime(2026-10-06T00:00:00Z);
+AppRequests
+| where TimeGenerated > deployedAt
+| where AppRoleName == "hmpps-challenge-support-intervention-plan-ui"
+| where Name !has "/health" and Name !has "/ping" and Name !has "/info" and Name !has "/assets"
+| summarize requests = count(),
+            withUsername = countif(isnotempty(Properties.username)),
+            withUserUuid = countif(isnotempty(Properties.userUuid)),
+            withActiveCaseLoadId = countif(isnotempty(Properties.activeCaseLoadId)),
+            sentryCopies = countif(isnotempty(Properties["sentry.op"]))
+```
+
+Confirm metadata on signed-in requests (public and authentication routes may
+have no user), no Sentry request copies, and continued error receipt in the
+Sentry project. Local transport checks verify SDK behaviour, not production
+ingestion. Roll back to the previous application image if telemetry or error
+reporting regresses.
