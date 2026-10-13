@@ -130,7 +130,8 @@ $case-note-highlight-border: #ffb266;
     display: none;
   }
 
-  .case-note-card__show-all-btn {
+  .case-note-card__show-all-btn,
+  button.suggested-case-notes__control {
       display: block;
       appearance: none;
       border: none;
@@ -246,6 +247,16 @@ $case-note-highlight-border: #ffb266;
   .hods-highlight {
     background-color: $case-note-highlight;
     border-bottom: 2px solid $case-note-highlight-border;
+  }
+
+  &--no-highlights .hods-highlight {
+    background-color: transparent;
+    border-bottom: 0;
+    color: inherit;
+
+    strong {
+      font-weight: inherit;
+    }
   }
 
   @include govuk-media-query($until: tablet) {

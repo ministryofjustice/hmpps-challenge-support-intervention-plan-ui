@@ -109,33 +109,59 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
   })
 
   context('when toggling highlights', () => {
-    it('shows highlighted text and links to turn highlights off', () => {
+    const highlightedMark = () => cy.get('[data-qa="suggested-case-notes-card"] mark.hods-highlight').first()
+
+    it('shows highlighted text and a button to turn highlights off', () => {
       cy.task('stubSuggestedCaseNotes')
       navigateToTestPage()
 
       cy.get('[data-qa="suggested-case-notes-card"] mark').should('contain.text', 'verbal altercation')
-      cy.get('[data-qa="toggle-highlights"]')
-        .should('have.text', 'Turn off highlights')
-        .and(
-          'have.attr',
-          'href',
-          `/${uuid}/record-investigation/usual-behaviour-presentation?suggestedCaseNotesHighlighting=off`,
-        )
+      highlightedMark().should('not.have.css', 'background-color', 'rgba(0, 0, 0, 0)')
+      cy.get('[data-qa="suggested-case-notes-widget"]').should('not.have.class', 'suggested-case-notes--no-highlights')
+      cy.get('button[data-qa="toggle-highlights"]').should('have.text', 'Turn off highlights')
     })
 
-    it('shows plain text and links to turn highlights on', () => {
+    it('shows unhighlighted text and a button to turn highlights on', () => {
       cy.task('stubSuggestedCaseNotes')
       navigateToTestPage()
       cy.visit(`${uuid}/record-investigation/usual-behaviour-presentation?suggestedCaseNotesHighlighting=off`)
 
-      cy.get('[data-qa="suggested-case-notes-card"] mark').should('not.exist')
-      cy.get('[data-qa="toggle-highlights"]')
-        .should('have.text', 'Turn on highlights')
-        .and(
-          'have.attr',
-          'href',
-          `/${uuid}/record-investigation/usual-behaviour-presentation?suggestedCaseNotesHighlighting=on`,
-        )
+      cy.get('[data-qa="suggested-case-notes-widget"]').should('have.class', 'suggested-case-notes--no-highlights')
+      highlightedMark().should('have.css', 'background-color', 'rgba(0, 0, 0, 0)')
+      cy.get('button[data-qa="toggle-highlights"]').should('have.text', 'Turn on highlights')
+    })
+
+    it('toggles highlights without reloading the page and keeps focus on the toggle', () => {
+      cy.task('stubSuggestedCaseNotes')
+      navigateToTestPage()
+      cy.window().then(win => {
+        Object.assign(win, { highlightToggleNoReload: true })
+      })
+
+      cy.get('button[data-qa="toggle-highlights"]').focus().click()
+      cy.get('[data-qa="suggested-case-notes-widget"]').should('have.class', 'suggested-case-notes--no-highlights')
+      highlightedMark().should('have.css', 'background-color', 'rgba(0, 0, 0, 0)')
+      cy.get('button[data-qa="toggle-highlights"]').should('have.text', 'Turn on highlights').and('be.focused')
+      cy.location('search').should('include', 'suggestedCaseNotesHighlighting=off')
+
+      cy.get('button[data-qa="toggle-highlights"]').click()
+      cy.get('[data-qa="suggested-case-notes-widget"]').should('not.have.class', 'suggested-case-notes--no-highlights')
+      cy.get('button[data-qa="toggle-highlights"]').should('have.text', 'Turn off highlights').and('be.focused')
+      cy.location('search').should('include', 'suggestedCaseNotesHighlighting=on')
+
+      cy.window().its('highlightToggleNoReload').should('equal', true)
+    })
+
+    it('keeps the selected highlighting state after a reload', () => {
+      cy.task('stubSuggestedCaseNotes')
+      navigateToTestPage()
+
+      cy.get('button[data-qa="toggle-highlights"]').click()
+      cy.location('search').should('include', 'suggestedCaseNotesHighlighting=off')
+      cy.reload()
+
+      cy.get('[data-qa="suggested-case-notes-widget"]').should('have.class', 'suggested-case-notes--no-highlights')
+      cy.get('button[data-qa="toggle-highlights"]').should('have.text', 'Turn on highlights')
     })
   })
 
