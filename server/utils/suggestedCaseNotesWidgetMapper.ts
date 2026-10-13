@@ -47,7 +47,6 @@ const toTimestamp = (value: string | undefined): number | undefined => {
   return Number.isNaN(timestamp) ? undefined : timestamp
 }
 
-// Mirrors the API's lastAmendedDate ordering: the latest amendment if it is after creation, otherwise creation.
 const buildSortKeys = (
   createdAt: string | undefined,
   amendments: { createdAt: string }[],

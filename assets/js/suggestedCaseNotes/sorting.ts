@@ -19,7 +19,6 @@ const initSorting = () => {
   if (!widget || !list || !links.length) return
 
   const cards = Array.from(list.querySelectorAll<HTMLElement>(':scope > [data-qa="suggested-case-notes-card"]'))
-  // Ties keep the server's order, so returning to the initial sort restores the API order exactly.
   const initialPosition = new Map(cards.map((card, index) => [card, index]))
   const buttons = links.map(replaceLinkWithButton)
   let currentField = widget.dataset['sortField'] ?? ''

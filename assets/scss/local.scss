@@ -86,7 +86,6 @@ $case-note-muted-text: #626a6e;
 $case-note-highlight: #ffe5cc;
 $case-note-highlight-border: #ffb266;
 
-// A <button> that looks like a govuk-link. Pair with `govuk-link` so colours, hover and focus come from GOV.UK Frontend.
 .app-link-button {
   appearance: none;
   margin: 0;
@@ -99,7 +98,6 @@ $case-note-highlight-border: #ffb266;
   color: govuk-functional-colour(link);
   cursor: pointer;
 
-  // govuk-link only colours :link/:visited, which never match a <button>
   &:hover {
     color: govuk-functional-colour(link-hover);
   }
