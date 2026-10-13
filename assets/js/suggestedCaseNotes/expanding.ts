@@ -83,7 +83,7 @@ const syncExpandAllButton = (button: HTMLButtonElement, cards: HTMLElement[]) =>
   button.setAttribute('aria-expanded', String(allExpanded))
 }
 
-const initTruncation = () => {
+const setUpCaseNoteExpanding = () => {
   const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-qa="suggested-case-notes-card"]'))
   const expandAllButton = document.querySelector<HTMLButtonElement>('[data-qa="expand-all-case-notes"]')
 
@@ -118,4 +118,4 @@ const initTruncation = () => {
   })
 }
 
-export default initTruncation
+export default setUpCaseNoteExpanding

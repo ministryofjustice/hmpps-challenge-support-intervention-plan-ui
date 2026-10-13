@@ -1,9 +1,9 @@
-import initHighlighting from './highlighting'
-import initSorting from './sorting'
-import initTruncation from './truncation'
+import replaceHighlightLinkWithButton from './highlighting'
+import replaceSortLinksWithButtons from './sorting'
+import setUpCaseNoteExpanding from './expanding'
 
 export const initSuggestedCaseNotes = () => {
-  initHighlighting()
-  initSorting()
-  initTruncation()
+  replaceHighlightLinkWithButton()
+  replaceSortLinksWithButtons()
+  setUpCaseNoteExpanding()
 }

@@ -12,7 +12,7 @@ const sortKey = (card: HTMLElement, field: string): number => {
   return value === '' ? Number.NEGATIVE_INFINITY : Number(value)
 }
 
-const initSorting = () => {
+const replaceSortLinksWithButtons = () => {
   const widget = getWidget()
   const list = widget?.querySelector<HTMLElement>('[data-qa="suggested-case-notes-list"]')
   const links = Array.from(widget?.querySelectorAll<HTMLAnchorElement>('a[data-sort-option]') ?? [])
@@ -50,4 +50,4 @@ const initSorting = () => {
   })
 }
 
-export default initSorting
+export default replaceSortLinksWithButtons

@@ -2,7 +2,7 @@ import { announce, getWidget, replaceLinkWithButton, setQueryParam } from './con
 
 const NO_HIGHLIGHTS_CLASS = 'suggested-case-notes--no-highlights'
 
-const initHighlighting = () => {
+const replaceHighlightLinkWithButton = () => {
   const widget = getWidget()
   const link = widget?.querySelector<HTMLAnchorElement>('a[data-qa="toggle-highlights"]')
   if (!widget || !link) return
@@ -17,4 +17,4 @@ const initHighlighting = () => {
   })
 }
 
-export default initHighlighting
+export default replaceHighlightLinkWithButton
