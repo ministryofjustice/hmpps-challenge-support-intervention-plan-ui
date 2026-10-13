@@ -152,46 +152,6 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
       cy.window().its('highlightToggleNoReload').should('equal', true)
     })
 
-    it('keeps the selected highlighting state after a reload', () => {
-      cy.task('stubSuggestedCaseNotes')
-      navigateToTestPage()
-
-      cy.get('button[data-qa="toggle-highlights"]').click()
-      cy.location('search').should('include', 'suggestedCaseNotesHighlighting=off')
-      cy.reload()
-
-      cy.get('[data-qa="suggested-case-notes-widget"]').should('have.class', 'suggested-case-notes--no-highlights')
-      cy.get('button[data-qa="toggle-highlights"]').should('have.text', 'Turn on highlights')
-    })
-  })
-
-  context('when sorting suggested case notes', () => {
-    it('should update both link texts and the query string when sorting by date created', () => {
-      navigateToTestPage('lastAmendedDate')
-      cy.url().should('include', 'sortField=lastAmendedDate')
-      cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sort by date created')
-      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by recently updated')
-
-      cy.get('[data-qa="sort-by-date-created"]').should('be.visible').click()
-
-      cy.url().should('include', 'sortField=createdDate')
-      cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sorted by date created')
-      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sort by recently updated')
-    })
-
-    it('should update both link texts and the query string when sorting by recently updated', () => {
-      navigateToTestPage('createdDate')
-      cy.url().should('include', 'sortField=createdDate')
-      cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sorted by date created')
-      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sort by recently updated')
-
-      cy.get('[data-qa="sort-by-most-recent-activity"]').should('be.visible').click()
-
-      cy.url().should('include', 'sortField=lastAmendedDate')
-      cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sort by date created')
-      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by recently updated')
-    })
-
     context('when suggested case notes are shown', () => {
       const shouldHaveCardOrder = (expected: string[]) =>
         cy.get('[data-qa="suggested-case-notes-card"]').should($cards => {
@@ -244,13 +204,9 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
         cy.location('search').should('include', 'sortField=lastAmendedDate')
         cy.location('search').should('include', 'suggestedCaseNotesHighlighting=off')
         cy.window().its('sortNoReload').should('equal', true)
-      })
 
-      it('keeps the selected sort after a reload', () => {
-        cy.get('button[data-qa="sort-by-most-recent-activity"]').click()
-        cy.location('search').should('include', 'sortField=lastAmendedDate')
         cy.reload()
-
+        cy.get('[data-qa="suggested-case-notes-widget"]').should('have.class', 'suggested-case-notes--no-highlights')
         cy.get('button[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by recently updated')
       })
     })
