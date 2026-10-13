@@ -191,6 +191,69 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
       cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sort by date created')
       cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by recently updated')
     })
+
+    context('when suggested case notes are shown', () => {
+      const shouldHaveCardOrder = (expected: string[]) =>
+        cy.get('[data-qa="suggested-case-notes-card"]').should($cards => {
+          const order = Cypress._.map($cards, card =>
+            card.querySelector('[data-truncatable-content]')!.textContent!.trim().split(/\s+/).slice(0, 2).join(' '),
+          )
+          assert.deepEqual(order, expected)
+        })
+
+      beforeEach(() => {
+        cy.task('stubSuggestedCaseNotesForSorting')
+        navigateToTestPage()
+        cy.window().then(win => {
+          Object.assign(win, { sortNoReload: true })
+        })
+      })
+
+      it('reorders case notes in place and keeps focus on the sort control', () => {
+        shouldHaveCardOrder(['Newest created', 'Older note', 'Oldest note'])
+
+        cy.get('button[data-qa="sort-by-most-recent-activity"]').focus().click()
+
+        shouldHaveCardOrder(['Older note', 'Oldest note', 'Newest created'])
+        cy.get('button[data-qa="sort-by-most-recent-activity"]')
+          .should('have.text', 'Sorted by recently updated')
+          .and('be.focused')
+        cy.get('button[data-qa="sort-by-date-created"]').should('have.text', 'Sort by date created')
+        cy.get('[data-qa="suggested-case-notes-status"]').should('have.text', 'Case notes sorted by recently updated')
+        cy.location('search').should('include', 'sortField=lastAmendedDate')
+
+        cy.get('button[data-qa="sort-by-date-created"]').click()
+        shouldHaveCardOrder(['Newest created', 'Older note', 'Oldest note'])
+        cy.location('search').should('include', 'sortField=createdDate')
+
+        cy.window().its('sortNoReload').should('equal', true)
+      })
+
+      it('keeps the highlighting setting and expanded case notes when sorting', () => {
+        cy.get('button[data-qa="toggle-highlights"]').click()
+        cy.get('[data-qa="expand-case-note"]').first().click().should('have.attr', 'aria-expanded', 'true')
+
+        cy.get('button[data-qa="sort-by-most-recent-activity"]').click()
+
+        cy.get('[data-qa="suggested-case-notes-widget"]').should('have.class', 'suggested-case-notes--no-highlights')
+        cy.get('button[data-qa="toggle-highlights"]').should('have.text', 'Turn on highlights')
+        cy.get('[data-qa="suggested-case-notes-card"]')
+          .last()
+          .find('[data-qa="expand-case-note"]')
+          .should('have.attr', 'aria-expanded', 'true')
+        cy.location('search').should('include', 'sortField=lastAmendedDate')
+        cy.location('search').should('include', 'suggestedCaseNotesHighlighting=off')
+        cy.window().its('sortNoReload').should('equal', true)
+      })
+
+      it('keeps the selected sort after a reload', () => {
+        cy.get('button[data-qa="sort-by-most-recent-activity"]').click()
+        cy.location('search').should('include', 'sortField=lastAmendedDate')
+        cy.reload()
+
+        cy.get('button[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by recently updated')
+      })
+    })
   })
 
   context('when truncating suggested case notes', () => {

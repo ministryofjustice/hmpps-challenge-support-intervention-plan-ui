@@ -83,40 +83,7 @@ const syncExpandAllButton = (button: HTMLButtonElement, cards: HTMLElement[]) =>
   button.setAttribute('aria-expanded', String(allExpanded))
 }
 
-const HIGHLIGHTING_QUERY_PARAM = 'suggestedCaseNotesHighlighting'
-const NO_HIGHLIGHTS_CLASS = 'suggested-case-notes--no-highlights'
-
-const initHighlightToggle = () => {
-  const widget = document.querySelector<HTMLElement>('[data-qa="suggested-case-notes-widget"]')
-  const link = widget?.querySelector<HTMLAnchorElement>('a[data-qa="toggle-highlights"]')
-  if (!widget || !link) return
-
-  const button = document.createElement('button')
-  button.type = 'button'
-  button.className = link.className
-  button.dataset['qa'] = 'toggle-highlights'
-
-  const render = () => {
-    const highlightsOn = !widget.classList.contains(NO_HIGHLIGHTS_CLASS)
-    button.textContent = highlightsOn ? 'Turn off highlights' : 'Turn on highlights'
-  }
-
-  render()
-  link.replaceWith(button)
-
-  button.addEventListener('click', () => {
-    const highlightsOff = widget.classList.toggle(NO_HIGHLIGHTS_CLASS)
-    render()
-
-    const url = new URL(window.location.href)
-    url.searchParams.set(HIGHLIGHTING_QUERY_PARAM, highlightsOff ? 'off' : 'on')
-    window.history.replaceState(window.history.state, '', url)
-  })
-}
-
-export const initSuggestedCaseNotes = () => {
-  initHighlightToggle()
-
+const initTruncation = () => {
   const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-qa="suggested-case-notes-card"]'))
   const expandAllButton = document.querySelector<HTMLButtonElement>('[data-qa="expand-all-case-notes"]')
 
@@ -150,3 +117,5 @@ export const initSuggestedCaseNotes = () => {
     syncExpandAllButton(expandAllButton, cards)
   })
 }
+
+export default initTruncation

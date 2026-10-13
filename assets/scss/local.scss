@@ -86,6 +86,33 @@ $case-note-muted-text: #626a6e;
 $case-note-highlight: #ffe5cc;
 $case-note-highlight-border: #ffb266;
 
+// A <button> that looks like a govuk-link. Pair with `govuk-link` so colours, hover and focus come from GOV.UK Frontend.
+.app-link-button {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: inherit;
+  line-height: inherit;
+  text-align: inherit;
+  color: govuk-functional-colour(link);
+  cursor: pointer;
+
+  // govuk-link only colours :link/:visited, which never match a <button>
+  &:hover {
+    color: govuk-functional-colour(link-hover);
+  }
+
+  &:active {
+    color: govuk-functional-colour(link-active);
+  }
+
+  &:focus {
+    color: govuk-functional-colour(focus-text);
+  }
+}
+
 .suggested-case-notes {
   &__heading {
     display: flex;
@@ -127,31 +154,6 @@ $case-note-highlight-border: #ffb266;
   }
 
   &__control[hidden] {
-    display: none;
-  }
-
-  .case-note-card__show-all-btn,
-  button.suggested-case-notes__control {
-      display: block;
-      appearance: none;
-      border: none;
-      background: none;
-      padding: 0;
-      cursor: pointer;
-      color: govuk-colour('blue');
-
-      @include govuk-link-common;
-
-    &:hover {
-      color: #0b58a6;
-    }
-
-    &:active {
-      color: #0b0c0c;
-    }
-  }
-
-  .case-note-card__show-all-btn[hidden] {
     display: none;
   }
 

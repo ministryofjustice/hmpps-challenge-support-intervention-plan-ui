@@ -66,8 +66,49 @@ describe('loadSuggestedCaseNotesWidget', () => {
     expect(result.suggestedCaseNotesWidget).toMatchObject({
       behaviourType: 'risks_and_triggers',
       showHighlighting: false,
-      highlightToggleHref: '/record-investigation/triggers?suggestedCaseNotesHighlighting=on',
+      highlightToggleHref: '/record-investigation/triggers?sortField=createdDate&suggestedCaseNotesHighlighting=on',
       highlightToggleText: 'Turn on highlights',
+    })
+  })
+
+  it('keeps the highlighting setting in sort links and the sort setting in the highlight link', async () => {
+    const suggestedCaseNotesService = {
+      getSuggestedCaseNotes: jest.fn().mockResolvedValue(responseFixture),
+    } as unknown as SuggestedCaseNotesService
+
+    const result = await loadSuggestedCaseNotesWidget({
+      suggestedCaseNotesService,
+      behaviourType: 'usual_behaviour_presentation',
+      pageName: 'usual behaviour presentation',
+      systemClientToken: 'token-1',
+      activeCaseLoadId: 'MDI',
+      prisonerNumber: 'A1234AA',
+      referralId: 'ref-123',
+      currentPath: '/record-investigation/usual-behaviour-presentation',
+      sortFieldQuery: 'lastAmendedDate',
+      highlightingQuery: 'off',
+    })
+
+    expect(result.suggestedCaseNotesWidget).toMatchObject({
+      sortField: 'lastAmendedDate',
+      highlightToggleHref:
+        '/record-investigation/usual-behaviour-presentation?sortField=lastAmendedDate&suggestedCaseNotesHighlighting=on',
+      sortOptions: [
+        {
+          field: 'lastAmendedDate',
+          label: 'recently updated',
+          qa: 'sort-by-most-recent-activity',
+          selected: true,
+          href: '/record-investigation/usual-behaviour-presentation?sortField=lastAmendedDate&suggestedCaseNotesHighlighting=off',
+        },
+        {
+          field: 'createdDate',
+          label: 'date created',
+          qa: 'sort-by-date-created',
+          selected: false,
+          href: '/record-investigation/usual-behaviour-presentation?sortField=createdDate&suggestedCaseNotesHighlighting=off',
+        },
+      ],
     })
   })
 

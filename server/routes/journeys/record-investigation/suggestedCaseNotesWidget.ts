@@ -25,8 +25,34 @@ export type LoadSuggestedCaseNotesWidgetOptions = {
   previewResponse?: SuggestedCaseNotesResponse
 }
 
-const buildHighlightToggleHref = (currentPath: string, showHighlighting: boolean): string =>
-  `${currentPath}?suggestedCaseNotesHighlighting=${showHighlighting ? 'off' : 'on'}`
+const SORT_FIELDS = ['lastAmendedDate', 'createdDate'] as const
+type SortField = (typeof SORT_FIELDS)[number]
+
+const SORT_OPTION_DETAILS: Record<SortField, { label: string; qa: string }> = {
+  lastAmendedDate: { label: 'recently updated', qa: 'sort-by-most-recent-activity' },
+  createdDate: { label: 'date created', qa: 'sort-by-date-created' },
+}
+
+const buildWidgetHref = (currentPath: string, sortField: string, showHighlighting: boolean): string =>
+  `${currentPath}?${new URLSearchParams({
+    sortField,
+    suggestedCaseNotesHighlighting: showHighlighting ? 'on' : 'off',
+  })}`
+
+export const buildSuggestedCaseNotesControls = (
+  currentPath: string,
+  sortField: string,
+  showHighlighting: boolean,
+): Required<Pick<SuggestedCaseNotesWidgetModel, 'sortOptions' | 'highlightToggleHref' | 'highlightToggleText'>> => ({
+  sortOptions: SORT_FIELDS.map(field => ({
+    field,
+    ...SORT_OPTION_DETAILS[field],
+    selected: field === sortField,
+    href: buildWidgetHref(currentPath, field, showHighlighting),
+  })),
+  highlightToggleHref: buildWidgetHref(currentPath, sortField, !showHighlighting),
+  highlightToggleText: showHighlighting ? 'Turn off highlights' : 'Turn on highlights',
+})
 
 export const loadSuggestedCaseNotesWidget = async ({
   suggestedCaseNotesService,
@@ -46,7 +72,7 @@ export const loadSuggestedCaseNotesWidget = async ({
   suggestedCaseNotesWidget?: SuggestedCaseNotesWidgetModel
 }> => {
   const sortField =
-    sortFieldQuery && ['createdDate', 'lastAmendedDate'].includes(sortFieldQuery) ? sortFieldQuery : 'createdDate'
+    sortFieldQuery && (SORT_FIELDS as readonly string[]).includes(sortFieldQuery) ? sortFieldQuery : 'createdDate'
   const showSuggestedCaseNotesWidget = forceShow || csipAssistEnabled(activeCaseLoadId)
 
   if (!showSuggestedCaseNotesWidget) {
@@ -83,14 +109,20 @@ export const loadSuggestedCaseNotesWidget = async ({
       showHighlighting,
     })
 
-    if (suggestedCaseNotesWidget.notes.length > 0) {
-      suggestedCaseNotesWidget.highlightToggleHref = buildHighlightToggleHref(currentPath, showHighlighting)
-      suggestedCaseNotesWidget.highlightToggleText = showHighlighting ? 'Turn off highlights' : 'Turn on highlights'
-    }
+    const { sortOptions, highlightToggleHref, highlightToggleText } = buildSuggestedCaseNotesControls(
+      currentPath,
+      sortField,
+      showHighlighting,
+    )
 
     return {
       showSuggestedCaseNotesWidget,
-      suggestedCaseNotesWidget: { ...suggestedCaseNotesWidget, sortField },
+      suggestedCaseNotesWidget: {
+        ...suggestedCaseNotesWidget,
+        sortField,
+        sortOptions,
+        ...(suggestedCaseNotesWidget.notes.length > 0 ? { highlightToggleHref, highlightToggleText } : {}),
+      },
     }
   } catch (error) {
     logger.warn(error, `Failed to load suggested case notes for ${pageName} page`)
@@ -102,6 +134,7 @@ export const loadSuggestedCaseNotesWidget = async ({
         showHighlighting,
         emptyStateMessage: SUGGESTED_CASE_NOTES_UNAVAILABLE_MESSAGE,
         sortField,
+        sortOptions: buildSuggestedCaseNotesControls(currentPath, sortField, showHighlighting).sortOptions,
         notes: [],
       },
     }

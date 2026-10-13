@@ -125,4 +125,47 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
       ],
     })
   })
+
+  it('builds sort keys that mirror the API created and last amended date ordering', () => {
+    const response = buildResponse()
+    response.suggestedCaseNotes = [
+      {
+        relevance: 'high',
+        caseNoteId: 'amended-later',
+        createdAt: '2026-04-21T10:00:00Z',
+        annotatedCaseNote: 'Note',
+        amendments: [
+          { createdAt: '2026-08-02T14:30:00Z', annotatedText: 'First' },
+          { createdAt: '2026-08-04T08:15:00Z', annotatedText: 'Latest' },
+        ],
+      },
+      {
+        relevance: 'high',
+        caseNoteId: 'no-amendments',
+        createdAt: '2026-05-24T09:00:00Z',
+        annotatedCaseNote: 'Note',
+      },
+      {
+        relevance: 'high',
+        caseNoteId: 'amendment-before-creation',
+        createdAt: '2026-05-24T09:00:00Z',
+        annotatedCaseNote: 'Note',
+        amendments: [{ createdAt: '2026-01-01T00:00:00Z', annotatedText: 'Earlier' }],
+      },
+      {
+        relevance: 'high',
+        caseNoteId: 'no-dates',
+        annotatedCaseNote: 'Note',
+      },
+    ]
+
+    const result = buildSuggestedCaseNotesWidgetModel({ response })
+
+    expect(result.notes.map(note => note.sortKeys)).toEqual([
+      { createdDate: Date.parse('2026-04-21T10:00:00Z'), lastAmendedDate: Date.parse('2026-08-04T08:15:00Z') },
+      { createdDate: Date.parse('2026-05-24T09:00:00Z'), lastAmendedDate: Date.parse('2026-05-24T09:00:00Z') },
+      { createdDate: Date.parse('2026-05-24T09:00:00Z'), lastAmendedDate: Date.parse('2026-05-24T09:00:00Z') },
+      {},
+    ])
+  })
 })
