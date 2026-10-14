@@ -83,7 +83,7 @@ const syncExpandAllButton = (button: HTMLButtonElement, cards: HTMLElement[]) =>
   button.setAttribute('aria-expanded', String(allExpanded))
 }
 
-export const initSuggestedCaseNotes = () => {
+const setUpCaseNoteExpanding = () => {
   const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-qa="suggested-case-notes-card"]'))
   const expandAllButton = document.querySelector<HTMLButtonElement>('[data-qa="expand-all-case-notes"]')
 
@@ -117,3 +117,5 @@ export const initSuggestedCaseNotes = () => {
     syncExpandAllButton(expandAllButton, cards)
   })
 }
+
+export default setUpCaseNoteExpanding
