@@ -53,14 +53,14 @@ describe('loadSuggestedCaseNotesWidget', () => {
   })
 
   describe.each([
-    ['PRODUCTION', true],
-    ['PRE-PRODUCTION', true],
-    ['DEV', false],
-    ['local', false],
-    ['', false],
-    ['unknown', false],
-  ])('feedback in %s', (environment, showFeedbackLink) => {
-    it.each([false, true])('renders feedback only when allowed (API failure: %s)', async apiFailure => {
+    ['PRODUCTION', 'https://www.smartsurvey.co.uk/s/BZ4BKV/'],
+    ['PRE-PRODUCTION', 'https://www.smartsurvey.co.uk/s/BZ4BKV/'],
+    ['DEV', '#'],
+    ['local', '#'],
+    ['', '#'],
+    ['unknown', '#'],
+  ])('feedback link in %s', (environment, expectedHref) => {
+    it.each([false, true])('always renders the report a problem link (API failure: %s)', async apiFailure => {
       config.sentry.environment = environment
       const getSuggestedCaseNotes = jest.fn()
       if (apiFailure) {
@@ -81,7 +81,7 @@ describe('loadSuggestedCaseNotesWidget', () => {
         currentPath: '/record-investigation/usual-behaviour-presentation',
       })
 
-      expect(result.suggestedCaseNotesWidget?.showFeedbackLink).toBe(showFeedbackLink)
+      expect(result.suggestedCaseNotesWidget?.feedbackLinkHref).toBe(expectedHref)
 
       const templates = new nunjucks.Environment(
         new nunjucks.FileSystemLoader(path.resolve(__dirname, '../../../views')),
@@ -94,10 +94,17 @@ describe('loadSuggestedCaseNotesWidget', () => {
         { widget: result.suggestedCaseNotesWidget },
       )
 
-      expect(html.includes('href="https://www.smartsurvey.co.uk/s/BZ4BKV/"')).toBe(showFeedbackLink)
-      expect(html.includes('target="_blank" rel="noopener noreferrer"')).toBe(showFeedbackLink)
-      expect(html.includes('Give feedback (opens in a new tab)')).toBe(showFeedbackLink)
+      expect(html).toContain(`href="${expectedHref}"`)
+      expect(html).toContain('target="_blank" rel="noopener noreferrer"')
+      expect(html).toContain('This feature is new and being tested.')
+      expect(html).toContain('Report a problem (opens in a new tab)')
       expect(html).toContain('data-qa="suggested-case-notes-widget"')
+
+      // the feedback paragraph must appear after the "AI tool has identified..." subheading
+      const subheadingIndex = html.indexOf('An AI tool has identified')
+      const feedbackIndex = html.indexOf('data-qa="suggested-case-notes-feedback"')
+      expect(subheadingIndex).toBeGreaterThan(-1)
+      expect(feedbackIndex).toBeGreaterThan(subheadingIndex)
     })
   })
 

@@ -33,7 +33,7 @@ export type SuggestedCaseNotesSortOption = {
 export type SuggestedCaseNotesWidgetModel = {
   behaviourType: SuggestedCaseNotesBehaviourType
   showHighlighting: boolean
-  showFeedbackLink?: boolean
+  feedbackLinkHref: string
   emptyStateMessage: string
   notes: SuggestedCaseNotesWidgetCard[]
   highlightToggleHref?: string
@@ -102,9 +102,11 @@ const buildTextFragments = (annotatedText: string): SuggestedCaseNoteTextFragmen
 export const buildSuggestedCaseNotesWidgetModel = ({
   response,
   showHighlighting = true,
+  feedbackLinkHref,
 }: {
   response: SuggestedCaseNotesResponse
   showHighlighting?: boolean
+  feedbackLinkHref: string
 }): SuggestedCaseNotesWidgetModel => {
   const notes = response.suggestedCaseNotes.map(item => {
     const note = {
@@ -130,6 +132,7 @@ export const buildSuggestedCaseNotesWidgetModel = ({
   return {
     behaviourType: response.behaviourType,
     showHighlighting,
+    feedbackLinkHref,
     sortField: response.sortField,
     emptyStateMessage: 'No suggested case notes are available for this record right now.',
     notes,

@@ -55,6 +55,12 @@ export const buildSuggestedCaseNotesControls = (
   highlightToggleText: showHighlighting ? 'Turn off highlights' : 'Turn on highlights',
 })
 
+const FEEDBACK_SURVEY_URL = 'https://www.smartsurvey.co.uk/s/BZ4BKV/'
+
+// The feedback survey link is only live in production and pre-production; lower environments link to "#".
+const buildFeedbackLinkHref = (): string =>
+  ['PRODUCTION', 'PRE-PRODUCTION'].includes(config.sentry.environment) ? FEEDBACK_SURVEY_URL : '#'
+
 export const loadSuggestedCaseNotesWidget = async ({
   suggestedCaseNotesService,
   behaviourType,
@@ -81,7 +87,7 @@ export const loadSuggestedCaseNotesWidget = async ({
   }
 
   const showHighlighting = highlightingQuery !== 'off'
-  const showFeedbackLink = ['PRODUCTION', 'PRE-PRODUCTION'].includes(config.sentry.environment)
+  const feedbackLinkHref = buildFeedbackLinkHref()
 
   try {
     const response =
@@ -109,6 +115,7 @@ export const loadSuggestedCaseNotesWidget = async ({
     const suggestedCaseNotesWidget = buildSuggestedCaseNotesWidgetModel({
       response,
       showHighlighting,
+      feedbackLinkHref,
     })
 
     const { sortOptions, highlightToggleHref, highlightToggleText } = buildSuggestedCaseNotesControls(
@@ -121,7 +128,6 @@ export const loadSuggestedCaseNotesWidget = async ({
       showSuggestedCaseNotesWidget,
       suggestedCaseNotesWidget: {
         ...suggestedCaseNotesWidget,
-        showFeedbackLink,
         sortField,
         sortOptions,
         ...(suggestedCaseNotesWidget.notes.length > 0 ? { highlightToggleHref, highlightToggleText } : {}),
@@ -134,7 +140,7 @@ export const loadSuggestedCaseNotesWidget = async ({
       showSuggestedCaseNotesWidget,
       suggestedCaseNotesWidget: {
         behaviourType,
-        showFeedbackLink,
+        feedbackLinkHref,
         showHighlighting,
         emptyStateMessage: SUGGESTED_CASE_NOTES_UNAVAILABLE_MESSAGE,
         sortField,
