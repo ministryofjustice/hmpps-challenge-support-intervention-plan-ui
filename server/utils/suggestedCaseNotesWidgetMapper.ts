@@ -33,6 +33,7 @@ export type SuggestedCaseNotesSortOption = {
 export type SuggestedCaseNotesWidgetModel = {
   behaviourType: SuggestedCaseNotesBehaviourType
   showHighlighting: boolean
+  showFeedbackLink?: boolean
   emptyStateMessage: string
   notes: SuggestedCaseNotesWidgetCard[]
   highlightToggleHref?: string

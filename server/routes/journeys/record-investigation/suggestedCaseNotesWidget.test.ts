@@ -1,5 +1,9 @@
+import path from 'path'
+import nunjucks from 'nunjucks'
 import config from '../../../config'
 import SuggestedCaseNotesService from '../../../services/suggestedCaseNotes/suggestedCaseNotesService'
+import { formatDateLongMonthWith24HourTime } from '../../../utils/datetimeUtils'
+import { firstNameSpaceLastName } from '../../../utils/miniProfileUtils'
 import { loadSuggestedCaseNotesWidget } from './suggestedCaseNotesWidget'
 
 const responseFixture = {
@@ -18,6 +22,12 @@ const responseFixture = {
 }
 
 describe('loadSuggestedCaseNotesWidget', () => {
+  const originalEnvironment = config.sentry.environment
+
+  afterEach(() => {
+    config.sentry.environment = originalEnvironment
+  })
+
   beforeEach(() => {
     config.features.csipAssistEnabled = true
     config.features.csipAssistActivePrisons = 'MDI'
@@ -40,6 +50,55 @@ describe('loadSuggestedCaseNotesWidget', () => {
 
     expect(result).toEqual({ showSuggestedCaseNotesWidget: false })
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).not.toHaveBeenCalled()
+  })
+
+  describe.each([
+    ['PRODUCTION', true],
+    ['PRE-PRODUCTION', true],
+    ['DEV', false],
+    ['local', false],
+    ['', false],
+    ['unknown', false],
+  ])('feedback in %s', (environment, showFeedbackLink) => {
+    it.each([false, true])('renders feedback only when allowed (API failure: %s)', async apiFailure => {
+      config.sentry.environment = environment
+      const getSuggestedCaseNotes = jest.fn()
+      if (apiFailure) {
+        getSuggestedCaseNotes.mockRejectedValue(new Error('boom'))
+      } else {
+        getSuggestedCaseNotes.mockResolvedValue(responseFixture)
+      }
+      const suggestedCaseNotesService = { getSuggestedCaseNotes } as unknown as SuggestedCaseNotesService
+
+      const result = await loadSuggestedCaseNotesWidget({
+        suggestedCaseNotesService,
+        behaviourType: 'usual_behaviour_presentation',
+        pageName: 'usual behaviour presentation',
+        systemClientToken: 'token-1',
+        activeCaseLoadId: 'MDI',
+        prisonerNumber: 'A1234AA',
+        referralId: 'ref-123',
+        currentPath: '/record-investigation/usual-behaviour-presentation',
+      })
+
+      expect(result.suggestedCaseNotesWidget?.showFeedbackLink).toBe(showFeedbackLink)
+
+      const templates = new nunjucks.Environment(
+        new nunjucks.FileSystemLoader(path.resolve(__dirname, '../../../views')),
+        { autoescape: true },
+      )
+      templates.addFilter('formatDisplayDateWith24HourTime', formatDateLongMonthWith24HourTime)
+      templates.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
+      const html = templates.renderString(
+        '{% from "partials/suggestedCaseNotes/macro.njk" import suggestedCaseNotes %}{{ suggestedCaseNotes(widget) }}',
+        { widget: result.suggestedCaseNotesWidget },
+      )
+
+      expect(html.includes('href="https://www.smartsurvey.co.uk/s/BZ4BKV/"')).toBe(showFeedbackLink)
+      expect(html.includes('target="_blank" rel="noopener noreferrer"')).toBe(showFeedbackLink)
+      expect(html.includes('Give feedback (opens in a new tab)')).toBe(showFeedbackLink)
+      expect(html).toContain('data-qa="suggested-case-notes-widget"')
+    })
   })
 
   it('builds a widget with highlighting disabled from the query string and toggle metadata', async () => {

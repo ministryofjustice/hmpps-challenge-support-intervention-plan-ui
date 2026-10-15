@@ -1,4 +1,5 @@
 import logger from '../../../../logger'
+import config from '../../../config'
 import SuggestedCaseNotesService from '../../../services/suggestedCaseNotes/suggestedCaseNotesService'
 import { SuggestedCaseNotesBehaviourType, SuggestedCaseNotesResponse } from '../../../services/suggestedCaseNotes/types'
 import csipAssistEnabled from '../../../utils/featureToggles'
@@ -80,6 +81,7 @@ export const loadSuggestedCaseNotesWidget = async ({
   }
 
   const showHighlighting = highlightingQuery !== 'off'
+  const showFeedbackLink = ['PRODUCTION', 'PRE-PRODUCTION'].includes(config.sentry.environment)
 
   try {
     const response =
@@ -119,6 +121,7 @@ export const loadSuggestedCaseNotesWidget = async ({
       showSuggestedCaseNotesWidget,
       suggestedCaseNotesWidget: {
         ...suggestedCaseNotesWidget,
+        showFeedbackLink,
         sortField,
         sortOptions,
         ...(suggestedCaseNotesWidget.notes.length > 0 ? { highlightToggleHref, highlightToggleText } : {}),
@@ -131,6 +134,7 @@ export const loadSuggestedCaseNotesWidget = async ({
       showSuggestedCaseNotesWidget,
       suggestedCaseNotesWidget: {
         behaviourType,
+        showFeedbackLink,
         showHighlighting,
         emptyStateMessage: SUGGESTED_CASE_NOTES_UNAVAILABLE_MESSAGE,
         sortField,
