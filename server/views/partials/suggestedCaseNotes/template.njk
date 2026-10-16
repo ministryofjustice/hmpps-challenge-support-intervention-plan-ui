@@ -2,9 +2,9 @@
     <div class="govuk-visually-hidden" role="status" data-qa="suggested-case-notes-status"></div>
     <div class="suggested-case-notes__heading">
         <h2 class="govuk-heading-l govuk-!-margin-bottom-4">Suggested Case Notes</h2>
-        <a class="govuk-link govuk-link--no-visited-state" href="#">Give feedback</a>
     </div>
     <h3 class="govuk-heading-s govuk-!-margin-bottom-4">{% if prisoner %}An AI tool has identified {{ prisoner | firstNameSpaceLastName }}'s case notes relevant to this question.{% else %}An AI tool has identified case notes relevant to this question.{% endif %}</h3>
+    <p class="govuk-body" data-qa="suggested-case-notes-feedback">This feature is new and being tested. <a class="govuk-link" href="{{ widget.feedbackLinkHref }}" target="_blank" rel="noopener noreferrer">Report a problem (opens in a new tab)</a></p>
     <nav class="suggested-case-notes__controls" aria-label="Case notes display options">
         <div class="suggested-case-notes__control-group">
             {% for option in widget.sortOptions %}

@@ -15,7 +15,7 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
       response.suggestedCaseNotes[1]!,
     ]
 
-    const result = buildSuggestedCaseNotesWidgetModel({ response })
+    const result = buildSuggestedCaseNotesWidgetModel({ response, feedbackLinkHref: '#' })
 
     expect(result.notes.map(note => note.itemId)).toEqual([
       'c9de3f42-1a05-4c37-ad83-2f4b8e561034',
@@ -34,7 +34,7 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
       },
     ]
 
-    const result = buildSuggestedCaseNotesWidgetModel({ response })
+    const result = buildSuggestedCaseNotesWidgetModel({ response, feedbackLinkHref: '#' })
 
     expect(result.notes[0]).toMatchObject({
       caseNoteText: 'Before highlighted section after',
@@ -56,7 +56,7 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
       },
     ]
 
-    const result = buildSuggestedCaseNotesWidgetModel({ response, showHighlighting: false })
+    const result = buildSuggestedCaseNotesWidgetModel({ response, showHighlighting: false, feedbackLinkHref: '#' })
 
     expect(result.showHighlighting).toBe(false)
     expect(result.notes[0]!.textFragments).toEqual([
@@ -74,7 +74,7 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
       },
     ]
 
-    const result = buildSuggestedCaseNotesWidgetModel({ response })
+    const result = buildSuggestedCaseNotesWidgetModel({ response, feedbackLinkHref: '#' })
 
     expect(result.notes[0]).toMatchObject({
       caseNoteText: 'Prefix highlight suffix',
@@ -106,7 +106,7 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
       },
     ]
 
-    const result = buildSuggestedCaseNotesWidgetModel({ response })
+    const result = buildSuggestedCaseNotesWidgetModel({ response, feedbackLinkHref: '#' })
 
     expect(result.notes[0]).toMatchObject({
       itemId: 'metadata-1',
@@ -159,7 +159,7 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
       },
     ]
 
-    const result = buildSuggestedCaseNotesWidgetModel({ response })
+    const result = buildSuggestedCaseNotesWidgetModel({ response, feedbackLinkHref: '#' })
 
     expect(result.notes.map(note => note.sortKeys)).toEqual([
       { createdDate: Date.parse('2026-04-21T10:00:00Z'), lastAmendedDate: Date.parse('2026-08-04T08:15:00Z') },
