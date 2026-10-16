@@ -28,5 +28,4 @@ generic-service:
     CSIP_ASSIST_ACTIVE_PRISONS: "HII"
 
 generic-prometheus-alerts:
-  alertSeverity: maintenance-alerts-non-prod-warning
   businessHoursOnly: true
