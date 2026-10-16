@@ -7,7 +7,7 @@ export default configureAllowedScripts({
     // Needed by Sentry CLI for error reporting and source map uploads
     'node_modules/@sentry/cli@3.4.3': 'ALLOW',
     // Needed by Cypress for running tests
-    'node_modules/cypress@15.15.0': 'ALLOW',
+    'node_modules/cypress@16.1.1': 'ALLOW',
     // Provides native integration, supporting performance monitoring and bunyan logging
     'node_modules/dtrace-provider@0.8.8': 'ALLOW',
     // Needed by esbuild for watching files during development

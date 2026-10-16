@@ -1,5 +1,5 @@
 import '@testing-library/cypress/add-commands'
 import './commands'
-import 'cypress-axe'
+import 'cypress-axe-core'
 import '@cypress/code-coverage/support'
 import 'cypress-diff'
