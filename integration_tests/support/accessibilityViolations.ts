@@ -22,9 +22,12 @@ export const checkAxeAccessibility = () => {
 
   cy.configureAxe({
     rules: [
+      // Temporary rule whilst this issue is resolved https://github.com/w3c/aria/issues/1404
       { id: 'aria-allowed-attr', reviewOnFail: true },
+      // Ignore the "All page content should be contained by landmarks", which conflicts with GOV.UK guidance (https://design-system.service.gov.uk/components/back-link/#how-it-works)
       { id: 'region', reviewOnFail: true, selector: '.govuk-back-link' },
       { id: 'empty-table-header', reviewOnFail: true },
+      // Allow MOJ Pagination components to have duplicate aria label (when used in pair on top and bottom of a table)
       { id: 'landmark-unique', reviewOnFail: true, selector: '.moj-pagination' },
     ],
   } as Spec)
