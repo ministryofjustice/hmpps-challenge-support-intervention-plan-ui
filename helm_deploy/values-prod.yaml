@@ -22,6 +22,3 @@ generic-service:
     FEATURE_CHANGE_FLOWS: "false"
     FEATURE_CSIP_ASSIST: "false"
     CSIP_ASSIST_ACTIVE_PRISONS: ""
-
-generic-prometheus-alerts:
-  alertSeverity: maintenance-alerts-prod-warning
