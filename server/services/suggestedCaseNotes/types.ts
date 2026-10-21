@@ -1,7 +1,5 @@
 export type SuggestedCaseNotesBehaviourType =
-  | 'usual_behaviour_presentation'
-  | 'risks_and_triggers'
-  | 'protective_factors'
+  'usual_behaviour_presentation' | 'risks_and_triggers' | 'protective_factors'
 
 export type SuggestedCaseNotesRequest = {
   referralId: string
