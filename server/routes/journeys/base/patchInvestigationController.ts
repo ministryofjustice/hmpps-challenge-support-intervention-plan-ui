@@ -11,7 +11,9 @@ export const MESSAGE_INTERVIEW_DETAILS_UPDATED = 'You’ve updated the interview
 export const MESSAGE_INTERVIEW_ADDED = 'You’ve added an interview.'
 
 type UpdateInvestigationSuccessMessage =
-  typeof MESSAGE_INVESTIGATION_UPDATED | typeof MESSAGE_INTERVIEW_DETAILS_UPDATED | typeof MESSAGE_INTERVIEW_ADDED
+  | typeof MESSAGE_INVESTIGATION_UPDATED
+  | typeof MESSAGE_INTERVIEW_DETAILS_UPDATED
+  | typeof MESSAGE_INTERVIEW_ADDED
 
 export class PatchInvestigationController extends BaseJourneyController {
   constructor(
