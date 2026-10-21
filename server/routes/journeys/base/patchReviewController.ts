@@ -45,7 +45,11 @@ export class PatchReviewController extends BaseJourneyController {
       ...getNonUndefinedProp(review, 'summary'),
       ...getNonUndefinedProp(review, 'csipClosedDate'),
       actions: (review.csipClosedDate ? ['CLOSE_CSIP'] : ['REMAIN_ON_CSIP']) as (
-        'RESPONSIBLE_PEOPLE_INFORMED' | 'CSIP_UPDATED' | 'REMAIN_ON_CSIP' | 'CASE_NOTE' | 'CLOSE_CSIP'
+        | 'RESPONSIBLE_PEOPLE_INFORMED'
+        | 'CSIP_UPDATED'
+        | 'REMAIN_ON_CSIP'
+        | 'CASE_NOTE'
+        | 'CLOSE_CSIP'
       )[],
       ...changes,
     }
