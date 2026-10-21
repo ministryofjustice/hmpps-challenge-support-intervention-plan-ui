@@ -185,7 +185,7 @@
     "moment": "^2.31.0",
     "@opentelemetry/core@2": "^2.8.0",
     "@opentelemetry/propagator-jaeger": "^2.12.0",
-    "diff": "^8.0.4",
+    "diff": "^9.0.0",
     "bunyan": {
       "mv": {
         ".": "npm:mv-lite@1.0.0",
