@@ -864,8 +864,40 @@ const stubSuggestedCaseNotes = () => {
   })
 }
 
+const stubSuggestedCaseNotesForSorting = () => {
+  return createBasicHttpStub('POST', '/csip-api/v1/suggestedCaseNotes/[A-Za-z0-9]+', 200, {
+    prisonerId: 'A1234AA',
+    referralId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    behaviourType: 'usual_behaviour_presentation',
+    sortField: 'createdDate',
+    sortOrder: 'desc',
+    suggestedCaseNotes: [
+      {
+        relevance: 'high',
+        caseNoteId: 'sort-newest-created',
+        createdAt: '2026-05-24T09:00:00Z',
+        annotatedCaseNote: `Newest created note <mark>verbal altercation</mark> ${Array.from({ length: 80 }, (_, index) => `word${index}`).join(' ')}`,
+      },
+      {
+        relevance: 'high',
+        caseNoteId: 'sort-most-recently-amended',
+        createdAt: '2026-04-21T10:00:00Z',
+        annotatedCaseNote: 'Older note with the most recent amendment',
+        amendments: [{ createdAt: '2026-08-04T08:15:00Z', annotatedText: 'Latest amendment' }],
+      },
+      {
+        relevance: 'high',
+        caseNoteId: 'sort-oldest',
+        createdAt: '2026-03-29T17:00:00Z',
+        annotatedCaseNote: 'Oldest note with a mid amendment',
+        amendments: [{ createdAt: '2026-06-01T08:00:00Z', annotatedText: 'Mid amendment' }],
+      },
+    ],
+  })
+}
+
 const stubSuggestedCaseNotesLong = () => {
-  const wordsBeforeHighlight = Array.from({ length: 80 }, (_, index) => `before${index}`).join(' ')
+  const wordsBeforeHighlight = Array.from({ length: 40 }, (_, index) => `before${index}`).join(' ')
   const wordsAfterHighlight = Array.from({ length: 80 }, (_, index) => `after${index}`).join(' ')
   const longText = `${wordsBeforeHighlight} <mark><strong>important highlighted behaviour</strong></mark> ${wordsAfterHighlight}`
   const longAmendment = `${Array.from({ length: 180 }, (_, index) => `amendment${index}`).join(' ')} <mark><strong>amendment highlight</strong></mark>`
@@ -1639,6 +1671,7 @@ export default {
   stubCsipRecordSuccessCsipOpenWith,
   stubSearchCsipRecordsPrisonerCsips,
   stubSuggestedCaseNotes,
+  stubSuggestedCaseNotesForSorting,
   stubSuggestedCaseNotesLong,
   stubSuggestedCaseNotesEmpty,
 }

@@ -15,7 +15,7 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
       response.suggestedCaseNotes[1]!,
     ]
 
-    const result = buildSuggestedCaseNotesWidgetModel({ response })
+    const result = buildSuggestedCaseNotesWidgetModel({ response, feedbackLinkHref: '#' })
 
     expect(result.notes.map(note => note.itemId)).toEqual([
       'c9de3f42-1a05-4c37-ad83-2f4b8e561034',
@@ -34,7 +34,7 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
       },
     ]
 
-    const result = buildSuggestedCaseNotesWidgetModel({ response })
+    const result = buildSuggestedCaseNotesWidgetModel({ response, feedbackLinkHref: '#' })
 
     expect(result.notes[0]).toMatchObject({
       caseNoteText: 'Before highlighted section after',
@@ -56,7 +56,7 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
       },
     ]
 
-    const result = buildSuggestedCaseNotesWidgetModel({ response, showHighlighting: false })
+    const result = buildSuggestedCaseNotesWidgetModel({ response, showHighlighting: false, feedbackLinkHref: '#' })
 
     expect(result.showHighlighting).toBe(false)
     expect(result.notes[0]!.textFragments).toEqual([
@@ -74,7 +74,7 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
       },
     ]
 
-    const result = buildSuggestedCaseNotesWidgetModel({ response })
+    const result = buildSuggestedCaseNotesWidgetModel({ response, feedbackLinkHref: '#' })
 
     expect(result.notes[0]).toMatchObject({
       caseNoteText: 'Prefix highlight suffix',
@@ -106,7 +106,7 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
       },
     ]
 
-    const result = buildSuggestedCaseNotesWidgetModel({ response })
+    const result = buildSuggestedCaseNotesWidgetModel({ response, feedbackLinkHref: '#' })
 
     expect(result.notes[0]).toMatchObject({
       itemId: 'metadata-1',
@@ -126,24 +126,46 @@ describe('buildSuggestedCaseNotesWidgetModel', () => {
     })
   })
 
-  it('suppresses notes when sensitive content is present and the user lacks permission', () => {
+  it('builds sort keys that mirror the API created and last amended date ordering', () => {
     const response = buildResponse()
-    response.hasSensitiveNotes = true
-    response.userCanViewSensitiveNotes = false
     response.suggestedCaseNotes = [
       {
         relevance: 'high',
-        caseNoteId: '4',
-        annotatedCaseNote: 'Sensitive note',
-        isSensitive: true,
+        caseNoteId: 'amended-later',
+        createdAt: '2026-04-21T10:00:00Z',
+        annotatedCaseNote: 'Note',
+        amendments: [
+          { createdAt: '2026-08-02T14:30:00Z', annotatedText: 'First' },
+          { createdAt: '2026-08-04T08:15:00Z', annotatedText: 'Latest' },
+        ],
+      },
+      {
+        relevance: 'high',
+        caseNoteId: 'no-amendments',
+        createdAt: '2026-05-24T09:00:00Z',
+        annotatedCaseNote: 'Note',
+      },
+      {
+        relevance: 'high',
+        caseNoteId: 'amendment-before-creation',
+        createdAt: '2026-05-24T09:00:00Z',
+        annotatedCaseNote: 'Note',
+        amendments: [{ createdAt: '2026-01-01T00:00:00Z', annotatedText: 'Earlier' }],
+      },
+      {
+        relevance: 'high',
+        caseNoteId: 'no-dates',
+        annotatedCaseNote: 'Note',
       },
     ]
 
-    const result = buildSuggestedCaseNotesWidgetModel({ response })
+    const result = buildSuggestedCaseNotesWidgetModel({ response, feedbackLinkHref: '#' })
 
-    expect(result.notes).toEqual([])
-    expect(result.emptyStateMessage).toBe(
-      'Suggested Case Notes cannot be shown because you do not have permission to view sensitive notes.',
-    )
+    expect(result.notes.map(note => note.sortKeys)).toEqual([
+      { createdDate: Date.parse('2026-04-21T10:00:00Z'), lastAmendedDate: Date.parse('2026-08-04T08:15:00Z') },
+      { createdDate: Date.parse('2026-05-24T09:00:00Z'), lastAmendedDate: Date.parse('2026-05-24T09:00:00Z') },
+      { createdDate: Date.parse('2026-05-24T09:00:00Z'), lastAmendedDate: Date.parse('2026-05-24T09:00:00Z') },
+      {},
+    ])
   })
 })

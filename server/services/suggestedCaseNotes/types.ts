@@ -1,7 +1,5 @@
 export type SuggestedCaseNotesBehaviourType =
-  | 'usual_behaviour_presentation'
-  | 'risks_and_triggers'
-  | 'protective_factors'
+  'usual_behaviour_presentation' | 'risks_and_triggers' | 'protective_factors'
 
 export type SuggestedCaseNotesRequest = {
   referralId: string
@@ -21,7 +19,6 @@ export type SuggestedCaseNoteResponseItem = {
   location?: string
   type?: string
   amendments?: SuggestedCaseNoteAmendment[]
-  isSensitive?: boolean
 }
 
 export type SuggestedCaseNoteAmendment = {
@@ -35,8 +32,6 @@ export type SuggestedCaseNotesResponse = {
   behaviourType: SuggestedCaseNotesBehaviourType
   sortField: string
   sortOrder: 'asc' | 'desc'
-  hasSensitiveNotes?: boolean
-  userCanViewSensitiveNotes?: boolean
   suggestedCaseNotes: SuggestedCaseNoteResponseItem[]
 }
 

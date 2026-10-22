@@ -109,61 +109,106 @@ context('test /record-investigation/usual-behaviour-presentation', () => {
   })
 
   context('when toggling highlights', () => {
-    it('shows highlighted text and links to turn highlights off', () => {
+    const highlightedMark = () => cy.get('[data-qa="suggested-case-notes-card"] mark.hods-highlight').first()
+
+    it('shows highlighted text and a button to turn highlights off', () => {
       cy.task('stubSuggestedCaseNotes')
       navigateToTestPage()
 
       cy.get('[data-qa="suggested-case-notes-card"] mark').should('contain.text', 'verbal altercation')
-      cy.get('[data-qa="toggle-highlights"]')
-        .should('have.text', 'Turn off highlights')
-        .and(
-          'have.attr',
-          'href',
-          `/${uuid}/record-investigation/usual-behaviour-presentation?suggestedCaseNotesHighlighting=off`,
-        )
+      highlightedMark().should('not.have.css', 'background-color', 'rgba(0, 0, 0, 0)')
+      cy.get('[data-qa="suggested-case-notes-widget"]').should('not.have.class', 'suggested-case-notes--no-highlights')
+      cy.get('button[data-qa="toggle-highlights"]').should('have.text', 'Turn off highlights')
     })
 
-    it('shows plain text and links to turn highlights on', () => {
+    it('shows unhighlighted text and a button to turn highlights on', () => {
       cy.task('stubSuggestedCaseNotes')
       navigateToTestPage()
       cy.visit(`${uuid}/record-investigation/usual-behaviour-presentation?suggestedCaseNotesHighlighting=off`)
 
-      cy.get('[data-qa="suggested-case-notes-card"] mark').should('not.exist')
-      cy.get('[data-qa="toggle-highlights"]')
-        .should('have.text', 'Turn on highlights')
-        .and(
-          'have.attr',
-          'href',
-          `/${uuid}/record-investigation/usual-behaviour-presentation?suggestedCaseNotesHighlighting=on`,
-        )
-    })
-  })
-
-  context('when sorting suggested case notes', () => {
-    it('should update both link texts and the query string when sorting by date created', () => {
-      navigateToTestPage('lastAmendedDate')
-      cy.url().should('include', 'sortField=lastAmendedDate')
-      cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sort by date created')
-      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by recently updated')
-
-      cy.get('[data-qa="sort-by-date-created"]').should('be.visible').click()
-
-      cy.url().should('include', 'sortField=createdDate')
-      cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sorted by date created')
-      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sort by recently updated')
+      cy.get('[data-qa="suggested-case-notes-widget"]').should('have.class', 'suggested-case-notes--no-highlights')
+      highlightedMark().should('have.css', 'background-color', 'rgba(0, 0, 0, 0)')
+      cy.get('button[data-qa="toggle-highlights"]').should('have.text', 'Turn on highlights')
     })
 
-    it('should update both link texts and the query string when sorting by recently updated', () => {
-      navigateToTestPage('createdDate')
-      cy.url().should('include', 'sortField=createdDate')
-      cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sorted by date created')
-      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sort by recently updated')
+    it('toggles highlights without reloading the page and keeps focus on the toggle', () => {
+      cy.task('stubSuggestedCaseNotes')
+      navigateToTestPage()
+      cy.window().then(win => {
+        Object.assign(win, { highlightToggleNoReload: true })
+      })
 
-      cy.get('[data-qa="sort-by-most-recent-activity"]').should('be.visible').click()
+      cy.get('button[data-qa="toggle-highlights"]').focus().click()
+      cy.get('[data-qa="suggested-case-notes-widget"]').should('have.class', 'suggested-case-notes--no-highlights')
+      highlightedMark().should('have.css', 'background-color', 'rgba(0, 0, 0, 0)')
+      cy.get('button[data-qa="toggle-highlights"]').should('have.text', 'Turn on highlights').and('be.focused')
+      cy.location('search').should('include', 'suggestedCaseNotesHighlighting=off')
 
-      cy.url().should('include', 'sortField=lastAmendedDate')
-      cy.get('[data-qa="sort-by-date-created"]').should('have.text', 'Sort by date created')
-      cy.get('[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by recently updated')
+      cy.get('button[data-qa="toggle-highlights"]').click()
+      cy.get('[data-qa="suggested-case-notes-widget"]').should('not.have.class', 'suggested-case-notes--no-highlights')
+      cy.get('button[data-qa="toggle-highlights"]').should('have.text', 'Turn off highlights').and('be.focused')
+      cy.location('search').should('include', 'suggestedCaseNotesHighlighting=on')
+
+      cy.window().its('highlightToggleNoReload').should('equal', true)
+    })
+
+    context('when suggested case notes are shown', () => {
+      const shouldHaveCardOrder = (expected: string[]) =>
+        cy.get('[data-qa="suggested-case-notes-card"]').should($cards => {
+          const order = Cypress._.map($cards, card =>
+            card.querySelector('[data-truncatable-content]')!.textContent!.trim().split(/\s+/).slice(0, 2).join(' '),
+          )
+          assert.deepEqual(order, expected)
+        })
+
+      beforeEach(() => {
+        cy.task('stubSuggestedCaseNotesForSorting')
+        navigateToTestPage()
+        cy.window().then(win => {
+          Object.assign(win, { sortNoReload: true })
+        })
+      })
+
+      it('reorders case notes in place and keeps focus on the sort control', () => {
+        shouldHaveCardOrder(['Newest created', 'Older note', 'Oldest note'])
+
+        cy.get('button[data-qa="sort-by-most-recent-activity"]').focus().click()
+
+        shouldHaveCardOrder(['Older note', 'Oldest note', 'Newest created'])
+        cy.get('button[data-qa="sort-by-most-recent-activity"]')
+          .should('have.text', 'Sorted by recently updated')
+          .and('be.focused')
+        cy.get('button[data-qa="sort-by-date-created"]').should('have.text', 'Sort by date created')
+        cy.get('[data-qa="suggested-case-notes-status"]').should('have.text', 'Case notes sorted by recently updated')
+        cy.location('search').should('include', 'sortField=lastAmendedDate')
+
+        cy.get('button[data-qa="sort-by-date-created"]').click()
+        shouldHaveCardOrder(['Newest created', 'Older note', 'Oldest note'])
+        cy.location('search').should('include', 'sortField=createdDate')
+
+        cy.window().its('sortNoReload').should('equal', true)
+      })
+
+      it('keeps the highlighting setting and expanded case notes when sorting', () => {
+        cy.get('button[data-qa="toggle-highlights"]').click()
+        cy.get('[data-qa="expand-case-note"]').first().click().should('have.attr', 'aria-expanded', 'true')
+
+        cy.get('button[data-qa="sort-by-most-recent-activity"]').click()
+
+        cy.get('[data-qa="suggested-case-notes-widget"]').should('have.class', 'suggested-case-notes--no-highlights')
+        cy.get('button[data-qa="toggle-highlights"]').should('have.text', 'Turn on highlights')
+        cy.get('[data-qa="suggested-case-notes-card"]')
+          .last()
+          .find('[data-qa="expand-case-note"]')
+          .should('have.attr', 'aria-expanded', 'true')
+        cy.location('search').should('include', 'sortField=lastAmendedDate')
+        cy.location('search').should('include', 'suggestedCaseNotesHighlighting=off')
+        cy.window().its('sortNoReload').should('equal', true)
+
+        cy.reload()
+        cy.get('[data-qa="suggested-case-notes-widget"]').should('have.class', 'suggested-case-notes--no-highlights')
+        cy.get('button[data-qa="sort-by-most-recent-activity"]').should('have.text', 'Sorted by recently updated')
+      })
     })
   })
 

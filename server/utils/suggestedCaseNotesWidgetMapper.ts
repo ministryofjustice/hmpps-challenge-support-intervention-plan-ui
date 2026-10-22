@@ -5,6 +5,11 @@ export type SuggestedCaseNoteTextFragment = {
   highlighted: boolean
 }
 
+export type SuggestedCaseNotesSortKeys = {
+  createdDate?: number
+  lastAmendedDate?: number
+}
+
 export type SuggestedCaseNotesWidgetCard = {
   itemId: string
   caseNoteText: string
@@ -14,25 +19,56 @@ export type SuggestedCaseNotesWidgetCard = {
   location?: string
   type?: string
   amendments: { createdAt: string; textFragments: SuggestedCaseNoteTextFragment[] }[]
+  sortKeys: SuggestedCaseNotesSortKeys
+}
+
+export type SuggestedCaseNotesSortOption = {
+  field: string
+  label: string
+  qa: string
+  selected: boolean
+  href: string
 }
 
 export type SuggestedCaseNotesWidgetModel = {
   behaviourType: SuggestedCaseNotesBehaviourType
   showHighlighting: boolean
+  feedbackLinkHref: string
   emptyStateMessage: string
   notes: SuggestedCaseNotesWidgetCard[]
   highlightToggleHref?: string
   highlightToggleText?: string
   sortField: string
+  sortOptions?: SuggestedCaseNotesSortOption[]
+}
+
+const toTimestamp = (value: string | undefined): number | undefined => {
+  if (!value) return undefined
+  const timestamp = Date.parse(value)
+  return Number.isNaN(timestamp) ? undefined : timestamp
+}
+
+const buildSortKeys = (
+  createdAt: string | undefined,
+  amendments: { createdAt: string }[],
+): SuggestedCaseNotesSortKeys => {
+  const createdDate = toTimestamp(createdAt)
+  const amendmentTimestamps = amendments
+    .map(amendment => toTimestamp(amendment.createdAt))
+    .filter((timestamp): timestamp is number => timestamp !== undefined)
+  const latestAmendment = amendmentTimestamps.length ? Math.max(...amendmentTimestamps) : undefined
+  const lastAmendedDate =
+    latestAmendment !== undefined && (createdDate === undefined || latestAmendment > createdDate)
+      ? latestAmendment
+      : createdDate
+
+  return {
+    ...(createdDate !== undefined ? { createdDate } : {}),
+    ...(lastAmendedDate !== undefined ? { lastAmendedDate } : {}),
+  }
 }
 
 const stripSupportedMarkup = (text: string): string => text.replace(/<\/?(?:mark|span|strong)\b[^>]*>/gi, '')
-
-const shouldSuppressSensitiveNotes = (response: SuggestedCaseNotesResponse): boolean => {
-  const hasSensitiveNotes = response.hasSensitiveNotes || response.suggestedCaseNotes.some(item => item.isSensitive)
-
-  return hasSensitiveNotes === true && response.userCanViewSensitiveNotes === false
-}
 
 const buildTextFragments = (annotatedText: string): SuggestedCaseNoteTextFragment[] => {
   const annotationRegex = /<(mark|span)\b[^>]*>([\s\S]*?)<\/\1>/gi
@@ -66,21 +102,12 @@ const buildTextFragments = (annotatedText: string): SuggestedCaseNoteTextFragmen
 export const buildSuggestedCaseNotesWidgetModel = ({
   response,
   showHighlighting = true,
+  feedbackLinkHref,
 }: {
   response: SuggestedCaseNotesResponse
   showHighlighting?: boolean
+  feedbackLinkHref: string
 }): SuggestedCaseNotesWidgetModel => {
-  if (shouldSuppressSensitiveNotes(response)) {
-    return {
-      behaviourType: response.behaviourType,
-      showHighlighting,
-      sortField: response.sortField,
-      emptyStateMessage:
-        'Suggested Case Notes cannot be shown because you do not have permission to view sensitive notes.',
-      notes: [],
-    }
-  }
-
   const notes = response.suggestedCaseNotes.map(item => {
     const note = {
       itemId: item.caseNoteId,
@@ -90,6 +117,7 @@ export const buildSuggestedCaseNotesWidgetModel = ({
         createdAt: amendment.createdAt,
         textFragments: buildTextFragments(amendment.annotatedText),
       })),
+      sortKeys: buildSortKeys(item.createdAt, item.amendments ?? []),
     }
 
     return {
@@ -104,6 +132,7 @@ export const buildSuggestedCaseNotesWidgetModel = ({
   return {
     behaviourType: response.behaviourType,
     showHighlighting,
+    feedbackLinkHref,
     sortField: response.sortField,
     emptyStateMessage: 'No suggested case notes are available for this record right now.',
     notes,

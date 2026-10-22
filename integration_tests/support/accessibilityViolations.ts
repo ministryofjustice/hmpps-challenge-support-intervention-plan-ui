@@ -1,10 +1,10 @@
 import { Result, Spec } from 'axe-core'
 import { fail } from 'assert'
 
-const logAccessibilityViolations = (violations: Result[]) => {
-  cy.task('logAccessibilityViolationsSummary', `Accessibility violations detected: ${violations.length}`)
+const logAccessibilityViolations = ({ results }: { results: Result[] }) => {
+  cy.task('logAccessibilityViolationsSummary', `Accessibility violations detected: ${results.length}`)
 
-  const violationData = violations.map(violation => ({
+  const violationData = results.map(violation => ({
     ...violation,
     nodes: violation.nodes.length,
     nodeTargets: violation.nodes.map(node => node.target).join(' - '),
@@ -15,6 +15,11 @@ const logAccessibilityViolations = (violations: Result[]) => {
 
 export const checkAxeAccessibility = () => {
   cy.injectAxe()
+
+  cy.configureCypressAxe({
+    violationsCb: logAccessibilityViolations,
+  })
+
   cy.configureAxe({
     rules: [
       // Temporary rule whilst this issue is resolved https://github.com/w3c/aria/issues/1404
@@ -26,7 +31,8 @@ export const checkAxeAccessibility = () => {
       { id: 'landmark-unique', reviewOnFail: true, selector: '.moj-pagination' },
     ],
   } as Spec)
-  cy.checkA11y(undefined, undefined, logAccessibilityViolations)
+
+  cy.checkA11y()
 
   checkStyleRules()
 }

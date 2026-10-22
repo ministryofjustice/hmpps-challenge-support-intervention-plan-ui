@@ -1,5 +1,9 @@
+import path from 'path'
+import nunjucks from 'nunjucks'
 import config from '../../../config'
 import SuggestedCaseNotesService from '../../../services/suggestedCaseNotes/suggestedCaseNotesService'
+import { formatDateLongMonthWith24HourTime } from '../../../utils/datetimeUtils'
+import { firstNameSpaceLastName } from '../../../utils/miniProfileUtils'
 import { loadSuggestedCaseNotesWidget } from './suggestedCaseNotesWidget'
 
 const responseFixture = {
@@ -18,6 +22,12 @@ const responseFixture = {
 }
 
 describe('loadSuggestedCaseNotesWidget', () => {
+  const originalEnvironment = config.sentry.environment
+
+  afterEach(() => {
+    config.sentry.environment = originalEnvironment
+  })
+
   beforeEach(() => {
     config.features.csipAssistEnabled = true
     config.features.csipAssistActivePrisons = 'MDI'
@@ -40,6 +50,62 @@ describe('loadSuggestedCaseNotesWidget', () => {
 
     expect(result).toEqual({ showSuggestedCaseNotesWidget: false })
     expect(suggestedCaseNotesService.getSuggestedCaseNotes).not.toHaveBeenCalled()
+  })
+
+  describe.each([
+    ['PRODUCTION', 'https://www.smartsurvey.co.uk/s/BZ4BKV/'],
+    ['PRE-PRODUCTION', 'https://www.smartsurvey.co.uk/s/BZ4BKV/'],
+    ['DEV', '#'],
+    ['local', '#'],
+    ['', '#'],
+    ['unknown', '#'],
+  ])('feedback link in %s', (environment, expectedHref) => {
+    it.each([false, true])('always renders the report a problem link (API failure: %s)', async apiFailure => {
+      config.sentry.environment = environment
+      const getSuggestedCaseNotes = jest.fn()
+      if (apiFailure) {
+        getSuggestedCaseNotes.mockRejectedValue(new Error('boom'))
+      } else {
+        getSuggestedCaseNotes.mockResolvedValue(responseFixture)
+      }
+      const suggestedCaseNotesService = { getSuggestedCaseNotes } as unknown as SuggestedCaseNotesService
+
+      const result = await loadSuggestedCaseNotesWidget({
+        suggestedCaseNotesService,
+        behaviourType: 'usual_behaviour_presentation',
+        pageName: 'usual behaviour presentation',
+        systemClientToken: 'token-1',
+        activeCaseLoadId: 'MDI',
+        prisonerNumber: 'A1234AA',
+        referralId: 'ref-123',
+        currentPath: '/record-investigation/usual-behaviour-presentation',
+      })
+
+      expect(result.suggestedCaseNotesWidget?.feedbackLinkHref).toBe(expectedHref)
+
+      const templates = new nunjucks.Environment(
+        new nunjucks.FileSystemLoader(path.resolve(__dirname, '../../../views')),
+        { autoescape: true },
+      )
+      templates.addFilter('formatDisplayDateWith24HourTime', formatDateLongMonthWith24HourTime)
+      templates.addFilter('firstNameSpaceLastName', firstNameSpaceLastName)
+      const html = templates.renderString(
+        '{% from "partials/suggestedCaseNotes/macro.njk" import suggestedCaseNotes %}{{ suggestedCaseNotes(widget) }}',
+        { widget: result.suggestedCaseNotesWidget },
+      )
+
+      expect(html).toContain(`href="${expectedHref}"`)
+      expect(html).toContain('target="_blank" rel="noopener noreferrer"')
+      expect(html).toContain('This feature is new and being tested.')
+      expect(html).toContain('Report a problem (opens in a new tab)')
+      expect(html).toContain('data-qa="suggested-case-notes-widget"')
+
+      // the feedback paragraph must appear after the "AI tool has identified..." subheading
+      const subheadingIndex = html.indexOf('An AI tool has identified')
+      const feedbackIndex = html.indexOf('data-qa="suggested-case-notes-feedback"')
+      expect(subheadingIndex).toBeGreaterThan(-1)
+      expect(feedbackIndex).toBeGreaterThan(subheadingIndex)
+    })
   })
 
   it('builds a widget with highlighting disabled from the query string and toggle metadata', async () => {
@@ -66,8 +132,49 @@ describe('loadSuggestedCaseNotesWidget', () => {
     expect(result.suggestedCaseNotesWidget).toMatchObject({
       behaviourType: 'risks_and_triggers',
       showHighlighting: false,
-      highlightToggleHref: '/record-investigation/triggers?suggestedCaseNotesHighlighting=on',
+      highlightToggleHref: '/record-investigation/triggers?sortField=createdDate&suggestedCaseNotesHighlighting=on',
       highlightToggleText: 'Turn on highlights',
+    })
+  })
+
+  it('keeps the highlighting setting in sort links and the sort setting in the highlight link', async () => {
+    const suggestedCaseNotesService = {
+      getSuggestedCaseNotes: jest.fn().mockResolvedValue(responseFixture),
+    } as unknown as SuggestedCaseNotesService
+
+    const result = await loadSuggestedCaseNotesWidget({
+      suggestedCaseNotesService,
+      behaviourType: 'usual_behaviour_presentation',
+      pageName: 'usual behaviour presentation',
+      systemClientToken: 'token-1',
+      activeCaseLoadId: 'MDI',
+      prisonerNumber: 'A1234AA',
+      referralId: 'ref-123',
+      currentPath: '/record-investigation/usual-behaviour-presentation',
+      sortFieldQuery: 'lastAmendedDate',
+      highlightingQuery: 'off',
+    })
+
+    expect(result.suggestedCaseNotesWidget).toMatchObject({
+      sortField: 'lastAmendedDate',
+      highlightToggleHref:
+        '/record-investigation/usual-behaviour-presentation?sortField=lastAmendedDate&suggestedCaseNotesHighlighting=on',
+      sortOptions: [
+        {
+          field: 'lastAmendedDate',
+          label: 'recently updated',
+          qa: 'sort-by-most-recent-activity',
+          selected: true,
+          href: '/record-investigation/usual-behaviour-presentation?sortField=lastAmendedDate&suggestedCaseNotesHighlighting=off',
+        },
+        {
+          field: 'createdDate',
+          label: 'date created',
+          qa: 'sort-by-date-created',
+          selected: false,
+          href: '/record-investigation/usual-behaviour-presentation?sortField=createdDate&suggestedCaseNotesHighlighting=off',
+        },
+      ],
     })
   })
 
