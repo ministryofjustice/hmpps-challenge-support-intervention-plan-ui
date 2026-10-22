@@ -7,10 +7,10 @@ import { enrichName, keepSpan, telemetryConfig } from './telemetryConfig'
 const builder = initialiseTelemetry(telemetryConfig).addFilter(keepSpan).addModifier(enrichName)
 
 if (sentryClient) configureSentryTelemetry(builder, sentryClient)
-const recording = builder.startRecording()
+builder.startRecording()
 if (sentryClient) Sentry.validateOpenTelemetrySetup()
 
-export const shutdownTelemetry = recording ? () => recording.shutdown() : flushTelemetry
+export const shutdownTelemetry = flushTelemetry
 
 const shutdown = async (): Promise<void> => {
   try {
