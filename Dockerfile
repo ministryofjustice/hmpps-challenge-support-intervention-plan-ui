@@ -43,6 +43,10 @@ RUN npm prune --no-audit --omit=dev --omit=optional
 # Stage: copy production assets and dependencies
 FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine-runtime
 
+ARG BUILD_NUMBER
+ARG GIT_REF
+ARG GIT_BRANCH
+
 RUN rm -rf /usr/local/lib/node_modules/npm \
         /usr/local/bin/npm \
         /usr/local/bin/npx
