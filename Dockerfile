@@ -63,6 +63,9 @@ COPY --from=build --chown=appuser:appgroup \
         /app/node_modules ./node_modules
 
 EXPOSE 3000
+ENV BUILD_NUMBER=${BUILD_NUMBER}
+ENV GIT_REF=${GIT_REF}
+ENV GIT_BRANCH=${GIT_BRANCH}
 ENV NODE_ENV='production'
 USER 2000
 
