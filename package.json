@@ -81,7 +81,7 @@
     "@microsoft/applicationinsights-web": "^3.4.5",
     "@ministryofjustice/frontend": "^9.0.0",
     "@ministryofjustice/hmpps-auth-clients": "^1.0.2",
-    "@ministryofjustice/hmpps-azure-telemetry": "^1.1.0",
+    "@ministryofjustice/hmpps-azure-telemetry": "1.2.0",
     "@ministryofjustice/hmpps-connect-dps-components": "6.2.1",
     "@ministryofjustice/hmpps-monitoring": "^1.1.0",
     "@ministryofjustice/hmpps-prison-permissions-lib": "^4.5.1",
@@ -117,6 +117,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@azure/monitor-opentelemetry-exporter": "1.0.0-beta.32",
     "@cypress/code-coverage": "^4.0.3",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@jgoz/esbuild-plugin-typecheck": "^5.0.0",

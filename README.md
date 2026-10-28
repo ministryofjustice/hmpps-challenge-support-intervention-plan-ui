@@ -250,10 +250,9 @@ performance sample.
 Without `SENTRY_DSN`, the HMPPS telemetry library starts its usual provider.
 The library owns provider, exporter, logger, resource and instrumentation
 setup in both paths. CSIP supplies only its Sentry integration and the Azure
-export-copy adapter through the provider hook. This switch requires the
-provider-hook library release (planned as `1.2.0`); the registry dependency and
-lockfile must be updated once that release is available. Local verification
-uses a packed build of the library branch.
+export-copy adapter through the provider hook provided by the published
+`@ministryofjustice/hmpps-azure-telemetry` version `1.2.0`. Clean installs and
+regression checks use the registry package recorded in the lockfile.
 
 Run the local regression probe with:
 
