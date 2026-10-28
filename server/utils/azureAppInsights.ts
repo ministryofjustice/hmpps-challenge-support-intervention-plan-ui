@@ -1,20 +1,23 @@
-import { flushTelemetry, initialiseTelemetry, telemetry } from '@ministryofjustice/hmpps-azure-telemetry'
+import { flushTelemetry, initialiseTelemetry } from '@ministryofjustice/hmpps-azure-telemetry'
+import * as Sentry from '@sentry/node'
+import { sentryClient } from '../sentry'
+import { configureSentryTelemetry } from './sharedTelemetry'
+import { enrichName, keepSpan, telemetryConfig } from './telemetryConfig'
 
-initialiseTelemetry({
-  serviceName: 'hmpps-challenge-support-intervention-plan-ui',
-  serviceVersion: process.env['BUILD_NUMBER'] || 'unknown',
-  connectionString: process.env.APPLICATIONINSIGHTS_CONNECTION_STRING,
-  debug: process.env['DEBUG_TELEMETRY'] === 'true',
-})
-  .addFilter(
-    telemetry.processors.filterSpanWherePath(['/health', '/ping', '/info', '/metrics', '/assets/*', '/favicon.ico']),
-  )
-  .addModifier(telemetry.processors.enrichSpanNameWithHttpRoute())
-  .startRecording()
+const builder = initialiseTelemetry(telemetryConfig).addFilter(keepSpan).addModifier(enrichName)
+
+if (sentryClient) configureSentryTelemetry(builder, sentryClient)
+builder.startRecording()
+if (sentryClient) Sentry.validateOpenTelemetrySetup()
+
+export const shutdownTelemetry = flushTelemetry
 
 const shutdown = async (): Promise<void> => {
-  await flushTelemetry()
-  process.exit(0)
+  try {
+    await shutdownTelemetry()
+  } finally {
+    process.exit(0)
+  }
 }
 
 process.on('SIGTERM', () => shutdown())
