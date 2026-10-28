@@ -1,17 +1,11 @@
 # Stage: base image
-FROM node:24.22.1-alpine3.24 as base
+FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine as base
 
 ARG BUILD_NUMBER
 ARG GIT_REF
 ARG GIT_BRANCH
 
 LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
-
-ENV TZ=Europe/London
-RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
-
-RUN addgroup -g 2000 -S appgroup && \
-        adduser -u 2000 -S appuser -G appgroup
 
 WORKDIR /app
 
@@ -47,7 +41,7 @@ RUN --mount=type=secret,id=sentry SENTRY_AUTH_TOKEN=$(cat /run/secrets/sentry) n
 RUN npm prune --no-audit --omit=dev --omit=optional
 
 # Stage: copy production assets and dependencies
-FROM base
+FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine-runtime
 
 RUN rm -rf /usr/local/lib/node_modules/npm \
         /usr/local/bin/npm \
