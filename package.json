@@ -182,7 +182,6 @@
   "overrides": {
     "brace-expansion": "^5.0.12",
     "qs": "^6.16.1",
-    "proxy-addr": "^2.0.8",
     "moment": "^2.31.0",
     "@opentelemetry/core@2": "^2.8.0",
     "@opentelemetry/propagator-jaeger": "^2.12.0",
