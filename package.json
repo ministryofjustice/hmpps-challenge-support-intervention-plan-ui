@@ -25,16 +25,13 @@
     "int-test": "cypress run --config video=false $INT_TEST_RUN_ARGS",
     "int-test-ui": "cypress open --e2e --browser chrome",
     "clean": "rm -rf dist node_modules",
-    "rebuild": "npm run clean && npm i && npm run build",
+    "rebuild": "npm run clean && npm run setup && npm run build",
     "swagger": "npx openapi-typescript https://csip-api-dev.hmpps.service.justice.gov.uk/v3/api-docs > ./server/@types/csip/index.d.ts",
-    "precommit:secrets": "gitleaks git --pre-commit --redact --staged --verbose --config .gitleaks/config.toml",
-    "precommit:lint": "node_modules/.bin/lint-staged",
-    "precommit:verify": "npm run typecheck && npm test",
-    "setup": "npm ci && hmpps-npm-script-run-allowlist"
+    "setup": "npm ci"
   },
   "engines": {
     "node": "^24",
-    "npm": "^10 || ^11"
+    "npm": "^12"
   },
   "jest": {
     "collectCoverage": true,
@@ -91,7 +88,6 @@
     "@opentelemetry/sdk-trace-base": "2.5.1",
     "@sentry/opentelemetry": "10.76.2",
     "agentkeepalive": "^4.6.0",
-    "body-parser": "^2.3.0",
     "bunyan": "^1.8.15",
     "bunyan-format": "^0.2.1",
     "compression": "^1.8.2",
@@ -122,8 +118,7 @@
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@jgoz/esbuild-plugin-typecheck": "^5.0.0",
     "@ministryofjustice/eslint-config-hmpps": "^1.0.3",
-    "@ministryofjustice/hmpps-npm-script-allowlist": "0.0.6",
-    "@ministryofjustice/hmpps-precommit-hooks": "^1.0.2",
+    "@ministryofjustice/hmpps-precommit-hooks": "3.0.0",
     "@sentry/cli": "^3.8.0",
     "@testing-library/cypress": "^10.1.3",
     "@testing-library/dom": "^10.4.2",
@@ -187,7 +182,6 @@
   "overrides": {
     "brace-expansion": "^5.0.12",
     "qs": "^6.16.1",
-    "proxy-addr": "^2.0.8",
     "moment": "^2.31.0",
     "@opentelemetry/core@2": "^2.8.0",
     "@opentelemetry/propagator-jaeger": "^2.12.0",
@@ -198,5 +192,14 @@
         "mkdirp": "0.5.6"
       }
     }
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "@sentry/cli@3.8.1": true,
+    "cypress@16.2.0": true,
+    "dtrace-provider@0.8.8": true,
+    "esbuild@0.28.2": true,
+    "fsevents@2.3.3": true,
+    "unrs-resolver@1.12.2": true
   }
 }
