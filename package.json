@@ -184,7 +184,6 @@
     "qs": "^6.16.1",
     "moment": "^2.31.0",
     "@opentelemetry/core@2": "$@opentelemetry/core",
-    "@opentelemetry/propagator-jaeger": "^2.12.0",
     "diff": "^8.0.4",
     "bunyan": {
       "mv": {
