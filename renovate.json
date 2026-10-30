@@ -15,7 +15,21 @@
       "minimumReleaseAge": "7 days"
     },
     {
-      "description": "Keep DPS components updates in separate PRs for independent review and testing.",
+      "description": "Keep server telemetry updates in separate PRs.",
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": [
+        "@opentelemetry/*",
+        "@ministryofjustice/hmpps-azure-telemetry",
+        "@azure/monitor-opentelemetry-exporter",
+        "@sentry/node",
+        "@sentry/opentelemetry"
+      ],
+      "groupName": "server telemetry non major dependencies",
+      "groupSlug": "server-telemetry-minor-patch"
+    },
+    {
+      "description": "Keep DPS components updates in separate PRs.",
       "matchManagers": ["npm"],
       "matchPackageNames": ["@ministryofjustice/hmpps-connect-dps-components"],
       "groupName": null,
