@@ -187,7 +187,7 @@
     "qs": "^6.17.0",
     "moment": "^2.31.0",
     "@opentelemetry/core@2": "$@opentelemetry/core",
-    "diff": "^8.0.4",
+    "diff": "^9.0.0",
     "bunyan": {
       "mv": {
         ".": "npm:mv-lite@1.0.0",
