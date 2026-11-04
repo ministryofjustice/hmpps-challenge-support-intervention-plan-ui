@@ -204,7 +204,7 @@ For local running, start a wiremock instance by:
 
 Then run the server in test mode by:
 
-`npm run start-e2e` (or `npm run start-e2e:watch` to run with auto-restart on changes)
+`npm run start-feature` (or `npm run start-feature:dev` to run with auto-restart on changes)
 
 And then either, run tests in headless mode with:
 
