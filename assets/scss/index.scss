@@ -12,7 +12,7 @@ $app-page-width: 1170px;
 @use './components/miniSummary';
 @use './components/summary-card';
 @use './components/print-view';
-@use './local';
+@use './overrides/local';
 @use '../../server/views/partials/miniProfile/all';
 @use '../../server/views/partials/sortableTable';
 

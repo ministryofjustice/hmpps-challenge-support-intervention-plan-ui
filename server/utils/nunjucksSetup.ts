@@ -47,7 +47,7 @@ export default function nunjucksSetup(app: express.Express): void {
   let assetManifest: Record<string, string> = {}
 
   try {
-    const assetMetadataPath = path.resolve(__dirname, '../../assets/manifest.json')
+    const assetMetadataPath = path.resolve(__dirname, '../../assets/asset-manifest.json')
     assetManifest = JSON.parse(fs.readFileSync(assetMetadataPath, 'utf8'))
   } catch (e) {
     if (process.env.NODE_ENV !== 'test') {
@@ -76,6 +76,7 @@ export default function nunjucksSetup(app: express.Express): void {
     {
       autoescape: true,
       express: app,
+      noCache: process.env.NODE_ENV !== 'production',
     },
   )
   njkEnv.addFilter('personProfileName', personProfileName)
