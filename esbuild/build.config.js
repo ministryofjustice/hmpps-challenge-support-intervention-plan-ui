@@ -25,11 +25,6 @@ const getBuildConfig = () => {
           watch: isWatchMode,
         },
         {
-          from: path.join(cwd, 'server/routes/journeys/**/*'),
-          to: path.join(cwd, 'dist/server/routes/journeys'),
-          watch: isWatchMode,
-        },
-        {
           from: path.join(cwd, 'server/routes/**/*'),
           to: path.join(cwd, 'dist/server/routes'),
           watch: isWatchMode,
