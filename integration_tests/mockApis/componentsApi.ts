@@ -15,7 +15,7 @@ const stubComponentsFail = () => {
   return stubFor({
     request: {
       method: 'GET',
-      url: '/components/components?component=header&component=footer',
+      urlPattern: '/components/components\\?component=header&component=footer(&.*)?',
     },
     response: {
       status: 500,
@@ -27,7 +27,7 @@ const stubComponents = () => {
   return stubFor({
     request: {
       method: 'GET',
-      url: '/components/components?component=header&component=footer',
+      urlPattern: '/components/components\\?component=header&component=footer(&.*)?',
     },
     response: {
       status: 200,
@@ -77,7 +77,7 @@ const stubComponentsNoCsip = () => {
   return stubFor({
     request: {
       method: 'GET',
-      url: '/components/components?component=header&component=footer',
+      urlPattern: '/components/components\\?component=header&component=footer(&.*)?',
     },
     response: {
       status: 200,
