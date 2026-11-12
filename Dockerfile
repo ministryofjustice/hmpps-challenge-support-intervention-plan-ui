@@ -1,5 +1,5 @@
 # Stage: base image
-FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine as base
+FROM ghcr.io/ministryofjustice/hmpps-node:26-alpine as base
 
 ARG BUILD_NUMBER
 ARG GIT_REF
@@ -41,7 +41,7 @@ RUN --mount=type=secret,id=sentry SENTRY_AUTH_TOKEN=$(cat /run/secrets/sentry) n
 RUN npm prune --no-audit --no-fund --omit=dev --omit=optional
 
 # Stage: copy production assets and dependencies
-FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine-runtime
+FROM ghcr.io/ministryofjustice/hmpps-node:26-alpine-runtime
 
 ARG BUILD_NUMBER
 ARG GIT_REF
