@@ -185,8 +185,7 @@
     "diff": "^9.0.0",
     "bunyan": {
       "mv": {
-        ".": "npm:mv-lite@1.0.0",
-        "mkdirp": "0.5.6"
+        ".": "npm:mv-lite@1.0.0"
       }
     }
   },
