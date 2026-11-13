@@ -125,12 +125,7 @@ integration_tests/videos/
 integration_tests/screenshots/
 */*.iml
 **/Chart.lock
-# Sentry Config File
-.sentryclirc
 **/.DS_Store
-
-# Sentry Config File
-.env.sentry-build-plugin
 
 # wiremock 
 wiremock.jar

@@ -21,9 +21,7 @@
       "matchPackageNames": [
         "@opentelemetry/*",
         "@ministryofjustice/hmpps-azure-telemetry",
-        "@azure/monitor-opentelemetry-exporter",
-        "@sentry/node",
-        "@sentry/opentelemetry"
+        "@azure/monitor-opentelemetry-exporter"
       ],
       "groupName": "server telemetry non major dependencies",
       "groupSlug": "server-telemetry-minor-patch"

@@ -57,9 +57,9 @@ export const buildSuggestedCaseNotesControls = (
 
 const FEEDBACK_SURVEY_URL = 'https://www.smartsurvey.co.uk/s/BZ4BKV/'
 
-// The feedback survey link is only live in production and pre-production; lower environments link to "#".
-const buildFeedbackLinkHref = (): string =>
-  ['PRODUCTION', 'PRE-PRODUCTION'].includes(config.sentry.environment) ? FEEDBACK_SURVEY_URL : '#'
+// The feedback survey link is only live where FEEDBACK_SURVEY_ENABLED is set (production and pre-production);
+// other environments link to "#".
+const buildFeedbackLinkHref = (): string => (config.feedbackSurveyEnabled ? FEEDBACK_SURVEY_URL : '#')
 
 export const loadSuggestedCaseNotesWidget = async ({
   suggestedCaseNotesService,
