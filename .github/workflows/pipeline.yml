@@ -71,7 +71,6 @@ jobs:
       generate_sbom: true
       attach_sbom_to_registry: true
       sign_image: true
-      additional_docker_build_args: --secret id=sentry,env=SENTRY_AUTH_TOKEN
   deploy_dev:
     name: Deploy to the dev environment
     if: github.ref == 'refs/heads/main'

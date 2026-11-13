@@ -22,10 +22,10 @@ const responseFixture = {
 }
 
 describe('loadSuggestedCaseNotesWidget', () => {
-  const originalEnvironment = config.sentry.environment
+  const originalFeedbackSurveyEnabled = config.feedbackSurveyEnabled
 
   afterEach(() => {
-    config.sentry.environment = originalEnvironment
+    config.feedbackSurveyEnabled = originalFeedbackSurveyEnabled
   })
 
   beforeEach(() => {
@@ -53,15 +53,11 @@ describe('loadSuggestedCaseNotesWidget', () => {
   })
 
   describe.each([
-    ['PRODUCTION', 'https://www.smartsurvey.co.uk/s/BZ4BKV/'],
-    ['PRE-PRODUCTION', 'https://www.smartsurvey.co.uk/s/BZ4BKV/'],
-    ['DEV', '#'],
-    ['local', '#'],
-    ['', '#'],
-    ['unknown', '#'],
-  ])('feedback link in %s', (environment, expectedHref) => {
+    [true, 'https://www.smartsurvey.co.uk/s/BZ4BKV/'],
+    [false, '#'],
+  ])('feedback link when the survey is enabled: %s', (feedbackSurveyEnabled, expectedHref) => {
     it.each([false, true])('always renders the report a problem link (API failure: %s)', async apiFailure => {
-      config.sentry.environment = environment
+      config.feedbackSurveyEnabled = feedbackSurveyEnabled
       const getSuggestedCaseNotes = jest.fn()
       if (apiFailure) {
         getSuggestedCaseNotes.mockRejectedValue(new Error('boom'))

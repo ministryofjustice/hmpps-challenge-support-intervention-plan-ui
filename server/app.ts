@@ -2,7 +2,6 @@ import express from 'express'
 
 import { getFrontendComponents, retrieveCaseLoadData } from '@ministryofjustice/hmpps-connect-dps-components'
 
-import * as Sentry from '@sentry/node'
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
@@ -25,8 +24,6 @@ import populateClientToken from './middleware/populateSystemClientToken'
 import PrisonerImageRoutes from './routes/prisonerImageRoutes'
 import populateValidationErrors from './middleware/populateValidationErrors'
 import breadcrumbs from './middleware/breadcrumbs'
-import './sentry'
-import sentryMiddleware from './middleware/sentryMiddleware'
 import { handleApiError } from './middleware/handleApiError'
 import { auditPageViewMiddleware } from './middleware/auditPageViewMiddleware'
 import checkServiceEnabledForActiveCaseLoad from './middleware/checkServiceEnabledForActiveCaseLoad'
@@ -48,7 +45,6 @@ export default function createApp(services: Services): express.Application {
   app.set('trust proxy', true)
   app.set('port', process.env.PORT || 3000)
 
-  app.use(sentryMiddleware())
   app.use(setUpHealthChecks(services.applicationInfo))
   app.use(setUpWebSecurity())
   app.use(setUpWebSession())
@@ -83,7 +79,6 @@ export default function createApp(services: Services): express.Application {
   app.use(checkServiceEnabledForActiveCaseLoad(services.csipApiService))
   app.use(populateValidationErrors())
   app.use(routes(services))
-  if (config.sentry.dsn) Sentry.setupExpressErrorHandler(app)
   app.use((_req, res) => res.notFound())
   app.use(handleApiError)
   app.use(errorHandler(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'e2e-test'))

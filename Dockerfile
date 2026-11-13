@@ -36,7 +36,7 @@ RUN NPM_CONFIG_AUDIT=false NPM_CONFIG_FUND=false CYPRESS_INSTALL_BINARY=0 npm ru
 ENV NODE_ENV='production'
 
 COPY . .
-RUN --mount=type=secret,id=sentry SENTRY_AUTH_TOKEN=$(cat /run/secrets/sentry) npm run build
+RUN npm run build
 
 RUN npm prune --no-audit --no-fund --omit=dev --omit=optional
 
