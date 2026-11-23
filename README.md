@@ -166,11 +166,12 @@ To start the main services excluding the example typescript template app:
 Create an environment file by copying `.env.example` -> `.env`
 Environment variables set in here will be available when running `start:dev`
 
-Install dependencies using `npm run setup`, ensuring you are using >= `node v24` and >= `npm v10`
+Install dependencies using `npm run setup`, ensuring you are using Node.js v26 and npm v12.
 
-Note: Using `nvm` (or [fnm](https://github.com/Schniz/fnm)), run `nvm install --latest-npm` within the repository folder
-to use the correct version of node, and the latest version of npm. This matches the `engines` config in `package.json`
-and the CircleCI build config.
+Note: Using `nvm` (or [fnm](https://github.com/Schniz/fnm)), run `nvm use`
+within the repository folder to use the correct version of Node.js and then run
+`npm install --global npm@12` to install npm v12. This matches the `engines`
+config in `package.json` and the CircleCI build config.
 
 And then, to build the assets and start the app with esbuild:
 
